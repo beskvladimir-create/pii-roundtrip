@@ -1,0 +1,11 @@
+data/synthetic/*
+!data/synthetic/.gitkeep
+data/external/
+data/holdout*/
+results/*/
+.venv/
+*.egg-info/
+__pycache__/
+*.pyc
+.pytest_cache/
+.DS_Store

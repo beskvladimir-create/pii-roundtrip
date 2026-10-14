@@ -1,0 +1,24 @@
+pii-roundtrip
+Copyright 2026 Vladimir Beskorovainyi, Besk Tech (besk.tech)
+
+Licensed under the Apache License, Version 2.0 (see LICENSE).
+
+This product uses the following open-source components at runtime:
+
+- pii-guard (https://github.com/redmadrobot-rnd/pii-guard), Apache License 2.0,
+  and the model redmadrobot-rnd/rubert-base-pii-ner, Apache License 2.0.
+- GLiNER2 (https://github.com/fastino-ai/GLiNER2), Apache License 2.0,
+  and the model hivetrace/gliner-guard-omni, Apache License 2.0.
+- pymorphy3 and pymorphy3-dicts-ru, MIT License.
+- cryptography, Apache License 2.0 / BSD License.
+
+The benchmark additionally uses the datasets hivetrace/pii-bench (Apache 2.0),
+redmadrobot-rnd/pii_benchmark (MIT) and nvidia/Nemotron-PII (CC BY 4.0). They are
+downloaded at run time at pinned revisions and are not redistributed in this
+repository, except for short excerpts (missed values used as error examples) in
+results/ and REPORT.md, which remain under the licences of the respective datasets.
+
+Changes to Nemotron-PII (CC BY 4.0): in a subset of its texts, values labelled
+national_id, health_plan_beneficiary_number and account_number were replaced with
+synthetic UK NI numbers, NHS numbers and IBANs (eval/external.py). Excerpts from this
+modified subset are marked as nemotron_uk_ids in results/.

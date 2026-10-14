@@ -1,0 +1,47 @@
+[project]
+name = "pii-roundtrip"
+version = "0.1.0"
+description = "Local reversible anonymisation of Russian and UK English documents for use with external LLMs, and a benchmark of existing tools"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = "Apache-2.0"
+authors = [{ name = "Vladimir Beskorovainyi" }]
+dependencies = [
+    "pii-guard[ner] @ git+https://github.com/redmadrobot-rnd/pii-guard@24230abb72949a9f85499244dd4f15a0ad0cdd9e",
+    "ru_core_news_sm @ https://github.com/explosion/spacy-models/releases/download/ru_core_news_sm-3.8.0/ru_core_news_sm-3.8.0-py3-none-any.whl",
+    "gliner2>=2.1.0",
+    "pymorphy3>=2",
+    "pymorphy3-dicts-ru>=2.4",
+    "cryptography>=48",
+]
+
+[project.optional-dependencies]
+bench = [
+    "faker>=30",
+    "huggingface-hub>=2.2.0",
+    "pyarrow>=26.0.0",
+    "presidio-analyzer>=2.2.364",
+    "presidio-anonymizer>=2.2.364",
+    "ru_core_news_lg @ https://github.com/explosion/spacy-models/releases/download/ru_core_news_lg-3.8.0/ru_core_news_lg-3.8.0-py3-none-any.whl",
+    "en_core_web_lg @ https://github.com/explosion/spacy-models/releases/download/en_core_web_lg-3.8.0/en_core_web_lg-3.8.0-py3-none-any.whl",
+    "prompt-anonymizer==0.3.3",
+    "opf @ git+https://github.com/openai/privacy-filter@f7f00ca7fb869683eb732c010299d901457f19c3",
+]
+
+[project.scripts]
+pii-roundtrip = "pii_roundtrip.cli:main"
+
+[dependency-groups]
+# тестам нужен генератор синтетических документов (faker)
+dev = ["pytest>=8", "faker>=30"]
+
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["pii_roundtrip*"]
+
+[tool.pytest.ini_options]
+pythonpath = ["data", "."]
+testpaths = ["tests"]
