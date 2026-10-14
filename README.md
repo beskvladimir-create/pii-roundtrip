@@ -29,10 +29,10 @@ External datasets: hivetrace/pii-bench and redmadrobot pii_benchmark for Russian
 
 | Threshold | Best existing tool, RU (pii-guard) | pii-roundtrip, RU | Best existing tool, UK (GLiNER Guard) | pii-roundtrip, UK |
 |---|---|---|---|---|
-| Structured identifiers ≥ 99% | 97.7% not met | 99.1% [98.5; 99.5] undetermined | 96.4% not met | 100.0% [99.8; 100.0] met |
-| Names, addresses, organisations ≥ 95% | 99.5% met | 98.6% [98.1; 99.0] met | 98.7% met | 98.1% [97.7; 98.4] met |
-| Texts with a leak ≤ 2% | 0.7% met | 0.5% [0.4; 0.8] met | 4.0% not met | 0.9% [0.6; 1.3] met |
-| Restoration ≥ 99% (worse of two LLMs) | 92.0% undetermined | 99.9% [99.7; 100.0] met | no restore step, not met | 99.6% [99.2; 99.9] met |
+| Structured identifiers ≥ 99% | 97.7% [95.7; 98.7] not met | 99.1% [98.5; 99.5] undetermined | 96.4% [95.7; 97.0] not met | 100.0% [99.8; 100.0] met |
+| Names, addresses, organisations ≥ 95% | 99.5% [98.2; 99.9] met | 98.6% [98.1; 99.0] met | 98.7% [98.4; 99.0] met | 98.1% [97.7; 98.4] met |
+| Texts with a leak ≤ 2% | 0.7% [0.4; 1.2] met | 0.5% [0.4; 0.8] met | 4.0% [3.4; 4.8] not met | 0.9% [0.6; 1.3] met |
+| Restoration ≥ 99% (worse of two LLMs) | 92.0% [79.1; 99.7] undetermined | 99.9% [99.7; 100.0] met | no restore step, not met | 99.6% [99.2; 99.9] met |
 
 A threshold is not met when the whole 95% confidence interval is on the wrong side of it, and undetermined when the interval spans it. The restoration figures come from a round trip with qwen3.5:9b and gemma4:12b at temperature 0. Intervals and per-dataset numbers are in the report.
 
