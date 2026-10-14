@@ -8,7 +8,7 @@ Date: 13 October 2026. During the work, the engine code and the evaluation code 
    - The best tool for Russian, pii-guard, reaches 97.7% on structured identifiers against a 99% threshold.
    - The best tool for UK English, GLiNER Guard, reaches 96.4% on identifiers, with leaks in 4.0% of texts against a 2% threshold. It has no restore step of its own.
 2. **All existing tools leak in documents.** On the short texts of the external datasets the best of them are almost clean. On synthetic contracts, certificates, letters, HR documents and discharge summaries, 54–100% of Russian and 57–100% of UK documents leak.
-3. **pii-roundtrip is built as a layer on top of pii-guard and GLiNER Guard.** On the external datasets it meets 4 of 4 thresholds for Russian (identifiers, names and addresses, leaks, restoration) and 4 of 4 thresholds for UK English (identifiers, names and addresses, leaks, restoration). On the held-out set with hard-to-read identifiers, 1% of Russian and 4% of UK documents leak.
+3. **pii-roundtrip is built as a layer on top of pii-guard and GLiNER Guard.** On the external datasets it meets 3 of 4 thresholds for Russian (names and addresses, leaks, restoration; undetermined: identifiers) and 4 of 4 thresholds for UK English (identifiers, names and addresses, leaks, restoration). On the held-out set with hard-to-read identifiers, 1% of Russian and 4% of UK documents leak; with 100 documents per language, neither rate is determined against the 2% threshold.
 4. **Restoration fails on the placeholder format, not on detection.** qwen3.5:9b breaks the closing of pii-guard's XML tags, and pii-guard then scrubs them. Both LLMs keep plain placeholders such as `[PERSON_1]` intact 99–100% of the time.
 
 ## 2. Thresholds
@@ -17,7 +17,7 @@ Date: 13 October 2026. During the work, the engine code and the evaluation code 
 |---|---|
 | Recall on structured identifiers: Russian passport, SNILS, INN, bank account, NHS, NI, bank card, IBAN | at least 99% |
 | Recall on names, addresses, organisations | at least 95% |
-| Leaks: share of documents in which at least one original value remains in the cleaned text | at most 2% |
+| Leaks: share of texts (external datasets) or documents (synthetic) in which at least one original value remains in the cleaned text | at most 2% |
 | Correct restoration after an LLM answer | at least 99% of placeholders |
 
 - **Not met:** the upper bound of the 95% confidence interval is below the threshold.
@@ -61,10 +61,10 @@ For reference:
 
 | Threshold | RU, external | UK, external | RU, held-out 2 | UK, held-out 2 |
 |---|---|---|---|---|
-| Identifiers ≥ 99% | 99.1% [98.5; 99.5] met (borderline) | 100.0% [99.8; 100.0] met | 100% | 100% |
+| Identifiers ≥ 99% | 99.1% [98.5; 99.5] undetermined | 100.0% [99.8; 100.0] met | 100% | 100% |
 | Names, addresses, organisations ≥ 95% | 98.6% [98.1; 99.0] met | 98.1% [97.7; 98.4] met | 98.8% | 96.6% |
-| Leaks ≤ 2% | 0.5% [0.4; 0.8] met | 0.9% [0.6; 1.3] met | 1% [0.2; 5.4] | 4% [1.6; 9.8] |
-| Restoration ≥ 99% (worse model) | 99.9% [99.7; 100.0] met | 99.6% [99.2; 99.9] met | | |
+| Leaks ≤ 2% | 0.5% [0.4; 0.8] met | 0.9% [0.6; 1.3] met | 1% [0.2; 5.4] undetermined | 4% [1.6; 9.8] undetermined |
+| Restoration ≥ 99% (worse model) | 99.9% [99.7; 100.0] met | 99.6% [99.2; 99.9] met | not measured | not measured |
 
 What the engine adds on top of its components:
 - checksum rules;
@@ -80,7 +80,8 @@ Caveats:
 - **Shared authorship.** The engine's components were released by the authors of both Russian external datasets, so for Russian these datasets are partly "home" sets for it.
 - **Changes made after looking at external errors.** Two changes followed an analysis of misses on the Russian external sets: the house number (hivetrace), and numbers in words and with typos (redmadrobot). The results on those datasets are therefore not an independent test. Held-out set 2, generated before these changes, is the independent test.
 - **Held-out set 1** was run on the previous version of the engine, before the identifier changes. The leaks then were 1% (RU) and 3% (UK).
-- **Small held-out sets.** Each holds 100 documents per language, so the leak intervals are wide. In UK English 4 of 100 documents leak, which is above the 2% threshold.
+- **Small held-out sets.** Each holds 100 documents per language. At this size neither leak rate (1% and 4%) is determined against the 2% threshold: the intervals [0.2; 5.4] and [1.6; 9.8] span it. The held-out sets are too small for a verdict on leaks.
+- **Round trip.** Restoration was measured on the development documents, not on the held-out sets.
 
 ## 6. Documents: where the real gap is
 
@@ -104,7 +105,7 @@ Why they leak:
 ## 7. Conclusion
 
 - **Existing tools:** the technical gap is confirmed for both languages.
-- **pii-roundtrip:** it closes the gap on documents. Its results against the thresholds on the external datasets are in section 5. The open problem is leaks in UK documents on held-out set 2 (4%).
+- **pii-roundtrip:** it closes most of the gap on documents: leaks in 1% and 4% of documents against 54–100% for existing tools. Its results against the thresholds on the external datasets are in section 5. The open questions are Russian identifiers (undetermined) and leaks in documents, which need a held-out set larger than 100 documents for a verdict.
 
 ## 8. Corrections made during the work
 

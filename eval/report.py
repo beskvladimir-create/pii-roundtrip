@@ -53,13 +53,15 @@ def ci(c) -> str:
 
 
 def status_recall(rate, c, thr) -> str:
+    """Правило одно для всех: не пройден, если верхняя граница ниже порога; пройден,
+    если нижняя граница не ниже порога; иначе не определено."""
     if rate is None:
         return "нет данных"
     if c[1] < thr:
         return "не пройден"
     if c[0] >= thr:
         return "пройден"
-    return "не определено" if rate < thr else "пройден (на грани)"
+    return "не определено"
 
 
 def status_leak(rate, c, thr) -> str:
@@ -69,7 +71,7 @@ def status_leak(rate, c, thr) -> str:
         return "не пройден"
     if c[1] <= thr:
         return "пройден"
-    return "не определено" if rate > thr else "пройден (на грани)"
+    return "не определено"
 
 
 def pooled(m: dict, tool: str, lang: str, include_home: bool = False) -> dict | None:
@@ -292,7 +294,7 @@ def _fmt(x: float | None, lang: str) -> str:
 def _status(st: str, lang: str) -> str:
     if lang == "ru":
         return st
-    return {"пройден": "met", "не пройден": "not met", "не определено": "undetermined", "пройден (на грани)": "met (borderline)"}.get(st, st)
+    return {"пройден": "met", "не пройден": "not met", "не определено": "undetermined"}.get(st, st)
 
 
 def engine_values(m: dict, cyc: dict) -> dict:
@@ -324,12 +326,16 @@ def fill(text: str, vals: dict, lang: str) -> str:
             ci_txt = f" [{_fmt(c[0], lang)[:-1]}; {_fmt(c[1], lang)[:-1]}]" if c else ""
             text = text.replace(f"{{{key}_{metric}}}", _fmt(rate, lang))
             text = text.replace(f"{{{key}_{metric}_CI}}", f"{_fmt(rate, lang)}{ci_txt} {_status(st, lang)}")
-        ok_ru = [names_ru[k] for k, (_, _, st) in rows.items() if st.startswith("пройден")]
-        ok_en = [names_en[k] for k, (_, _, st) in rows.items() if st.startswith("пройден")]
+        ok_ru = [names_ru[k] for k, (_, _, st) in rows.items() if st == "пройден"]
+        ok_en = [names_en[k] for k, (_, _, st) in rows.items() if st == "пройден"]
+        und_ru = [names_ru[k] for k, (_, _, st) in rows.items() if st == "не определено"]
+        und_en = [names_en[k] for k, (_, _, st) in rows.items() if st == "не определено"]
         lang_ru = "по русскому" if key == "RU" else "по британскому английскому"
         lang_en = "for Russian" if key == "RU" else "for UK English"
-        met_ru.append(f"{len(ok_ru)} порога из {len(rows)} {lang_ru} ({', '.join(ok_ru)})")
-        met_en.append(f"{len(ok_en)} of {len(rows)} thresholds {lang_en} ({', '.join(ok_en)})")
+        tail_ru = f"; не определено: {', '.join(und_ru)}" if und_ru else ""
+        tail_en = f"; undetermined: {', '.join(und_en)}" if und_en else ""
+        met_ru.append(f"{len(ok_ru)} порога из {len(rows)} {lang_ru} ({', '.join(ok_ru)}{tail_ru})")
+        met_en.append(f"{len(ok_en)} of {len(rows)} thresholds {lang_en} ({', '.join(ok_en)}{tail_en})")
     text = text.replace("{ANON_PASS_SUMMARY}", " и ".join(met_ru))
     text = text.replace("{ANON_PASS_SUMMARY_EN}", " and ".join(met_en))
     return text
