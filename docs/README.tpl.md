@@ -12,12 +12,12 @@ Existing open-source tools work well on short messages but leak personal data in
 
 | Tool | Russian | UK English |
 |---|---|---|
-| **pii-roundtrip** | **1%** | **4%** |
-| pii-guard | 54% | n/a |
-| GLiNER Guard Omni | 100% | 57% |
-| Presidio | 78% | 60% |
-| OpenAI privacy-filter | 92% | 86% |
-| Prompt Anonymizer | n/a | 100% |
+| **pii-roundtrip** | **1% [0.2; 5.4]** | **4% [1.6; 9.8]** |
+| pii-guard | 54% [44.3; 63.4] | n/a |
+| GLiNER Guard Omni | 100% [96.3; 100.0] | 57% [47.2; 66.3] |
+| Presidio | 78% [68.9; 85.0] | 60% [50.2; 69.1] |
+| OpenAI privacy-filter | 92% [85.0; 95.9] | 86% [77.9; 91.5] |
+| Prompt Anonymizer | n/a | 100% [96.3; 100.0] |
 
 Full results, method and limitations are in [REPORT.en.md](REPORT.en.md). The complete tables in Russian are in [REPORT.md](REPORT.md).
 
