@@ -1,6 +1,6 @@
 # pii-roundtrip
 
-Local reversible anonymisation of Russian and UK English documents for use with external LLMs, and an independent benchmark of existing tools.
+Local reversible anonymisation of Russian and UK English documents for use with external LLMs, and an open, reproducible benchmark of existing tools.
 
 pii-roundtrip replaces personal data in a document with consistent placeholders such as `[PERSON_1]` or `[NHS_1]`, keeps the mapping in an encrypted local vault, and restores the original values in the model's answer. The document can be sent to any external LLM, while the personal data stay on the machine. After the models are downloaded once, everything runs offline.
 
@@ -8,16 +8,9 @@ pii-roundtrip replaces personal data in a document with consistent placeholders 
 
 ## Why
 
-Existing open-source tools work well on short messages but leak personal data in real documents such as contracts, letters, HR files and discharge summaries. On a held-out set of synthetic documents with numbers written in digits, with dots, with typos and in words, the share of documents in which at least one original value remained after anonymisation was:
+Existing open-source tools work well on short messages but leak personal data in real documents such as contracts, letters, HR files and discharge summaries. The table shows the share of documents in which at least one original value remained after anonymisation. It was measured on held-out set 4: 1,000 synthetic documents per language with numbers written in digits, with dots, with typos and in words, generated before the final changes of version 0.2 and run once ([HOLDOUT.en.md](HOLDOUT.en.md)). No tool, including pii-roundtrip, was developed on it.
 
-| Tool | Russian | UK English |
-|---|---|---|
-| **pii-roundtrip** | **1% [0.2; 5.4]** | **4% [1.6; 9.8]** |
-| pii-guard | 54% [44.3; 63.4] | n/a |
-| GLiNER Guard Omni | 100% [96.3; 100.0] | 57% [47.2; 66.3] |
-| Presidio | 78% [68.9; 85.0] | 60% [50.2; 69.1] |
-| OpenAI privacy-filter | 92% [85.0; 95.9] | 86% [77.9; 91.5] |
-| Prompt Anonymizer | n/a | 100% [96.3; 100.0] |
+{TABLE_HEADLINE}
 
 Full results, method and limitations are in [REPORT.en.md](REPORT.en.md). The complete tables in Russian are in [REPORT.md](REPORT.md).
 
@@ -25,43 +18,48 @@ Full results, method and limitations are in [REPORT.en.md](REPORT.en.md). The co
 
 The thresholds are recall of at least 99% for structured identifiers, recall of at least 95% for names, addresses and organisations, leaks in at most 2% of documents, and correct restoration of at least 99% of placeholders after an LLM answer.
 
-External datasets: hivetrace/pii-bench and redmadrobot pii_benchmark for Russian; Nemotron-PII with UK texts and injected UK identifiers for English.
+Each table compares the best existing tool with pii-roundtrip on the same data: the external datasets without the tool's own (home) dataset, and held-out set 4. The best existing tool is chosen on the external datasets. External datasets: hivetrace/pii-bench and redmadrobot pii_benchmark for Russian; Nemotron-PII with UK texts and injected UK identifiers for English.
 
-| Threshold | Best existing tool, RU (pii-guard) | pii-roundtrip, RU | Best existing tool, UK (GLiNER Guard) | pii-roundtrip, UK |
-|---|---|---|---|---|
-| Structured identifiers ≥ 99% | 97.7% [95.7; 98.7] not met | {RU_STRUCT_CI} | 96.4% [95.7; 97.0] not met | {UK_STRUCT_CI} |
-| Names, addresses, organisations ≥ 95% | 99.5% [98.2; 99.9] met | {RU_NAMES_CI} | 98.7% [98.4; 99.0] met | {UK_NAMES_CI} |
-| Texts with a leak ≤ 2% | 0.7% [0.4; 1.2] met | {RU_LEAK_CI} | 4.0% [3.4; 4.8] not met | {UK_LEAK_CI} |
-| Restoration ≥ 99% (worse of two LLMs) | 92.0% [79.1; 99.7] undetermined | {RU_RESTORE_CI} | no restore step, not met | {UK_RESTORE_CI} |
+Russian:
 
-A threshold is not met when the whole 95% confidence interval is on the wrong side of it, and undetermined when the interval spans it. The restoration figures come from a round trip with qwen3.5:9b and gemma4:12b at temperature 0. Intervals and per-dataset numbers are in the report.
+{TABLE_THRESHOLDS_RU}
+
+The Russian external datasets were used for error analysis while version 0.1 was developed, so for pii-roundtrip they are not an independent check. Held-out set 4 is.
+
+UK English:
+
+{TABLE_THRESHOLDS_UK}
+
+A threshold is met when the whole 95% confidence interval is on the right side of it, not met when the whole interval is on the wrong side, and undetermined when the interval spans it. Restoration comes from a round trip with qwen3.5:9b and gemma4:12b at temperature 0 on documents of held-out set 4. The last row has no threshold: it shows how much of the masked text is personal data, so that a tool cannot reach high recall by masking everything.
 
 ## Quick start
 
-Requirements: Python 3.12 and [uv](https://docs.astral.sh/uv/). pii-roundtrip is installed from source; it depends on pii-guard pinned to a GitHub commit and is not published on PyPI.
+Requirements: Python 3.12 or later and [uv](https://docs.astral.sh/uv/). pii-roundtrip is installed from source; it depends on pii-guard pinned to a GitHub commit and is not published on PyPI.
 
 ```bash
 git clone https://github.com/beskvladimir-create/pii-roundtrip.git && cd pii-roundtrip
-uv sync
+uv sync --extra all
 uv run pii-roundtrip download-models          # once, needs network
 ```
+
+The extras: `ru` adds pii-guard (Russian NER and name inflection), `gliner` adds GLiNER Guard Omni, `all` adds both, `bench` adds every compared tool. Without extras only the rules run: checksum-validated identifiers, numbers, titled names and the vault.
 
 Command line:
 
 ```bash
-uv run pii-roundtrip anonymize -l uk -i letter.txt -o letter.clean.txt --vault letter.vault
+uv run pii-roundtrip anonymize -l en-GB -i letter.txt -o letter.clean.txt --vault letter.vault
 # send letter.clean.txt to an LLM, save its answer to answer.txt
 uv run pii-roundtrip restore -i answer.txt -o answer.restored.txt --vault letter.vault
 ```
 
-The vault password is read from `PII_ROUNDTRIP_PASSWORD` or asked interactively. Use `-l ru` for Russian, `--append` to continue the same conversation, `--force` to overwrite an existing vault, and `--encoding cp1251` for legacy files.
+The vault password is read from `--password-file`, from `PII_ROUNDTRIP_PASSWORD`, or asked interactively. Output files are written with mode 0600. Use `-l ru` for Russian, `--append` to continue the same conversation, `--force` to overwrite an existing vault, and `--encoding cp1251` for legacy files.
 
 Python:
 
 ```python
 from pii_roundtrip import anonymize, deanonymize
 
-clean, session = anonymize(text, "uk")
+clean, session = anonymize(text, "en-GB")
 answer = call_your_llm(clean)          # the LLM sees only placeholders
 print(deanonymize(answer, session))   # originals restored locally
 ```
@@ -88,16 +86,19 @@ scripts/reproduce.sh
 
 Method in brief:
 - **No home datasets.** Each tool is evaluated for the verdict only on datasets its own authors did not build.
-- **Held-out sets.** Two synthetic sets were generated before the corresponding engine changes and frozen by SHA-256 ([HOLDOUT.en.md](HOLDOUT.en.md)); each was run once.
+- **Held-out sets.** Synthetic sets are generated before the engine changes they test and frozen by SHA-256 ([HOLDOUT.en.md](HOLDOUT.en.md)). Each tool runs on a set once, from committed code, and every run is logged. Sets 1 and 2 checked version 0.1. Set 3 checked a candidate of version 0.2; its errors were then analysed, so sets 1 to 3 are development data. Set 4, frozen before that analysis, checks version 0.2.
+- **Same data for every comparison.** pii-roundtrip is compared with each tool on exactly the datasets that tool is scored on.
+- **Precision.** For every tool the report gives the share of masked fragments that contain personal data.
 - **What counts as hidden.** A value counts as hidden when all of its meaningful words are masked. A leak is an original value remaining in the cleaned text, with numbers matched across any separators and Russian surnames in all cases.
 - **Round trip.** Placeholders issued by the tool and placeholders invented by the LLM are counted separately, and confidence intervals are bootstrapped over answers.
 
 ## Limitations
 
-- Held-out sets hold 100 documents per language, so the leak rates (1% and 4%) are undetermined against the 2% threshold; a larger held-out set is needed for a verdict.
-- The synthetic documents come from this project's own generator. The held-out sets protect against tuning to specific documents, not to the generator's style.
+- On short Russian messages of hivetrace the engine masks more non-personal text than pii-guard: {#pii_roundtrip|ru:ext-pii_guard|prec} of its masked fragments contain personal data, against {#best|ru:ext|prec} for pii-guard. These are errors of the GLiNER component on conversational text, which takes ordinary words and slang for personal data. On documents the engine has the highest precision among the tools that find names.
+- The synthetic documents come from this project's own generator. The held-out sets protect against tuning to specific documents, not to the generator's style. pii-roundtrip was developed on documents of this generator, while the other tools never saw them.
 - pii-guard and GLiNER Guard, which pii-roundtrip builds on, were released by the authors of the two Russian external datasets.
 - UK NHS numbers in the external set were injected into US-style contexts.
+- The round trip uses two local LLMs; larger hosted models may alter placeholders differently.
 - promptShield, a browser-only tool, was not measured.
 
 ## Licence and attribution

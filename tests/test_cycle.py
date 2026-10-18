@@ -1,6 +1,6 @@
-from eval.cycle import evaluate_answer
-from runners.base import Runner, Span
-from runners.placeholders import PlaceholderWrapper
+from bench.eval.cycle import evaluate_answer
+from bench.runners.base import Runner, Span
+from bench.runners.placeholders import PlaceholderWrapper
 
 
 class FakeDetector(Runner):

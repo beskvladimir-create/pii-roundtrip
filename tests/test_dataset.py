@@ -1,10 +1,14 @@
+import hashlib
+import json
+import re
 from collections import Counter
+from pathlib import Path
 
 import pytest
 
-from generator import ids
-from generator.generate import generate
-from generator.render import STRUCTURED, ids_canonical
+from bench.generator import ids
+from bench.generator.generate import generate
+from bench.generator.render import STRUCTURED, ids_canonical
 
 
 @pytest.fixture(scope="module")
@@ -24,7 +28,7 @@ VALIDATORS = {
 
 
 def test_counts(data):
-    for lang, docs in data.items():
+    for docs in data.values():
         assert len(docs) == 100
         assert set(Counter(d["doc_type"] for d in docs).values()) == {20}
         assert len({d["id"] for d in docs}) == 100
@@ -92,3 +96,15 @@ def test_hard_formats_in_holdout_generation():
         for d in docs:
             for e in d["entities"]:
                 assert d["text"][e["start"] : e["end"]] == e["value"]
+
+
+@pytest.mark.parametrize(
+    "folder,kwargs", [("holdout", {"seed": 20261013}), ("holdout2", {"seed": 20261014, "hard": 0.3})]
+)
+def test_generator_reproduces_frozen_holdouts(folder, kwargs):
+    """The generator must not depend on the day it runs: the frozen sets regenerate byte for byte."""
+    holdout = (Path(__file__).resolve().parents[1] / "HOLDOUT.md").read_text(encoding="utf-8")
+    expected = dict(re.findall(r"\| data/" + folder + r"/(\w+)\.jsonl \| `([0-9a-f]{64})` \|", holdout))
+    for lang, docs in generate(**kwargs).items():
+        body = "".join(json.dumps(d, ensure_ascii=False) + "\n" for d in docs).encode("utf-8")
+        assert hashlib.sha256(body).hexdigest() == expected[lang], f"{folder}/{lang}"

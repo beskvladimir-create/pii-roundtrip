@@ -1,6 +1,35 @@
-"""pii-roundtrip: локальная обратимая анонимизация документов (RU / UK) для работы с внешними нейросетями."""
+"""pii-roundtrip: local reversible anonymisation of Russian and British English documents
+for use with external LLMs."""
+
+from importlib.metadata import PackageNotFoundError, version
 
 from pii_roundtrip.core import Engine, Session, anonymize, deanonymize
+from pii_roundtrip.detect import Models, clear_caches
+from pii_roundtrip.errors import (
+    InflectionError,
+    ModelsNotAvailableError,
+    PiiRoundtripError,
+    SessionError,
+    UnsupportedLanguageError,
+    VaultError,
+)
 
-__all__ = ["Engine", "Session", "anonymize", "deanonymize"]
-__version__ = "0.1.0"
+try:
+    __version__ = version("pii-roundtrip")
+except PackageNotFoundError:  # running from a source checkout without installation
+    __version__ = "0.2.0"
+
+__all__ = [
+    "Engine",
+    "Session",
+    "Models",
+    "anonymize",
+    "deanonymize",
+    "clear_caches",
+    "PiiRoundtripError",
+    "UnsupportedLanguageError",
+    "SessionError",
+    "ModelsNotAvailableError",
+    "InflectionError",
+    "VaultError",
+]

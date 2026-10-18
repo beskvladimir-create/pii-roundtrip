@@ -20,5 +20,5 @@ results/ and REPORT.md, which remain under the licences of the respective datase
 
 Changes to Nemotron-PII (CC BY 4.0): in a subset of its texts, values labelled
 national_id, health_plan_beneficiary_number and account_number were replaced with
-synthetic UK NI numbers, NHS numbers and IBANs (eval/external.py). Excerpts from this
+synthetic UK NI numbers, NHS numbers and IBANs (bench/eval/external.py). Excerpts from this
 modified subset are marked as nemotron_uk_ids in results/.

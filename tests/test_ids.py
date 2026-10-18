@@ -2,7 +2,7 @@ import random
 
 import pytest
 
-from generator import ids
+from bench.generator import ids
 
 N = 2000
 

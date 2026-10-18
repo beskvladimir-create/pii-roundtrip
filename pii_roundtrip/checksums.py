@@ -1,9 +1,11 @@
-"""Валидаторы контрольных сумм (по открытым спецификациям): ИНН, СНИЛС, паспорт РФ,
-расчётный счёт, NHS, NI, банковская карта (Луна), IBAN (модуль 97)."""
+"""Checksum validators from public specifications: Russian INN, SNILS, passport and bank
+account (with the bank BIK key), UK NHS number (mod 11) and NI number (prefix rules),
+bank cards (Luhn) and IBAN (mod 97)."""
 
 from __future__ import annotations
 
 import string
+
 
 def _only_digits(s: str) -> str:
     return "".join(c for c in s if c.isdigit())
@@ -19,7 +21,7 @@ _INN12_W = (3, 7, 2, 4, 10, 3, 5, 9, 4, 6, 8)
 
 
 def _inn_check(digits: str, weights: tuple[int, ...]) -> str:
-    return str(sum(int(d) * w for d, w in zip(digits, weights)) % 11 % 10)
+    return str(sum(int(d) * w for d, w in zip(digits, weights, strict=False)) % 11 % 10)
 
 
 def is_valid_inn(value: str) -> bool:
@@ -27,14 +29,12 @@ def is_valid_inn(value: str) -> bool:
     if len(d) == 10:
         return d[9] == _inn_check(d[:9], _INN10_W)
     if len(d) == 12:
-        return d[10] == _inn_check(d[:10], _INN11_W) and d[11] == _inn_check(
-            d[:11], _INN12_W
-        )
+        return d[10] == _inn_check(d[:10], _INN11_W) and d[11] == _inn_check(d[:11], _INN12_W)
     return False
 
 
 def _snils_check(body: str) -> str:
-    s = sum(int(d) * w for d, w in zip(body, range(9, 0, -1)))
+    s = sum(int(d) * w for d, w in zip(body, range(9, 0, -1), strict=False))
     if s < 100:
         return f"{s:02d}"
     if s in (100, 101):
@@ -49,13 +49,84 @@ def is_valid_snils(value: str) -> bool:
 
 
 _OKATO = (
-    "01", "03", "04", "05", "07", "08", "10", "11", "12", "14", "15", "17",
-    "18", "19", "20", "22", "24", "25", "26", "27", "28", "29", "32", "33",
-    "34", "36", "37", "38", "40", "41", "42", "44", "45", "46", "47", "49",
-    "50", "52", "53", "54", "56", "57", "58", "60", "61", "63", "64", "65",
-    "66", "68", "69", "70", "71", "73", "75", "76", "77", "78", "79", "80",
-    "81", "82", "83", "84", "85", "86", "87", "88", "89", "90", "92", "93",
-    "94", "95", "96", "97", "98", "99",
+    "01",
+    "03",
+    "04",
+    "05",
+    "07",
+    "08",
+    "10",
+    "11",
+    "12",
+    "14",
+    "15",
+    "17",
+    "18",
+    "19",
+    "20",
+    "22",
+    "24",
+    "25",
+    "26",
+    "27",
+    "28",
+    "29",
+    "32",
+    "33",
+    "34",
+    "36",
+    "37",
+    "38",
+    "40",
+    "41",
+    "42",
+    "44",
+    "45",
+    "46",
+    "47",
+    "49",
+    "50",
+    "52",
+    "53",
+    "54",
+    "56",
+    "57",
+    "58",
+    "60",
+    "61",
+    "63",
+    "64",
+    "65",
+    "66",
+    "68",
+    "69",
+    "70",
+    "71",
+    "73",
+    "75",
+    "76",
+    "77",
+    "78",
+    "79",
+    "80",
+    "81",
+    "82",
+    "83",
+    "84",
+    "85",
+    "86",
+    "87",
+    "88",
+    "89",
+    "90",
+    "92",
+    "93",
+    "94",
+    "95",
+    "96",
+    "97",
+    "98",
+    "99",
 )
 
 
@@ -78,8 +149,8 @@ def is_valid_rs(account: str, bik: str) -> bool:
 
 
 def _nhs_check(body: str) -> int:
-    r = sum(int(d) * w for d, w in zip(body, range(10, 1, -1))) % 11
-    return 11 - r  # 11 означает 0, 10 означает недопустимый номер
+    r = sum(int(d) * w for d, w in zip(body, range(10, 1, -1), strict=False)) % 11
+    return 11 - r  # 11 means 0, 10 means the number is invalid
 
 
 def is_valid_nhs(value: str) -> bool:

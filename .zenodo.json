@@ -1,0 +1,9 @@
+{
+  "title": "pii-roundtrip: reversible anonymisation of Russian and UK English documents for external LLMs, and an open benchmark of existing tools",
+  "upload_type": "software",
+  "description": "Engine, open benchmark and frozen held-out sets for reversible anonymisation (pseudonymisation) of Russian and UK English documents before they are sent to external large language models. The benchmark compares pii-guard, GLiNER Guard Omni, Microsoft Presidio, OpenAI privacy-filter, Prompt Anonymizer and pii-roundtrip on external datasets and on synthetic held-out documents frozen by SHA-256, with a logged run-once procedure and a full round trip through two local LLMs. The benchmark was run by the author of pii-roundtrip; code, data, results and run logs are released so that it can be reproduced.",
+  "creators": [{"name": "Beskorovainyi, Vladimir", "affiliation": "Besk Tech", "orcid": "0009-0004-7005-6242"}],
+  "license": "Apache-2.0",
+  "keywords": ["anonymisation", "pseudonymisation", "personal data", "PII detection", "large language models", "benchmark", "Russian", "UK GDPR", "152-FZ"],
+  "related_identifiers": [{"identifier": "https://pii-roundtrip.besk.tech/", "relation": "isDocumentedBy", "scheme": "url"}]
+}

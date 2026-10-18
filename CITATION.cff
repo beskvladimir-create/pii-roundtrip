@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: "If you use pii-roundtrip or its benchmark, please cite it as below."
+title: "pii-roundtrip: reversible anonymisation of Russian and UK English documents for external LLMs, and an open benchmark of existing tools"
+version: "0.2.0"
+date-released: "2026-10-18"
+license: Apache-2.0
+repository-code: "https://github.com/beskvladimir-create/pii-roundtrip"
+url: "https://pii-roundtrip.besk.tech/"
+type: software
+authors:
+  - family-names: Beskorovainyi
+    given-names: Vladimir
+    orcid: "https://orcid.org/0009-0004-7005-6242"
+    affiliation: Besk Tech
+keywords:
+  - anonymisation
+  - pseudonymisation
+  - personal data
+  - PII detection
+  - large language models
+  - benchmark
+  - Russian
+  - UK GDPR
+  - 152-FZ

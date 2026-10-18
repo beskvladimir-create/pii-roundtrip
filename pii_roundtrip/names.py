@@ -1,10 +1,10 @@
-"""Разбор упоминаний людей и сопоставление их между собой.
+"""Parsing person mentions and deciding whether two mentions are the same person.
 
-Ключ человека не одно слово, а набор частей: фамилия в именительном падеже с учётом
-рода, имя, отчество, инициалы, род. Два упоминания относятся к одному человеку,
-только если все известные части согласованы. При неоднозначности (две «Ивановы»,
-упоминание только по фамилии) лучше дать отдельную метку, чем слить разных людей:
-слияние незаметно для пользователя и подставит в ответ не того человека.
+A person is keyed by several parts, not one word: surname in the nominative case with
+the right gender, first name, patronymic, initials and gender. Two mentions refer to
+the same person only if every known part agrees. When a mention is ambiguous (two
+people named Ivanova, or a surname alone), it gets its own placeholder: merging two
+people is invisible to the user and would put the wrong person into the answer.
 """
 
 from __future__ import annotations
@@ -13,19 +13,8 @@ import re
 from dataclasses import asdict, dataclass
 from functools import lru_cache
 
-TITLES = {"mr", "mrs", "ms", "miss", "dr", "sir", "lady", "prof", "professor", "господин", "госпожа", "г-н", "г-жа"}
-ROLES = {
-    # RU
-    "ип", "гражданин", "гражданка", "истец", "истица", "ответчик", "ответчица", "заявитель", "заявительница",
-    "арендатор", "арендодатель", "продавец", "покупатель", "заказчик", "исполнитель", "работник", "работодатель",
-    "пациент", "пациентка", "свидетель", "представитель", "доверитель", "поверенный", "директор", "врач",
-    "исп", "уважаемый", "уважаемая", "сторона",
-    # EN
-    "claimant", "defendant", "respondent", "applicant", "appellant", "witness", "patient", "tenant", "landlord",
-    "employee", "employer", "buyer", "seller", "party", "dear", "signed", "the", "and", "of",
-}
-FEMALE_TITLES = {"mrs", "ms", "miss", "lady", "госпожа", "г-жа", "гражданка"}
-MALE_TITLES = {"mr", "sir", "господин", "г-н", "гражданин"}
+from pii_roundtrip.langs import RU
+from pii_roundtrip.lexicon import FEMALE_TITLES, MALE_TITLES, ROLES, TITLES
 
 _INITIALS = re.compile(r"^(?:[A-ZА-ЯЁ]\.){1,3}$|^[A-ZА-ЯЁ]\.?$")
 _WORD = re.compile(r"[A-Za-zА-Яа-яЁё][\w'’.-]*")
@@ -36,7 +25,7 @@ def norm(s: str) -> str:
 
 
 def cap(word: str) -> str:
-    """«римский-корсаков» -> «Римский-Корсаков», «o'brien» -> «O'Brien»."""
+    """Capitalise every part: "римский-корсаков" -> "Римский-Корсаков", "o'brien" -> "O'Brien"."""
     return "-".join("'".join(p[:1].upper() + p[1:].lower() for p in part.split("'")) for part in word.split("-"))
 
 
@@ -53,12 +42,12 @@ def _tags(p) -> set[str]:
 
 @dataclass
 class Name:
-    surname: str = ""  # нормализовано: именительный падеж, нижний регистр, ё->е
+    surname: str = ""  # normalised: nominative case, lower case, ё -> е
     first: str = ""
     patronymic: str = ""
-    initials: str = ""  # первые буквы имени и отчества из записи вида «И.И.»
+    initials: str = ""  # first letters of first name and patronymic from forms like "И.И."
     gender: str = ""  # male / female / ""
-    display: str = ""  # как показывать при восстановлении
+    display: str = ""  # how the name is shown on restoration
 
     @property
     def first_initial(self) -> str:
@@ -75,15 +64,17 @@ class Name:
         return asdict(self)
 
 
-_SURN_END = re.compile(r"(ов|ев|ёв|ин|ын|ский|цкий|ской|цкой|ова|ева|ёва|ина|ына|ская|цкая)(а|у|ым|ом|е|ой|ую|ых|ыми)?$")
+_SURN_END = re.compile(
+    r"(ов|ев|ёв|ин|ын|ский|цкий|ской|цкой|ова|ева|ёва|ина|ына|ская|цкая)(а|у|ым|ом|е|ой|ую|ых|ыми)?$"
+)
 _PATR_END = re.compile(r"(вич|вн|ичн|ьич)(а|у|ем|ом|е|ы|ой|ну|ам)?$")
 
 
 def _ru_word_role(word: str) -> tuple[str, object | None]:
-    """Определяет, чем является слово: имя, отчество или фамилия.
+    """Classify a Russian word as first name, patronymic or surname.
 
-    Порядок важен: «Иванов» морфология разбирает и как имя («Иван» в притяжательной
-    форме), поэтому окончания фамилий проверяются раньше имён."""
+    Order matters: the morphology also parses "Иванов" as a possessive form of the first
+    name "Иван", so surname endings are checked before first names."""
     w = cap(word)
     low = norm(w)
     parses = morph().parse(w)
@@ -96,7 +87,7 @@ def _ru_word_role(word: str) -> tuple[str, object | None]:
         return "Name", by["Name"]
     if by["Surn"]:
         return "Surn", by["Surn"]
-    return "Surn", None  # слово вне словаря: скорее всего редкая фамилия
+    return "Surn", None  # out-of-vocabulary word: most likely a rare surname
 
 
 def _gender_from_surname(s: str) -> str:
@@ -109,7 +100,7 @@ def _gender_from_surname(s: str) -> str:
 
 
 def _nominative(word: str, p, gender: str) -> str:
-    """Именительный падеж в нижнем регистре, буква ё сохраняется (для показа)."""
+    """Nominative case in lower case; the letter ё is kept for display."""
     if p is None:
         return word.lower()
     g = {"male": "masc", "female": "femn"}.get(gender)
@@ -124,7 +115,7 @@ def _nominative(word: str, p, gender: str) -> str:
 
 
 def _restore_yo(form: str, original: str) -> str:
-    """pymorphy возвращает «петр»; если в исходном слове было ё, возвращаем его."""
+    """pymorphy returns "петр"; if the original word had ё, put it back."""
     if "ё" in original.lower() and "ё" not in form:
         i = original.lower().find("ё")
         if i < len(form) and form[i] == "е":
@@ -146,15 +137,19 @@ def parse(value: str, lang: str) -> Name:
             continue
         words.append(t.rstrip("."))
     n = Name(gender=title_gender)
-    if lang == "ru":
-        roles = [(w,) + _ru_word_role(w) for w in words]
+    if lang == RU:
+        roles = [(w, *_ru_word_role(w)) for w in words]
         g = ""
-        for w, kind, p in roles:
+        for w, kind, _p in roles:
             if kind == "Patr":
-                g = "female" if norm(w).endswith(("вна", "чна", "вны", "вне", "вной", "вну", "чны", "чне", "чной", "чну")) else "male"
+                g = (
+                    "female"
+                    if norm(w).endswith(("вна", "чна", "вны", "вне", "вной", "вну", "чны", "чне", "чной", "чну"))
+                    else "male"
+                )
                 break
         if not g:
-            for w, kind, p in roles:
+            for _w, kind, p in roles:
                 if kind == "Name" and p is not None:
                     tg = _tags(p)
                     if "femn" in tg and "masc" not in tg:
@@ -196,7 +191,7 @@ def parse(value: str, lang: str) -> Name:
 
 
 def compatible(a: Name, b: Name) -> bool:
-    """Могут ли два упоминания относиться к одному человеку."""
+    """Whether two mentions can refer to the same person."""
     if a.gender and b.gender and a.gender != b.gender:
         return False
     if a.surname and b.surname and a.surname != b.surname:
@@ -207,18 +202,19 @@ def compatible(a: Name, b: Name) -> bool:
         return False
     if a.patronymic_initial and b.patronymic_initial and a.patronymic_initial != b.patronymic_initial:
         return False
-    # без общей фамилии допускаем совпадение только по полному имени
-    if not (a.surname and b.surname) and not (a.first and b.first):
-        return False
-    return True
+    # without a shared surname, only a matching full first name can link two mentions
+    return bool((a.surname and b.surname) or (a.first and b.first))
 
 
 def merge_into(base: Name, other: Name) -> Name:
+    """Add the parts known from ``other`` to ``base`` and keep the richest display form."""
     for f in ("surname", "first", "patronymic", "gender"):
         if not getattr(base, f) and getattr(other, f):
             setattr(base, f, getattr(other, f))
     if len(other.initials) > len(base.initials):
         base.initials = other.initials
-    if other.richness() > base.richness() or (other.richness() == base.richness() and len(other.display) > len(base.display)):
+    if other.richness() > base.richness() or (
+        other.richness() == base.richness() and len(other.display) > len(base.display)
+    ):
         base.display = other.display
     return base

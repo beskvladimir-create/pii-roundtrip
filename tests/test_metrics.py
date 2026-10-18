@@ -1,4 +1,4 @@
-from eval import metrics
+from bench.eval import metrics
 
 
 def test_wilson():
@@ -25,7 +25,10 @@ def test_masked_any_type_and_loose_edges():
     g = ent(text, "112-233-445 95", "SNILS")
     acc = metrics.new_acc()
     # предсказан другим типом и разбит на две части: значение всё равно скрыто
-    preds = [{"type": "INN", "start": g["start"], "end": g["start"] + 11}, {"type": "PHONE", "start": g["start"] + 12, "end": g["end"]}]
+    preds = [
+        {"type": "INN", "start": g["start"], "end": g["start"] + 11},
+        {"type": "PHONE", "start": g["start"] + 12, "end": g["end"]},
+    ]
     metrics.score_doc(doc(text, [g]), preds, acc)
     assert acc["SNILS"]["masked"] == 1 and acc["SNILS"]["partial"] == 0
 
@@ -98,7 +101,9 @@ def test_person_leak_is_case_sensitive():
 
 def test_mask_text_uses_union_of_overlaps():
     text = "John Smith of 12 Baker Street"
-    masked = metrics.mask_text(text, [{"type": "PERSON", "start": 0, "end": 10}, {"type": "ADDRESS", "start": 5, "end": 29}])
+    masked = metrics.mask_text(
+        text, [{"type": "PERSON", "start": 0, "end": 10}, {"type": "ADDRESS", "start": 5, "end": 29}]
+    )
     assert "John" not in masked and "Baker" not in masked
 
 
@@ -106,3 +111,28 @@ def test_leak_number_in_words():
     text = "СНИЛС один два три - четыре пять шесть"
     g = ent(text, "один два три - четыре пять шесть", "SNILS", canonical="123456")
     assert metrics.leaked_values(doc(text, [g]), text)
+
+
+def test_masking_precision_counts_fragments_and_characters():
+    text = "Иванов пришёл в понедельник."
+    g = ent(text, "Иванов", "PERSON")
+    acc = metrics.new_acc()
+    preds = [
+        {"type": "PERSON", "start": 0, "end": 6},
+        {"type": "DATE", "start": text.index("понедельник"), "end": len(text) - 1},
+    ]
+    metrics.score_doc(doc(text, [g]), preds, acc)
+    s = metrics.summarize(acc, 0, 1, "ru")
+    assert s["precision_any"] == 0.5
+    assert s["precision_chars"] == 6 / (6 + len("понедельник"))
+    assert s["per_type"].keys() == {"PERSON", "DATE"}
+
+
+def test_name_that_is_also_an_ordinary_word_in_the_text_is_not_a_leak():
+    text = "Dated 8 June 2025. Passes for June Gibbons."
+    g = ent(text, "June Gibbons", "PERSON")
+    masked = metrics.mask_text(text, [{"type": "PERSON", "start": g["start"], "end": g["end"]}])
+    assert metrics.leaked_values(doc(text, [g], lang="uk"), masked) == []
+    # but the first name left next to the masked surname is still a leak
+    masked = metrics.mask_text(text, [{"type": "PERSON", "start": g["start"] + 5, "end": g["end"]}])
+    assert metrics.leaked_values(doc(text, [g], lang="uk"), masked) == ["June Gibbons"]
