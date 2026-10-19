@@ -4,6 +4,26 @@
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow [Semantic Versioning](https://semver.org/).
 
+## [0.2.2] - 2026-10-19
+
+The engine is unchanged. Only the evaluation of the round trip and the way the report states verdicts changed; all figures were recomputed from saved predictions and answers, without new model queries.
+
+### Fixed
+
+- Round-trip evaluator: labels a model rewrote in square brackets (`[PII type="…" id="…"]` for pii-guard, `[Name_2]` for Prompt Anonymizer) were not recognised, so such answers counted as answers without labels. They now count as issued labels that the model altered. This adds 43 pii-guard and 29 Prompt Anonymizer occurrences in two answers, all lost by the tools' restorers.
+- The finding on the label format is restated: the LLMs altered pii-guard's attribute tags more often than plain placeholders, and pii-guard's strict restorer turned the alterations into losses, including intact neighbouring tags it swallowed. The earlier wording, that the format and the prompt play no role, is withdrawn.
+
+### Changed
+
+- Intervals for recall and masking precision in the report and README come from the document-level cluster bootstrap (`results/cluster_ci.json`) instead of Wilson intervals over values. A verdict that changes with the bootstrap seed (0 to 5) is reported as undetermined, borderline.
+- The restoration threshold is judged on answers (answers restored without an error, Wilson interval), not on placeholder occurrences. With 40 of 40 clean answers the interval starts at 91.2%, so a perfect restoration is undetermined against 99%.
+- The engine's results on hivetrace/pii-bench and redmadrobot pii_benchmark, the home datasets of its components, are shown for reference, without a verdict.
+- The summary lists the verdict for each threshold instead of a count such as "4 of 4".
+
+### Added
+
+- `results/cycle_metrics.holdout4.json`: answers and documents with altered labels, and failed occurrences split into altered labels and intact neighbours lost with them.
+
 ## [0.2.1] - 2026-10-19
 
 The engine is unchanged; its detection and leak figures on held-out set 4 stand. The restoration figures were recomputed with a corrected metric (below).
@@ -16,7 +36,7 @@ The engine is unchanged; its detection and leak figures on held-out set 4 stand.
 
 ### Added
 
-- Controls for the round trip on held-out set 4: pii-guard tags with the generic system prompt, plain placeholders with the generic prompt (Russian and UK), and pii-guard answers restored by label type and number. With lenient parsing pii-guard tags are restored in full, so its restoration failures come from its strict restorer, not from the tag format or the prompt.
+- Controls for the round trip on held-out set 4: pii-guard tags with the generic system prompt, plain placeholders with the generic prompt (Russian and UK), and pii-guard answers restored by label type and number (lenient parsing, written after the failures had been found). The evaluator of this version missed labels rewritten in square brackets; 0.2.2 corrects it and restates the finding.
 - `bench/eval/leak_breakdown.py` and `results/leak_breakdown.json`: document-level leaks on held-out set 4 for clean and noisy documents, with and without hard-format identifiers, by entity type, and over the types each tool supports.
 - Published data: held-out sets 1 to 4, the LLM answers of the held-out set 4 round trip, every tool's saved predictions, `results/cluster_ci.json` and the Ollama and model versions (`results/ollama_versions.txt`).
 
@@ -75,7 +95,9 @@ Benchmark:
 
 ## [0.1.0] - 2026-10-14
 
-First public release: the engine, the benchmark of existing tools on Russian and UK English documents, the report and the preprint.
+First public release: the engine, the benchmark of existing tools on Russian and UK English documents, the report and a draft preprint.
 
+[0.2.2]: https://github.com/beskvladimir-create/pii-roundtrip/compare/v0.2.1...v0.2.2
+[0.2.1]: https://github.com/beskvladimir-create/pii-roundtrip/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/beskvladimir-create/pii-roundtrip/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/beskvladimir-create/pii-roundtrip/releases/tag/v0.1.0

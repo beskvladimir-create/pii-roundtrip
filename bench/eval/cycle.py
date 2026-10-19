@@ -49,8 +49,12 @@ GENERIC_SYSTEM = (
 # Шаблоны меток каждого инструмента: дословные и «похожие» (искажённые нейросетью).
 LABEL_PATTERNS = {
     # тег ищется по атрибутам: испорченное закрытие («»», «*/», «>») не склеивает соседние теги
-    "pii_guard": re.compile(r'<\s*PII\b(?:\s+[\w-]+\s*=\s*\\?"[^"<>]*\\?")+\s*(?:/\s*>|>|\*/|/?»|/)?', re.I),
-    "prompt_anonymizer": re.compile(r"<\s*[A-Za-z]+_\d+\s*>"),
+    # also in square brackets: a model may rewrite <PII … /> as [PII …] or <Name_2> as [Name_2];
+    # such occurrences are issued labels the model altered, not labels it invented
+    "pii_guard": re.compile(
+        r'[<\[]\s*PII\b(?:\s+[\w-]+\s*=\s*\\?"[^"<>\[\]]*\\?")+\s*(?:/\s*>|>|/\s*\]|\]|\*/|/?»|/)?', re.I
+    ),
+    "prompt_anonymizer": re.compile(r"<\s*[A-Za-z]+_\d+\s*>|\[\s*[A-Za-z]+_\d+\s*\]"),
     "placeholders": re.compile(r"\[?\b[A-Z][A-Z_]*_\d+\b\]?"),
 }
 
@@ -163,18 +167,28 @@ def evaluate_answer(family: str, mapping: dict, answer: str, restored: str, lang
     for r in residual:
         residual_left[_identity(family, r, types)] += 1
     scrubs_left = max(0, (restored.count("****") - answer.count("****")) - len(invented))
-    occ_bad = 0
-    for f, i in issued:
-        if key_ids[i] in lost_set:
-            occ_bad += 1
-        elif residual_left[i] > 0:
-            residual_left[i] -= 1
-            occ_bad += 1
-        elif f not in mapping and scrubs_left > 0:
+    bad = [False] * len(issued)
+    for n, (_, i) in enumerate(issued):
+        bad[n] = key_ids[i] in lost_set
+    # a label still in the text is charged to an altered occurrence of that label first: the
+    # model's spelling, not an intact neighbour, is what the restorer failed to recognise
+    for want_altered in (True, False):
+        for n, (f, i) in enumerate(issued):
+            if not bad[n] and residual_left[i] > 0 and (f not in mapping) == want_altered:
+                residual_left[i] -= 1
+                bad[n] = True
+    for n, (f, _) in enumerate(issued):
+        if not bad[n] and f not in mapping and scrubs_left > 0:
             scrubs_left -= 1
-            occ_bad += 1
+            bad[n] = True
+    occ_bad = sum(bad)
+    occ_bad_altered = sum(1 for n, (f, _) in enumerate(issued) if bad[n] and f not in mapping)
     return {
         "occurrences_ok": len(issued) - occ_bad,
+        # failed occurrences that the model altered, and intact ones lost with them (a restorer
+        # that swallows a broken tag together with the next one)
+        "failed_altered": occ_bad_altered,
+        "failed_intact": occ_bad - occ_bad_altered,
         "labels_in_answer": len(issued),
         "exact": len(exact),
         "altered": len(altered),
@@ -339,6 +353,12 @@ def aggregate(rows: list[dict]) -> dict:
         "residual_labels": s("residual_after_restore"),
         "scrubbed": max(0, s("scrubbed")),
         "occurrences_failed": labels - ok,
+        "failed_altered": s("failed_altered"),
+        "failed_intact": s("failed_intact"),
+        "answers_with_altered": sum(1 for r in rows if r["altered"]),
+        "docs_with_altered": sorted({r["id"] for r in rows if r["altered"]}),
+        "answers_with_failure": sum(1 for r in rows if r["labels_in_answer"] > r["occurrences_ok"]),
+        "docs_with_failure": sorted({r["id"] for r in rows if r["labels_in_answer"] > r["occurrences_ok"]}),
         "values_lost": s("values_lost"),
         "used_values": s("used_values"),
         "docs_with_input_leak": sum(1 for r in rows if r["input_leaks"] and r["task"] == "summary"),

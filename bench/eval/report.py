@@ -92,20 +92,32 @@ CYCLE_NAME = {
     "gliner_guard+placeholders@generic": "GLiNER Guard + метки [TYPE_n], общий промпт",
 }
 STATUS = {
-    "en": {"met": "met", "not met": "not met", "undetermined": "undetermined"},
-    "ru": {"met": "пройден", "not met": "не пройден", "undetermined": "не определено"},
+    "en": {
+        "met": "met",
+        "not met": "not met",
+        "undetermined": "undetermined",
+        "borderline": "undetermined, borderline",
+    },
+    "ru": {
+        "met": "пройден",
+        "not met": "не пройден",
+        "undetermined": "не определено",
+        "borderline": "не определено, на границе",
+    },
 }
 WORDS = {
     "en": {
         "na": "n/a",
         "not_measured": "not measured",
         "no_restore": "no restore step, not met",
+        "reference": "for reference",
         "no_threshold": "no threshold",
     },
     "ru": {
         "na": "нет",
         "not_measured": "не измерялось",
         "no_restore": "восстановления нет, не пройден",
+        "reference": "справочно",
         "no_threshold": "без порога",
     },
 }
@@ -168,6 +180,23 @@ def _result(m: dict, tool: str, ds: str) -> dict | None:
     return m.get(tool, {}).get(ds) or m.get(tool, {}).get(f"{ds}@300")
 
 
+# Intervals of recall and masking precision come from the document-level cluster bootstrap
+# (results/cluster_ci.json): values inside one document are not independent, so Wilson
+# intervals over values are too narrow. Document-level leak rates keep Wilson intervals.
+CLUSTER_METRIC = {"struct": "structured", "names": "names", "prec": "precision_fragments"}
+# the home datasets of the engine's components (pii-guard and GLiNER Guard): reference only
+ENGINE_HOME = {"hivetrace_pii_bench", "redmadrobot_pii_benchmark"}
+
+
+def _cluster() -> dict:
+    p = RESULTS / "cluster_ci.json"
+    return json.loads(p.read_text()) if p.exists() else {}
+
+
+def _cluster_key(sets: list[str]) -> str:
+    return "nemotron_uk+ids" if sets == ["nemotron_uk", "nemotron_uk_ids"] else "+".join(sets)
+
+
 def stats(m: dict, tool: str, sets: list[str]) -> dict | None:
     """Сумма по наборам: полнота номеров и имён, доля документов с утечкой, точность маскирования."""
     rows = [r for r in (_result(m, tool, ds) for ds in sets) if r]
@@ -185,8 +214,14 @@ def stats(m: dict, tool: str, sets: list[str]) -> dict | None:
             acc["prec"][0] += r["masked_fragments_ok"]
             acc["prec"][1] += r["masked_fragments"]
     out: dict = {"sets": [ds for ds in sets if _result(m, tool, ds)]}
+    cl = _cluster().get(tool, {}).get(_cluster_key(out["sets"]), {})
     for key, (k, n) in acc.items():
-        out[key] = (k / n if n else None, wilson(k, n) if n else None, n)
+        boot = cl.get(CLUSTER_METRIC.get(key, ""))
+        if boot and boot[0] == k and boot[1] == n:
+            out[key] = (k / n, (boot[3], boot[4]), n)
+            out[key + "_seeds"] = cl.get(CLUSTER_METRIC[key] + "_seeds")
+        else:
+            out[key] = (k / n if n else None, wilson(k, n) if n else None, n)
     return out
 
 
@@ -229,13 +264,39 @@ def load_cycles() -> dict[str, dict]:
 
 
 def restore(cyc: dict, tool: str, lang: str) -> tuple | None:
-    """Восстановление собственным механизмом инструмента, худшая из моделей: (доля, интервал, меток)."""
+    """Восстановление собственным механизмом инструмента, худшая из моделей: (доля вхождений,
+    интервал бутстрепом по ответам, вхождений, ответов без ошибок, ответов с метками)."""
     worst = None
     for lm, a in cyc.get(tool, {}).items():
         usable = lm.startswith(lang) and a.get("restore_rate") is not None
         if usable and (worst is None or a["restore_rate"] < worst["restore_rate"]):
             worst = a
-    return (worst["restore_rate"], tuple(worst["restore_ci"]), worst["labels_in_answer"]) if worst else None
+    if not worst:
+        return None
+    n = worst["answers_with_labels"]
+    return (
+        worst["restore_rate"],
+        tuple(worst["restore_ci"]),
+        worst["labels_in_answer"],
+        n - worst["answers_with_failure"],
+        n,
+    )
+
+
+def restore_status(r: tuple) -> str:
+    """The verdict on the restoration threshold counts answers, not placeholders: the answer is
+    the unit the model produces. 40 of 40 clean answers still leave an interval from 91.2%."""
+    _, _, _, k, n = r
+    return status_recall(k / n, wilson(k, n), THRESHOLDS["restore"]) if n else ""
+
+
+def restore_cell(r: tuple, lang: str, with_status: bool = True) -> str:
+    rate, c, _, k, n = r
+    word = {"en": "answers without an error", "ru": "ответов без ошибок", "tex": "answers without an error"}[lang]
+    of = {"en": "of", "ru": "из", "tex": "of"}[lang]
+    st = restore_status(r) if with_status else ""
+    text = f"{pct(rate, lang)}{interval(c, lang)}; {word} {k} {of} {n}{interval(wilson(k, n), lang)}"
+    return text + (f" {STATUS[lang][st]}" if st else "")
 
 
 def cell(rate, c, metric: str, lang: str, with_status: bool = True) -> str:
@@ -245,19 +306,27 @@ def cell(rate, c, metric: str, lang: str, with_status: bool = True) -> str:
     return f"{pct(rate, lang)}{interval(c, lang)}" + (f" {STATUS[lang][st]}" if st else "")
 
 
+def status_of(s: dict, metric: str) -> str:
+    """The verdict; "borderline" when it changes with the bootstrap seed (seeds 0 to 5)."""
+    rate, c, _ = s[metric]
+    st = status(metric, rate, c)
+    seeds = s.get(metric + "_seeds")
+    if seeds and len({status(metric, rate, tuple(b)) for b in seeds}) > 1:
+        return "borderline"
+    return st
+
+
 def cell_of(s: dict, metric: str, lang: str, with_status: bool = True) -> str:
     rate, c, _ = s[metric]
-    return cell(rate, c, metric, lang, with_status)
-
-
-def status_of(s: dict, metric: str) -> str:
-    rate, c, _ = s[metric]
-    return status(metric, rate, c)
+    if rate is None:
+        return WORDS[lang]["na"]
+    st = status_of(s, metric) if with_status else ""
+    return f"{pct(rate, lang)}{interval(c, lang)}" + (f" {STATUS[lang][st]}" if st else "")
 
 
 # ---------- подстановки в тексте ----------
 
-_REF = re.compile(r"\{([=#~%])([a-z_+]+)\|([a-z]{2}:[\w,.:@\-]+)\|([a-z_]+)(\+?)\}")
+_REF = re.compile(r"\{([=#~%])([a-z_+@~]+)\|([a-z]{2}:[\w,.:@\-]+)\|([a-z_]+)(\+?)\}")
 
 
 def _ref(m: dict, cycles: dict, match: re.Match, lang: str) -> str:
@@ -273,17 +342,21 @@ def _ref(m: dict, cycles: dict, match: re.Match, lang: str) -> str:
             if not a:
                 raise KeyError(f"нет полного цикла для {match.group(0)}")
             if metric == "restore":
-                return cell(a["restore_rate"], a["restore_ci"], "restore", lang, bool(plus))
+                n = a["answers_with_labels"]
+                r = (a["restore_rate"], tuple(a["restore_ci"]), a["labels_in_answer"], n - a["answers_with_failure"], n)
+                return restore_cell(r, lang, bool(plus))
             return str(a[metric])
         if metric != "restore":  # a count summed over both models
             rows = [a for lm, a in by.items() if lm.startswith(lang_d)]
             if not rows:
                 raise KeyError(f"нет полного цикла для {match.group(0)}")
+            if isinstance(rows[0][metric], list):  # document ids: the number of distinct documents
+                return str(len({d for a in rows for d in a[metric]}))
             return str(sum(a[metric] for a in rows))
         r = restore(cycles.get(data, {}), tool, lang_d)
         if not r:
             raise KeyError(f"нет полного цикла для {match.group(0)}")
-        return cell(r[0], r[1], "restore", lang, bool(plus))
+        return restore_cell(r, lang, bool(plus))
     _, sets = resolve_sets(spec, tool)
     s = stats(m, tool, sets)
     if metric in ("clean", "docs") and s:  # whole documents: without any leak, and in total
@@ -297,7 +370,7 @@ def _ref(m: dict, cycles: dict, match: re.Match, lang: str) -> str:
         return pct(rate, lang)
     if kind == "%":  # a bare number for HTML attributes: "53.3"
         return f"{100 * rate:.1f}"
-    return cell(rate, c, metric, lang, bool(plus))
+    return cell_of(s, metric, lang, bool(plus))
 
 
 def headline_table(m: dict, lang: str) -> str:
@@ -378,13 +451,16 @@ def threshold_table(m: dict, cycles: dict, lang_data: str, lang: str) -> str:
                     cells.append(WORDS[lang]["no_restore"])
                 else:
                     r = restore(cycles.get("holdout4", {}), tool, lang_data)
-                    cells.append(cell(r[0], r[1], "restore", lang) if r else WORDS[lang]["na"])
+                    cells.append(restore_cell(r, lang) if r else WORDS[lang]["na"])
                 continue
             s = stats(m, tool, sets)
             if not s or s[metric][0] is None:
                 cells.append(WORDS[lang]["na"])
             elif metric == "prec":
                 cells.append(f"{cell_of(s, 'prec', lang, False)}, {WORDS[lang]['no_threshold']}")
+            elif tool == ENGINE and set(sets) & ENGINE_HOME:
+                # home datasets of the engine's components: shown for reference, no verdict
+                cells.append(f"{cell_of(s, metric, lang, False)}, {WORDS[lang]['reference']}")
             else:
                 cells.append(cell_of(s, metric, lang))
         rows.append(f"| {labels[metric]} | " + " | ".join(cells) + " |")
@@ -404,9 +480,12 @@ def engine_values(m: dict, cycles: dict) -> dict:
         rows = {k.upper(): (s[k][0], s[k][1], status_of(s, k)) for k in ("struct", "names", "leak")}
         r = restore(cycles.get("holdout4", {}), ENGINE, lg)
         if r:
-            rows["RESTORE"] = (r[0], r[1], status("restore", r[0], r[1]))
+            rows["RESTORE"] = (r[0], r[1], restore_status(r))
         vals[key] = rows
     return vals
+
+
+VERDICT_GROUPS = {"met": ("met",), "undetermined": ("undetermined", "borderline"), "not met": ("not met",)}
 
 
 def fill(text: str, m: dict, cycles: dict, lang: str) -> str:
@@ -422,17 +501,16 @@ def fill(text: str, m: dict, cycles: dict, lang: str) -> str:
             text = text.replace(
                 f"{{{key}_{metric}_CI}}", f"{pct(rate, lang)}{interval(c, lang)} {STATUS[lang].get(st, '')}".rstrip()
             )
-        ok = [names[k] for k, (_, _, st) in rows.items() if st == "met"]
-        und = [names[k] for k, (_, _, st) in rows.items() if st == "undetermined"]
+        groups = {g: [names[k] for k, (_, _, st) in rows.items() if st in sts] for g, sts in VERDICT_GROUPS.items()}
+        words = {"ru": ("пройдены", "не определены", "не пройдены"), "en": ("met", "undetermined", "not met")}
+        w = dict(zip(VERDICT_GROUPS, words["ru" if lang == "ru" else "en"], strict=True))
+        parts = "; ".join(f"{w[g]}: {', '.join(v)}" for g, v in groups.items() if v)
         if lang == "ru":
-            where = "по русскому" if key == "RU" else "по британскому английскому"
-            tail = f"; не определено: {', '.join(und)}" if und else ""
-            summary.append(f"{len(ok)} порога из {len(rows)} {where} ({', '.join(ok)}{tail})")
+            where = "русский" if key == "RU" else "британский английский"
         else:
-            where = "for Russian" if key == "RU" else "for UK English"
-            tail = f"; undetermined: {', '.join(und)}" if und else ""
-            summary.append(f"{len(ok)} of {len(rows)} thresholds {where} ({', '.join(ok)}{tail})")
-    joined = (" и " if lang == "ru" else " and ").join(summary)
+            where = "Russian" if key == "RU" else "UK English"
+        summary.append(f"{where}: {parts}")
+    joined = "; ".join(summary)
     text = text.replace("{ANON_PASS_SUMMARY_EN}", joined).replace("{ANON_PASS_SUMMARY}", joined)
     text = text.replace("{DOWNLOAD_MAC}", DOWNLOAD_MAC)
     text = text.replace("{BEST_RU}", TOOL_NAME[lang][best_tool(m, "ru")])

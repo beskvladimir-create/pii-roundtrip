@@ -40,11 +40,14 @@ def per_doc(doc: dict, pred: list[dict], lang: str) -> tuple:
     return (*s, *n, acc["_any"]["pred_ok"], acc["_any"]["pred"], acc["_chars"]["pred_ok"], acc["_chars"]["pred"])
 
 
-def boot(rows: list[tuple], i: int, j: int, reps: int = 2000) -> list | None:
+SEEDS = range(6)  # a verdict that changes with the seed is reported as borderline
+
+
+def boot(rows: list[tuple], i: int, j: int, reps: int = 2000, seed: int = 0) -> list | None:
     tot = sum(r[j] for r in rows)
     if not tot:
         return None
-    rng = random.Random(0)
+    rng = random.Random(seed)
     vals = []
     for _ in range(reps):
         smp = [rows[rng.randrange(len(rows))] for _ in rows]
@@ -58,6 +61,16 @@ def boot(rows: list[tuple], i: int, j: int, reps: int = 2000) -> list | None:
         vals[int(0.025 * reps)],
         vals[int(0.975 * reps) - 1],
     ]
+
+
+def entry(rows: list[tuple]) -> dict:
+    """Seed 0 for the reported interval; the bounds for seeds 0 to 5 to tell a borderline verdict."""
+    out: dict = {}
+    for name, i, j in (("structured", 0, 1), ("names", 2, 3), ("precision_fragments", 4, 5), ("precision_chars", 6, 7)):
+        out[name] = boot(rows, i, j)
+        if out[name]:
+            out[name + "_seeds"] = [boot(rows, i, j, seed=sd)[3:] for sd in SEEDS]
+    return out
 
 
 def main() -> None:
@@ -81,13 +94,7 @@ def main() -> None:
                 print(f"skip {tool}/{ds}: missing predictions", file=sys.stderr)
                 continue
             rows = [per_doc(d, p, lang) for d, p in zip(docs, preds, strict=True)]
-            out.setdefault(tool, {})[ds] = {
-                "docs": len(docs),
-                "structured": boot(rows, 0, 1),
-                "names": boot(rows, 2, 3),
-                "precision_fragments": boot(rows, 4, 5),
-                "precision_chars": boot(rows, 6, 7),
-            }
+            out.setdefault(tool, {})[ds] = {"docs": len(docs), **entry(rows)}
             out[tool][ds]["_rows"] = rows
             out[tool][ds]["_ids"] = [d["id"] for d in docs]
             print(f"done {tool}/{ds}", file=sys.stderr)
@@ -105,14 +112,11 @@ def main() -> None:
                     )
             rows = [tuple(c) for c in clusters.values()]
             n_docs = len(sets["nemotron_uk"]["_ids"]) + len(sets["nemotron_uk_ids"]["_ids"])
-            sets["nemotron_uk+ids"] = {
-                "docs": n_docs,
-                "clusters": len(rows),
-                "structured": boot(rows, 0, 1),
-                "names": boot(rows, 2, 3),
-                "precision_fragments": boot(rows, 4, 5),
-                "precision_chars": boot(rows, 6, 7),
-            }
+            sets["nemotron_uk+ids"] = {"docs": n_docs, "clusters": len(rows), **entry(rows)}
+        # the two Russian external sets pooled (no shared texts), as in the report tables
+        if "hivetrace_pii_bench" in sets and "redmadrobot_pii_benchmark" in sets:
+            rows = sets["hivetrace_pii_bench"]["_rows"] + sets["redmadrobot_pii_benchmark"]["_rows"]
+            sets["hivetrace_pii_bench+redmadrobot_pii_benchmark"] = {"docs": len(rows), **entry(rows)}
     for sets in out.values():
         for m in sets.values():
             m.pop("_rows", None)

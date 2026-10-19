@@ -8,9 +8,9 @@ Version 0.2, 17 October 2026. Changes since version 0.1 are described in section
 
 1. **Existing open-source tools do not meet the thresholds in either language.** The best tool for Russian, {BEST_RU}: structured identifiers {=best|ru:ext|struct+} on the external datasets. The best tool for UK English, {BEST_UK}: structured identifiers {=best|uk:ext|struct+}, leaks {=best|uk:ext|leak+}; it has no restore step of its own.
 2. **Every existing tool leaks on documents.** On held-out set 4 (1,000 documents per language) a leak remains in {#best|ru:h3|leak} of Russian documents with {BEST_RU} and in {#best|uk:h3|leak} of UK documents with {BEST_UK}. The other tools leak more often (section 6).
-3. **pii-roundtrip, a layer over pii-guard and GLiNER Guard, meets {ANON_PASS_SUMMARY_EN} on held-out set 4.** Leaks: {RU_LEAK_CI} for Russian and {UK_LEAK_CI} for UK English.
+3. **pii-roundtrip, a layer over pii-guard and GLiNER Guard, on held-out set 4: {ANON_PASS_SUMMARY_EN}.** Leaks: {RU_LEAK_CI} for Russian and {UK_LEAK_CI} for UK English.
 4. **The high recall does not come from masking more text.** The share of masked fragments that contain personal data on held-out set 4 is {=pii_roundtrip|ru:h3|prec} for Russian and {=pii_roundtrip|uk:h3|prec} for UK English (section 5).
-5. **Restoration fails on pii-guard's strict restorer, not on detection.** The LLM sometimes breaks the closing part of pii-guard XML tags, and pii-guard scrubs such tags. When the same answers are restored by the label's type and number (lenient parsing), pii-guard tags are restored in full with both LLMs and both prompts. Plain placeholders such as `[PERSON_1]` are also restored in full, with their own prompt and with the generic one (appendix of the Russian report, П3). The failures therefore come from the restoration rules, not from the tag format or the prompt; the sample is 20 documents per language and two LLMs.
+5. **The LLMs altered pii-guard's attribute tags more often than plain placeholders, and pii-guard's strict restorer turned the alterations into losses.** On held-out set 4, altered labels appeared in {~pii_guard|ru:holdout4|answers_with_altered} of {~pii_guard|ru:holdout4|answers_with_labels} answers with pii-guard tags under its own prompt ({~pii_guard|ru:holdout4|docs_with_altered} documents) and in {~pii_guard@generic|ru:holdout4|answers_with_altered} of {~pii_guard@generic|ru:holdout4|answers_with_labels} under the generic prompt ({~pii_guard@generic|ru:holdout4|docs_with_altered} documents). Plain `[TYPE_n]` placeholders over the same detection: {~pii_guard+placeholders|ru:holdout4|answers_with_altered} of {~pii_guard+placeholders|ru:holdout4|answers_with_labels} and {~pii_guard+placeholders@generic|ru:holdout4|answers_with_altered} of {~pii_guard+placeholders@generic|ru:holdout4|answers_with_labels} answers. pii-guard's strict restorer does not recognise an altered tag and scrubs it, sometimes together with the next intact tag: under its own prompt {~pii_guard|ru:holdout4|occurrences_failed} placeholder occurrences failed, {~pii_guard|ru:holdout4|failed_intact} of them intact neighbours, in {~pii_guard|ru:holdout4|answers_with_failure} answers; under the generic prompt {~pii_guard@generic|ru:holdout4|occurrences_failed} occurrences, {~pii_guard@generic|ru:holdout4|failed_intact} of them neighbours, in {~pii_guard@generic|ru:holdout4|answers_with_failure} answers. Plain placeholders were restored without errors. Lenient parsing by the label's type and number was written after these failures had been found; it restores the same pii-guard answers in full. This shows that the losses arise in restoration, but does not change the fact that attribute tags were altered more often. Sample: 20 documents per language, two tasks, two LLMs (appendix of the Russian report, П3).
 
 ## 2. Thresholds
 
@@ -28,7 +28,7 @@ One rule for every tool and threshold:
 
 ## 3. Method
 
-- **Tools:** pii-guard, GLiNER Guard Omni, OpenAI privacy-filter, Presidio, Prompt Anonymizer, and a baseline of regular expressions with checksums. Each is configured for its best result according to its documentation; configurations are stored in `results/metrics.json`. LLM Guard is excluded: its repository is archived and it has no Russian.
+- **Tools:** pii-guard, GLiNER Guard Omni, OpenAI privacy-filter, Presidio, Prompt Anonymizer, and a baseline of regular expressions with checksums. Each is configured for its best result according to its documentation; configurations are stored in `results/metrics.json`. Presidio has no Russian recognisers, so recognisers for the passport, SNILS, INN and bank account were added by us; the SNILS and INN recognisers check the checksum, the passport and account recognisers do not. LLM Guard is excluded: its repository is archived and it has no Russian.
 - **External datasets:**
   - RU: hivetrace/pii-bench and redmadrobot pii_benchmark. Both were released by the authors of tools in the comparison, so a tool is not scored on its authors' dataset.
   - UK: Nemotron-PII. Texts with British features, and texts with injected NHS, NI and IBAN.
@@ -116,7 +116,7 @@ Why the existing tools leak:
 ## 7. Conclusion
 
 - **Existing tools.** The technical gap is confirmed for both languages (appendix of the Russian report, П5).
-- **pii-roundtrip.** On the independent held-out set 4 it meets {ANON_PASS_SUMMARY_EN}. Leaks of {RU_LEAK_CI} (RU) and {UK_LEAK_CI} (UK) compare with {=best|ru:h3|leak} for {BEST_RU} and {=best|uk:h3|leak} for {BEST_UK} on the same documents.
+- **pii-roundtrip.** Verdicts on the independent held-out set 4: {ANON_PASS_SUMMARY_EN}. Leaks of {RU_LEAK_CI} (RU) and {UK_LEAK_CI} (UK) compare with {=best|ru:h3|leak} for {BEST_RU} and {=best|uk:h3|leak} for {BEST_UK} on the same documents.
 
 ## 8. Changes in version 0.2
 

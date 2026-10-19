@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: "If you use pii-roundtrip or its benchmark, please cite it as below."
 title: "pii-roundtrip: reversible anonymisation of Russian and UK English documents for external LLMs, and an open benchmark of existing tools"
-version: "0.2.1"
+version: "0.2.2"
 date-released: "2026-10-19"
 doi: "10.5281/zenodo.23478192"
 license: Apache-2.0
