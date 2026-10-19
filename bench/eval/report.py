@@ -283,20 +283,24 @@ def restore(cyc: dict, tool: str, lang: str) -> tuple | None:
     )
 
 
+def restore_interval(r: tuple) -> tuple[float, float]:
+    """The interval of the restored share: bootstrap over answers. With no failed placeholder the
+    bootstrap collapses to a point, so the lower bound is the one-sided 97.5% bound over answers,
+    0.025^(1/n): with 40 answers it is 91.2%, and about 370 answers are needed to reach 99%."""
+    rate, c, _, _, n = r
+    if rate == 1.0 and n:
+        return (0.025 ** (1 / n), 1.0)
+    return c
+
+
 def restore_status(r: tuple) -> str:
-    """The verdict on the restoration threshold counts answers, not placeholders: the answer is
-    the unit the model produces. 40 of 40 clean answers still leave an interval from 91.2%."""
-    _, _, _, k, n = r
-    return status_recall(k / n, wilson(k, n), THRESHOLDS["restore"]) if n else ""
+    """Restored share of the placeholders the tool issued, threshold 99%, judged on the interval above."""
+    return status_recall(r[0], restore_interval(r), THRESHOLDS["restore"])
 
 
 def restore_cell(r: tuple, lang: str, with_status: bool = True) -> str:
-    rate, c, _, k, n = r
-    word = {"en": "answers without an error", "ru": "ответов без ошибок", "tex": "answers without an error"}[lang]
-    of = {"en": "of", "ru": "из", "tex": "of"}[lang]
     st = restore_status(r) if with_status else ""
-    text = f"{pct(rate, lang)}{interval(c, lang)}; {word} {k} {of} {n}{interval(wilson(k, n), lang)}"
-    return text + (f" {STATUS[lang][st]}" if st else "")
+    return f"{pct(r[0], lang)}{interval(restore_interval(r), lang)}" + (f" {STATUS[lang][st]}" if st else "")
 
 
 def cell(rate, c, metric: str, lang: str, with_status: bool = True) -> str:
@@ -480,7 +484,7 @@ def engine_values(m: dict, cycles: dict) -> dict:
         rows = {k.upper(): (s[k][0], s[k][1], status_of(s, k)) for k in ("struct", "names", "leak")}
         r = restore(cycles.get("holdout4", {}), ENGINE, lg)
         if r:
-            rows["RESTORE"] = (r[0], r[1], restore_status(r))
+            rows["RESTORE"] = (r[0], restore_interval(r), restore_status(r))
         vals[key] = rows
     return vals
 

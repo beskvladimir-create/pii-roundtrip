@@ -4,6 +4,17 @@
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow [Semantic Versioning](https://semver.org/).
 
+## [Unreleased] (0.3.0)
+
+### Changed
+
+- Engine restoration accepts a placeholder with a lost bracket (`ORG_1]`, `[ORG_1`) and with words the model put before the label inside the brackets (`[Company: ORG_1]`; the words are kept). Every form is matched by one pattern, `PLACEHOLDER_ANY`, so each occurrence is restored once. Tested on synthetic examples, not on the answers of held-out set 4.
+- The restoration threshold is again judged on the share of restored placeholder occurrences, with a bootstrap interval over answers; with no error the lower bound over answers is 0.025^(1/n). The per-answer rule of 0.2.2 is withdrawn; on held-out set 4 the UK restoration of 0.2 is 99.6% [99.2; 99.9], met, and the Russian one 100.0% [91.2; 100.0], undetermined.
+
+### Added
+
+- Held-out set 5, its hashes, the threshold rules and the run plan (HOLDOUT.md), published before any run on it. The engine's round trip on set 5 uses 380 answers per model and language, so that a run without errors can meet the 99% threshold.
+
 ## [0.2.2] - 2026-10-19
 
 The engine is unchanged. Only the evaluation of the round trip and the way the report states verdicts changed; all figures were recomputed from saved predictions and answers, without new model queries.

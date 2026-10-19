@@ -72,7 +72,12 @@ def ask(model: str, system: str, user: str) -> str:
         return json.loads(r.read())["message"]["content"]
 
 
-DATA = {"synthetic": "data/synthetic", "holdout3": "data/holdout3", "holdout4": "data/holdout4"}
+DATA = {
+    "synthetic": "data/synthetic",
+    "holdout3": "data/holdout3",
+    "holdout4": "data/holdout4",
+    "holdout5": "data/holdout5",
+}
 
 
 def pick_docs(lang: str, per_type: int, data: str = "synthetic") -> list[dict]:

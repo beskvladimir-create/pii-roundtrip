@@ -58,3 +58,31 @@ uv run python -m bench.generator.generate --seed 20261018 --per-type 200 --hard 
 |---|---|
 | data/holdout4/ru.jsonl | `fc04a1453c17523d689f8d909e0299aeb9e0d3f7c73c9502358429f06c55ace5` |
 | data/holdout4/uk.jsonl | `ce915b6d8a624cab8f0273dc6a5f6b28ded56c2181fdd1c77de30f738a46056b` |
+
+## Set 5 (independent check of version 0.3)
+
+Generated on 20.10.2026 after the engine changes of 0.3 (tolerance of a lost bracket around a placeholder and of words before the label inside the brackets; tested on synthetic examples, not on the answers of set 4). Same size and parameters as sets 3 and 4, a new seed. This section, the set files and the code it checks were published in the open repository before any tool was run on set 5.
+
+```bash
+uv run python -m bench.generator.generate --seed 20261020 --per-type 200 --hard 0.3 --now 2026-10-19 --out data/holdout5
+```
+
+| File | SHA-256 |
+|---|---|
+| data/holdout5/ru.jsonl | `41377122673a94428d27197890ec4e52426ba435585625fdc3e43b5d7de5068c` |
+| data/holdout5/uk.jsonl | `9aea6e7a253c83442df8f3506882df48294006b0610f948ec38689eeee99fac2` |
+
+### Rules fixed before the run
+
+- Thresholds as before: structured identifiers at least 99%, names, addresses and organisations at least 95%, documents with a leak at most 2%, restoration at least 99% (worse of the two LLMs).
+- Intervals of recall and masking precision: document-level cluster bootstrap (`bench/eval/cluster_ci.py`, 2,000 resamples, seed 0); a verdict that changes across seeds 0 to 5 is reported as undetermined, borderline. Share of documents with a leak: Wilson interval.
+- Restoration: the share of placeholder occurrences issued by the tool that are restored correctly (each occurrence is scored once, `bench/eval/cycle.py`); interval by bootstrap over answers (2,000 resamples, seed 0). With no error, the lower bound over answers is 0.025^(1/n), n being the number of answers with placeholders. The threshold is met when the lower bound is at least 99%.
+- A verdict is "met" when the whole 95% interval is on the right side of the threshold, "not met" when it is wholly on the wrong side, and "undetermined" otherwise.
+
+### Run plan (each step once, from committed code)
+
+1. Detection by every tool: `uv run python -m bench.eval.holdout --set 5 --tools regex_baseline,presidio,pii_guard,gliner_guard,privacy_filter,prompt_anonymizer,pii_roundtrip`.
+2. Round trip of the engine: `uv run python -m bench.eval.cycle --data holdout5 --tools pii_roundtrip --per-type 38`: 38 documents of each of the 5 types, 2 tasks each, i.e. 380 answers per model and language; with no error the lower bound is 0.025^(1/380) = 99.03%.
+3. Round trip of the other configurations in the previous volume, 40 answers per model and language: `uv run python -m bench.eval.cycle --data holdout5 --per-type 4 --tools pii_guard,pii_guard@generic,pii_guard+placeholders,pii_guard+placeholders@generic,prompt_anonymizer,gliner_guard+placeholders,gliner_guard+placeholders@generic`.
+4. LLMs: qwen3.5:9b and gemma4:12b in Ollama, temperature 0, seed 0; versions in `results/ollama_versions.txt`.
+5. A rerun is allowed only with a stated reason recorded in `results/holdout_runs.jsonl`.

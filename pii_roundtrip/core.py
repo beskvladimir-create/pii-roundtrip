@@ -35,6 +35,27 @@ log = logging.getLogger("pii_roundtrip")
 BRACKETED = re.compile(r"\[\s*([A-Za-z]+(?:_[A-Za-z]+)*)[\s_-]*(\d+)\s*\]")
 BARE = re.compile(r"(?<![\w\[])([A-Z]+(?:_[A-Z]+)*)_(\d+)(?![\w\]])")
 LABEL_LIKE = re.compile(r"\[?\b[A-Za-z]+(?:_[A-Za-z]+)*_\d+\b\]?")
+# Every form in which a model may return a placeholder, in one pattern so that each occurrence is
+# matched once: in brackets, with words the model put before the label inside the brackets
+# ("[Company: ORG_1]", kept in the answer), with a lost closing or opening bracket ("[ORG_1",
+# "ORG_1]"), and bare ("ORG_1"). The forms without both brackets are taken in capitals only.
+PLACEHOLDER_ANY = re.compile(
+    r"\[\s*(?P<pre>(?:(?![A-Za-z]+_\d)[^\[\]\n]){0,40}?[\s:]\s*)?(?P<t1>[A-Za-z]+(?:_[A-Za-z]+)*)[\s_-]*(?P<n1>\d+)\s*\]"
+    r"|\[\s*(?P<t2>[A-Z]+(?:_[A-Z]+)*)_(?P<n2>\d+)(?![\w\]])"
+    r"|(?<![\w\[])(?P<t3>[A-Z]+(?:_[A-Z]+)*)_(?P<n3>\d+)\s*\]"
+    r"|(?<![\w\[])(?P<t4>[A-Z]+(?:_[A-Z]+)*)_(?P<n4>\d+)(?![\w\]])"
+)
+
+
+def placeholder_parts(m: re.Match) -> tuple[str, str, str, bool]:
+    """(words kept before the label, type, number, whether the brackets are incomplete) of a
+    PLACEHOLDER_ANY match."""
+    for k in ("1", "2", "3", "4"):
+        if m.group("t" + k):
+            pre = (m.group("pre") or "") if k == "1" else ""
+            return pre, m.group("t" + k), m.group("n" + k), k != "1"
+    raise ValueError(m.group(0))
+
 
 _OPF = re.compile(r"^" + lexicon.LEGAL_FORM_RU_RE + r"\s*", re.I)
 _ORG_TAIL = re.compile(r"[\s,]*(?:ltd|limited|llp|plc|inc|group)\.?$", re.I)
@@ -205,19 +226,23 @@ class Engine:
                     return canon[f"{'_'.join(parts[i:])}_{n}"]
             return None
 
-        def resolve(m: re.Match, bare: bool) -> str | None:
-            t, n = m.group(1), m.group(2)
-            if bare and f"{t}_{n}" in session.reserved:
-                return None  # the word occurred in the source text: leave it alone
-            return lookup(t, n)
+        def resolve(m: re.Match) -> tuple[str, str | None]:
+            pre, t, n, open_form = placeholder_parts(m)
+            if open_form and f"{t}_{n}" in session.reserved:
+                return pre, None  # the word occurred in the source text: leave it alone
+            lab = lookup(t, n)
+            if lab is None and pre:  # the words before were part of the label after all
+                lab = lookup((pre.strip(" :") + "_" + t).replace(" ", "_"), n)
+            return pre, lab
 
         if session.lang == langs.RU:
             return self._restore_ru(text, session, resolve)
 
-        def sub(bare: bool):
-            return lambda m: session.mapping[lab] if (lab := resolve(m, bare)) else m.group(0)
+        def sub(m: re.Match) -> str:
+            pre, lab = resolve(m)
+            return pre + session.mapping[lab] if lab else m.group(0)
 
-        return BARE.sub(sub(True), BRACKETED.sub(sub(False), text))
+        return PLACEHOLDER_ANY.sub(sub, text)
 
     def _get_inflector(self) -> PiiGuardInflector | Literal[False]:
         if self._inflector is None:
@@ -239,24 +264,21 @@ class Engine:
         tagmap: dict[str, str] = {}
         ids: dict[str, int] = {}
 
-        def sub(bare: bool):
-            def f(m: re.Match) -> str:
-                lab = resolve(m, bare)
-                if not lab:
-                    return m.group(0)
-                if lab.startswith("[PERSON_"):
-                    i = ids.setdefault(lab, len(ids) + 1)
-                    tag = PiiGuardInflector.tag(session.genders.get(lab, "unknown"), i)
-                    tagmap[tag] = session.mapping[lab]
-                    return tag
-                return session.mapping[lab]
-
-            return f
+        def sub(m: re.Match) -> str:
+            pre, lab = resolve(m)
+            if not lab:
+                return m.group(0)
+            if lab.startswith("[PERSON_"):
+                i = ids.setdefault(lab, len(ids) + 1)
+                tag = PiiGuardInflector.tag(session.genders.get(lab, "unknown"), i)
+                tagmap[tag] = session.mapping[lab]
+                return pre + tag
+            return pre + session.mapping[lab]
 
         # literal pii-guard tags in the answer are escaped so that they are not scrubbed
         guard = "⁣"
         staged = text.replace("<PII", "<" + guard + "PII")
-        staged = BARE.sub(sub(True), BRACKETED.sub(sub(False), staged))
+        staged = PLACEHOLDER_ANY.sub(sub, staged)
         if tagmap:
             inflector = self._get_inflector()
             restored = None

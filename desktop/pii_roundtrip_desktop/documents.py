@@ -652,19 +652,16 @@ def replacement_spans(
     its context) ends where the next piece of text follows and the walk can go on from there.
     The walk is linear, with a short look-ahead only after inflected names. None if the texts
     do not line up."""
-    from pii_roundtrip.core import BARE, BRACKETED
+    from pii_roundtrip.core import PLACEHOLDER_ANY, placeholder_parts
 
     known = known or {}
     canon = {k.strip("[]").upper(): v for k, v in known.items()}
-    # every form the engine restores: [PERSON_1], [Person_1], [PERSON 1], PERSON_1
-    marks, last = [], -1
-    for a, b, key in sorted(
-        [(m.start(), m.end(), f"{m.group(1).upper()}_{m.group(2)}") for m in BRACKETED.finditer(before)]
-        + [(m.start(), m.end(), f"{m.group(1)}_{m.group(2)}") for m in BARE.finditer(before)]
-    ):
-        if a >= last:
-            marks.append((a, b, key))
-            last = b
+    # every form the engine restores: [PERSON_1], [Person_1], [PERSON 1], [Company: ORG_1],
+    # a lost bracket ([ORG_1, ORG_1]) and PERSON_1
+    marks = []
+    for m in PLACEHOLDER_ANY.finditer(before):
+        _, t, n, _ = placeholder_parts(m)
+        marks.append((m.start(), m.end(), f"{t.upper()}_{n}"))
     if not marks:
         return [] if before == after else None
     literals, prev = [], 0

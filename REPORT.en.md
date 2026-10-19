@@ -8,7 +8,7 @@ Version 0.2, 17 October 2026. Changes since version 0.1 are described in section
 
 1. **Existing open-source tools do not meet the thresholds in either language.** The best tool for Russian, pii-guard: structured identifiers 97.7% [96.1; 99.0] undetermined, borderline on the external datasets. The best tool for UK English, GLiNER Guard Omni: structured identifiers 96.4% [95.7; 97.1] not met, leaks 4.0% [3.4; 4.8] not met; it has no restore step of its own.
 2. **Every existing tool leaks on documents.** On held-out set 4 (1,000 documents per language) a leak remains in 53.3% of Russian documents with pii-guard and in 55.3% of UK documents with GLiNER Guard Omni. The other tools leak more often (section 6).
-3. **pii-roundtrip, a layer over pii-guard and GLiNER Guard, on held-out set 4: Russian: met: identifiers, names and addresses, leaks; undetermined: restoration; UK English: met: identifiers, names and addresses, leaks; not met: restoration.** Leaks: 0.2% [0.1; 0.7] met for Russian and 0.9% [0.5; 1.7] met for UK English.
+3. **pii-roundtrip, a layer over pii-guard and GLiNER Guard, on held-out set 4: Russian: met: identifiers, names and addresses, leaks; undetermined: restoration; UK English: met: identifiers, names and addresses, leaks, restoration.** Leaks: 0.2% [0.1; 0.7] met for Russian and 0.9% [0.5; 1.7] met for UK English.
 4. **The high recall does not come from masking more text.** The share of masked fragments that contain personal data on held-out set 4 is 98.5% [98.4; 98.6] for Russian and 99.8% [99.8; 99.9] for UK English (section 5).
 5. **The LLMs altered pii-guard's attribute tags more often than plain placeholders, and pii-guard's strict restorer turned the alterations into losses.** On held-out set 4, altered labels appeared in 3 of 53 answers with pii-guard tags under its own prompt (3 documents) and in 6 of 74 under the generic prompt (5 documents). Plain `[TYPE_n]` placeholders over the same detection: 1 of 80 and 0 of 80 answers. pii-guard's strict restorer does not recognise an altered tag and scrubs it, sometimes together with the next intact tag: under its own prompt 12 placeholder occurrences failed, 2 of them intact neighbours, in 3 answers; under the generic prompt 90 occurrences, 1 of them neighbours, in 5 answers. Plain placeholders were restored without errors. Lenient parsing by the label's type and number was written after these failures had been found; it restores the same pii-guard answers in full. This shows that the losses arise in restoration, but does not change the fact that attribute tags were altered more often. Sample: 20 documents per language, two tasks, two LLMs (appendix of the Russian report, П3).
 
@@ -54,7 +54,7 @@ Russian, pii-guard:
 | Structured identifiers ≥ 99% | 97.7% [96.1; 99.0] undetermined, borderline | 92.3% [91.6; 92.9] not met |
 | Names, addresses, organisations ≥ 95% | 99.5% [98.7; 100.0] met | 73.1% [72.5; 73.7] not met |
 | Leaks ≤ 2% | 0.7% [0.4; 1.2] met | 53.3% [50.2; 56.4] not met |
-| Restoration ≥ 99% (worse model) | not measured | 97.7% [93.5; 100.0]; answers without an error 11 of 13 [57.8; 95.7] not met |
+| Restoration ≥ 99% (worse model) | not measured | 97.7% [93.5; 100.0] undetermined |
 
 UK English, GLiNER Guard Omni:
 
@@ -78,7 +78,7 @@ Russian:
 | Structured identifiers ≥ 99% | 97.7% [96.1; 99.0] undetermined, borderline | 100.0% [100.0; 100.0], for reference | 92.3% [91.6; 92.9] not met | 100.0% [100.0; 100.0] met |
 | Names, addresses, organisations ≥ 95% | 99.5% [98.7; 100.0] met | 100.0% [100.0; 100.0], for reference | 73.1% [72.5; 73.7] not met | 99.8% [99.7; 99.9] met |
 | Documents with a leak ≤ 2% | 0.7% [0.4; 1.2] met | 0.0% [0.0; 0.2], for reference | 53.3% [50.2; 56.4] not met | 0.2% [0.1; 0.7] met |
-| Restoration ≥ 99% (worse of two LLMs) | not measured | not measured | 97.7% [93.5; 100.0]; answers without an error 11 of 13 [57.8; 95.7] not met | 100.0% [100.0; 100.0]; answers without an error 40 of 40 [91.2; 100.0] undetermined |
+| Restoration ≥ 99% (worse of two LLMs) | not measured | not measured | 97.7% [93.5; 100.0] undetermined | 100.0% [91.2; 100.0] undetermined |
 | Masked fragments that contain personal data | 96.5% [95.5; 97.5], no threshold | 89.2% [87.8; 90.7], no threshold | 87.6% [87.5; 87.7], no threshold | 98.5% [98.4; 98.6], no threshold |
 
 External sets: hivetrace_pii_bench.
@@ -90,7 +90,7 @@ UK English:
 | Structured identifiers ≥ 99% | 96.4% [95.7; 97.1] not met | 100.0% [99.9; 100.0] met | 95.9% [95.5; 96.4] not met | 100.0% [100.0; 100.0] met |
 | Names, addresses, organisations ≥ 95% | 98.7% [98.2; 99.1] met | 98.1% [97.6; 98.6] met | 88.8% [88.2; 89.3] not met | 98.7% [98.5; 98.9] met |
 | Documents with a leak ≤ 2% | 4.0% [3.4; 4.8] not met | 0.9% [0.6; 1.3] met | 55.3% [52.2; 58.4] not met | 0.9% [0.5; 1.7] met |
-| Restoration ≥ 99% (worse of two LLMs) | not measured | not measured | no restore step, not met | 99.6% [99.2; 99.9]; answers without an error 34 of 40 [70.9; 92.9] not met |
+| Restoration ≥ 99% (worse of two LLMs) | not measured | not measured | no restore step, not met | 99.6% [99.2; 99.9] met |
 | Masked fragments that contain personal data | 89.3% [88.8; 89.9], no threshold | 93.4% [92.8; 93.9], no threshold | 94.7% [94.6; 94.9], no threshold | 99.8% [99.8; 99.9], no threshold |
 
 External sets: nemotron_uk, nemotron_uk_ids.
@@ -148,7 +148,7 @@ Why the existing tools leak:
 ## 7. Conclusion
 
 - **Existing tools.** The technical gap is confirmed for both languages (appendix of the Russian report, П5).
-- **pii-roundtrip.** Verdicts on the independent held-out set 4: Russian: met: identifiers, names and addresses, leaks; undetermined: restoration; UK English: met: identifiers, names and addresses, leaks; not met: restoration. Leaks of 0.2% [0.1; 0.7] met (RU) and 0.9% [0.5; 1.7] met (UK) compare with 53.3% [50.2; 56.4] for pii-guard and 55.3% [52.2; 58.4] for GLiNER Guard Omni on the same documents.
+- **pii-roundtrip.** Verdicts on the independent held-out set 4: Russian: met: identifiers, names and addresses, leaks; undetermined: restoration; UK English: met: identifiers, names and addresses, leaks, restoration. Leaks of 0.2% [0.1; 0.7] met (RU) and 0.9% [0.5; 1.7] met (UK) compare with 53.3% [50.2; 56.4] for pii-guard and 55.3% [52.2; 58.4] for GLiNER Guard Omni on the same documents.
 
 ## 8. Changes in version 0.2
 

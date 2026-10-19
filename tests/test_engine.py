@@ -394,3 +394,28 @@ def test_cli_errors_are_messages_not_tracebacks(tmp_path, monkeypatch):
     monkeypatch.setattr("getpass.getpass", lambda *_a, **_k: (_ for _ in ()).throw(EOFError()))
     with pytest.raises(SystemExit, match="No password"):
         cli.main(["anonymize", "-l", "ru", "-i", str(doc), "--vault", str(tmp_path / "v")])
+
+
+def test_restore_label_with_a_lost_bracket(eng):
+    # synthetic examples: a model drops one bracket of a placeholder
+    s = Session("en-GB", {"[ORG_1]": "Acme Ltd", "[PERSON_2]": "John Smith"})
+    assert eng.deanonymize("Signed for ORG_1] by [PERSON_2.", s) == "Signed for Acme Ltd by John Smith."
+    assert eng.deanonymize("[ORG_1 and PERSON_2] agreed", s) == "Acme Ltd and John Smith agreed"
+
+
+def test_restore_label_with_words_before_it_in_the_brackets(eng):
+    s = Session("en-GB", {"[ORG_1]": "Acme Ltd", "[PERSON_2]": "John Smith"})
+    assert eng.deanonymize("Party: [Company: ORG_1], [name PERSON_2]", s) == "Party: Company: Acme Ltd, name John Smith"
+    assert eng.deanonymize("[Org Name ORG_1]", s) == "Org Name Acme Ltd"
+
+
+def test_lenient_forms_leave_other_text_alone(eng):
+    s = Session("en-GB", {"[ORG_1]": "Acme Ltd"})
+    s.reserved.add("ORG_2")
+    text = "See [note 1], item ORG_2], [ORG_9 and ref_1]."
+    assert eng.deanonymize(text, s) == text
+
+
+def test_restore_ru_label_with_a_lost_bracket(eng):
+    s = Session("ru", {"[ORG_1]": "ООО «Восход»", "[INN_1]": "7707083893"})
+    assert eng.deanonymize("Договор с ORG_1], ИНН [INN_1.", s) == "Договор с ООО «Восход», ИНН 7707083893."

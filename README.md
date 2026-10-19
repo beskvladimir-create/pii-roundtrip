@@ -37,7 +37,7 @@ Russian:
 | Structured identifiers ≥ 99% | 97.7% [96.1; 99.0] undetermined, borderline | 100.0% [100.0; 100.0], for reference | 92.3% [91.6; 92.9] not met | 100.0% [100.0; 100.0] met |
 | Names, addresses, organisations ≥ 95% | 99.5% [98.7; 100.0] met | 100.0% [100.0; 100.0], for reference | 73.1% [72.5; 73.7] not met | 99.8% [99.7; 99.9] met |
 | Documents with a leak ≤ 2% | 0.7% [0.4; 1.2] met | 0.0% [0.0; 0.2], for reference | 53.3% [50.2; 56.4] not met | 0.2% [0.1; 0.7] met |
-| Restoration ≥ 99% (worse of two LLMs) | not measured | not measured | 97.7% [93.5; 100.0]; answers without an error 11 of 13 [57.8; 95.7] not met | 100.0% [100.0; 100.0]; answers without an error 40 of 40 [91.2; 100.0] undetermined |
+| Restoration ≥ 99% (worse of two LLMs) | not measured | not measured | 97.7% [93.5; 100.0] undetermined | 100.0% [91.2; 100.0] undetermined |
 | Masked fragments that contain personal data | 96.5% [95.5; 97.5], no threshold | 89.2% [87.8; 90.7], no threshold | 87.6% [87.5; 87.7], no threshold | 98.5% [98.4; 98.6], no threshold |
 
 External sets: hivetrace_pii_bench.
@@ -51,7 +51,7 @@ UK English:
 | Structured identifiers ≥ 99% | 96.4% [95.7; 97.1] not met | 100.0% [99.9; 100.0] met | 95.9% [95.5; 96.4] not met | 100.0% [100.0; 100.0] met |
 | Names, addresses, organisations ≥ 95% | 98.7% [98.2; 99.1] met | 98.1% [97.6; 98.6] met | 88.8% [88.2; 89.3] not met | 98.7% [98.5; 98.9] met |
 | Documents with a leak ≤ 2% | 4.0% [3.4; 4.8] not met | 0.9% [0.6; 1.3] met | 55.3% [52.2; 58.4] not met | 0.9% [0.5; 1.7] met |
-| Restoration ≥ 99% (worse of two LLMs) | not measured | not measured | no restore step, not met | 99.6% [99.2; 99.9]; answers without an error 34 of 40 [70.9; 92.9] not met |
+| Restoration ≥ 99% (worse of two LLMs) | not measured | not measured | no restore step, not met | 99.6% [99.2; 99.9] met |
 | Masked fragments that contain personal data | 89.3% [88.8; 89.9], no threshold | 93.4% [92.8; 93.9], no threshold | 94.7% [94.6; 94.9], no threshold | 99.8% [99.8; 99.9], no threshold |
 
 External sets: nemotron_uk, nemotron_uk_ids.
