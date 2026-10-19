@@ -1,8 +1,8 @@
 cff-version: 1.2.0
 message: "If you use pii-roundtrip or its benchmark, please cite it as below."
 title: "pii-roundtrip: reversible anonymisation of Russian and UK English documents for external LLMs, and an open benchmark of existing tools"
-version: "0.2.0"
-date-released: "2026-10-18"
+version: "0.2.1"
+date-released: "2026-10-19"
 license: Apache-2.0
 repository-code: "https://github.com/beskvladimir-create/pii-roundtrip"
 url: "https://pii-roundtrip.besk.tech/"

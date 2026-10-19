@@ -8,7 +8,7 @@ pii-roundtrip replaces personal data in a document with consistent placeholders 
 
 ## Why
 
-Existing open-source tools work well on short messages but leak personal data in real documents such as contracts, letters, HR files and discharge summaries. The table shows the share of documents in which at least one original value remained after anonymisation. It was measured on held-out set 4: 1,000 synthetic documents per language with numbers written in digits, with dots, with typos and in words, generated before the final changes of version 0.2 and run once ([HOLDOUT.en.md](HOLDOUT.en.md)). No tool, including pii-roundtrip, was developed on it.
+Existing open-source tools work well on short messages but leak personal data in synthetic documents such as contracts, letters, HR files and discharge summaries. The table shows the share of documents in which at least one original value remained after anonymisation. It was measured on held-out set 4: 1,000 synthetic documents per language with numbers written in digits, with dots, with typos and in words, generated before the final changes of version 0.2 and run once ([HOLDOUT.en.md](HOLDOUT.en.md)). No tool, including pii-roundtrip, was developed on it.
 
 {TABLE_HEADLINE}
 
@@ -31,6 +31,10 @@ UK English:
 {TABLE_THRESHOLDS_UK}
 
 A threshold is met when the whole 95% confidence interval is on the right side of it, not met when the whole interval is on the wrong side, and undetermined when the interval spans it. Restoration comes from a round trip with qwen3.5:9b and gemma4:12b at temperature 0 on documents of held-out set 4. The last row has no threshold: it shows how much of the masked text is personal data, so that a tool cannot reach high recall by masking everything.
+
+## Desktop app for macOS
+
+For people who do not use the command line: drop in a Word file, a PDF or text, send the cleaned version to any AI tool, drop or paste its answer back and get it with the real values. Formatting is kept where the file allows it, the models are inside the installer, and the app works offline. Download the installer from the [Releases page](https://github.com/beskvladimir-create/pii-roundtrip/releases); details in [desktop/README.md](desktop/README.md).
 
 ## Quick start
 

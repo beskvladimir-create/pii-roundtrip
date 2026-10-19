@@ -8,14 +8,15 @@
    "altered": 6,
    "altered_recoverable": 3,
    "invented": 6,
-   "restore_rate": 0.9716713881019831,
+   "restore_rate": 0.9773371104815864,
    "restore_ci": [
-    0.9133574007220217,
+    0.9345454545454546,
     1.0
    ],
    "restore_ci_method": "bootstrap по ответам, 2000 повторов",
    "residual_labels": 3,
    "scrubbed": 9,
+   "occurrences_failed": 8,
    "values_lost": 7,
    "used_values": 326,
    "docs_with_input_leak": 9,
@@ -24,8 +25,8 @@
      "id": "ru-certificate-034",
      "task": "reply",
      "lost_examples": [
-      "Миронов",
-      "27.11.2023"
+      "27.11.2023",
+      "Миронов"
      ],
      "residual_examples": [
       "<PII type=\"PERSON\" gender=\"male\" id=\"4\" »"
@@ -52,9 +53,9 @@
      "id": "ru-letter-024",
      "task": "summary",
      "lost_examples": [
-      "Зайцев Нестор Иосипович",
-      "Лобанов Комаров",
-      "Комарова Милица Даниловна"
+      "Комарова Милица Даниловна",
+      "Комарова",
+      "Зайцев"
      ],
      "residual_examples": [
       "<PII type=\"PERSON\" gender=\"female\" id=\"8\" »",
@@ -88,14 +89,15 @@
    "altered": 4,
    "altered_recoverable": 0,
    "invented": 0,
-   "restore_rate": 0.9946380697050938,
+   "restore_rate": 0.9973190348525469,
    "restore_ci": [
-    0.9828080229226361,
+    0.9914040114613181,
     1.0
    ],
    "restore_ci_method": "bootstrap по ответам, 2000 повторов",
    "residual_labels": 4,
    "scrubbed": 0,
+   "occurrences_failed": 4,
    "values_lost": 4,
    "used_values": 1433,
    "docs_with_input_leak": 9,
@@ -104,9 +106,9 @@
      "id": "ru-hr-097",
      "task": "summary",
      "lost_examples": [
+      "042784436",
       "50276393782",
-      "041716898",
-      "042784436"
+      "041716898"
      ],
      "residual_examples": [
       "<PII type=\"SNILS\" id=\"1\">",
@@ -117,6 +119,347 @@
       "<PII type=\"SNILS\" id=\"1\">",
       "<PII type=\"BIK\" id=\"1\">",
       "<PII type=\"BIK\" id=\"2\">"
+     ],
+     "invented_examples": []
+    }
+   ]
+  }
+ },
+ "pii_guard~tolerant": {
+  "ru/qwen3.5:9b": {
+   "answers": 40,
+   "answers_with_labels": 13,
+   "labels_in_answer": 353,
+   "exact_share": 0.9830028328611898,
+   "altered": 6,
+   "altered_recoverable": 6,
+   "invented": 6,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "restore_ci_method": "bootstrap по ответам, 2000 повторов",
+   "residual_labels": 0,
+   "scrubbed": 0,
+   "occurrences_failed": 0,
+   "values_lost": 0,
+   "used_values": 326,
+   "docs_with_input_leak": 9,
+   "examples": [
+    {
+     "id": "ru-certificate-034",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "<PII type=\"PERSON\" gender=\"male\" id=\"4\" »",
+      "<PII type=\"PERSON\" gender=\"male\" id=\"4\" »"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "ru-hr-115",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "<PII type=\"DATE_TIME\" id=\"10\" />",
+      "<PII type=\"PASSPORT\" id=\"5\" />",
+      "<PII type=\"DATE_TIME\" id=\"11\" />"
+     ]
+    },
+    {
+     "id": "ru-letter-024",
+     "task": "summary",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "<PII type=\"PERSON\" gender=\"male\" id=\"2\" »",
+      "<PII type=\"PERSON\" gender=\"male\" id=\"7\" »",
+      "<PII type=\"PERSON\" gender=\"female\" id=\"8\" »"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "ru-letter-024",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "<PII type=\"PHONE_NUMBER\" id=\"10\" />",
+      "<PII type=\"EMAIL_ADDRESS\" id=\"5\" />"
+     ]
+    }
+   ]
+  },
+  "ru/gemma4:12b": {
+   "answers": 40,
+   "answers_with_labels": 40,
+   "labels_in_answer": 1492,
+   "exact_share": 0.9973190348525469,
+   "altered": 4,
+   "altered_recoverable": 4,
+   "invented": 0,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "restore_ci_method": "bootstrap по ответам, 2000 повторов",
+   "residual_labels": 0,
+   "scrubbed": 0,
+   "occurrences_failed": 0,
+   "values_lost": 0,
+   "used_values": 1433,
+   "docs_with_input_leak": 9,
+   "examples": [
+    {
+     "id": "ru-hr-097",
+     "task": "summary",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "<PII type=\"SNILS\" id=\"1\">",
+      "<PII type=\"BIK\" id=\"1\">",
+      "<PII type=\"BIK\" id=\"2\">"
+     ],
+     "invented_examples": []
+    }
+   ]
+  }
+ },
+ "pii_guard@generic": {
+  "ru/qwen3.5:9b": {
+   "answers": 40,
+   "answers_with_labels": 33,
+   "labels_in_answer": 1407,
+   "exact_share": 0.9971570717839374,
+   "altered": 4,
+   "altered_recoverable": 4,
+   "invented": 3,
+   "restore_rate": 0.997867803837953,
+   "restore_ci": [
+    0.9943582510578279,
+    1.0
+   ],
+   "restore_ci_method": "bootstrap по ответам, 2000 повторов",
+   "residual_labels": 0,
+   "scrubbed": 5,
+   "occurrences_failed": 3,
+   "values_lost": 2,
+   "used_values": 1310,
+   "docs_with_input_leak": 9,
+   "examples": [
+    {
+     "id": "ru-letter-053",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "<PII type=\"PERSON\" gender=\"male\" id=\"9\" />",
+      "<PII type=\"PERSON\" gender=\"female\" id=\"10\" />"
+     ],
+     "invented_examples": [
+      "<PII type=\"DATE_TIME\" id=\"8\" />"
+     ]
+    },
+    {
+     "id": "ru-letter-024",
+     "task": "summary",
+     "lost_examples": [
+      "Лобанов Комаров",
+      "Архипова"
+     ],
+     "residual_examples": [],
+     "altered_examples": [
+      "<PII type=\"PERSON\" gender=\"male\" id=\"2\" »"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "ru-letter-024",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "<PII type=\"PERSON\" gender=\"male\" id=\"1\" »"
+     ],
+     "invented_examples": [
+      "<PII type=\"DATE_TIME\" id=\"10\" />",
+      "<PII type=\"PERSON\" gender=\"male\" id=\"12\" />"
+     ]
+    }
+   ]
+  },
+  "ru/gemma4:12b": {
+   "answers": 40,
+   "answers_with_labels": 40,
+   "labels_in_answer": 1804,
+   "exact_share": 0.975609756097561,
+   "altered": 44,
+   "altered_recoverable": 0,
+   "invented": 0,
+   "restore_rate": 0.975609756097561,
+   "restore_ci": [
+    0.9354666666666667,
+    1.0
+   ],
+   "restore_ci_method": "bootstrap по ответам, 2000 повторов",
+   "residual_labels": 44,
+   "scrubbed": 0,
+   "occurrences_failed": 44,
+   "values_lost": 36,
+   "used_values": 1700,
+   "docs_with_input_leak": 9,
+   "examples": [
+    {
+     "id": "ru-certificate-034",
+     "task": "reply",
+     "lost_examples": [
+      "23.01.2000",
+      "22.11.2019",
+      "4012 0069 2307 8989"
+     ],
+     "residual_examples": [
+      "<PII type=\"PERSON\" gender=\"male\" id=\"7\">",
+      "<PII type=\"PERSON\" gender=\"male\" id=\"8\">",
+      "<PII type=\"PERSON\" gender=\"male\" id=\"7\">"
+     ],
+     "altered_examples": [
+      "<PII type=\"PERSON\" gender=\"male\" id=\"7\">",
+      "<PII type=\"PERSON\" gender=\"male\" id=\"8\">",
+      "<PII type=\"PERSON\" gender=\"male\" id=\"7\">"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "ru-contract-194",
+     "task": "reply",
+     "lost_examples": [
+      "71 97 907460",
+      "Федотов",
+      "Федотова Василиса Феликсовна"
+     ],
+     "residual_examples": [
+      "<PII type=\"PERSON\" gender=\"female\" id=\"1\">",
+      "<PII type=\"PERSON\" gender=\"female\" id=\"2\">",
+      "<PII type=\"PERSON\" gender=\"male\" id=\"3\">"
+     ],
+     "altered_examples": [
+      "<PII type=\"PERSON\" gender=\"female\" id=\"1\">",
+      "<PII type=\"PERSON\" gender=\"female\" id=\"2\">",
+      "<PII type=\"PERSON\" gender=\"male\" id=\"3\">"
+     ],
+     "invented_examples": []
+    }
+   ]
+  }
+ },
+ "pii_guard@generic~tolerant": {
+  "ru/qwen3.5:9b": {
+   "answers": 40,
+   "answers_with_labels": 33,
+   "labels_in_answer": 1407,
+   "exact_share": 0.9971570717839374,
+   "altered": 4,
+   "altered_recoverable": 4,
+   "invented": 3,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "restore_ci_method": "bootstrap по ответам, 2000 повторов",
+   "residual_labels": 0,
+   "scrubbed": 0,
+   "occurrences_failed": 0,
+   "values_lost": 0,
+   "used_values": 1310,
+   "docs_with_input_leak": 9,
+   "examples": [
+    {
+     "id": "ru-letter-053",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "<PII type=\"PERSON\" gender=\"male\" id=\"9\" />",
+      "<PII type=\"PERSON\" gender=\"female\" id=\"10\" />"
+     ],
+     "invented_examples": [
+      "<PII type=\"DATE_TIME\" id=\"8\" />"
+     ]
+    },
+    {
+     "id": "ru-letter-024",
+     "task": "summary",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "<PII type=\"PERSON\" gender=\"male\" id=\"2\" »"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "ru-letter-024",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "<PII type=\"PERSON\" gender=\"male\" id=\"1\" »"
+     ],
+     "invented_examples": [
+      "<PII type=\"DATE_TIME\" id=\"10\" />",
+      "<PII type=\"PERSON\" gender=\"male\" id=\"12\" />"
+     ]
+    }
+   ]
+  },
+  "ru/gemma4:12b": {
+   "answers": 40,
+   "answers_with_labels": 40,
+   "labels_in_answer": 1804,
+   "exact_share": 0.975609756097561,
+   "altered": 44,
+   "altered_recoverable": 44,
+   "invented": 0,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "restore_ci_method": "bootstrap по ответам, 2000 повторов",
+   "residual_labels": 0,
+   "scrubbed": 0,
+   "occurrences_failed": 0,
+   "values_lost": 0,
+   "used_values": 1700,
+   "docs_with_input_leak": 9,
+   "examples": [
+    {
+     "id": "ru-certificate-034",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "<PII type=\"PERSON\" gender=\"male\" id=\"7\">",
+      "<PII type=\"PERSON\" gender=\"male\" id=\"8\">",
+      "<PII type=\"PERSON\" gender=\"male\" id=\"7\">"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "ru-contract-194",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "<PII type=\"PERSON\" gender=\"female\" id=\"1\">",
+      "<PII type=\"PERSON\" gender=\"female\" id=\"2\">",
+      "<PII type=\"PERSON\" gender=\"male\" id=\"3\">"
      ],
      "invented_examples": []
     }
@@ -140,6 +483,7 @@
    "restore_ci_method": "bootstrap по ответам, 2000 повторов",
    "residual_labels": 0,
    "scrubbed": 0,
+   "occurrences_failed": 0,
    "values_lost": 0,
    "used_values": 1480,
    "docs_with_input_leak": 9,
@@ -186,8 +530,97 @@
    "restore_ci_method": "bootstrap по ответам, 2000 повторов",
    "residual_labels": 0,
    "scrubbed": 0,
+   "occurrences_failed": 0,
    "values_lost": 0,
    "used_values": 2013,
+   "docs_with_input_leak": 9,
+   "examples": []
+  }
+ },
+ "pii_guard+placeholders@generic": {
+  "ru/qwen3.5:9b": {
+   "answers": 40,
+   "answers_with_labels": 40,
+   "labels_in_answer": 2011,
+   "exact_share": 1.0,
+   "altered": 0,
+   "altered_recoverable": 0,
+   "invented": 5,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "restore_ci_method": "bootstrap по ответам, 2000 повторов",
+   "residual_labels": 0,
+   "scrubbed": 0,
+   "occurrences_failed": 0,
+   "values_lost": 0,
+   "used_values": 1767,
+   "docs_with_input_leak": 9,
+   "examples": [
+    {
+     "id": "ru-certificate-034",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[NUMBER_1]",
+      "[DATE_8]"
+     ]
+    },
+    {
+     "id": "ru-certificate-195",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[DATE_10]"
+     ]
+    },
+    {
+     "id": "ru-certificate-016",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[NUMBER_1]"
+     ]
+    },
+    {
+     "id": "ru-letter-124",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[DATE_10]"
+     ]
+    }
+   ]
+  },
+  "ru/gemma4:12b": {
+   "answers": 40,
+   "answers_with_labels": 40,
+   "labels_in_answer": 2280,
+   "exact_share": 1.0,
+   "altered": 0,
+   "altered_recoverable": 0,
+   "invented": 0,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "restore_ci_method": "bootstrap по ответам, 2000 повторов",
+   "residual_labels": 0,
+   "scrubbed": 0,
+   "occurrences_failed": 0,
+   "values_lost": 0,
+   "used_values": 2101,
    "docs_with_input_leak": 9,
    "examples": []
   }
@@ -209,6 +642,7 @@
    "restore_ci_method": "bootstrap по ответам, 2000 повторов",
    "residual_labels": 0,
    "scrubbed": 0,
+   "occurrences_failed": 0,
    "values_lost": 0,
    "used_values": 1018,
    "docs_with_input_leak": 1,
@@ -370,6 +804,7 @@
    "restore_ci_method": "bootstrap по ответам, 2000 повторов",
    "residual_labels": 0,
    "scrubbed": 0,
+   "occurrences_failed": 0,
    "values_lost": 0,
    "used_values": 1329,
    "docs_with_input_leak": 1,
@@ -414,14 +849,15 @@
    "altered": 1,
    "altered_recoverable": 0,
    "invented": 2,
-   "restore_rate": 0.9983347210657785,
+   "restore_rate": 0.9991673605328892,
    "restore_ci": [
-    0.9949022939677146,
+    0.9974511469838573,
     1.0
    ],
    "restore_ci_method": "bootstrap по ответам, 2000 повторов",
    "residual_labels": 1,
    "scrubbed": 0,
+   "occurrences_failed": 1,
    "values_lost": 1,
    "used_values": 1066,
    "docs_with_input_leak": 0,
@@ -469,6 +905,7 @@
    "restore_ci_method": "bootstrap по ответам, 2000 повторов",
    "residual_labels": 6,
    "scrubbed": 0,
+   "occurrences_failed": 6,
    "values_lost": 0,
    "used_values": 1254,
    "docs_with_input_leak": 0,
@@ -550,6 +987,358 @@
      "residual_examples": [
       "ORG_1]"
      ],
+     "altered_examples": [
+      "ORG_1]"
+     ],
+     "invented_examples": []
+    }
+   ]
+  }
+ },
+ "prompt_anonymizer": {
+  "uk/qwen3.5:9b": {
+   "answers": 40,
+   "answers_with_labels": 39,
+   "labels_in_answer": 873,
+   "exact_share": 1.0,
+   "altered": 0,
+   "altered_recoverable": 0,
+   "invented": 1,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "restore_ci_method": "bootstrap по ответам, 2000 повторов",
+   "residual_labels": 0,
+   "scrubbed": 0,
+   "occurrences_failed": 0,
+   "values_lost": 0,
+   "used_values": 793,
+   "docs_with_input_leak": 20,
+   "examples": [
+    {
+     "id": "uk-hr-097",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "<Name_9>"
+     ]
+    }
+   ]
+  },
+  "uk/gemma4:12b": {
+   "answers": 40,
+   "answers_with_labels": 40,
+   "labels_in_answer": 1107,
+   "exact_share": 1.0,
+   "altered": 0,
+   "altered_recoverable": 0,
+   "invented": 1,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "restore_ci_method": "bootstrap по ответам, 2000 повторов",
+   "residual_labels": 0,
+   "scrubbed": 0,
+   "occurrences_failed": 0,
+   "values_lost": 0,
+   "used_values": 972,
+   "docs_with_input_leak": 20,
+   "examples": [
+    {
+     "id": "uk-medical-099",
+     "task": "summary",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "<CreditCard_8>"
+     ]
+    }
+   ]
+  }
+ },
+ "gliner_guard+placeholders": {
+  "uk/qwen3.5:9b": {
+   "answers": 40,
+   "answers_with_labels": 40,
+   "labels_in_answer": 1603,
+   "exact_share": 0.9993761696818465,
+   "altered": 1,
+   "altered_recoverable": 1,
+   "invented": 1,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "restore_ci_method": "bootstrap по ответам, 2000 повторов",
+   "residual_labels": 0,
+   "scrubbed": 0,
+   "occurrences_failed": 0,
+   "values_lost": 0,
+   "used_values": 1433,
+   "docs_with_input_leak": 10,
+   "examples": [
+    {
+     "id": "uk-contract-194",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[POSTCODE_1]"
+     ]
+    },
+    {
+     "id": "uk-hr-120",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "[DATE_1"
+     ],
+     "invented_examples": []
+    }
+   ]
+  },
+  "uk/gemma4:12b": {
+   "answers": 40,
+   "answers_with_labels": 40,
+   "labels_in_answer": 1863,
+   "exact_share": 0.9978529253891573,
+   "altered": 4,
+   "altered_recoverable": 4,
+   "invented": 4,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "restore_ci_method": "bootstrap по ответам, 2000 повторов",
+   "residual_labels": 0,
+   "scrubbed": 0,
+   "occurrences_failed": 0,
+   "values_lost": 0,
+   "used_values": 1641,
+   "docs_with_input_leak": 10,
+   "examples": [
+    {
+     "id": "uk-certificate-034",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "ORG_1]"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-145",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "ORG_1]"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-195",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "PHONE_4]"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-letter-053",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[DATE_2]"
+     ]
+    },
+    {
+     "id": "uk-letter-024",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[DATE_2]"
+     ]
+    },
+    {
+     "id": "uk-letter-124",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[DATE_2]"
+     ]
+    },
+    {
+     "id": "uk-letter-007",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[DATE_2]"
+     ]
+    },
+    {
+     "id": "uk-medical-099",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "ORG_1]"
+     ],
+     "invented_examples": []
+    }
+   ]
+  }
+ },
+ "gliner_guard+placeholders@generic": {
+  "uk/qwen3.5:9b": {
+   "answers": 40,
+   "answers_with_labels": 40,
+   "labels_in_answer": 1627,
+   "exact_share": 0.9993853718500307,
+   "altered": 1,
+   "altered_recoverable": 1,
+   "invented": 0,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "restore_ci_method": "bootstrap по ответам, 2000 повторов",
+   "residual_labels": 0,
+   "scrubbed": 0,
+   "occurrences_failed": 0,
+   "values_lost": 0,
+   "used_values": 1474,
+   "docs_with_input_leak": 10,
+   "examples": [
+    {
+     "id": "uk-contract-194",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "ORG_1]"
+     ],
+     "invented_examples": []
+    }
+   ]
+  },
+  "uk/gemma4:12b": {
+   "answers": 40,
+   "answers_with_labels": 40,
+   "labels_in_answer": 1923,
+   "exact_share": 0.9953198127925117,
+   "altered": 9,
+   "altered_recoverable": 5,
+   "invented": 2,
+   "restore_rate": 0.9979199167966719,
+   "restore_ci": [
+    0.9936,
+    1.0
+   ],
+   "restore_ci_method": "bootstrap по ответам, 2000 повторов",
+   "residual_labels": 4,
+   "scrubbed": 0,
+   "occurrences_failed": 4,
+   "values_lost": 0,
+   "used_values": 1690,
+   "docs_with_input_leak": 10,
+   "examples": [
+    {
+     "id": "uk-certificate-034",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "[ORG_1"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-145",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "ORG_1]"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-195",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "[ORG_1"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-letter-053",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[DATE_2]"
+     ]
+    },
+    {
+     "id": "uk-letter-124",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [
+      "[RECIPIENT_ADDRESS_1]",
+      "[RECIPIENT_ADDRESS_2]",
+      "[RECIPIENT_ADDRESS_3]"
+     ],
+     "altered_examples": [
+      "[RECIPIENT_ADDRESS_1]",
+      "[RECIPIENT_ADDRESS_2]",
+      "[RECIPIENT_ADDRESS_3]"
+     ],
+     "invented_examples": [
+      "[DATE_2]"
+     ]
+    },
+    {
+     "id": "uk-medical-110",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "ORG_1]"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-medical-195",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
      "altered_examples": [
       "ORG_1]"
      ],

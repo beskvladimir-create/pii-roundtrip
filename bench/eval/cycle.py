@@ -153,7 +153,28 @@ def evaluate_answer(family: str, mapping: dict, answer: str, restored: str, lang
     residual = [r for r in pat.findall(restored) if _identity(family, r, types) in issued_ids]
     used_keys = {key_ids[i] for i in issued_ids}
     lost = [k for k in used_keys if not _value_restored(mapping[k], restored, lang, "PERSON" in k.upper())]
+    # Each occurrence the tool issued is judged once. It fails if it is still in the text after
+    # restoration, if its value is not in the restored text, or if the tool's restorer scrubbed
+    # it ("****"; scrubs beyond the number of invented labels are the tool's own altered tags).
+    # The previous count added residual occurrences to lost unique values, so a label left in
+    # the text was counted twice.
+    lost_set = set(lost)
+    residual_left = defaultdict(int)
+    for r in residual:
+        residual_left[_identity(family, r, types)] += 1
+    scrubs_left = max(0, (restored.count("****") - answer.count("****")) - len(invented))
+    occ_bad = 0
+    for f, i in issued:
+        if key_ids[i] in lost_set:
+            occ_bad += 1
+        elif residual_left[i] > 0:
+            residual_left[i] -= 1
+            occ_bad += 1
+        elif f not in mapping and scrubs_left > 0:
+            scrubs_left -= 1
+            occ_bad += 1
     return {
+        "occurrences_ok": len(issued) - occ_bad,
         "labels_in_answer": len(issued),
         "exact": len(exact),
         "altered": len(altered),
@@ -170,18 +191,26 @@ def evaluate_answer(family: str, mapping: dict, answer: str, restored: str, lang
     }
 
 
-def run(models: list[str], per_type: int, only: set[str] | None = None, data: str = "synthetic") -> dict:
+def run(
+    models: list[str], per_type: int, only: set[str] | None = None, data: str = "synthetic", rescore: bool = False
+) -> dict:
+    """With rescore=True only saved answers are scored: a missing answer is an error, no model is asked."""
     from bench.runners.placeholders import PlaceholderWrapper
 
     plan = {
         "ru": [
             ("pii_guard", "pii_guard"),
+            # те же XML-теги pii-guard, но с общим системным промптом: отделяет формат меток от промпта
+            ("pii_guard@generic", "pii_guard"),
             ("pii_guard+placeholders", "placeholders"),
+            # простые метки с тем же общим промптом: вместе с pii_guard@generic даёт формат × промпт
+            ("pii_guard+placeholders@generic", "placeholders"),
             ("pii_roundtrip", "placeholders"),
         ],
         "uk": [
             ("prompt_anonymizer", "prompt_anonymizer"),
             ("gliner_guard+placeholders", "placeholders"),
+            ("gliner_guard+placeholders@generic", "placeholders"),
             ("pii_roundtrip", "placeholders"),
         ],
     }
@@ -191,11 +220,15 @@ def run(models: list[str], per_type: int, only: set[str] | None = None, data: st
         for tool_name, family in tools:
             if only and tool_name not in only:
                 continue
-            if tool_name.endswith("+placeholders"):
-                tool = PlaceholderWrapper(load_tool(tool_name.split("+")[0]))
+            base_name = tool_name.split("@")[0]  # "@generic" only changes the system prompt
+            if base_name.endswith("+placeholders"):
+                tool = PlaceholderWrapper(load_tool(base_name.split("+")[0]))
             else:
-                tool = load_tool(tool_name)
-            system = tool.system_prompt() if hasattr(tool, "system_prompt") else GENERIC_SYSTEM
+                tool = load_tool(base_name)
+            if tool_name.endswith("@generic"):
+                system = GENERIC_SYSTEM
+            else:
+                system = tool.system_prompt() if hasattr(tool, "system_prompt") else GENERIC_SYSTEM
             for model in models:
                 base = OUT if data == "synthetic" else OUT / data
                 path = base / tool_name / f"{lang}_{model.replace(':', '_')}.jsonl"
@@ -205,7 +238,7 @@ def run(models: list[str], per_type: int, only: set[str] | None = None, data: st
                     for line in path.open(encoding="utf-8"):
                         r = json.loads(line)
                         cache[(r["id"], r["task"], r.get("q"))] = r
-                rows = []
+                rows, rows_tolerant = [], []
                 with path.open("a", encoding="utf-8") as f:
                     for d in docs:
                         anon, mapping = tool.anonymize(d["text"], lang)
@@ -215,6 +248,8 @@ def run(models: list[str], per_type: int, only: set[str] | None = None, data: st
                             key = (d["id"], task, q)
                             if key in cache:
                                 answer = cache[key]["answer"]
+                            elif rescore:
+                                raise SystemExit(f"no saved answer: {tool_name} {lang} {model} {d['id']} {task}")
                             else:
                                 answer = ask(model, system, prompt)
                                 f.write(
@@ -230,8 +265,17 @@ def run(models: list[str], per_type: int, only: set[str] | None = None, data: st
                             ev["input_leaks"] = len(metrics.leaked_values(d, anon))
                             ev.update({"id": d["id"], "task": task})
                             rows.append(ev)
+                            if family == "pii_guard":
+                                # the same answer restored by label type and number, not by pii-guard
+                                ev_t = evaluate_answer(
+                                    family, plain, answer, tolerant_restore(family, plain, answer), lang
+                                )
+                                ev_t.update({"input_leaks": ev["input_leaks"], "id": d["id"], "task": task})
+                                rows_tolerant.append(ev_t)
                 agg = aggregate(rows)
                 report.setdefault(tool_name, {})[f"{lang}/{model}"] = agg
+                if rows_tolerant:
+                    report.setdefault(f"{tool_name}~tolerant", {})[f"{lang}/{model}"] = aggregate(rows_tolerant)
                 print(
                     f"{tool_name:28s} {lang} {model:12s} {json.dumps({k: v for k, v in agg.items() if k != 'examples'}, ensure_ascii=False)}"
                 )
@@ -239,12 +283,25 @@ def run(models: list[str], per_type: int, only: set[str] | None = None, data: st
 
 
 def _answer_ok(r: dict) -> tuple[int, int]:
-    """Сколько меток ответа восстановлено верно и сколько их всего."""
-    # pii-guard затирает в «****» и свои испорченные теги, и выдуманные нейросетью:
-    # ошибкой считается только затёртое сверх числа выдуманных, без двойного счёта с потерями
-    own_scrubbed = max(0, r["scrubbed"] - r.get("invented", 0))
-    bad = r["residual_after_restore"] + max(r["values_lost"], own_scrubbed)
-    return max(0, r["labels_in_answer"] - bad), r["labels_in_answer"]
+    """Сколько выданных инструментом вхождений меток восстановлено верно и сколько их всего:
+    каждое вхождение оценивается один раз (см. evaluate_answer)."""
+    return r["occurrences_ok"], r["labels_in_answer"]
+
+
+def tolerant_restore(family: str, mapping: dict, answer: str) -> str:
+    """Restoration by the label's type and number, whatever the model did to its spelling
+    (for pii-guard tags: a missing slash, a stray «»», changed attribute order). Used to score
+    the same saved answers with a lenient restorer, so that the tag format can be compared with
+    simple labels without the difference between the tools' own restorers."""
+    pat = LABEL_PATTERNS[family]
+    key_ids = {i: k for k in mapping if (i := _identity(family, k))}
+    types = {t for t, _ in key_ids}
+
+    def sub(m: re.Match) -> str:
+        i = _identity(family, m.group(0), types)
+        return mapping[key_ids[i]] if i in key_ids else m.group(0)
+
+    return pat.sub(sub, answer)
 
 
 def bootstrap_ci(rows: list[dict], n: int = 2000, seed: int = 0) -> tuple[float, float]:
@@ -281,6 +338,7 @@ def aggregate(rows: list[dict]) -> dict:
         "restore_ci_method": "bootstrap по ответам, 2000 повторов",
         "residual_labels": s("residual_after_restore"),
         "scrubbed": max(0, s("scrubbed")),
+        "occurrences_failed": labels - ok,
         "values_lost": s("values_lost"),
         "used_values": s("used_values"),
         "docs_with_input_leak": sum(1 for r in rows if r["input_leaks"] and r["task"] == "summary"),
@@ -302,12 +360,14 @@ def main() -> None:
     ap.add_argument("--per-type", type=int, default=4)
     ap.add_argument("--tools", default="", help="через запятую; по умолчанию все")
     ap.add_argument("--data", choices=sorted(DATA), default="synthetic")
+    ap.add_argument("--rescore", action="store_true", help="score saved answers only, never ask a model")
     args = ap.parse_args()
     if args.data.startswith("holdout"):
         from bench.eval.holdout import check_hashes
 
         check_hashes(DATA[args.data])
-    report = run(args.models.split(","), args.per_type, set(args.tools.split(",")) if args.tools else None, args.data)
+    only = set(args.tools.split(",")) if args.tools else None
+    report = run(args.models.split(","), args.per_type, only, args.data, args.rescore)
     p = Path("results/cycle_metrics.json" if args.data == "synthetic" else f"results/cycle_metrics.{args.data}.json")
     cur = json.loads(p.read_text()) if p.exists() else {}
     for k, v in report.items():

@@ -1,8 +1,6 @@
 data/synthetic/*
 !data/synthetic/.gitkeep
 data/external/
-data/holdout*/
-results/*/
 .venv/
 *.egg-info/
 __pycache__/

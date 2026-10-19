@@ -22,14 +22,20 @@ from collections import Counter
 
 def _password(confirm: bool, password_file: str | None) -> str:
     if password_file:
-        with open(password_file, encoding="utf-8") as f:
-            return f.readline().rstrip("\n")
+        try:
+            with open(password_file, encoding="utf-8") as f:
+                return f.readline().rstrip("\n")
+        except OSError as e:
+            sys.exit(f"Cannot read the password file {password_file}: {e.strerror}")
     env = os.environ.get("PII_ROUNDTRIP_PASSWORD")
     if env:
         return env
-    p = getpass.getpass("Vault password: ")
-    if confirm and getpass.getpass("Repeat password: ") != p:
-        sys.exit("Passwords do not match")
+    try:
+        p = getpass.getpass("Vault password: ")
+        if confirm and getpass.getpass("Repeat password: ") != p:
+            sys.exit("Passwords do not match")
+    except (EOFError, OSError):
+        sys.exit("No password: there is no terminal to ask; use --password-file or PII_ROUNDTRIP_PASSWORD")
     return p
 
 
@@ -41,6 +47,8 @@ def _read(path: str | None, encoding: str) -> str:
         return sys.stdin.buffer.read().decode(encoding)
     except UnicodeDecodeError:
         sys.exit(f"Cannot decode the input as {encoding}; pass --encoding (for example cp1251)")
+    except OSError as e:
+        sys.exit(f"Cannot read {path}: {e.strerror}")
 
 
 def _write(path: str | None, text: str) -> None:

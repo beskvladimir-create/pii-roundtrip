@@ -1,0 +1,46 @@
+[project]
+name = "pii-roundtrip-desktop"
+version = "0.3.0"
+description = "Desktop app for pii-roundtrip: clean a document before sending it to an LLM, restore the answer locally"
+requires-python = ">=3.12"
+license = "Apache-2.0"
+authors = [{ name = "Vladimir Beskorovainyi" }]
+dependencies = [
+    "pyside6>=6.7",
+    "python-docx>=1.1",
+    "pypdf>=5",
+    "reportlab>=4.2",
+    "pypdfium2>=4.30",
+    "pillow>=10",
+    # the engine core; models are added by the "models" extra
+    "pymorphy3>=2",
+    "pymorphy3-dicts-ru>=2.4",
+    "cryptography>=48",
+    "keyring>=25",
+]
+
+[project.optional-dependencies]
+models = [
+    "pii-guard[ner] @ git+https://github.com/redmadrobot-rnd/pii-guard@24230abb72949a9f85499244dd4f15a0ad0cdd9e",
+    "ru_core_news_sm @ https://github.com/explosion/spacy-models/releases/download/ru_core_news_sm-3.8.0/ru_core_news_sm-3.8.0-py3-none-any.whl",
+    "gliner2>=2.1.0",
+    "huggingface-hub>=0.30",
+]
+
+[project.gui-scripts]
+pii-roundtrip-desktop = "pii_roundtrip_desktop.app:main"
+
+[dependency-groups]
+dev = ["pytest>=8", "ruff==0.6.9", "pyinstaller>=6.10"]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+# the engine package lives one level up in this repository
+pythonpath = [".", ".."]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"

@@ -4,6 +4,30 @@
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow [Semantic Versioning](https://semver.org/).
 
+## [0.2.1] - 2026-10-19
+
+The engine is unchanged; its detection and leak figures on held-out set 4 stand. The restoration figures were recomputed with a corrected metric (below).
+
+### Changed
+
+- Restoration metric: each placeholder occurrence issued by a tool is scored once. It fails if it is still in the text after restoration, if its value is missing from the restored text, or if the tool's restorer scrubbed it. Before, an occurrence left in the text was also counted as a lost value, so it counted twice. All held-out set 4 answers were rescored from the saved answers (`python -m bench.eval.cycle --data holdout4 --rescore`); no model was queried again.
+- The pooled bootstrap over the UK external datasets treats the 28 source texts shared by the two Nemotron subsets as one cluster each.
+- Held-out set 3 is described as development data in the 0.2.0 notes: its errors were analysed after it had checked a 0.2 candidate.
+
+### Added
+
+- Controls for the round trip on held-out set 4: pii-guard tags with the generic system prompt, plain placeholders with the generic prompt (Russian and UK), and pii-guard answers restored by label type and number. With lenient parsing pii-guard tags are restored in full, so its restoration failures come from its strict restorer, not from the tag format or the prompt.
+- `bench/eval/leak_breakdown.py` and `results/leak_breakdown.json`: document-level leaks on held-out set 4 for clean and noisy documents, with and without hard-format identifiers, by entity type, and over the types each tool supports.
+- Published data: held-out sets 1 to 4, the LLM answers of the held-out set 4 round trip, every tool's saved predictions, `results/cluster_ci.json` and the Ollama and model versions (`results/ollama_versions.txt`).
+
+### Added (desktop)
+
+- Desktop app for macOS (desktop 0.3.0) in `desktop/`: drop in a Word file, a PDF or text, send the cleaned version to any AI tool, and get its answer back with the real values. It works offline with the models inside the installer, keeps the formatting of Word files and the layout of PDFs where the returned file allows it, and stores the link between labels and values encrypted with a key in the macOS Keychain. The installer is attached to the release; see desktop/README.md.
+
+### Fixed
+
+- CLI: a missing input or password file and a run without a terminal to ask for the password now give a message instead of a Python traceback.
+
 ## [0.2.0] - 2026-10-18
 
 ### Changed (may need action)
@@ -23,7 +47,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); ver
 
 ### Fixed
 
-Detection (found on the development data: the synthetic set and held-out sets 1 and 2, which became development data for 0.2; external datasets and held-out set 3 were not used for tuning):
+Detection (found on the development data: the synthetic set and held-out sets 1 and 2, which became development data for 0.2, and held-out set 3, whose errors were analysed after it had checked a 0.2 candidate; external datasets and held-out set 4 were not used for tuning):
 
 - An organisation name repeated without its legal form ("ГКУ «Восход» ... представитель Восход") stayed visible for 12 of 19 Russian legal forms; every form is now handled, and a form matches only as a whole word.
 - Names next to initials are masked even with a typo in the surname ("А.О. Нкионовой", "V. Rcie"); "SURNAME, Firstname" records are masked whole.

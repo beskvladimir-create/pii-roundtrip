@@ -10,7 +10,7 @@ Version 0.2, 17 October 2026. Changes since version 0.1 are described in section
 2. **Every existing tool leaks on documents.** On held-out set 4 (1,000 documents per language) a leak remains in {#best|ru:h3|leak} of Russian documents with {BEST_RU} and in {#best|uk:h3|leak} of UK documents with {BEST_UK}. The other tools leak more often (section 6).
 3. **pii-roundtrip, a layer over pii-guard and GLiNER Guard, meets {ANON_PASS_SUMMARY_EN} on held-out set 4.** Leaks: {RU_LEAK_CI} for Russian and {UK_LEAK_CI} for UK English.
 4. **The high recall does not come from masking more text.** The share of masked fragments that contain personal data on held-out set 4 is {=pii_roundtrip|ru:h3|prec} for Russian and {=pii_roundtrip|uk:h3|prec} for UK English (section 5).
-5. **Restoration fails on the placeholder format, not on detection.** The LLM breaks the closing part of pii-guard XML tags, and pii-guard scrubs such tags. Plain placeholders such as `[PERSON_1]` are kept by both LLMs (appendix of the Russian report, П3).
+5. **Restoration fails on pii-guard's strict restorer, not on detection.** The LLM sometimes breaks the closing part of pii-guard XML tags, and pii-guard scrubs such tags. When the same answers are restored by the label's type and number (lenient parsing), pii-guard tags are restored in full with both LLMs and both prompts. Plain placeholders such as `[PERSON_1]` are also restored in full, with their own prompt and with the generic one (appendix of the Russian report, П3). The failures therefore come from the restoration rules, not from the tag format or the prompt; the sample is 20 documents per language and two LLMs.
 
 ## 2. Thresholds
 

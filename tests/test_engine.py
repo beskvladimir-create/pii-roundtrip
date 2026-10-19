@@ -377,3 +377,20 @@ def test_implausible_model_spans_are_dropped():
     t = "паспорт и CVC отправил в налоговой, плз проверь, валера"
     a, _ = Engine(models).anonymize(t, "ru")
     assert a == "паспорт и CVC отправил в налоговой, плз проверь, [PERSON_1]", a
+
+
+def test_cli_errors_are_messages_not_tracebacks(tmp_path, monkeypatch):
+    import io
+
+    from pii_roundtrip import cli
+
+    monkeypatch.setenv("PII_ROUNDTRIP_PASSWORD", "x")
+    with pytest.raises(SystemExit, match="Cannot read"):
+        cli.main(["anonymize", "-l", "ru", "-i", str(tmp_path / "nope.txt"), "--vault", str(tmp_path / "v")])
+    monkeypatch.delenv("PII_ROUNDTRIP_PASSWORD")
+    doc = tmp_path / "doc.txt"
+    doc.write_text("Иванов Пётр Сергеевич", encoding="utf-8")
+    monkeypatch.setattr("sys.stdin", io.StringIO(""))
+    monkeypatch.setattr("getpass.getpass", lambda *_a, **_k: (_ for _ in ()).throw(EOFError()))
+    with pytest.raises(SystemExit, match="No password"):
+        cli.main(["anonymize", "-l", "ru", "-i", str(doc), "--vault", str(tmp_path / "v")])

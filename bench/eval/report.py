@@ -42,7 +42,7 @@ EXTERNAL = {
     "ru": ["hivetrace_pii_bench", "redmadrobot_pii_benchmark"],
     "uk": ["nemotron_uk", "nemotron_uk_ids"],
 }
-DOWNLOAD_MAC = "https://github.com/beskvladimir-create/pii-roundtrip/releases/latest"
+DOWNLOAD_MAC = "https://github.com/beskvladimir-create/pii-roundtrip/releases/latest/download/pii-roundtrip-mac.dmg"
 HOLDOUT = {"ru": "holdout4_ru", "uk": "holdout4_uk"}  # the independent held-out set of this version
 SYNTH = {"ru": "synthetic_ru", "uk": "synthetic_uk"}
 TOOLS = [
@@ -84,6 +84,12 @@ CYCLE_NAME = {
     "prompt_anonymizer": "Prompt Anonymizer (свои метки)",
     "gliner_guard+placeholders": "GLiNER Guard + метки [TYPE_n]",
     "pii_roundtrip": "pii-roundtrip",
+    # контроль формата и промпта: те же ответы с терпимым разбором и прогоны с общим промптом
+    "pii_guard~tolerant": "pii-guard (свои теги, терпимый разбор)",
+    "pii_guard@generic": "pii-guard (свои теги, общий промпт)",
+    "pii_guard@generic~tolerant": "pii-guard (свои теги, общий промпт, терпимый разбор)",
+    "pii_guard+placeholders@generic": "pii-guard + метки [TYPE_n], общий промпт",
+    "gliner_guard+placeholders@generic": "GLiNER Guard + метки [TYPE_n], общий промпт",
 }
 STATUS = {
     "en": {"met": "met", "not met": "not met", "undetermined": "undetermined"},
