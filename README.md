@@ -10,15 +10,15 @@ pii-roundtrip replaces personal data in a document with consistent placeholders 
 
 ## Why
 
-Existing open-source tools work well on short messages but leak personal data in synthetic documents such as contracts, letters, HR files and discharge summaries. The table shows the share of documents in which at least one original value remained after anonymisation. It was measured on held-out set 4: 1,000 synthetic documents per language with numbers written in digits, with dots, with typos and in words, generated before the final changes of version 0.2 and run once ([HOLDOUT.en.md](HOLDOUT.en.md)). No tool, including pii-roundtrip, was developed on it.
+Existing open-source tools work well on short messages but leak personal data in synthetic documents such as contracts, letters, HR files and discharge summaries. The table shows the share of documents in which at least one original value remained after anonymisation. It was measured on held-out set 5: 1,000 synthetic documents per language with numbers written in digits, with dots, with typos and in words, generated before the final changes of version 0.2 and run once ([HOLDOUT.en.md](HOLDOUT.en.md)). No tool, including pii-roundtrip, was developed on it.
 
 | Tool | Russian | UK English |
 |---|---|---|
-| **pii-roundtrip** | **0.2% [0.1; 0.7]** | **0.9% [0.5; 1.7]** |
-| pii-guard | 53.3% [50.2; 56.4] | n/a |
-| GLiNER Guard Omni | 99.8% [99.3; 99.9] | 55.3% [52.2; 58.4] |
-| Presidio | 85.3% [83.0; 87.4] | 57.5% [54.4; 60.5] |
-| OpenAI privacy-filter | 95.0% [93.5; 96.2] | 81.3% [78.8; 83.6] |
+| **pii-roundtrip** | **0.2% [0.1; 0.7]** | **0.7% [0.3; 1.4]** |
+| pii-guard | 53.2% [50.1; 56.3] | n/a |
+| GLiNER Guard Omni | 99.7% [99.1; 99.9] | 56.7% [53.6; 59.7] |
+| Presidio | 86.3% [84.0; 88.3] | 56.9% [53.8; 59.9] |
+| OpenAI privacy-filter | 95.8% [94.4; 96.9] | 80.6% [78.0; 82.9] |
 | Prompt Anonymizer | n/a | 100.0% [99.6; 100.0] |
 | Regular expressions with checksums | 100.0% [99.6; 100.0] | 100.0% [99.6; 100.0] |
 
@@ -28,35 +28,35 @@ Full results, method and limitations are in [REPORT.en.md](REPORT.en.md). The co
 
 The thresholds are recall of at least 99% for structured identifiers, recall of at least 95% for names, addresses and organisations, leaks in at most 2% of documents, and correct restoration of at least 99% of placeholders after an LLM answer.
 
-Each table compares the best existing tool with pii-roundtrip on the same data: the external datasets without the tool's own (home) dataset, and held-out set 4. The best existing tool is chosen on the external datasets. External datasets: hivetrace/pii-bench and redmadrobot pii_benchmark for Russian; Nemotron-PII with UK texts and injected UK identifiers for English.
+Each table compares the best existing tool with pii-roundtrip on the same data: the external datasets without the tool's own (home) dataset, and held-out set 5. The best existing tool is chosen on the external datasets. External datasets: hivetrace/pii-bench and redmadrobot pii_benchmark for Russian; Nemotron-PII with UK texts and injected UK identifiers for English.
 
 Russian:
 
-| Threshold | pii-guard, external | pii-roundtrip, same external sets | pii-guard, held-out set 4 | pii-roundtrip, held-out set 4 |
+| Threshold | pii-guard, external | pii-roundtrip, same external sets | pii-guard, held-out set 5 | pii-roundtrip, held-out set 5 |
 |---|---|---|---|---|
-| Structured identifiers ≥ 99% | 97.7% [96.1; 99.0] undetermined, borderline | 100.0% [100.0; 100.0], for reference | 92.3% [91.6; 92.9] not met | 100.0% [100.0; 100.0] met |
-| Names, addresses, organisations ≥ 95% | 99.5% [98.7; 100.0] met | 100.0% [100.0; 100.0], for reference | 73.1% [72.5; 73.7] not met | 99.8% [99.7; 99.9] met |
-| Documents with a leak ≤ 2% | 0.7% [0.4; 1.2] met | 0.0% [0.0; 0.2], for reference | 53.3% [50.2; 56.4] not met | 0.2% [0.1; 0.7] met |
-| Restoration ≥ 99% (worse of two LLMs) | not measured | not measured | 97.7% [93.5; 100.0] undetermined | 100.0% [91.2; 100.0] undetermined |
-| Masked fragments that contain personal data | 96.5% [95.5; 97.5], no threshold | 89.2% [87.8; 90.7], no threshold | 87.6% [87.5; 87.7], no threshold | 98.5% [98.4; 98.6], no threshold |
+| Structured identifiers ≥ 99% | 97.7% [96.1; 99.0] undetermined, borderline | 100.0% [100.0; 100.0], for reference | 92.4% [91.6; 93.1] not met | 100.0% [100.0; 100.0] met |
+| Names, addresses, organisations ≥ 95% | 99.5% [98.7; 100.0] met | 100.0% [100.0; 100.0], for reference | 73.8% [73.3; 74.4] not met | 99.7% [99.6; 99.8] met |
+| Documents with a leak ≤ 2% | 0.7% [0.4; 1.2] met | 0.0% [0.0; 0.2], for reference | 53.2% [50.1; 56.3] not met | 0.2% [0.1; 0.7] met |
+| Restoration ≥ 99% (worse of two LLMs) | not measured | not measured | 99.8% [99.4; 100.0] met | 99.9% [99.9; 100.0] met |
+| Masked fragments that contain personal data | 96.5% [95.5; 97.5], no threshold | 89.2% [87.8; 90.7], no threshold | 87.6% [87.5; 87.7], no threshold | 98.5% [98.3; 98.6], no threshold |
 
 External sets: hivetrace_pii_bench.
 
-The Russian external datasets were used for error analysis while version 0.1 was developed, so for pii-roundtrip they are not an independent check. Held-out set 4 is.
+The Russian external datasets were used for error analysis while version 0.1 was developed, so for pii-roundtrip they are not an independent check. Held-out set 5 is.
 
 UK English:
 
-| Threshold | GLiNER Guard Omni, external | pii-roundtrip, same external sets | GLiNER Guard Omni, held-out set 4 | pii-roundtrip, held-out set 4 |
+| Threshold | GLiNER Guard Omni, external | pii-roundtrip, same external sets | GLiNER Guard Omni, held-out set 5 | pii-roundtrip, held-out set 5 |
 |---|---|---|---|---|
-| Structured identifiers ≥ 99% | 96.4% [95.7; 97.1] not met | 100.0% [99.9; 100.0] met | 95.9% [95.5; 96.4] not met | 100.0% [100.0; 100.0] met |
-| Names, addresses, organisations ≥ 95% | 98.7% [98.2; 99.1] met | 98.1% [97.6; 98.6] met | 88.8% [88.2; 89.3] not met | 98.7% [98.5; 98.9] met |
-| Documents with a leak ≤ 2% | 4.0% [3.4; 4.8] not met | 0.9% [0.6; 1.3] met | 55.3% [52.2; 58.4] not met | 0.9% [0.5; 1.7] met |
-| Restoration ≥ 99% (worse of two LLMs) | not measured | not measured | no restore step, not met | 99.6% [99.2; 99.9] met |
-| Masked fragments that contain personal data | 89.3% [88.8; 89.9], no threshold | 93.4% [92.8; 93.9], no threshold | 94.7% [94.6; 94.9], no threshold | 99.8% [99.8; 99.9], no threshold |
+| Structured identifiers ≥ 99% | 96.4% [95.7; 97.1] not met | 100.0% [99.9; 100.0] met | 95.3% [94.8; 95.8] not met | 100.0% [100.0; 100.0] met |
+| Names, addresses, organisations ≥ 95% | 98.7% [98.2; 99.1] met | 98.1% [97.6; 98.6] met | 88.9% [88.3; 89.5] not met | 98.9% [98.7; 99.1] met |
+| Documents with a leak ≤ 2% | 4.0% [3.4; 4.8] not met | 0.9% [0.6; 1.3] met | 56.7% [53.6; 59.7] not met | 0.7% [0.3; 1.4] met |
+| Restoration ≥ 99% (worse of two LLMs) | not measured | not measured | no restore step, not met | 100.0% [99.0; 100.0] met |
+| Masked fragments that contain personal data | 89.3% [88.8; 89.9], no threshold | 93.4% [92.8; 93.9], no threshold | 94.8% [94.6; 94.9], no threshold | 99.8% [99.8; 99.9], no threshold |
 
 External sets: nemotron_uk, nemotron_uk_ids.
 
-A threshold is met when the whole 95% confidence interval is on the right side of it, not met when the whole interval is on the wrong side, and undetermined when the interval spans it. Restoration comes from a round trip with qwen3.5:9b and gemma4:12b at temperature 0 on documents of held-out set 4. The last row has no threshold: it shows how much of the masked text is personal data, so that a tool cannot reach high recall by masking everything.
+A threshold is met when the whole 95% confidence interval is on the right side of it, not met when the whole interval is on the wrong side, and undetermined when the interval spans it. Restoration comes from a round trip with qwen3.5:9b and gemma4:12b at temperature 0 on documents of held-out set 5. The last row has no threshold: it shows how much of the masked text is personal data, so that a tool cannot reach high recall by masking everything.
 
 ## Desktop app for macOS
 
@@ -116,7 +116,7 @@ scripts/reproduce.sh
 
 Method in brief:
 - **No home datasets.** Each tool is evaluated for the verdict only on datasets its own authors did not build.
-- **Held-out sets.** Synthetic sets are generated before the engine changes they test and frozen by SHA-256 ([HOLDOUT.en.md](HOLDOUT.en.md)). Each tool runs on a set once, from committed code, and every run is logged. Sets 1 and 2 checked version 0.1. Set 3 checked a candidate of version 0.2; its errors were then analysed, so sets 1 to 3 are development data. Set 4, frozen before that analysis, checks version 0.2.
+- **Held-out sets.** Synthetic sets are generated before the engine changes they test and frozen by SHA-256 ([HOLDOUT.en.md](HOLDOUT.en.md)). Each tool runs on a set once, from committed code, and every run is logged. Sets 1 and 2 checked version 0.1. Set 3 checked a candidate of version 0.2; its errors were then analysed, so sets 1 to 3 are development data. Set 4, frozen before that analysis, checked version 0.2. Set 5 checks version 0.3; it was published with its rules and run plan before the first run.
 - **Same data for every comparison.** pii-roundtrip is compared with each tool on exactly the datasets that tool is scored on.
 - **Precision.** For every tool the report gives the share of masked fragments that contain personal data.
 - **What counts as hidden.** A value counts as hidden when all of its meaningful words are masked. A leak is an original value remaining in the cleaned text, with numbers matched across any separators and Russian surnames in all cases.

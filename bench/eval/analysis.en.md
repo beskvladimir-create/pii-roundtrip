@@ -7,10 +7,10 @@ Version 0.2, 17 October 2026. Changes since version 0.1 are described in section
 ## 1. Summary
 
 1. **Existing open-source tools do not meet the thresholds in either language.** The best tool for Russian, {BEST_RU}: structured identifiers {=best|ru:ext|struct+} on the external datasets. The best tool for UK English, {BEST_UK}: structured identifiers {=best|uk:ext|struct+}, leaks {=best|uk:ext|leak+}; it has no restore step of its own.
-2. **Every existing tool leaks on documents.** On held-out set 4 (1,000 documents per language) a leak remains in {#best|ru:h3|leak} of Russian documents with {BEST_RU} and in {#best|uk:h3|leak} of UK documents with {BEST_UK}. The other tools leak more often (section 6).
-3. **pii-roundtrip, a layer over pii-guard and GLiNER Guard, on held-out set 4: {ANON_PASS_SUMMARY_EN}.** Leaks: {RU_LEAK_CI} for Russian and {UK_LEAK_CI} for UK English.
-4. **The high recall does not come from masking more text.** The share of masked fragments that contain personal data on held-out set 4 is {=pii_roundtrip|ru:h3|prec} for Russian and {=pii_roundtrip|uk:h3|prec} for UK English (section 5).
-5. **The LLMs altered pii-guard's attribute tags more often than plain placeholders, and pii-guard's strict restorer turned the alterations into losses.** On held-out set 4, altered labels appeared in {~pii_guard|ru:holdout4|answers_with_altered} of {~pii_guard|ru:holdout4|answers_with_labels} answers with pii-guard tags under its own prompt ({~pii_guard|ru:holdout4|docs_with_altered} documents) and in {~pii_guard@generic|ru:holdout4|answers_with_altered} of {~pii_guard@generic|ru:holdout4|answers_with_labels} under the generic prompt ({~pii_guard@generic|ru:holdout4|docs_with_altered} documents). Plain `[TYPE_n]` placeholders over the same detection: {~pii_guard+placeholders|ru:holdout4|answers_with_altered} of {~pii_guard+placeholders|ru:holdout4|answers_with_labels} and {~pii_guard+placeholders@generic|ru:holdout4|answers_with_altered} of {~pii_guard+placeholders@generic|ru:holdout4|answers_with_labels} answers. pii-guard's strict restorer does not recognise an altered tag and scrubs it, sometimes together with the next intact tag: under its own prompt {~pii_guard|ru:holdout4|occurrences_failed} placeholder occurrences failed, {~pii_guard|ru:holdout4|failed_intact} of them intact neighbours, in {~pii_guard|ru:holdout4|answers_with_failure} answers; under the generic prompt {~pii_guard@generic|ru:holdout4|occurrences_failed} occurrences, {~pii_guard@generic|ru:holdout4|failed_intact} of them neighbours, in {~pii_guard@generic|ru:holdout4|answers_with_failure} answers. Plain placeholders were restored without errors. Lenient parsing by the label's type and number was written after these failures had been found; it restores the same pii-guard answers in full. This shows that the losses arise in restoration, but does not change the fact that attribute tags were altered more often. Sample: 20 documents per language, two tasks, two LLMs (appendix of the Russian report, П3).
+2. **Every existing tool leaks on documents.** On held-out set 5 (1,000 documents per language) a leak remains in {#best|ru:h3|leak} of Russian documents with {BEST_RU} and in {#best|uk:h3|leak} of UK documents with {BEST_UK}. The other tools leak more often (section 6).
+3. **pii-roundtrip, a layer over pii-guard and GLiNER Guard, on held-out set 5: {ANON_PASS_SUMMARY_EN}.** Leaks: {RU_LEAK_CI} for Russian and {UK_LEAK_CI} for UK English.
+4. **The high recall does not come from masking more text.** The share of masked fragments that contain personal data on held-out set 5 is {=pii_roundtrip|ru:h3|prec} for Russian and {=pii_roundtrip|uk:h3|prec} for UK English (section 5).
+5. **pii-guard's strict restorer loses an altered label and lenient restoration recovers it; whether the LLMs alter attribute tags more often, the two sets answer differently.** On held-out set 5 alterations were rare in both formats: pii-guard tags were altered in {~pii_guard|ru:holdout5|answers_with_altered} of {~pii_guard|ru:holdout5|answers_with_labels} answers under its own prompt and in {~pii_guard@generic|ru:holdout5|answers_with_altered} of {~pii_guard@generic|ru:holdout5|answers_with_labels} under the generic prompt; plain `[TYPE_n]` placeholders over the same detection in {~pii_guard+placeholders|ru:holdout5|answers_with_altered} of {~pii_guard+placeholders|ru:holdout5|answers_with_labels} and {~pii_guard+placeholders@generic|ru:holdout5|answers_with_altered} of {~pii_guard+placeholders@generic|ru:holdout5|answers_with_labels}. On held-out set 4 (version 0.2.2) the tags were altered more often: 3 of 53 and 6 of 74 answers against 1 of 80 and 0 of 80 for plain placeholders, so I do not consider a difference between the formats established. What holds on both sets: pii-guard's strict restorer does not recognise an altered tag and scrubs it; on set 5 under the generic prompt {~pii_guard@generic|ru:holdout5|failed_altered} altered occurrences failed and {~pii_guard@generic|ru:holdout5|failed_intact} more without an alteration, under its own prompt {~pii_guard|ru:holdout5|failed_altered} altered and {~pii_guard|ru:holdout5|failed_intact} without an alteration. Lenient parsing by the label's type and number, written after such failures were found on set 4, restores the same answers in full. Engine 0.3 also restores altered labels: on the UK part of set 5 there were {~pii_roundtrip|uk:holdout5|altered} of them across both LLMs, with {~pii_roundtrip|uk:holdout5|occurrences_failed} failures. Sample: 190 documents per language for pii-roundtrip and 20 for the other configurations, two tasks, two LLMs (appendix of the Russian report, П3).
 
 ## 2. Thresholds
 
@@ -38,7 +38,7 @@ One rule for every tool and threshold:
 - **Leak:** an original value remains in the cleaned text. A number is matched across any spaces and hyphens, a number in words by its spelling. A surname is matched in every case form. A first name or patronymic is matched case-sensitively and counts only if it occurs more often after masking than in the source text outside personal data (the month June is not a leak of the name June).
 - **Masking precision:** the share of masked fragments that touch annotated personal data. There is no threshold. The measure shows that high recall does not come from masking everything. Annotation of the external datasets is incomplete, so precision there is understated for every tool alike.
 - **Round trip:**
-  - 20 documents per language from held-out set 4, a summary and a reply letter for each;
+  - documents of held-out set 5, a summary and a reply letter for each: 190 documents per language for pii-roundtrip (380 answers per model, so that a run without errors can confirm the 99% threshold) and 20 documents per language for the other configurations (40 answers);
   - qwen3.5:9b and gemma4:12b at temperature 0;
   - placeholders issued by the tool and placeholders invented by the LLM are counted separately;
   - intervals are bootstrapped over answers.
@@ -49,16 +49,16 @@ The best tool for each language is chosen on the external datasets without its h
 
 Russian, {BEST_RU}:
 
-| Threshold | External datasets | Held-out set 4 |
+| Threshold | External datasets | Held-out set 5 |
 |---|---|---|
 | Structured identifiers ≥ 99% | {=best|ru:ext|struct+} | {=best|ru:h3|struct+} |
 | Names, addresses, organisations ≥ 95% | {=best|ru:ext|names+} | {=best|ru:h3|names+} |
 | Leaks ≤ 2% | {=best|ru:ext|leak+} | {=best|ru:h3|leak+} |
-| Restoration ≥ 99% (worse model) | not measured | {~best|ru:holdout4|restore+} |
+| Restoration ≥ 99% (worse model) | not measured | {~best|ru:holdout5|restore+} |
 
 UK English, {BEST_UK}:
 
-| Threshold | External datasets | Held-out set 4 |
+| Threshold | External datasets | Held-out set 5 |
 |---|---|---|
 | Structured identifiers ≥ 99% | {=best|uk:ext|struct+} | {=best|uk:h3|struct+} |
 | Names, addresses, organisations ≥ 95% | {=best|uk:ext|names+} | {=best|uk:h3|names+} |
@@ -92,14 +92,14 @@ What the engine adds to its components:
 - an encrypted vault and offline operation.
 
 Caveats:
-- The engine's components were released by the authors of both Russian external datasets, and two changes of version 0.1 followed error analysis on these datasets. For the engine the Russian external datasets are therefore not an independent check. Held-out set 4 is.
-- The changes of version 0.2 followed error analysis on the development set and on held-out sets 1 to 3. The external datasets and set 4 were not used for tuning. One caveat: I saw examples of over-masking on hivetrace before writing general filters (a number without digits, an organisation of lower-case dictionary words, a one-word lower-case "name" the dictionary does not know as a name). The filters contain no words from those examples, but precision on hivetrace can no longer be taken as fully independent.
+- The engine's components were released by the authors of both Russian external datasets, and two changes of version 0.1 followed error analysis on these datasets. For the engine the Russian external datasets are therefore not an independent check. Held-out set 5 is.
+- The changes of version 0.2 followed error analysis on the development set and on held-out sets 1 to 3. The external datasets and sets 4 and 5 were not used for tuning. The change of version 0.3 (restoring a placeholder with a lost bracket or with words before the label) followed an analysis of the answers of set 5 and was tested on synthetic examples; set 5 was generated and published with the rules before the first run. One caveat: I saw examples of over-masking on hivetrace before writing general filters (a number without digits, an organisation of lower-case dictionary words, a one-word lower-case "name" the dictionary does not know as a name). The filters contain no words from those examples, but precision on hivetrace can no longer be taken as fully independent.
 - On short Russian messages of hivetrace the engine masks more non-personal text than pii-guard: {#pii_roundtrip|ru:ext-pii_guard|prec} of its masked fragments contain personal data, against {#best|ru:ext|prec} for pii-guard. These are errors of the GLiNER component on conversational text, which takes ordinary words and slang for personal data. On documents the engine has the highest precision among the tools that find names.
-- The engine was developed on documents of the same generator as held-out set 4. The set protects against tuning to specific documents, not to the generator's style.
+- The engine was developed on documents of the same generator as held-out set 5. The set protects against tuning to specific documents, not to the generator's style.
 
 ## 6. Documents: where the real gap is
 
-Held-out set 4, share of documents with a leak:
+Held-out set 5, share of documents with a leak:
 
 {TABLE_HEADLINE}
 
@@ -116,11 +116,11 @@ Why the existing tools leak:
 ## 7. Conclusion
 
 - **Existing tools.** The technical gap is confirmed for both languages (appendix of the Russian report, П5).
-- **pii-roundtrip.** Verdicts on the independent held-out set 4: {ANON_PASS_SUMMARY_EN}. Leaks of {RU_LEAK_CI} (RU) and {UK_LEAK_CI} (UK) compare with {=best|ru:h3|leak} for {BEST_RU} and {=best|uk:h3|leak} for {BEST_UK} on the same documents.
+- **pii-roundtrip.** Verdicts on the independent held-out set 5: {ANON_PASS_SUMMARY_EN}. Leaks of {RU_LEAK_CI} (RU) and {UK_LEAK_CI} (UK) compare with {=best|ru:h3|leak} for {BEST_RU} and {=best|uk:h3|leak} for {BEST_UK} on the same documents.
 
 ## 8. Changes in version 0.2
 
-- **Held-out sets 3 and 4.** Ten times larger than the earlier sets, so that leaks can be judged against the 2% threshold. Set 3 checked a candidate of version 0.2, set 4 checks the release.
+- **Held-out sets 3 and 4.** Ten times larger than the earlier sets, so that leaks can be judged against the 2% threshold. Set 3 checked a candidate of version 0.2, set 5 checks the release.
 - **Comparison on the same data.** In version 0.1 a competitor was scored without its home dataset, while the engine was scored on all external datasets. Now both are scored on the same datasets.
 - **Masking precision** is reported for every tool.
 - **Leak metric fixed.** A name that is also an ordinary word of the text (June in a date) is no longer a leak if that word occurred in the text outside personal data. The rule is the same for every tool.
@@ -135,4 +135,4 @@ Why the existing tools leak:
 - **Synthetic documents** come from this project's own generator. The competing tools have not seen them. The engine was developed on them, so the held-out sets protect only against tuning to specific documents, not to the generator's style.
 - **redmadrobot** contains many numbers with an invalid checksum (218 of 223 SNILS) and numbers in words.
 - **Nemotron-PII** has annotation noise (for example, "their email" annotated as an e-mail address).
-- **Round trip:** 20 documents per language, two local models. Larger hosted models may alter placeholders differently.
+- **Round trip:** 190 documents per language for pii-roundtrip and 20 for the other configurations, two local models. Larger hosted models may alter placeholders differently.

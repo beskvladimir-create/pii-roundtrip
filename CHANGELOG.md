@@ -4,7 +4,12 @@
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow [Semantic Versioning](https://semver.org/).
 
-## [Unreleased] (0.3.0)
+## [0.3.0] - 2026-10-22
+
+Version 0.3 is checked on held-out set 5, published with its rules and run plan before any run (public commit 8b8e933). Detection by every tool and the round trips ran once, from committed code. On set 5 the engine meets all four thresholds for both languages: structured identifiers 100.0%, names, addresses and organisations 99.7% (Russian) and 98.9% (UK English), documents with a leak 0.2% and 0.7%, restoration 99.9% (Russian, worse model, 380 answers) and 100.0% with a lower bound of 99.0% (UK English, 380 answers per model). Full intervals are in REPORT.md and README.md.
+
+One interruption: the engine's round trip stopped at answer 72 of Russian gemma4:12b when Ollama closed the connection (RemoteDisconnected); it was continued by the same command from the saved answers, so no answer was requested twice. On a manual check of the 10 failed Russian placeholder occurrences with qwen3.5:9b, the evaluator did not recognise correctly restored names with rare patronymics in another grammatical case (not in the morphology dictionary), and one name was restored in the genitive after "ФИО:". The evaluator's rules were fixed before the run and were not changed.
+
 
 ### Changed
 
@@ -14,6 +19,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); ver
 ### Added
 
 - Held-out set 5, its hashes, the threshold rules and the run plan (HOLDOUT.md), published before any run on it. The engine's round trip on set 5 uses 380 answers per model and language, so that a run without errors can meet the 99% threshold.
+- `results/cycle_metrics.holdout5.json`, `results/leak_breakdown.holdout5.json`; the cluster bootstrap includes set 5.
+- macOS app 0.3.1: the engine 0.3 inside, so answers with a lost bracket around a placeholder are restored in the app too.
 
 ## [0.2.2] - 2026-10-19
 
@@ -108,6 +115,7 @@ Benchmark:
 
 First public release: the engine, the benchmark of existing tools on Russian and UK English documents, the report and a draft preprint.
 
+[0.3.0]: https://github.com/beskvladimir-create/pii-roundtrip/compare/v0.2.2...v0.3.0
 [0.2.2]: https://github.com/beskvladimir-create/pii-roundtrip/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/beskvladimir-create/pii-roundtrip/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/beskvladimir-create/pii-roundtrip/compare/v0.1.0...v0.2.0

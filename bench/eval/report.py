@@ -11,11 +11,11 @@ python -m bench.eval.report
   {%tool|lang:sets|metric}  голое число для атрибутов HTML: 53.3
   metric clean / docs       число документов без утечки и всего: {#pii_roundtrip|ru:h3|clean} из {#pii_roundtrip|ru:h3|docs}
   {~tool|lang:data|restore} восстановление в полном цикле, худшая из двух моделей
-                            (data: synthetic или holdout4); «+» добавляет итог;
-                            data@model берёт одну модель: {~pii_guard|ru:holdout4@qwen3.5:9b|altered};
+                            (data: synthetic или holdout5); «+» добавляет итог;
+                            data@model берёт одну модель: {~pii_guard|ru:holdout5@qwen3.5:9b|altered};
                             вместо restore можно взять счётчик (altered, invented, labels_in_answer)
   tool: имя инструмента или best (лучший существующий для языка ссылки)
-  sets: h3 (отложенный набор 4), ext (внешние наборы без домашнего набора инструмента),
+  sets: h3 (текущий отложенный набор, 5), ext (внешние наборы без домашнего набора инструмента),
         ext-<tool> (внешние наборы без домашнего набора другого инструмента),
         или имена наборов через запятую
   {BEST_RU}, {BEST_UK}      лучший существующий инструмент на внешних наборах
@@ -43,7 +43,7 @@ EXTERNAL = {
     "uk": ["nemotron_uk", "nemotron_uk_ids"],
 }
 DOWNLOAD_MAC = "https://github.com/beskvladimir-create/pii-roundtrip/releases/latest/download/pii-roundtrip-mac.dmg"
-HOLDOUT = {"ru": "holdout4_ru", "uk": "holdout4_uk"}  # the independent held-out set of this version
+HOLDOUT = {"ru": "holdout5_ru", "uk": "holdout5_uk"}  # the independent held-out set of this version
 SYNTH = {"ru": "synthetic_ru", "uk": "synthetic_uk"}
 TOOLS = [
     "pii_roundtrip",
@@ -257,7 +257,7 @@ def best_tool(m: dict, lang: str) -> str:
 def load_cycles() -> dict[str, dict]:
     out = {}
     # version 0.2 measures the round trip on the held-out set only; cycle_metrics.json holds version 0.1 runs
-    for data, name in (("holdout4", "cycle_metrics.holdout4.json"),):
+    for data, name in (("holdout5", "cycle_metrics.holdout5.json"),):
         p = RESULTS / name
         out[data] = json.loads(p.read_text()) if p.exists() else {}
     return out
@@ -378,7 +378,7 @@ def _ref(m: dict, cycles: dict, match: re.Match, lang: str) -> str:
 
 
 def headline_table(m: dict, lang: str) -> str:
-    """Доля документов с утечкой на отложенном наборе 4 для всех инструментов."""
+    """Доля документов с утечкой на отложенном наборе 5 для всех инструментов."""
     head = "| Tool | Russian | UK English |" if lang == "en" else "| Инструмент | Русский | Британский английский |"
     rows = [head, "|---|---|---|"]
     for t in TOOLS:
@@ -394,7 +394,7 @@ def headline_table(m: dict, lang: str) -> str:
 
 
 def precision_table(m: dict, lang: str) -> str:
-    """Доля скрытых фрагментов, задевающих персональные данные, на отложенном наборе 4."""
+    """Доля скрытых фрагментов, задевающих персональные данные, на отложенном наборе 5."""
     head = "| Tool | Russian | UK English |" if lang == "en" else "| Инструмент | Русский | Британский английский |"
     rows = [head, "|---|---|---|"]
     for t in TOOLS:
@@ -408,7 +408,7 @@ def precision_table(m: dict, lang: str) -> str:
 
 def threshold_table(m: dict, cycles: dict, lang_data: str, lang: str) -> str:
     """Лучший существующий инструмент и движок на одних и тех же данных: внешние наборы без
-    домашнего набора этого инструмента и отложенный набор 4."""
+    домашнего набора этого инструмента и отложенный набор 5."""
     x = best_tool(m, lang_data)
     ext = ext_sets(lang_data, x)
     h3 = [HOLDOUT[lang_data]]
@@ -418,8 +418,8 @@ def threshold_table(m: dict, cycles: dict, lang_data: str, lang: str) -> str:
         heads = [
             f"{n[x]}, external",
             f"{n[ENGINE]}, same external sets",
-            f"{n[x]}, held-out set 4",
-            f"{n[ENGINE]}, held-out set 4",
+            f"{n[x]}, held-out set 5",
+            f"{n[ENGINE]}, held-out set 5",
         ]
         labels = {
             "struct": "Structured identifiers ≥ 99%",
@@ -433,8 +433,8 @@ def threshold_table(m: dict, cycles: dict, lang_data: str, lang: str) -> str:
         heads = [
             f"{n[x]}, внешние",
             f"{n[ENGINE]}, те же внешние наборы",
-            f"{n[x]}, отложенный набор 4",
-            f"{n[ENGINE]}, отложенный набор 4",
+            f"{n[x]}, отложенный набор 5",
+            f"{n[ENGINE]}, отложенный набор 5",
         ]
         labels = {
             "struct": "Номера ≥ 99%",
@@ -454,7 +454,7 @@ def threshold_table(m: dict, cycles: dict, lang_data: str, lang: str) -> str:
                 elif tool not in NATIVE_RESTORE:
                     cells.append(WORDS[lang]["no_restore"])
                 else:
-                    r = restore(cycles.get("holdout4", {}), tool, lang_data)
+                    r = restore(cycles.get("holdout5", {}), tool, lang_data)
                     cells.append(restore_cell(r, lang) if r else WORDS[lang]["na"])
                 continue
             s = stats(m, tool, sets)
@@ -475,14 +475,14 @@ def threshold_table(m: dict, cycles: dict, lang_data: str, lang: str) -> str:
 
 
 def engine_values(m: dict, cycles: dict) -> dict:
-    """Итог движка на отложенном наборе 4 (независимая проверка) для подстановок {RU_STRUCT_CI} и др."""
+    """Итог движка на отложенном наборе 5 (независимая проверка) для подстановок {RU_STRUCT_CI} и др."""
     vals: dict = {}
     for lg, key in (("ru", "RU"), ("uk", "UK")):
         s = stats(m, ENGINE, [HOLDOUT[lg]])
         if not s:
             continue
         rows = {k.upper(): (s[k][0], s[k][1], status_of(s, k)) for k in ("struct", "names", "leak")}
-        r = restore(cycles.get("holdout4", {}), ENGINE, lg)
+        r = restore(cycles.get("holdout5", {}), ENGINE, lg)
         if r:
             rows["RESTORE"] = (r[0], restore_interval(r), restore_status(r))
         vals[key] = rows
@@ -560,7 +560,7 @@ def build(m: dict, cycles: dict) -> str:
     L.append("### П2. Пороги: лучший существующий инструмент и pii-roundtrip на одних и тех же данных\n")
     L.append(
         "Лучший инструмент выбирается по внешним наборам без его домашнего набора. Движок считается на тех же наборах и на "
-        "отложенном наборе 4, которого не видел ни один инструмент. Русские внешние наборы использовались для разбора ошибок "
+        "отложенном наборе 5, которого не видел ни один инструмент. Русские внешние наборы использовались для разбора ошибок "
         "при разработке движка версии 0.1, поэтому для движка они не являются независимой проверкой.\n"
     )
     verdict_gap = {}
@@ -571,20 +571,20 @@ def build(m: dict, cycles: dict) -> str:
         x = best_tool(m, lang)
         gaps = []
         for metric in ("struct", "names", "leak"):
-            for sets, where in ((ext_sets(lang, x), "внешние"), ([HOLDOUT[lang]], "набор 4")):
+            for sets, where in ((ext_sets(lang, x), "внешние"), ([HOLDOUT[lang]], "набор 5")):
                 s = stats(m, x, sets)
                 if s and s[metric][0] is not None and status_of(s, metric) == "not met":
                     gaps.append(f"{metric} ({where})")
         if x not in NATIVE_RESTORE:
             gaps.append("восстановление (нет своего)")
         else:
-            r = restore(cycles.get("holdout4", {}), x, lang)
+            r = restore(cycles.get("holdout5", {}), x, lang)
             if r and status("restore", r[0], r[1]) == "not met":
                 gaps.append("восстановление")
         verdict_gap[lang] = (x, gaps)
 
     L.append("### П3. Полный цикл (очистка, ответ нейросети, восстановление)\n")
-    for data, title in (("holdout4", "Отложенный набор 4"),):
+    for data, title in (("holdout5", "Отложенный набор 5"),):
         cyc = cycles.get(data, {})
         L.append(f"#### {title}\n")
         if not cyc:
@@ -608,7 +608,7 @@ def build(m: dict, cycles: dict) -> str:
         L.append("")
 
     L.append("### П4. Показательные пропуски (до 10 на инструмент)\n")
-    L.append("Сначала отложенный набор 4, затем внешние наборы без домашнего.\n")
+    L.append("Сначала отложенный набор 5, затем внешние наборы без домашнего.\n")
     for tool in TOOLS:
         if tool not in m:
             continue
@@ -646,7 +646,8 @@ def build(m: dict, cycles: dict) -> str:
     return "\n".join(L)
 
 
-def render() -> dict[str, str]:
+def render(outreach: bool = True) -> dict[str, str]:
+    """outreach=False leaves out the paper, the article and the posts (edited separately)."""
     """The generated documents: file name -> text. Every number in them comes from results/."""
     m = json.loads((RESULTS / "metrics.json").read_text())
     cycles = load_cycles()
@@ -672,7 +673,7 @@ def render() -> dict[str, str]:
         ("site/index.html", "site/index.tpl.html", "ru"),
         ("site/uk/index.html", "site/uk/index.tpl.html", "en"),
     ):
-        if (ROOT / src).exists():
+        if (ROOT / src).exists() and (outreach or not out.startswith("outreach/")):
             docs[out] = tpl(src, lang)
     return docs
 

@@ -7,10 +7,10 @@ Version 0.2, 17 October 2026. Changes since version 0.1 are described in section
 ## 1. Summary
 
 1. **Existing open-source tools do not meet the thresholds in either language.** The best tool for Russian, pii-guard: structured identifiers 97.7% [96.1; 99.0] undetermined, borderline on the external datasets. The best tool for UK English, GLiNER Guard Omni: structured identifiers 96.4% [95.7; 97.1] not met, leaks 4.0% [3.4; 4.8] not met; it has no restore step of its own.
-2. **Every existing tool leaks on documents.** On held-out set 4 (1,000 documents per language) a leak remains in 53.3% of Russian documents with pii-guard and in 55.3% of UK documents with GLiNER Guard Omni. The other tools leak more often (section 6).
-3. **pii-roundtrip, a layer over pii-guard and GLiNER Guard, on held-out set 4: Russian: met: identifiers, names and addresses, leaks; undetermined: restoration; UK English: met: identifiers, names and addresses, leaks, restoration.** Leaks: 0.2% [0.1; 0.7] met for Russian and 0.9% [0.5; 1.7] met for UK English.
-4. **The high recall does not come from masking more text.** The share of masked fragments that contain personal data on held-out set 4 is 98.5% [98.4; 98.6] for Russian and 99.8% [99.8; 99.9] for UK English (section 5).
-5. **The LLMs altered pii-guard's attribute tags more often than plain placeholders, and pii-guard's strict restorer turned the alterations into losses.** On held-out set 4, altered labels appeared in 3 of 53 answers with pii-guard tags under its own prompt (3 documents) and in 6 of 74 under the generic prompt (5 documents). Plain `[TYPE_n]` placeholders over the same detection: 1 of 80 and 0 of 80 answers. pii-guard's strict restorer does not recognise an altered tag and scrubs it, sometimes together with the next intact tag: under its own prompt 12 placeholder occurrences failed, 2 of them intact neighbours, in 3 answers; under the generic prompt 90 occurrences, 1 of them neighbours, in 5 answers. Plain placeholders were restored without errors. Lenient parsing by the label's type and number was written after these failures had been found; it restores the same pii-guard answers in full. This shows that the losses arise in restoration, but does not change the fact that attribute tags were altered more often. Sample: 20 documents per language, two tasks, two LLMs (appendix of the Russian report, П3).
+2. **Every existing tool leaks on documents.** On held-out set 5 (1,000 documents per language) a leak remains in 53.2% of Russian documents with pii-guard and in 56.7% of UK documents with GLiNER Guard Omni. The other tools leak more often (section 6).
+3. **pii-roundtrip, a layer over pii-guard and GLiNER Guard, on held-out set 5: Russian: met: identifiers, names and addresses, leaks, restoration; UK English: met: identifiers, names and addresses, leaks, restoration.** Leaks: 0.2% [0.1; 0.7] met for Russian and 0.7% [0.3; 1.4] met for UK English.
+4. **The high recall does not come from masking more text.** The share of masked fragments that contain personal data on held-out set 5 is 98.5% [98.3; 98.6] for Russian and 99.8% [99.8; 99.9] for UK English (section 5).
+5. **pii-guard's strict restorer loses an altered label and lenient restoration recovers it; whether the LLMs alter attribute tags more often, the two sets answer differently.** On held-out set 5 alterations were rare in both formats: pii-guard tags were altered in 0 of 55 answers under its own prompt and in 1 of 66 under the generic prompt; plain `[TYPE_n]` placeholders over the same detection in 0 of 80 and 1 of 80. On held-out set 4 (version 0.2.2) the tags were altered more often: 3 of 53 and 6 of 74 answers against 1 of 80 and 0 of 80 for plain placeholders, so I do not consider a difference between the formats established. What holds on both sets: pii-guard's strict restorer does not recognise an altered tag and scrubs it; on set 5 under the generic prompt 29 altered occurrences failed and 3 more without an alteration, under its own prompt 0 altered and 1 without an alteration. Lenient parsing by the label's type and number, written after such failures were found on set 4, restores the same answers in full. Engine 0.3 also restores altered labels: on the UK part of set 5 there were 47 of them across both LLMs, with 0 failures. Sample: 190 documents per language for pii-roundtrip and 20 for the other configurations, two tasks, two LLMs (appendix of the Russian report, П3).
 
 ## 2. Thresholds
 
@@ -38,7 +38,7 @@ One rule for every tool and threshold:
 - **Leak:** an original value remains in the cleaned text. A number is matched across any spaces and hyphens, a number in words by its spelling. A surname is matched in every case form. A first name or patronymic is matched case-sensitively and counts only if it occurs more often after masking than in the source text outside personal data (the month June is not a leak of the name June).
 - **Masking precision:** the share of masked fragments that touch annotated personal data. There is no threshold. The measure shows that high recall does not come from masking everything. Annotation of the external datasets is incomplete, so precision there is understated for every tool alike.
 - **Round trip:**
-  - 20 documents per language from held-out set 4, a summary and a reply letter for each;
+  - documents of held-out set 5, a summary and a reply letter for each: 190 documents per language for pii-roundtrip (380 answers per model, so that a run without errors can confirm the 99% threshold) and 20 documents per language for the other configurations (40 answers);
   - qwen3.5:9b and gemma4:12b at temperature 0;
   - placeholders issued by the tool and placeholders invented by the LLM are counted separately;
   - intervals are bootstrapped over answers.
@@ -49,20 +49,20 @@ The best tool for each language is chosen on the external datasets without its h
 
 Russian, pii-guard:
 
-| Threshold | External datasets | Held-out set 4 |
+| Threshold | External datasets | Held-out set 5 |
 |---|---|---|
-| Structured identifiers ≥ 99% | 97.7% [96.1; 99.0] undetermined, borderline | 92.3% [91.6; 92.9] not met |
-| Names, addresses, organisations ≥ 95% | 99.5% [98.7; 100.0] met | 73.1% [72.5; 73.7] not met |
-| Leaks ≤ 2% | 0.7% [0.4; 1.2] met | 53.3% [50.2; 56.4] not met |
-| Restoration ≥ 99% (worse model) | not measured | 97.7% [93.5; 100.0] undetermined |
+| Structured identifiers ≥ 99% | 97.7% [96.1; 99.0] undetermined, borderline | 92.4% [91.6; 93.1] not met |
+| Names, addresses, organisations ≥ 95% | 99.5% [98.7; 100.0] met | 73.8% [73.3; 74.4] not met |
+| Leaks ≤ 2% | 0.7% [0.4; 1.2] met | 53.2% [50.1; 56.3] not met |
+| Restoration ≥ 99% (worse model) | not measured | 99.8% [99.4; 100.0] met |
 
 UK English, GLiNER Guard Omni:
 
-| Threshold | External datasets | Held-out set 4 |
+| Threshold | External datasets | Held-out set 5 |
 |---|---|---|
-| Structured identifiers ≥ 99% | 96.4% [95.7; 97.1] not met | 95.9% [95.5; 96.4] not met |
-| Names, addresses, organisations ≥ 95% | 98.7% [98.2; 99.1] met | 88.8% [88.2; 89.3] not met |
-| Leaks ≤ 2% | 4.0% [3.4; 4.8] not met | 55.3% [52.2; 58.4] not met |
+| Structured identifiers ≥ 99% | 96.4% [95.7; 97.1] not met | 95.3% [94.8; 95.8] not met |
+| Names, addresses, organisations ≥ 95% | 98.7% [98.2; 99.1] met | 88.9% [88.3; 89.5] not met |
+| Leaks ≤ 2% | 4.0% [3.4; 4.8] not met | 56.7% [53.6; 59.7] not met |
 | Restoration ≥ 99% | no restore step, not met | no restore step, not met |
 
 The Russian external datasets contain no organisations, so for them the names row covers names and addresses. NHS numbers in the external UK dataset were injected into US-style contexts ("health plan beneficiary number"), which lowers identifier recall for every tool.
@@ -73,25 +73,25 @@ Comparison with the best existing tool on the same data.
 
 Russian:
 
-| Threshold | pii-guard, external | pii-roundtrip, same external sets | pii-guard, held-out set 4 | pii-roundtrip, held-out set 4 |
+| Threshold | pii-guard, external | pii-roundtrip, same external sets | pii-guard, held-out set 5 | pii-roundtrip, held-out set 5 |
 |---|---|---|---|---|
-| Structured identifiers ≥ 99% | 97.7% [96.1; 99.0] undetermined, borderline | 100.0% [100.0; 100.0], for reference | 92.3% [91.6; 92.9] not met | 100.0% [100.0; 100.0] met |
-| Names, addresses, organisations ≥ 95% | 99.5% [98.7; 100.0] met | 100.0% [100.0; 100.0], for reference | 73.1% [72.5; 73.7] not met | 99.8% [99.7; 99.9] met |
-| Documents with a leak ≤ 2% | 0.7% [0.4; 1.2] met | 0.0% [0.0; 0.2], for reference | 53.3% [50.2; 56.4] not met | 0.2% [0.1; 0.7] met |
-| Restoration ≥ 99% (worse of two LLMs) | not measured | not measured | 97.7% [93.5; 100.0] undetermined | 100.0% [91.2; 100.0] undetermined |
-| Masked fragments that contain personal data | 96.5% [95.5; 97.5], no threshold | 89.2% [87.8; 90.7], no threshold | 87.6% [87.5; 87.7], no threshold | 98.5% [98.4; 98.6], no threshold |
+| Structured identifiers ≥ 99% | 97.7% [96.1; 99.0] undetermined, borderline | 100.0% [100.0; 100.0], for reference | 92.4% [91.6; 93.1] not met | 100.0% [100.0; 100.0] met |
+| Names, addresses, organisations ≥ 95% | 99.5% [98.7; 100.0] met | 100.0% [100.0; 100.0], for reference | 73.8% [73.3; 74.4] not met | 99.7% [99.6; 99.8] met |
+| Documents with a leak ≤ 2% | 0.7% [0.4; 1.2] met | 0.0% [0.0; 0.2], for reference | 53.2% [50.1; 56.3] not met | 0.2% [0.1; 0.7] met |
+| Restoration ≥ 99% (worse of two LLMs) | not measured | not measured | 99.8% [99.4; 100.0] met | 99.9% [99.9; 100.0] met |
+| Masked fragments that contain personal data | 96.5% [95.5; 97.5], no threshold | 89.2% [87.8; 90.7], no threshold | 87.6% [87.5; 87.7], no threshold | 98.5% [98.3; 98.6], no threshold |
 
 External sets: hivetrace_pii_bench.
 
 UK English:
 
-| Threshold | GLiNER Guard Omni, external | pii-roundtrip, same external sets | GLiNER Guard Omni, held-out set 4 | pii-roundtrip, held-out set 4 |
+| Threshold | GLiNER Guard Omni, external | pii-roundtrip, same external sets | GLiNER Guard Omni, held-out set 5 | pii-roundtrip, held-out set 5 |
 |---|---|---|---|---|
-| Structured identifiers ≥ 99% | 96.4% [95.7; 97.1] not met | 100.0% [99.9; 100.0] met | 95.9% [95.5; 96.4] not met | 100.0% [100.0; 100.0] met |
-| Names, addresses, organisations ≥ 95% | 98.7% [98.2; 99.1] met | 98.1% [97.6; 98.6] met | 88.8% [88.2; 89.3] not met | 98.7% [98.5; 98.9] met |
-| Documents with a leak ≤ 2% | 4.0% [3.4; 4.8] not met | 0.9% [0.6; 1.3] met | 55.3% [52.2; 58.4] not met | 0.9% [0.5; 1.7] met |
-| Restoration ≥ 99% (worse of two LLMs) | not measured | not measured | no restore step, not met | 99.6% [99.2; 99.9] met |
-| Masked fragments that contain personal data | 89.3% [88.8; 89.9], no threshold | 93.4% [92.8; 93.9], no threshold | 94.7% [94.6; 94.9], no threshold | 99.8% [99.8; 99.9], no threshold |
+| Structured identifiers ≥ 99% | 96.4% [95.7; 97.1] not met | 100.0% [99.9; 100.0] met | 95.3% [94.8; 95.8] not met | 100.0% [100.0; 100.0] met |
+| Names, addresses, organisations ≥ 95% | 98.7% [98.2; 99.1] met | 98.1% [97.6; 98.6] met | 88.9% [88.3; 89.5] not met | 98.9% [98.7; 99.1] met |
+| Documents with a leak ≤ 2% | 4.0% [3.4; 4.8] not met | 0.9% [0.6; 1.3] met | 56.7% [53.6; 59.7] not met | 0.7% [0.3; 1.4] met |
+| Restoration ≥ 99% (worse of two LLMs) | not measured | not measured | no restore step, not met | 100.0% [99.0; 100.0] met |
+| Masked fragments that contain personal data | 89.3% [88.8; 89.9], no threshold | 93.4% [92.8; 93.9], no threshold | 94.8% [94.6; 94.9], no threshold | 99.8% [99.8; 99.9], no threshold |
 
 External sets: nemotron_uk, nemotron_uk_ids.
 
@@ -108,22 +108,22 @@ What the engine adds to its components:
 - an encrypted vault and offline operation.
 
 Caveats:
-- The engine's components were released by the authors of both Russian external datasets, and two changes of version 0.1 followed error analysis on these datasets. For the engine the Russian external datasets are therefore not an independent check. Held-out set 4 is.
-- The changes of version 0.2 followed error analysis on the development set and on held-out sets 1 to 3. The external datasets and set 4 were not used for tuning. One caveat: I saw examples of over-masking on hivetrace before writing general filters (a number without digits, an organisation of lower-case dictionary words, a one-word lower-case "name" the dictionary does not know as a name). The filters contain no words from those examples, but precision on hivetrace can no longer be taken as fully independent.
+- The engine's components were released by the authors of both Russian external datasets, and two changes of version 0.1 followed error analysis on these datasets. For the engine the Russian external datasets are therefore not an independent check. Held-out set 5 is.
+- The changes of version 0.2 followed error analysis on the development set and on held-out sets 1 to 3. The external datasets and sets 4 and 5 were not used for tuning. The change of version 0.3 (restoring a placeholder with a lost bracket or with words before the label) followed an analysis of the answers of set 5 and was tested on synthetic examples; set 5 was generated and published with the rules before the first run. One caveat: I saw examples of over-masking on hivetrace before writing general filters (a number without digits, an organisation of lower-case dictionary words, a one-word lower-case "name" the dictionary does not know as a name). The filters contain no words from those examples, but precision on hivetrace can no longer be taken as fully independent.
 - On short Russian messages of hivetrace the engine masks more non-personal text than pii-guard: 89.2% of its masked fragments contain personal data, against 96.5% for pii-guard. These are errors of the GLiNER component on conversational text, which takes ordinary words and slang for personal data. On documents the engine has the highest precision among the tools that find names.
-- The engine was developed on documents of the same generator as held-out set 4. The set protects against tuning to specific documents, not to the generator's style.
+- The engine was developed on documents of the same generator as held-out set 5. The set protects against tuning to specific documents, not to the generator's style.
 
 ## 6. Documents: where the real gap is
 
-Held-out set 4, share of documents with a leak:
+Held-out set 5, share of documents with a leak:
 
 | Tool | Russian | UK English |
 |---|---|---|
-| **pii-roundtrip** | **0.2% [0.1; 0.7]** | **0.9% [0.5; 1.7]** |
-| pii-guard | 53.3% [50.2; 56.4] | n/a |
-| GLiNER Guard Omni | 99.8% [99.3; 99.9] | 55.3% [52.2; 58.4] |
-| Presidio | 85.3% [83.0; 87.4] | 57.5% [54.4; 60.5] |
-| OpenAI privacy-filter | 95.0% [93.5; 96.2] | 81.3% [78.8; 83.6] |
+| **pii-roundtrip** | **0.2% [0.1; 0.7]** | **0.7% [0.3; 1.4]** |
+| pii-guard | 53.2% [50.1; 56.3] | n/a |
+| GLiNER Guard Omni | 99.7% [99.1; 99.9] | 56.7% [53.6; 59.7] |
+| Presidio | 86.3% [84.0; 88.3] | 56.9% [53.8; 59.9] |
+| OpenAI privacy-filter | 95.8% [94.4; 96.9] | 80.6% [78.0; 82.9] |
 | Prompt Anonymizer | n/a | 100.0% [99.6; 100.0] |
 | Regular expressions with checksums | 100.0% [99.6; 100.0] | 100.0% [99.6; 100.0] |
 
@@ -131,11 +131,11 @@ Share of masked fragments that contain personal data, same set:
 
 | Tool | Russian | UK English |
 |---|---|---|
-| pii-roundtrip | 98.5% [98.4; 98.6] | 99.8% [99.8; 99.9] |
+| pii-roundtrip | 98.5% [98.3; 98.6] | 99.8% [99.8; 99.9] |
 | pii-guard | 87.6% [87.5; 87.7] | n/a |
-| GLiNER Guard Omni | 77.0% [76.8; 77.3] | 94.7% [94.6; 94.9] |
-| Presidio | 76.1% [75.9; 76.4] | 79.0% [78.7; 79.2] |
-| OpenAI privacy-filter | 81.3% [81.2; 81.4] | 93.1% [92.9; 93.3] |
+| GLiNER Guard Omni | 77.0% [76.7; 77.2] | 94.8% [94.6; 94.9] |
+| Presidio | 76.0% [75.8; 76.3] | 79.1% [78.9; 79.4] |
+| OpenAI privacy-filter | 81.2% [81.1; 81.3] | 93.0% [92.8; 93.2] |
 | Prompt Anonymizer | n/a | 99.0% [98.9; 99.1] |
 | Regular expressions with checksums | 100.0% [100.0; 100.0] | 100.0% [100.0; 100.0] |
 
@@ -148,11 +148,11 @@ Why the existing tools leak:
 ## 7. Conclusion
 
 - **Existing tools.** The technical gap is confirmed for both languages (appendix of the Russian report, П5).
-- **pii-roundtrip.** Verdicts on the independent held-out set 4: Russian: met: identifiers, names and addresses, leaks; undetermined: restoration; UK English: met: identifiers, names and addresses, leaks, restoration. Leaks of 0.2% [0.1; 0.7] met (RU) and 0.9% [0.5; 1.7] met (UK) compare with 53.3% [50.2; 56.4] for pii-guard and 55.3% [52.2; 58.4] for GLiNER Guard Omni on the same documents.
+- **pii-roundtrip.** Verdicts on the independent held-out set 5: Russian: met: identifiers, names and addresses, leaks, restoration; UK English: met: identifiers, names and addresses, leaks, restoration. Leaks of 0.2% [0.1; 0.7] met (RU) and 0.7% [0.3; 1.4] met (UK) compare with 53.2% [50.1; 56.3] for pii-guard and 56.7% [53.6; 59.7] for GLiNER Guard Omni on the same documents.
 
 ## 8. Changes in version 0.2
 
-- **Held-out sets 3 and 4.** Ten times larger than the earlier sets, so that leaks can be judged against the 2% threshold. Set 3 checked a candidate of version 0.2, set 4 checks the release.
+- **Held-out sets 3 and 4.** Ten times larger than the earlier sets, so that leaks can be judged against the 2% threshold. Set 3 checked a candidate of version 0.2, set 5 checks the release.
 - **Comparison on the same data.** In version 0.1 a competitor was scored without its home dataset, while the engine was scored on all external datasets. Now both are scored on the same datasets.
 - **Masking precision** is reported for every tool.
 - **Leak metric fixed.** A name that is also an ordinary word of the text (June in a date) is no longer a leak if that word occurred in the text outside personal data. The rule is the same for every tool.
@@ -167,4 +167,4 @@ Why the existing tools leak:
 - **Synthetic documents** come from this project's own generator. The competing tools have not seen them. The engine was developed on them, so the held-out sets protect only against tuning to specific documents, not to the generator's style.
 - **redmadrobot** contains many numbers with an invalid checksum (218 of 223 SNILS) and numbers in words.
 - **Nemotron-PII** has annotation noise (for example, "their email" annotated as an e-mail address).
-- **Round trip:** 20 documents per language, two local models. Larger hosted models may alter placeholders differently.
+- **Round trip:** 190 documents per language for pii-roundtrip and 20 for the other configurations, two local models. Larger hosted models may alter placeholders differently.

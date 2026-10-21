@@ -1,0 +1,1964 @@
+{
+ "pii_guard": {
+  "ru/qwen3.5:9b": {
+   "answers": 40,
+   "answers_with_labels": 15,
+   "labels_in_answer": 542,
+   "exact_share": 1.0,
+   "altered": 0,
+   "altered_recoverable": 0,
+   "invented": 0,
+   "restore_rate": 0.9981549815498155,
+   "restore_ci": [
+    0.9936842105263158,
+    1.0
+   ],
+   "restore_ci_method": "bootstrap по ответам, 2000 повторов",
+   "residual_labels": 0,
+   "scrubbed": 0,
+   "occurrences_failed": 1,
+   "failed_altered": 0,
+   "failed_intact": 1,
+   "answers_with_altered": 0,
+   "docs_with_altered": [],
+   "answers_with_failure": 1,
+   "docs_with_failure": [
+    "ru-medical-195"
+   ],
+   "values_lost": 1,
+   "used_values": 539,
+   "docs_with_input_leak": 10,
+   "examples": [
+    {
+     "id": "ru-medical-195",
+     "task": "reply",
+     "lost_examples": [
+      "Пахомов Иисдоры Герасимович"
+     ],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": []
+    }
+   ]
+  },
+  "ru/gemma4:12b": {
+   "answers": 40,
+   "answers_with_labels": 40,
+   "labels_in_answer": 1564,
+   "exact_share": 1.0,
+   "altered": 0,
+   "altered_recoverable": 0,
+   "invented": 2,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "restore_ci_method": "bootstrap по ответам, 2000 повторов",
+   "residual_labels": 0,
+   "scrubbed": 2,
+   "occurrences_failed": 0,
+   "failed_altered": 0,
+   "failed_intact": 0,
+   "answers_with_altered": 0,
+   "docs_with_altered": [],
+   "answers_with_failure": 0,
+   "docs_with_failure": [],
+   "values_lost": 0,
+   "used_values": 1519,
+   "docs_with_input_leak": 10,
+   "examples": [
+    {
+     "id": "ru-contract-126",
+     "task": "summary",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "<PII type=\"EMAIL_ADDRESS\" id=\"5\" />"
+     ]
+    },
+    {
+     "id": "ru-contract-194",
+     "task": "summary",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "<PII type=\"EMAIL_ADDRESS\" id=\"5\" />"
+     ]
+    }
+   ]
+  }
+ },
+ "pii_guard~tolerant": {
+  "ru/qwen3.5:9b": {
+   "answers": 40,
+   "answers_with_labels": 15,
+   "labels_in_answer": 542,
+   "exact_share": 1.0,
+   "altered": 0,
+   "altered_recoverable": 0,
+   "invented": 0,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "restore_ci_method": "bootstrap по ответам, 2000 повторов",
+   "residual_labels": 0,
+   "scrubbed": 0,
+   "occurrences_failed": 0,
+   "failed_altered": 0,
+   "failed_intact": 0,
+   "answers_with_altered": 0,
+   "docs_with_altered": [],
+   "answers_with_failure": 0,
+   "docs_with_failure": [],
+   "values_lost": 0,
+   "used_values": 539,
+   "docs_with_input_leak": 10,
+   "examples": []
+  },
+  "ru/gemma4:12b": {
+   "answers": 40,
+   "answers_with_labels": 40,
+   "labels_in_answer": 1564,
+   "exact_share": 1.0,
+   "altered": 0,
+   "altered_recoverable": 0,
+   "invented": 2,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "restore_ci_method": "bootstrap по ответам, 2000 повторов",
+   "residual_labels": 0,
+   "scrubbed": 0,
+   "occurrences_failed": 0,
+   "failed_altered": 0,
+   "failed_intact": 0,
+   "answers_with_altered": 0,
+   "docs_with_altered": [],
+   "answers_with_failure": 0,
+   "docs_with_failure": [],
+   "values_lost": 0,
+   "used_values": 1519,
+   "docs_with_input_leak": 10,
+   "examples": [
+    {
+     "id": "ru-contract-126",
+     "task": "summary",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "<PII type=\"EMAIL_ADDRESS\" id=\"5\" />"
+     ]
+    },
+    {
+     "id": "ru-contract-194",
+     "task": "summary",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "<PII type=\"EMAIL_ADDRESS\" id=\"5\" />"
+     ]
+    }
+   ]
+  }
+ },
+ "pii_guard@generic": {
+  "ru/qwen3.5:9b": {
+   "answers": 40,
+   "answers_with_labels": 26,
+   "labels_in_answer": 1060,
+   "exact_share": 1.0,
+   "altered": 0,
+   "altered_recoverable": 0,
+   "invented": 18,
+   "restore_rate": 0.9971698113207547,
+   "restore_ci": [
+    0.9920870425321464,
+    1.0
+   ],
+   "restore_ci_method": "bootstrap по ответам, 2000 повторов",
+   "residual_labels": 0,
+   "scrubbed": 17,
+   "occurrences_failed": 3,
+   "failed_altered": 0,
+   "failed_intact": 3,
+   "answers_with_altered": 0,
+   "docs_with_altered": [],
+   "answers_with_failure": 2,
+   "docs_with_failure": [
+    "ru-medical-195"
+   ],
+   "values_lost": 2,
+   "used_values": 966,
+   "docs_with_input_leak": 10,
+   "examples": [
+    {
+     "id": "ru-certificate-034",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "<PII type=\"ORGANIZATION\" id=\"1\" />",
+      "<PII type=\"LOCATION\" id=\"10\" />",
+      "<PII type=\"LOCATION\" id=\"11\" />"
+     ]
+    },
+    {
+     "id": "ru-certificate-195",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "<PII type=\"ORGANIZATION\" id=\"1\" />"
+     ]
+    },
+    {
+     "id": "ru-certificate-016",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "<PII type=\"POSTAL_CODE\" ",
+      "<PII type=\"NUMBER\" id=\"1\" />",
+      "<PII type=\"DATE_TIME\" id=\"10\" />"
+     ]
+    },
+    {
+     "id": "ru-letter-124",
+     "task": "summary",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "<PII type=\"PERSON\" ",
+      "<PII type=\"PASSPORT\" "
+     ]
+    },
+    {
+     "id": "ru-letter-124",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "<PII type=\"DATE_TIME\" id=\"8\" />",
+      "<PII type=\"DATE_TIME\" id=\"9\" />"
+     ]
+    },
+    {
+     "id": "ru-letter-007",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "<PII type=\"DATE_TIME\" id=\"8\" />"
+     ]
+    },
+    {
+     "id": "ru-medical-195",
+     "task": "summary",
+     "lost_examples": [
+      "Пахомов Иисдоры Герасимович"
+     ],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": []
+    },
+    {
+     "id": "ru-medical-195",
+     "task": "reply",
+     "lost_examples": [
+      "Пахомов Иисдоры Герасимович"
+     ],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": []
+    }
+   ]
+  },
+  "ru/gemma4:12b": {
+   "answers": 40,
+   "answers_with_labels": 40,
+   "labels_in_answer": 1703,
+   "exact_share": 0.9829712272460364,
+   "altered": 29,
+   "altered_recoverable": 0,
+   "invented": 3,
+   "restore_rate": 0.9829712272460364,
+   "restore_ci": [
+    0.9459962756052142,
+    1.0
+   ],
+   "restore_ci_method": "bootstrap по ответам, 2000 повторов",
+   "residual_labels": 29,
+   "scrubbed": 3,
+   "occurrences_failed": 29,
+   "failed_altered": 29,
+   "failed_intact": 0,
+   "answers_with_altered": 1,
+   "docs_with_altered": [
+    "ru-contract-194"
+   ],
+   "answers_with_failure": 1,
+   "docs_with_failure": [
+    "ru-contract-194"
+   ],
+   "values_lost": 23,
+   "used_values": 1610,
+   "docs_with_input_leak": 10,
+   "examples": [
+    {
+     "id": "ru-certificate-034",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "<PII type=\"PERSON\" "
+     ]
+    },
+    {
+     "id": "ru-contract-126",
+     "task": "summary",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "<PII type=\"EMAIL_ADDRESS\" id=\"5\" />"
+     ]
+    },
+    {
+     "id": "ru-contract-194",
+     "task": "summary",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "<PII type=\"EMAIL_ADDRESS\" id=\"5\" />"
+     ]
+    },
+    {
+     "id": "ru-contract-194",
+     "task": "reply",
+     "lost_examples": [
+      "367178026649",
+      "79169384368",
+      "7558974308"
+     ],
+     "residual_examples": [
+      "<PII type=\"PERSON\" gender=\"male\" id=\"1\">",
+      "<PII type=\"PERSON\" gender=\"male\" id=\"2\">",
+      "<PII type=\"PERSON\" gender=\"male\" id=\"1\">"
+     ],
+     "altered_examples": [
+      "<PII type=\"PERSON\" gender=\"male\" id=\"1\">",
+      "<PII type=\"PERSON\" gender=\"male\" id=\"2\">",
+      "<PII type=\"PERSON\" gender=\"male\" id=\"1\">"
+     ],
+     "invented_examples": []
+    }
+   ]
+  }
+ },
+ "pii_guard@generic~tolerant": {
+  "ru/qwen3.5:9b": {
+   "answers": 40,
+   "answers_with_labels": 26,
+   "labels_in_answer": 1060,
+   "exact_share": 1.0,
+   "altered": 0,
+   "altered_recoverable": 0,
+   "invented": 18,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "restore_ci_method": "bootstrap по ответам, 2000 повторов",
+   "residual_labels": 0,
+   "scrubbed": 0,
+   "occurrences_failed": 0,
+   "failed_altered": 0,
+   "failed_intact": 0,
+   "answers_with_altered": 0,
+   "docs_with_altered": [],
+   "answers_with_failure": 0,
+   "docs_with_failure": [],
+   "values_lost": 0,
+   "used_values": 966,
+   "docs_with_input_leak": 10,
+   "examples": [
+    {
+     "id": "ru-certificate-034",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "<PII type=\"ORGANIZATION\" id=\"1\" />",
+      "<PII type=\"LOCATION\" id=\"10\" />",
+      "<PII type=\"LOCATION\" id=\"11\" />"
+     ]
+    },
+    {
+     "id": "ru-certificate-195",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "<PII type=\"ORGANIZATION\" id=\"1\" />"
+     ]
+    },
+    {
+     "id": "ru-certificate-016",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "<PII type=\"POSTAL_CODE\" ",
+      "<PII type=\"NUMBER\" id=\"1\" />",
+      "<PII type=\"DATE_TIME\" id=\"10\" />"
+     ]
+    },
+    {
+     "id": "ru-letter-124",
+     "task": "summary",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "<PII type=\"PERSON\" ",
+      "<PII type=\"PASSPORT\" "
+     ]
+    },
+    {
+     "id": "ru-letter-124",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "<PII type=\"DATE_TIME\" id=\"8\" />",
+      "<PII type=\"DATE_TIME\" id=\"9\" />"
+     ]
+    },
+    {
+     "id": "ru-letter-007",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "<PII type=\"DATE_TIME\" id=\"8\" />"
+     ]
+    }
+   ]
+  },
+  "ru/gemma4:12b": {
+   "answers": 40,
+   "answers_with_labels": 40,
+   "labels_in_answer": 1703,
+   "exact_share": 0.9829712272460364,
+   "altered": 29,
+   "altered_recoverable": 29,
+   "invented": 3,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "restore_ci_method": "bootstrap по ответам, 2000 повторов",
+   "residual_labels": 0,
+   "scrubbed": 0,
+   "occurrences_failed": 0,
+   "failed_altered": 0,
+   "failed_intact": 0,
+   "answers_with_altered": 1,
+   "docs_with_altered": [
+    "ru-contract-194"
+   ],
+   "answers_with_failure": 0,
+   "docs_with_failure": [],
+   "values_lost": 0,
+   "used_values": 1610,
+   "docs_with_input_leak": 10,
+   "examples": [
+    {
+     "id": "ru-certificate-034",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "<PII type=\"PERSON\" "
+     ]
+    },
+    {
+     "id": "ru-contract-126",
+     "task": "summary",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "<PII type=\"EMAIL_ADDRESS\" id=\"5\" />"
+     ]
+    },
+    {
+     "id": "ru-contract-194",
+     "task": "summary",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "<PII type=\"EMAIL_ADDRESS\" id=\"5\" />"
+     ]
+    },
+    {
+     "id": "ru-contract-194",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "<PII type=\"PERSON\" gender=\"male\" id=\"1\">",
+      "<PII type=\"PERSON\" gender=\"male\" id=\"2\">",
+      "<PII type=\"PERSON\" gender=\"male\" id=\"1\">"
+     ],
+     "invented_examples": []
+    }
+   ]
+  }
+ },
+ "pii_guard+placeholders": {
+  "ru/qwen3.5:9b": {
+   "answers": 40,
+   "answers_with_labels": 40,
+   "labels_in_answer": 1961,
+   "exact_share": 1.0,
+   "altered": 0,
+   "altered_recoverable": 0,
+   "invented": 4,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "restore_ci_method": "bootstrap по ответам, 2000 повторов",
+   "residual_labels": 0,
+   "scrubbed": 0,
+   "occurrences_failed": 0,
+   "failed_altered": 0,
+   "failed_intact": 0,
+   "answers_with_altered": 0,
+   "docs_with_altered": [],
+   "answers_with_failure": 0,
+   "docs_with_failure": [],
+   "values_lost": 0,
+   "used_values": 1705,
+   "docs_with_input_leak": 10,
+   "examples": [
+    {
+     "id": "ru-certificate-034",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[DATE_8]"
+     ]
+    },
+    {
+     "id": "ru-certificate-195",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[NHS_1]"
+     ]
+    },
+    {
+     "id": "ru-certificate-016",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[DATE_10]"
+     ]
+    },
+    {
+     "id": "ru-hr-097",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[DOC_NUMBER_1]"
+     ]
+    }
+   ]
+  },
+  "ru/gemma4:12b": {
+   "answers": 40,
+   "answers_with_labels": 40,
+   "labels_in_answer": 2168,
+   "exact_share": 1.0,
+   "altered": 0,
+   "altered_recoverable": 0,
+   "invented": 0,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "restore_ci_method": "bootstrap по ответам, 2000 повторов",
+   "residual_labels": 0,
+   "scrubbed": 0,
+   "occurrences_failed": 0,
+   "failed_altered": 0,
+   "failed_intact": 0,
+   "answers_with_altered": 0,
+   "docs_with_altered": [],
+   "answers_with_failure": 0,
+   "docs_with_failure": [],
+   "values_lost": 0,
+   "used_values": 2027,
+   "docs_with_input_leak": 10,
+   "examples": []
+  }
+ },
+ "pii_guard+placeholders@generic": {
+  "ru/qwen3.5:9b": {
+   "answers": 40,
+   "answers_with_labels": 40,
+   "labels_in_answer": 1956,
+   "exact_share": 0.9979550102249489,
+   "altered": 4,
+   "altered_recoverable": 4,
+   "invented": 8,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "restore_ci_method": "bootstrap по ответам, 2000 повторов",
+   "residual_labels": 0,
+   "scrubbed": 0,
+   "occurrences_failed": 0,
+   "failed_altered": 0,
+   "failed_intact": 0,
+   "answers_with_altered": 1,
+   "docs_with_altered": [
+    "ru-hr-097"
+   ],
+   "answers_with_failure": 0,
+   "docs_with_failure": [],
+   "values_lost": 0,
+   "used_values": 1770,
+   "docs_with_input_leak": 10,
+   "examples": [
+    {
+     "id": "ru-certificate-034",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[DATE_8]"
+     ]
+    },
+    {
+     "id": "ru-certificate-145",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[DATE_8]"
+     ]
+    },
+    {
+     "id": "ru-certificate-195",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[DATE_10]",
+      "[DATE_11]"
+     ]
+    },
+    {
+     "id": "ru-hr-097",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "PASSPORT_RU_4",
+      "DATE_9",
+      "SNILS_3"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "ru-letter-024",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[PERSON_25]",
+      "[INN_5]",
+      "[PERSON_25]"
+     ]
+    }
+   ]
+  },
+  "ru/gemma4:12b": {
+   "answers": 40,
+   "answers_with_labels": 40,
+   "labels_in_answer": 2297,
+   "exact_share": 1.0,
+   "altered": 0,
+   "altered_recoverable": 0,
+   "invented": 0,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "restore_ci_method": "bootstrap по ответам, 2000 повторов",
+   "residual_labels": 0,
+   "scrubbed": 0,
+   "occurrences_failed": 0,
+   "failed_altered": 0,
+   "failed_intact": 0,
+   "answers_with_altered": 0,
+   "docs_with_altered": [],
+   "answers_with_failure": 0,
+   "docs_with_failure": [],
+   "values_lost": 0,
+   "used_values": 2113,
+   "docs_with_input_leak": 10,
+   "examples": []
+  }
+ },
+ "prompt_anonymizer": {
+  "uk/qwen3.5:9b": {
+   "answers": 40,
+   "answers_with_labels": 40,
+   "labels_in_answer": 923,
+   "exact_share": 1.0,
+   "altered": 0,
+   "altered_recoverable": 0,
+   "invented": 0,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "restore_ci_method": "bootstrap по ответам, 2000 повторов",
+   "residual_labels": 0,
+   "scrubbed": 0,
+   "occurrences_failed": 0,
+   "failed_altered": 0,
+   "failed_intact": 0,
+   "answers_with_altered": 0,
+   "docs_with_altered": [],
+   "answers_with_failure": 0,
+   "docs_with_failure": [],
+   "values_lost": 0,
+   "used_values": 844,
+   "docs_with_input_leak": 20,
+   "examples": []
+  },
+  "uk/gemma4:12b": {
+   "answers": 40,
+   "answers_with_labels": 40,
+   "labels_in_answer": 1132,
+   "exact_share": 1.0,
+   "altered": 0,
+   "altered_recoverable": 0,
+   "invented": 0,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "restore_ci_method": "bootstrap по ответам, 2000 повторов",
+   "residual_labels": 0,
+   "scrubbed": 0,
+   "occurrences_failed": 0,
+   "failed_altered": 0,
+   "failed_intact": 0,
+   "answers_with_altered": 0,
+   "docs_with_altered": [],
+   "answers_with_failure": 0,
+   "docs_with_failure": [],
+   "values_lost": 0,
+   "used_values": 995,
+   "docs_with_input_leak": 20,
+   "examples": []
+  }
+ },
+ "gliner_guard+placeholders": {
+  "uk/qwen3.5:9b": {
+   "answers": 40,
+   "answers_with_labels": 40,
+   "labels_in_answer": 1644,
+   "exact_share": 1.0,
+   "altered": 0,
+   "altered_recoverable": 0,
+   "invented": 1,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "restore_ci_method": "bootstrap по ответам, 2000 повторов",
+   "residual_labels": 0,
+   "scrubbed": 0,
+   "occurrences_failed": 0,
+   "failed_altered": 0,
+   "failed_intact": 0,
+   "answers_with_altered": 0,
+   "docs_with_altered": [],
+   "answers_with_failure": 0,
+   "docs_with_failure": [],
+   "values_lost": 0,
+   "used_values": 1499,
+   "docs_with_input_leak": 11,
+   "examples": [
+    {
+     "id": "uk-contract-126",
+     "task": "summary",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[NHS_1]"
+     ]
+    }
+   ]
+  },
+  "uk/gemma4:12b": {
+   "answers": 40,
+   "answers_with_labels": 40,
+   "labels_in_answer": 1923,
+   "exact_share": 0.9963598543941757,
+   "altered": 7,
+   "altered_recoverable": 4,
+   "invented": 4,
+   "restore_rate": 0.9984399375975039,
+   "restore_ci": [
+    0.9959204487506375,
+    1.0
+   ],
+   "restore_ci_method": "bootstrap по ответам, 2000 повторов",
+   "residual_labels": 3,
+   "scrubbed": 0,
+   "occurrences_failed": 3,
+   "failed_altered": 3,
+   "failed_intact": 0,
+   "answers_with_altered": 6,
+   "docs_with_altered": [
+    "uk-certificate-016",
+    "uk-certificate-034",
+    "uk-certificate-145",
+    "uk-certificate-195",
+    "uk-letter-007",
+    "uk-medical-155"
+   ],
+   "answers_with_failure": 2,
+   "docs_with_failure": [
+    "uk-letter-007",
+    "uk-medical-155"
+   ],
+   "values_lost": 0,
+   "used_values": 1692,
+   "docs_with_input_leak": 11,
+   "examples": [
+    {
+     "id": "uk-certificate-034",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "ORG_1]"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-145",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "ORG_1]"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-195",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "ORG_1]"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-016",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "ORG_1]"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-letter-053",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[DATE_2]"
+     ]
+    },
+    {
+     "id": "uk-letter-024",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[DATE_2]",
+      "[PERSON_11]"
+     ]
+    },
+    {
+     "id": "uk-letter-124",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[DATE_2]"
+     ]
+    },
+    {
+     "id": "uk-letter-007",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [
+      "[RECIPIENT_ADDRESS_1]",
+      "[RECIPIENT_ADDRESS_2]"
+     ],
+     "altered_examples": [
+      "[RECIPIENT_ADDRESS_1]",
+      "[RECIPIENT_ADDRESS_2]"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-medical-155",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [
+      "[ADDRESS_OF_ORG_1]"
+     ],
+     "altered_examples": [
+      "[ADDRESS_OF_ORG_1]"
+     ],
+     "invented_examples": []
+    }
+   ]
+  }
+ },
+ "gliner_guard+placeholders@generic": {
+  "uk/qwen3.5:9b": {
+   "answers": 40,
+   "answers_with_labels": 40,
+   "labels_in_answer": 1595,
+   "exact_share": 0.9981191222570532,
+   "altered": 3,
+   "altered_recoverable": 3,
+   "invented": 2,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "restore_ci_method": "bootstrap по ответам, 2000 повторов",
+   "residual_labels": 0,
+   "scrubbed": 0,
+   "occurrences_failed": 0,
+   "failed_altered": 0,
+   "failed_intact": 0,
+   "answers_with_altered": 1,
+   "docs_with_altered": [
+    "uk-certificate-016"
+   ],
+   "answers_with_failure": 0,
+   "docs_with_failure": [],
+   "values_lost": 0,
+   "used_values": 1418,
+   "docs_with_input_leak": 11,
+   "examples": [
+    {
+     "id": "uk-certificate-016",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "[ORG_1",
+      "[ORG_1",
+      "[ORG_1"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-medical-110",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[PHONE_3]",
+      "[EMAIL_2]"
+     ]
+    }
+   ]
+  },
+  "uk/gemma4:12b": {
+   "answers": 40,
+   "answers_with_labels": 40,
+   "labels_in_answer": 1900,
+   "exact_share": 0.9963157894736843,
+   "altered": 7,
+   "altered_recoverable": 5,
+   "invented": 2,
+   "restore_rate": 0.9989473684210526,
+   "restore_ci": [
+    0.9968017057569296,
+    1.0
+   ],
+   "restore_ci_method": "bootstrap по ответам, 2000 повторов",
+   "residual_labels": 2,
+   "scrubbed": 0,
+   "occurrences_failed": 2,
+   "failed_altered": 2,
+   "failed_intact": 0,
+   "answers_with_altered": 6,
+   "docs_with_altered": [
+    "uk-certificate-016",
+    "uk-certificate-034",
+    "uk-certificate-145",
+    "uk-certificate-195",
+    "uk-letter-007",
+    "uk-medical-195"
+   ],
+   "answers_with_failure": 1,
+   "docs_with_failure": [
+    "uk-letter-007"
+   ],
+   "values_lost": 0,
+   "used_values": 1679,
+   "docs_with_input_leak": 11,
+   "examples": [
+    {
+     "id": "uk-certificate-034",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "[ORG_1"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-145",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "[ORG_1"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-195",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "[ORG_1"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-016",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "[ORG_1"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-letter-053",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[DATE_2]"
+     ]
+    },
+    {
+     "id": "uk-letter-124",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[DATE_2]"
+     ]
+    },
+    {
+     "id": "uk-letter-007",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [
+      "[YOUR_ADDRESS_1]",
+      "[YOUR_ADDRESS_2]"
+     ],
+     "altered_examples": [
+      "[YOUR_ADDRESS_1]",
+      "[YOUR_ADDRESS_2]"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-medical-195",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "ORG_1]"
+     ],
+     "invented_examples": []
+    }
+   ]
+  }
+ },
+ "pii_roundtrip": {
+  "ru/qwen3.5:9b": {
+   "answers": 380,
+   "answers_with_labels": 380,
+   "labels_in_answer": 12274,
+   "exact_share": 0.9999185269675738,
+   "altered": 1,
+   "altered_recoverable": 1,
+   "invented": 78,
+   "restore_rate": 0.9991852696757373,
+   "restore_ci": [
+    0.9985828609536512,
+    0.9996767937944409
+   ],
+   "restore_ci_method": "bootstrap по ответам, 2000 повторов",
+   "residual_labels": 0,
+   "scrubbed": 0,
+   "occurrences_failed": 10,
+   "failed_altered": 0,
+   "failed_intact": 10,
+   "answers_with_altered": 1,
+   "docs_with_altered": [
+    "ru-hr-179"
+   ],
+   "answers_with_failure": 9,
+   "docs_with_failure": [
+    "ru-hr-043",
+    "ru-letter-129",
+    "ru-letter-131",
+    "ru-letter-145",
+    "ru-letter-155",
+    "ru-medical-165"
+   ],
+   "values_lost": 9,
+   "used_values": 11060,
+   "docs_with_input_leak": 0,
+   "examples": [
+    {
+     "id": "ru-certificate-145",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[ORG_2]",
+      "[ORG_2]"
+     ]
+    },
+    {
+     "id": "ru-certificate-016",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[ORG_2]",
+      "[ORG_2]"
+     ]
+    },
+    {
+     "id": "ru-certificate-126",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[ORG_2]",
+      "[ORG_2]"
+     ]
+    },
+    {
+     "id": "ru-certificate-115",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[ORG_2]",
+      "[ORG_2]"
+     ]
+    },
+    {
+     "id": "ru-certificate-097",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[ORG_2]",
+      "[ORG_2]"
+     ]
+    },
+    {
+     "id": "ru-certificate-053",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[ORG_2]",
+      "[ORG_2]",
+      "[ORG_2]"
+     ]
+    },
+    {
+     "id": "ru-certificate-124",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[ORG_2]",
+      "[ORG_2]",
+      "[ORG_2]"
+     ]
+    },
+    {
+     "id": "ru-certificate-007",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[ORG_2]",
+      "[ORG_2]",
+      "[ORG_2]"
+     ]
+    },
+    {
+     "id": "ru-certificate-099",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[ORG_2]"
+     ]
+    },
+    {
+     "id": "ru-certificate-110",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[ORG_2]",
+      "[ORG_2]"
+     ]
+    },
+    {
+     "id": "ru-certificate-155",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[ORG_2]"
+     ]
+    },
+    {
+     "id": "ru-certificate-114",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[ORG_2]",
+      "[ORG_2]"
+     ]
+    },
+    {
+     "id": "ru-certificate-068",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[ORG_2]",
+      "[ORG_2]",
+      "[ORG_2]"
+     ]
+    },
+    {
+     "id": "ru-certificate-058",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[ORG_2]",
+      "[ORG_2]",
+      "[ORG_2]"
+     ]
+    },
+    {
+     "id": "ru-certificate-026",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[PHONE_4]"
+     ]
+    }
+   ]
+  },
+  "ru/gemma4:12b": {
+   "answers": 380,
+   "answers_with_labels": 380,
+   "labels_in_answer": 13722,
+   "exact_share": 1.0,
+   "altered": 0,
+   "altered_recoverable": 0,
+   "invented": 41,
+   "restore_rate": 0.9994169946072001,
+   "restore_ci": [
+    0.998776186019725,
+    0.9998544819557625
+   ],
+   "restore_ci_method": "bootstrap по ответам, 2000 повторов",
+   "residual_labels": 0,
+   "scrubbed": 0,
+   "occurrences_failed": 8,
+   "failed_altered": 0,
+   "failed_intact": 8,
+   "answers_with_altered": 0,
+   "docs_with_altered": [],
+   "answers_with_failure": 6,
+   "docs_with_failure": [
+    "ru-hr-022",
+    "ru-hr-043",
+    "ru-letter-131",
+    "ru-letter-155"
+   ],
+   "values_lost": 6,
+   "used_values": 12572,
+   "docs_with_input_leak": 0,
+   "examples": [
+    {
+     "id": "ru-certificate-034",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[ORG_2]"
+     ]
+    },
+    {
+     "id": "ru-certificate-145",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[ORG_2]"
+     ]
+    },
+    {
+     "id": "ru-certificate-195",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[ORG_2]",
+      "[ADDRESS_6]"
+     ]
+    },
+    {
+     "id": "ru-certificate-016",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[ORG_2]"
+     ]
+    },
+    {
+     "id": "ru-certificate-126",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[ORG_2]"
+     ]
+    },
+    {
+     "id": "ru-certificate-115",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[ORG_2]"
+     ]
+    },
+    {
+     "id": "ru-certificate-120",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[ORG_2]"
+     ]
+    },
+    {
+     "id": "ru-certificate-166",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[ORG_2]"
+     ]
+    },
+    {
+     "id": "ru-certificate-097",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[ORG_2]"
+     ]
+    },
+    {
+     "id": "ru-certificate-053",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[ORG_2]"
+     ]
+    },
+    {
+     "id": "ru-certificate-124",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[ORG_2]"
+     ]
+    },
+    {
+     "id": "ru-certificate-007",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[ORG_2]"
+     ]
+    },
+    {
+     "id": "ru-certificate-110",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[ORG_2]"
+     ]
+    },
+    {
+     "id": "ru-certificate-155",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[ORG_2]"
+     ]
+    },
+    {
+     "id": "ru-certificate-000",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[ORG_2]"
+     ]
+    }
+   ]
+  },
+  "uk/qwen3.5:9b": {
+   "answers": 380,
+   "answers_with_labels": 380,
+   "labels_in_answer": 11963,
+   "exact_share": 0.9995820446376327,
+   "altered": 5,
+   "altered_recoverable": 5,
+   "invented": 11,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "restore_ci_method": "bootstrap по ответам, 2000 повторов",
+   "residual_labels": 0,
+   "scrubbed": 0,
+   "occurrences_failed": 0,
+   "failed_altered": 0,
+   "failed_intact": 0,
+   "answers_with_altered": 5,
+   "docs_with_altered": [
+    "uk-certificate-058",
+    "uk-certificate-114",
+    "uk-certificate-151",
+    "uk-certificate-166",
+    "uk-contract-048"
+   ],
+   "answers_with_failure": 0,
+   "docs_with_failure": [],
+   "values_lost": 0,
+   "used_values": 10719,
+   "docs_with_input_leak": 0,
+   "examples": [
+    {
+     "id": "uk-certificate-166",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "ORG_1]"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-114",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "ORG_1]"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-058",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "ORG_1]"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-151",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "ORG_1]"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-026",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[EMAIL_4]"
+     ]
+    },
+    {
+     "id": "uk-contract-199",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[POSTCODE_1]",
+      "[POSTCODE_2]"
+     ]
+    },
+    {
+     "id": "uk-contract-056",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[POSTCODE_1]"
+     ]
+    },
+    {
+     "id": "uk-contract-117",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[POSTCODE_1]"
+     ]
+    },
+    {
+     "id": "uk-contract-005",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[POSTCODE_1]"
+     ]
+    },
+    {
+     "id": "uk-contract-164",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[POSTCODE_1]"
+     ]
+    },
+    {
+     "id": "uk-contract-048",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "IBAN_1]"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-contract-175",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[POSTCODE_1]",
+      "[POSTCODE_2]"
+     ]
+    },
+    {
+     "id": "uk-hr-188",
+     "task": "summary",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[ORG_2]"
+     ]
+    },
+    {
+     "id": "uk-hr-131",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[JOB_TITLE_1]"
+     ]
+    }
+   ]
+  },
+  "uk/gemma4:12b": {
+   "answers": 380,
+   "answers_with_labels": 380,
+   "labels_in_answer": 13857,
+   "exact_share": 0.9969690409179476,
+   "altered": 42,
+   "altered_recoverable": 42,
+   "invented": 6,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "restore_ci_method": "bootstrap по ответам, 2000 повторов",
+   "residual_labels": 0,
+   "scrubbed": 0,
+   "occurrences_failed": 0,
+   "failed_altered": 0,
+   "failed_intact": 0,
+   "answers_with_altered": 42,
+   "docs_with_altered": [
+    "uk-certificate-000",
+    "uk-certificate-002",
+    "uk-certificate-005",
+    "uk-certificate-006",
+    "uk-certificate-007",
+    "uk-certificate-016",
+    "uk-certificate-026",
+    "uk-certificate-081",
+    "uk-certificate-110",
+    "uk-certificate-114",
+    "uk-certificate-120",
+    "uk-certificate-124",
+    "uk-certificate-151",
+    "uk-certificate-166",
+    "uk-certificate-178",
+    "uk-certificate-185",
+    "uk-certificate-189",
+    "uk-hr-093",
+    "uk-hr-125",
+    "uk-hr-128",
+    "uk-hr-157",
+    "uk-hr-172",
+    "uk-medical-003",
+    "uk-medical-008",
+    "uk-medical-017",
+    "uk-medical-018",
+    "uk-medical-021",
+    "uk-medical-028",
+    "uk-medical-043",
+    "uk-medical-045",
+    "uk-medical-046",
+    "uk-medical-058",
+    "uk-medical-069",
+    "uk-medical-071",
+    "uk-medical-074",
+    "uk-medical-075",
+    "uk-medical-082",
+    "uk-medical-116",
+    "uk-medical-140",
+    "uk-medical-141",
+    "uk-medical-168",
+    "uk-medical-191"
+   ],
+   "answers_with_failure": 0,
+   "docs_with_failure": [],
+   "values_lost": 0,
+   "used_values": 11958,
+   "docs_with_input_leak": 0,
+   "examples": [
+    {
+     "id": "uk-certificate-016",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "ORG_3]"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-120",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "[ORG_1"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-166",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "[ORG_1"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-124",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "[ORG_1"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-007",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "ORG_2]"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-110",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "[ORG_1"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-000",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "[ORG_1"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-178",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "ORG_2"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-114",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "[ORG_1"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-151",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "[ORG_1"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-026",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "[ORG_1"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-081",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "[ORG_1"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-185",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "ORG_3"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-005",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "[ORG_1"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-006",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "ORG_2]"
+     ],
+     "invented_examples": []
+    }
+   ]
+  }
+ }
+}

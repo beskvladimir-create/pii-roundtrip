@@ -54,7 +54,7 @@ The installer:
 uv run python scripts/collect_models.py         # the pinned models into build/models
 uv run pyinstaller -y pii-roundtrip.spec        # dist/pii-roundtrip.app
 ./dist/pii-roundtrip.app/Contents/MacOS/pii-roundtrip --selftest
-bash scripts/make_dmg.sh 0.3.0                  # dist/pii-roundtrip-0.3.0.dmg
+bash scripts/make_dmg.sh 0.3.1                  # dist/pii-roundtrip-0.3.1.dmg
 ```
 
 The desktop app has its own environment so that its libraries do not change the benchmark environment. Licences of the bundled components are listed in the app (About, Third-party licences) and next to it in the installer.

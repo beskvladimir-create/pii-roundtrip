@@ -54,7 +54,7 @@ uv run pytest -q
 uv run python scripts/collect_models.py         # закреплённые версии моделей в build/models
 uv run pyinstaller -y pii-roundtrip.spec        # dist/pii-roundtrip.app
 ./dist/pii-roundtrip.app/Contents/MacOS/pii-roundtrip --selftest
-bash scripts/make_dmg.sh 0.3.0                  # dist/pii-roundtrip-0.3.0.dmg
+bash scripts/make_dmg.sh 0.3.1                  # dist/pii-roundtrip-0.3.1.dmg
 ```
 
 У приложения своё окружение, чтобы его библиотеки не меняли окружение бенчмарка. Лицензии компонентов внутри приложения перечислены в окне «О программе» (ссылка «Лицензии компонентов») и лежат рядом с ним в установщике.

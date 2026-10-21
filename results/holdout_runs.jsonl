@@ -19,3 +19,10 @@
 {"set": "holdout4", "tool": "privacy_filter", "commit": "585c4a89cad8ef721b76a69835da48856ac35fcd", "time": "2026-10-17T21:59:42+00:00"}
 {"set": "holdout4", "tool": "prompt_anonymizer", "commit": "585c4a89cad8ef721b76a69835da48856ac35fcd", "time": "2026-10-17T21:59:42+00:00"}
 {"set": "holdout4", "tool": "pii_roundtrip", "commit": "585c4a89cad8ef721b76a69835da48856ac35fcd", "time": "2026-10-17T21:59:42+00:00"}
+{"set": "holdout5", "tool": "regex_baseline", "commit": "831593cdd966a2c77c7ac973b03253185f2a9609", "time": "2026-10-20T19:24:12+00:00"}
+{"set": "holdout5", "tool": "presidio", "commit": "831593cdd966a2c77c7ac973b03253185f2a9609", "time": "2026-10-20T19:24:12+00:00"}
+{"set": "holdout5", "tool": "pii_guard", "commit": "831593cdd966a2c77c7ac973b03253185f2a9609", "time": "2026-10-20T19:24:12+00:00"}
+{"set": "holdout5", "tool": "gliner_guard", "commit": "831593cdd966a2c77c7ac973b03253185f2a9609", "time": "2026-10-20T19:24:12+00:00"}
+{"set": "holdout5", "tool": "privacy_filter", "commit": "831593cdd966a2c77c7ac973b03253185f2a9609", "time": "2026-10-20T19:24:12+00:00"}
+{"set": "holdout5", "tool": "prompt_anonymizer", "commit": "831593cdd966a2c77c7ac973b03253185f2a9609", "time": "2026-10-20T19:24:12+00:00"}
+{"set": "holdout5", "tool": "pii_roundtrip", "commit": "831593cdd966a2c77c7ac973b03253185f2a9609", "time": "2026-10-20T19:24:12+00:00"}

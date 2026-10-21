@@ -38,7 +38,7 @@ app = BUNDLE(
     name="pii-roundtrip.app",
     icon="pii_roundtrip_desktop/icon.icns",
     bundle_identifier="tech.besk.pii-roundtrip",
-    version="0.3.0",
+    version="0.3.1",
     info_plist={
         "CFBundleDisplayName": "pii-roundtrip",
         "NSHighResolutionCapable": True,

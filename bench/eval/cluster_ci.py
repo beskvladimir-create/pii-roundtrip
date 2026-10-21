@@ -21,6 +21,8 @@ from bench.eval.run import DATASETS, load_docs
 SETS = dict(DATASETS)
 SETS["holdout4_ru"] = (str(ROOT / "data/holdout4/ru.jsonl"), "ru")
 SETS["holdout4_uk"] = (str(ROOT / "data/holdout4/uk.jsonl"), "uk")
+SETS["holdout5_ru"] = (str(ROOT / "data/holdout5/ru.jsonl"), "ru")
+SETS["holdout5_uk"] = (str(ROOT / "data/holdout5/uk.jsonl"), "uk")
 TOOLS = [
     "regex_baseline",
     "presidio",
