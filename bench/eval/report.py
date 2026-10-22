@@ -393,6 +393,66 @@ def headline_table(m: dict, lang: str) -> str:
     return "\n".join(rows)
 
 
+def _supplement(name: str) -> dict:
+    p = RESULTS / name
+    return json.loads(p.read_text()) if p.exists() else {}
+
+
+def strict_table(lang: str) -> str:
+    """Added after review, not pre-registered (results/strict_leaks.json): held-out set 5, the
+    share of documents with at least one value of the threshold types not fully masked, overall
+    and among the documents that contain each group of types; Wilson intervals."""
+    data = _supplement("strict_leaks.json")
+    groups = ["numbers", "PERSON", "ADDRESS", "ORG"]
+    if lang == "ru":
+        head = "| Инструмент | Набор | Все документы | Номера | Имена | Адреса | Организации |"
+    else:
+        head = "| Tool | Set | All documents | Identifiers | Names | Addresses | Organisations |"
+    rows = [head, "|---|---|---|---|---|---|---|"]
+    for t in TOOLS:
+        for lg in ("ru", "uk"):
+            r = data.get(t, {}).get(HOLDOUT[lg])
+            if not r:
+                continue
+            cells = [f"{pct(r['all']['rate'], lang)}{interval(r['all']['ci'], lang)}"]
+            for g in groups:
+                x = r["by_group"].get(g)
+                cells.append(f"{pct(x['rate'], lang)}{interval(x['ci'], lang)}" if x else WORDS[lang]["na"])
+            rows.append(f"| {TOOL_NAME[lang][t]} | {HOLDOUT[lg]} | " + " | ".join(cells) + " |")
+    return "\n".join(rows) if len(rows) > 2 else ""
+
+
+def cycle_extras_table(lang: str) -> str:
+    """Added after review, not pre-registered (results/cycle_extras.json): held-out set 5, answers
+    with at least one failed occurrence (Clopper-Pearson interval) and restoration without the
+    occurrences whose value had leaked into the cleaned input."""
+    data = _supplement("cycle_extras.json").get("holdout5", {})
+    if lang == "ru":
+        head = "| Конфигурация | Язык, модель | Ответы с провалом | Восстановление без утёкших во вход значений |"
+    else:
+        head = "| Configuration | Language, model | Answers with a failure | Restoration without values leaked into the input |"
+    rows = [head, "|---|---|---|---|"]
+    for tool, by in data.items():
+        if tool.startswith("_"):
+            continue
+        for lm, a in sorted(by.items()):
+            n, k = a["answers_with_labels"], a["answers_with_failure"]
+            share = (
+                f"{k}/{n}, {pct(k / n, lang)}{interval(a['answers_with_failure_ci_clopper_pearson'], lang)}"
+                if n
+                else WORDS[lang]["na"]
+            )
+            clean = a["occurrences_without_input_leaks"]
+            bad = a["occurrences_without_input_leaks_failed"]
+            rest = (
+                f"{pct(a['restore_rate_without_input_leaks'], lang)} ({clean - bad}/{clean})"
+                if clean
+                else WORDS[lang]["na"]
+            )
+            rows.append(f"| {tool} | {lm} | {share} | {rest} |")
+    return "\n".join(rows) if len(rows) > 2 else ""
+
+
 def precision_table(m: dict, lang: str) -> str:
     """Доля скрытых фрагментов, задевающих персональные данные, на отложенном наборе 5."""
     head = "| Tool | Russian | UK English |" if lang == "en" else "| Инструмент | Русский | Британский английский |"
@@ -523,6 +583,8 @@ def fill(text: str, m: dict, cycles: dict, lang: str) -> str:
     text = text.replace("{TABLE_PRECISION}", precision_table(m, lang))
     text = text.replace("{TABLE_THRESHOLDS_RU}", threshold_table(m, cycles, "ru", lang))
     text = text.replace("{TABLE_THRESHOLDS_UK}", threshold_table(m, cycles, "uk", lang))
+    text = text.replace("{TABLE_STRICT}", strict_table(lang))
+    text = text.replace("{TABLE_CYCLE_EXTRAS}", cycle_extras_table(lang))
     return _REF.sub(lambda mt: _ref(m, cycles, mt, lang), text)
 
 
@@ -535,7 +597,7 @@ def build(m: dict, cycles: dict) -> str:
 
     L.append("### П1. Сводная таблица распознавания\n")
     L.append(
-        "Полнота в режиме «скрыто целиком» (masked), 95% интервал Уилсона. Номера: паспорт, СНИЛС, ИНН, счёт, карта (RU); "
+        "Полнота в режиме «скрыто целиком» (masked). 95% интервалы полноты и точности: кластерный бутстреп по документам (`results/cluster_ci.json`, 2000 повторов, зерно 0); интервалы доли документов с утечкой: Уилсон (подпись «Уилсон» у полноты и точности в выпусках 0.2.2 и 0.3.0 была ошибкой, исправлено 22.10.2026). Номера: паспорт, СНИЛС, ИНН, счёт, карта (RU); "
         "NHS, NI, карта, IBAN (UK). Утечки: доля документов, где после очистки осталось исходное значение. Точность: доля "
         "скрытых фрагментов, задевающих размеченные персональные данные. Отложенные наборы 1 и 2 с версии 0.2 служат для "
         "разработки и здесь не показаны; их однократные прогоны версии 0.1 приведены в выпуске 0.1.0.\n"

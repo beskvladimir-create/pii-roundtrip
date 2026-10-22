@@ -237,10 +237,26 @@ def _word_leaked(masked: str, base: str, word: str, case_sensitive: bool = False
 
 
 def _number_regex(canon: str) -> re.Pattern:
-    """Номер с любыми пробелами и дефисами между символами, границы проверяются по
-    исходному очищенному тексту, без склейки с соседними словами."""
+    """Номер с пробелами и дефисами между символами (правило до 0.3.1), границы проверяются
+    по исходному очищенному тексту, без склейки с соседними словами."""
     chars = [re.escape(c) for c in re.sub(r"[\s\-]", "", canon)]
     return re.compile(r"(?<![\dA-Za-z])" + r"[ \-]?".join(chars) + r"(?![\dA-Za-z])", re.I)
+
+
+def _number_regex_sep(canon: str) -> re.Pattern:
+    """Тот же номер с другими разделителями: до трёх подряд пробелов, дефисов, точек или косых
+    черт («5223.2630.1023.1078», «45...12...123456», «123 - 456 - 789 01»), если номер не часть
+    более длинного числа (нет цифры рядом и через разделитель). Добавлено в 0.3.1: прежнее правило
+    не видело номер, оставленный открытым в записи с точками."""
+    chars = [re.escape(c) for c in re.sub(r"[\s\-./]", "", canon)]
+    left = r"(?<![\dA-Za-z])(?<!\d[ \-./])(?<!\d[ \-./]{2})(?<!\d[ \-./]{3})"
+    right = r"(?![\dA-Za-z])(?![ \-./]{1,3}\d)"
+    return re.compile(left + r"[ \-./]{0,3}".join(chars) + right, re.I)
+
+
+def _number_left(canon: str, masked: str) -> bool:
+    """A leak under the rule before 0.3.1 or under the separator rule: the fix only adds leaks."""
+    return bool(_number_regex(canon).search(masked) or _number_regex_sep(canon).search(masked))
 
 
 def leaked_values(doc: dict, masked: str) -> list[str]:
@@ -253,7 +269,7 @@ def leaked_values(doc: dict, masked: str) -> list[str]:
             continue
         canon = g.get("canonical", g["value"])
         if t in STRUCTURED["ru"] + STRUCTURED["uk"]:
-            if _number_regex(canon).search(masked):
+            if _number_left(canon, masked):
                 leaks.append(g["value"])
             elif (
                 re.search(r"[A-Za-zА-Яа-яЁё]{3}", g["value"])

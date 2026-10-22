@@ -189,6 +189,8 @@ def evaluate_answer(family: str, mapping: dict, answer: str, restored: str, lang
     occ_bad = sum(bad)
     occ_bad_altered = sum(1 for n, (f, _) in enumerate(issued) if bad[n] and f not in mapping)
     return {
+        # per issued occurrence: its label in the tool's table and whether it failed (not aggregated)
+        "occurrence_detail": [(key_ids[i], mapping[key_ids[i]], bad[n]) for n, (_, i) in enumerate(issued)],
         "occurrences_ok": len(issued) - occ_bad,
         # failed occurrences that the model altered, and intact ones lost with them (a restorer
         # that swallows a broken tag together with the next one)
@@ -211,9 +213,15 @@ def evaluate_answer(family: str, mapping: dict, answer: str, restored: str, lang
 
 
 def run(
-    models: list[str], per_type: int, only: set[str] | None = None, data: str = "synthetic", rescore: bool = False
+    models: list[str],
+    per_type: int,
+    only: set[str] | None = None,
+    data: str = "synthetic",
+    rescore: bool = False,
+    rows_out: dict | None = None,
 ) -> dict:
-    """With rescore=True only saved answers are scored: a missing answer is an error, no model is asked."""
+    """With rescore=True only saved answers are scored: a missing answer is an error, no model is asked.
+    rows_out, if given, receives the per-answer rows under (tool, lang, model)."""
     from bench.runners.placeholders import PlaceholderWrapper
 
     plan = {
@@ -281,7 +289,8 @@ def run(
                             restored = tool.deanonymize(answer, mapping)
                             plain = getattr(mapping, "mapping", mapping)  # движок отдаёт Session
                             ev = evaluate_answer(family, plain, answer, restored, lang)
-                            ev["input_leaks"] = len(metrics.leaked_values(d, anon))
+                            ev["input_leaked_values"] = metrics.leaked_values(d, anon)
+                            ev["input_leaks"] = len(ev["input_leaked_values"])
                             ev.update({"id": d["id"], "task": task})
                             rows.append(ev)
                             if family == "pii_guard":
@@ -289,9 +298,13 @@ def run(
                                 ev_t = evaluate_answer(
                                     family, plain, answer, tolerant_restore(family, plain, answer), lang
                                 )
-                                ev_t.update({"input_leaks": ev["input_leaks"], "id": d["id"], "task": task})
+                                ev_t.update({k: ev[k] for k in ("input_leaked_values", "input_leaks", "id", "task")})
                                 rows_tolerant.append(ev_t)
                 agg = aggregate(rows)
+                if rows_out is not None:
+                    rows_out[(tool_name, lang, model)] = rows
+                    if rows_tolerant:
+                        rows_out[(f"{tool_name}~tolerant", lang, model)] = rows_tolerant
                 report.setdefault(tool_name, {})[f"{lang}/{model}"] = agg
                 if rows_tolerant:
                     report.setdefault(f"{tool_name}~tolerant", {})[f"{lang}/{model}"] = aggregate(rows_tolerant)

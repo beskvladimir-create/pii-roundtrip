@@ -136,3 +136,44 @@ def test_name_that_is_also_an_ordinary_word_in_the_text_is_not_a_leak():
     # but the first name left next to the masked surname is still a leak
     masked = metrics.mask_text(text, [{"type": "PERSON", "start": g["start"] + 5, "end": g["end"]}])
     assert metrics.leaked_values(doc(text, [g], lang="uk"), masked) == ["June Gibbons"]
+
+
+def test_number_written_with_dots_counts_as_a_leak():
+    from bench.eval import metrics
+
+    doc = {
+        "lang": "ru",
+        "text": "Карта 5223.2630.1023.1078 клиента.",
+        "entities": [
+            {"type": "CARD", "start": 6, "end": 25, "value": "5223.2630.1023.1078", "canonical": "5223263010231078"}
+        ],
+    }
+    assert metrics.leaked_values(doc, doc["text"]) == ["5223.2630.1023.1078"]
+    assert metrics.leaked_values(doc, "Карта [CARD_1] клиента.") == []
+    # a longer number that only contains the digits is not this number
+    assert metrics.leaked_values(doc, "Код 95223.2630.1023.10789.") == []
+
+
+def test_number_with_an_ellipsis_still_counts_as_a_leak():
+    from bench.eval import metrics
+
+    doc = {
+        "lang": "ru",
+        "text": "Паспорт 45...12...123456.",
+        "entities": [
+            {"type": "PASSPORT_RU", "start": 8, "end": 24, "value": "45...12...123456", "canonical": "45...12...123456"}
+        ],
+    }
+    assert metrics.leaked_values(doc, doc["text"]) == ["45...12...123456"]
+
+
+def test_number_inside_a_longer_number_is_not_a_leak():
+    from bench.eval import metrics
+
+    doc = {
+        "lang": "ru",
+        "text": "Паспорт 123456.",
+        "entities": [{"type": "PASSPORT_RU", "start": 8, "end": 14, "value": "123456", "canonical": "123456"}],
+    }
+    assert metrics.leaked_values(doc, "Паспорт [PASSPORT_RU_1], СНИЛС 123 - 456 - 789 01.") == []
+    assert metrics.leaked_values(doc, "Паспорт 123 - 456.") == ["123456"]

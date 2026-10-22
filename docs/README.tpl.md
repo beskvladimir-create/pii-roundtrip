@@ -10,7 +10,7 @@ pii-roundtrip replaces personal data in a document with consistent placeholders 
 
 ## Why
 
-Existing open-source tools work well on short messages but leak personal data in synthetic documents such as contracts, letters, HR files and discharge summaries. The table shows the share of documents in which at least one original value remained after anonymisation. It was measured on held-out set 5: 1,000 synthetic documents per language with numbers written in digits, with dots, with typos and in words, generated before the final changes of version 0.2 and run once ([HOLDOUT.en.md](HOLDOUT.en.md)). No tool, including pii-roundtrip, was developed on it.
+Existing open-source tools work well on short messages but leak personal data in synthetic documents such as contracts, letters, HR files and discharge summaries. The table shows the share of documents in which at least one original value remained after anonymisation. It was measured on held-out set 5: 1,000 synthetic documents per language with numbers written in digits, with dots, with typos and in words. It was generated after the changes of version 0.3, published with the rules before the first run, and run once ([HOLDOUT.en.md](HOLDOUT.en.md)). No tool, including pii-roundtrip, was developed on it.
 
 {TABLE_HEADLINE}
 
@@ -27,6 +27,8 @@ Russian:
 {TABLE_THRESHOLDS_RU}
 
 The Russian external datasets were used for error analysis while version 0.1 was developed, so for pii-roundtrip they are not an independent check. Held-out set 5 is.
+
+The restoration verdict for {BEST_RU} is conditional: with qwen3.5:9b only {~pii_guard|ru:holdout5@qwen3.5:9b|answers_with_labels} of its {~pii_guard|ru:holdout5@qwen3.5:9b|answers} answers contain placeholders, and the threshold is checked on those answers.
 
 UK English:
 
@@ -76,7 +78,7 @@ Pass the same `session` to `anonymize` for follow-up messages so that known peop
 
 - **Detection.** pii-guard (rules with checksums and ruBERT) for Russian, GLiNER Guard Omni for both languages, plus own rules: checksum-validated identifiers (SNILS, INN, passport, cards, NHS, NI, IBAN), long numbers with any separators, numbers written in words, organisations, sole proprietors, names with titles and initials, dates of birth by context.
 - **Whole-document consistency.** Every name, organisation and number found once is masked everywhere in the document and in later messages of the session, including Russian case forms, capitals, ё/е, hyphenated surnames and apostrophes. Different people never share a placeholder; ambiguous mentions get their own.
-- **Restoration.** Placeholders are accepted with changed case, extra spaces or a prefix added by the model. Russian names are put back in the grammatical case the context requires.
+- **Restoration.** Placeholders are accepted with changed case, extra spaces or a prefix added by the model. Since version 0.3 also with a lost bracket (`[PERSON_1` or `PERSON_1]`) and with words the model put inside the brackets before the label (`[Mr PERSON_1]`). Russian names are put back in the grammatical case the context requires.
 - **Vault.** AES-256-GCM with a key derived by scrypt, atomic writes, file mode 0600, no symlink following.
 
 Placeholders show the type of each value, for example `[PASSPORT_RU_1]` or `[NHS_1]`, and their numbering shows how many values of each type a document contains.

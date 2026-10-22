@@ -4,12 +4,31 @@
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow [Semantic Versioning](https://semver.org/).
 
+## [0.3.1] - 2026-10-22
+
+The engine is unchanged. This release fixes the leak metric, corrects the documents of 0.2.2 and 0.3.0 after an external review (dated notes, nothing rewritten), and adds measures that were not pre-registered. No model was queried again; every figure is recomputed from the saved predictions and answers.
+
+### Fixed
+
+- Leak metric: an identifier left visible in a hard format with dots between the groups (`5223.2630.1023.1078`) or with several separators in a row (`45...12...123456`, `123 - 456 - 789 01`) was not counted as a leak, because the rule allowed only single spaces and hyphens between the digits. A leak is now counted if the earlier rule or the new separator rule finds the number (the new rule ignores a number that is part of a longer one), so the fix only adds leaks. Recomputed from the stored predictions for the external datasets and held-out sets 4 and 5 (`python -m bench.eval.rescore_stored`); no tool was run again. Documents with a leak, held-out set 5: pii-guard (Russian) 53.2% → 58.5%, Presidio 86.3% → 87.0% (Russian) and 56.9% → 58.1% (UK English); held-out set 4: pii-guard 53.3% → 58.6%; pii-roundtrip unchanged on every set.
+- Report and README, with dated notes in section 10 of the report: the 0.3 restoration change followed the analysis of set 4, not set 5 (set 5 was not used for it); set 4, not set 5, checked release 0.2; five held-out sets, not four; set 5 was generated on 19.10.2026 (20261020 is the seed); the П1 intervals for recall and precision are the cluster bootstrap, not Wilson; the Presidio Mir card recogniser checks the Luhn digit; the engine's round trip uses 190 documents per language, the other configurations 20; pii-guard's restoration verdict on set 5 is conditional (with qwen3.5:9b only 15 of 40 answers contain placeholders); README "Why" and "Restoration" describe set 5 and the 0.3 restoration forms.
+- HOLDOUT.md and HOLDOUT.en.md: dated corrections below the unchanged pre-registration (generation date of set 5, five sets, SHA-256 of the project brief at private commit c6477ac).
+- The public `uv.lock` was re-created by `uv lock` at every export, so releases 0.2.0 to 0.3.0 listed transformers 5.20.1 and 5.20.2, while the runs on sets 4 and 5 used transformers 5.19.0 and torch 2.14.1 (the same private lock file at the run commits 585c4a8 and 831593c). The export now pins every registry package to the private lock file, so the public lock file has the versions the results were computed with.
+
+### Added
+
+- Strict document measure, not pre-registered (`bench/eval/strict_leaks.py`, `results/strict_leaks.json`): documents in which at least one value of the threshold types is not fully masked, with Wilson intervals, by group of types and by noise, for every tool on sets 4 and 5 and the external datasets. pii-roundtrip on set 5: 3.3% [2.4; 4.6] (Russian) and 13.8% [11.8; 16.1] (UK English), almost entirely addresses and organisations, no identifiers.
+- Round-trip measures, not pre-registered (`bench/eval/cycle_extras.py`, `results/cycle_extras.json`): answers with at least one failed occurrence with a Clopper-Pearson interval (pii-roundtrip on set 5: 9 of 380 and 6 of 380 answers in Russian, 0 of 380 in UK English), restoration without values leaked into the input, the overlap of the samples (9 of the 20 competitor documents per language are among the 190 engine documents) and every failed occurrence of pii-roundtrip and pii-guard.
+- Manual check of the failures on set 5: of the 8 failed occurrences of pii-roundtrip with Russian gemma4:12b, 4 are real (a noisy document where the uninflected first name was dropped from the stored value) and 4 are evaluator misses on rare patronymics; the 1 and 3 failures of pii-guard on ru-medical-195 are real (a misspelt first name inflected wrongly).
+- `results/holdout5_cycle_journal.md`: the course of the round trip on set 5 from logs and file times, including the interruption at the 72nd answer of Russian gemma4:12b (21.10.2026, about 00:01) and its continuation; no answer was requested twice.
+
 ## [0.3.0] - 2026-10-22
 
 Version 0.3 is checked on held-out set 5, published with its rules and run plan before any run (public commit 8b8e933). Detection by every tool and the round trips ran once, from committed code. On set 5 the engine meets all four thresholds for both languages: structured identifiers 100.0%, names, addresses and organisations 99.7% (Russian) and 98.9% (UK English), documents with a leak 0.2% and 0.7%, restoration 99.9% (Russian, worse model, 380 answers) and 100.0% with a lower bound of 99.0% (UK English, 380 answers per model). Full intervals are in REPORT.md and README.md.
 
 One interruption: the engine's round trip stopped at answer 72 of Russian gemma4:12b when Ollama closed the connection (RemoteDisconnected); it was continued by the same command from the saved answers, so no answer was requested twice. On a manual check of the 10 failed Russian placeholder occurrences with qwen3.5:9b, the evaluator did not recognise correctly restored names with rare patronymics in another grammatical case (not in the morphology dictionary), and one name was restored in the genitive after "ФИО:". The evaluator's rules were fixed before the run and were not changed.
 
+> Added on 22 October 2026. The finding of release 0.2.2 that the LLMs alter pii-guard's attribute tags more often than plain placeholders is withdrawn. It did not hold on set 5: tags were altered in 0 of 15 and 0 of 40 answers under pii-guard's prompt and in 0 of 26 and 1 of 40 under the generic prompt, plain placeholders in 0 of 80 and 1 of 80. Across the two sets a difference between the formats is not established. What stands is that pii-guard's strict restorer loses an altered tag and lenient restoration recovers it.
 
 ### Changed
 

@@ -4,6 +4,8 @@
 
 Four held-out sets of synthetic documents test the engine on data it did not see during development. Each was generated before the corresponding engine changes, its SHA-256 is recorded below, and it was run once.
 
+> Correction of 22 October 2026: there are five sets, not four. The fifth was added on 19 October 2026 (section "Set 5"); the sentence above dates from version 0.2.
+
 The generator in this repository reproduces every set byte for byte. Faker draws some values (the year in an e-mail address) from the range up to "today", so the generator fixes that date: 13 October 2026 by default, and for set 3 it is given in the command (`--now 2026-10-16`). Before 16 October 2026 the date was not fixed, and regenerating set 2 on another day differed from the file in one e-mail address out of 100 documents; the set file and its hash did not change. To check:
 
 ```bash
@@ -86,3 +88,10 @@ uv run python -m bench.generator.generate --seed 20261020 --per-type 200 --hard 
 3. Round trip of the other configurations in the previous volume, 40 answers per model and language: `uv run python -m bench.eval.cycle --data holdout5 --per-type 4 --tools pii_guard,pii_guard@generic,pii_guard+placeholders,pii_guard+placeholders@generic,prompt_anonymizer,gliner_guard+placeholders,gliner_guard+placeholders@generic`.
 4. LLMs: qwen3.5:9b and gemma4:12b in Ollama, temperature 0, seed 0; versions in `results/ollama_versions.txt`.
 5. A rerun is allowed only with a stated reason recorded in `results/holdout_runs.jsonl`.
+
+### Corrections of 22 October 2026 (after the run; the text above is unchanged)
+
+- Set 5 was generated on 19.10.2026, not on 20.10.2026: the files `data/holdout5/*.jsonl` were created on 19.10.2026 at 21:47 +04 by the command above with `--now 2026-10-19`, and the public pre-registration commit 8b8e933 was made on 19.10.2026 at 21:49 +04 (pushed to GitHub at 2026-10-19T17:49:23Z). The number 20261020 in the command is the generator's seed, not a date.
+- The thresholds behind the verdicts were set in the project's original brief before development began. The brief is not published; its SHA-256 at the private commit c6477ac of 12.10.2026 is `a0e5bc6602334b9e79da1836c04608e6dd50b023e7dbd3055abbad43e5612f29`, so the date of the thresholds can be checked if the file is published.
+- The course of the round trip on set 5, including one interruption and its continuation with the same commands, is recorded in `results/holdout5_cycle_journal.md`. The round-trip commands do not write to `results/holdout_runs.jsonl`, so the continuation is recorded there, not in that log.
+

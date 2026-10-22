@@ -10,14 +10,14 @@ pii-roundtrip replaces personal data in a document with consistent placeholders 
 
 ## Why
 
-Existing open-source tools work well on short messages but leak personal data in synthetic documents such as contracts, letters, HR files and discharge summaries. The table shows the share of documents in which at least one original value remained after anonymisation. It was measured on held-out set 5: 1,000 synthetic documents per language with numbers written in digits, with dots, with typos and in words, generated before the final changes of version 0.2 and run once ([HOLDOUT.en.md](HOLDOUT.en.md)). No tool, including pii-roundtrip, was developed on it.
+Existing open-source tools work well on short messages but leak personal data in synthetic documents such as contracts, letters, HR files and discharge summaries. The table shows the share of documents in which at least one original value remained after anonymisation. It was measured on held-out set 5: 1,000 synthetic documents per language with numbers written in digits, with dots, with typos and in words. It was generated after the changes of version 0.3, published with the rules before the first run, and run once ([HOLDOUT.en.md](HOLDOUT.en.md)). No tool, including pii-roundtrip, was developed on it.
 
 | Tool | Russian | UK English |
 |---|---|---|
 | **pii-roundtrip** | **0.2% [0.1; 0.7]** | **0.7% [0.3; 1.4]** |
-| pii-guard | 53.2% [50.1; 56.3] | n/a |
+| pii-guard | 58.5% [55.4; 61.5] | n/a |
 | GLiNER Guard Omni | 99.7% [99.1; 99.9] | 56.7% [53.6; 59.7] |
-| Presidio | 86.3% [84.0; 88.3] | 56.9% [53.8; 59.9] |
+| Presidio | 87.0% [84.8; 88.9] | 58.1% [55.0; 61.1] |
 | OpenAI privacy-filter | 95.8% [94.4; 96.9] | 80.6% [78.0; 82.9] |
 | Prompt Anonymizer | n/a | 100.0% [99.6; 100.0] |
 | Regular expressions with checksums | 100.0% [99.6; 100.0] | 100.0% [99.6; 100.0] |
@@ -36,13 +36,15 @@ Russian:
 |---|---|---|---|---|
 | Structured identifiers ≥ 99% | 97.7% [96.1; 99.0] undetermined, borderline | 100.0% [100.0; 100.0], for reference | 92.4% [91.6; 93.1] not met | 100.0% [100.0; 100.0] met |
 | Names, addresses, organisations ≥ 95% | 99.5% [98.7; 100.0] met | 100.0% [100.0; 100.0], for reference | 73.8% [73.3; 74.4] not met | 99.7% [99.6; 99.8] met |
-| Documents with a leak ≤ 2% | 0.7% [0.4; 1.2] met | 0.0% [0.0; 0.2], for reference | 53.2% [50.1; 56.3] not met | 0.2% [0.1; 0.7] met |
+| Documents with a leak ≤ 2% | 0.7% [0.4; 1.2] met | 0.0% [0.0; 0.2], for reference | 58.5% [55.4; 61.5] not met | 0.2% [0.1; 0.7] met |
 | Restoration ≥ 99% (worse of two LLMs) | not measured | not measured | 99.8% [99.4; 100.0] met | 99.9% [99.9; 100.0] met |
 | Masked fragments that contain personal data | 96.5% [95.5; 97.5], no threshold | 89.2% [87.8; 90.7], no threshold | 87.6% [87.5; 87.7], no threshold | 98.5% [98.3; 98.6], no threshold |
 
 External sets: hivetrace_pii_bench.
 
 The Russian external datasets were used for error analysis while version 0.1 was developed, so for pii-roundtrip they are not an independent check. Held-out set 5 is.
+
+The restoration verdict for pii-guard is conditional: with qwen3.5:9b only 15 of its 40 answers contain placeholders, and the threshold is checked on those answers.
 
 UK English:
 
@@ -100,7 +102,7 @@ Pass the same `session` to `anonymize` for follow-up messages so that known peop
 
 - **Detection.** pii-guard (rules with checksums and ruBERT) for Russian, GLiNER Guard Omni for both languages, plus own rules: checksum-validated identifiers (SNILS, INN, passport, cards, NHS, NI, IBAN), long numbers with any separators, numbers written in words, organisations, sole proprietors, names with titles and initials, dates of birth by context.
 - **Whole-document consistency.** Every name, organisation and number found once is masked everywhere in the document and in later messages of the session, including Russian case forms, capitals, ё/е, hyphenated surnames and apostrophes. Different people never share a placeholder; ambiguous mentions get their own.
-- **Restoration.** Placeholders are accepted with changed case, extra spaces or a prefix added by the model. Russian names are put back in the grammatical case the context requires.
+- **Restoration.** Placeholders are accepted with changed case, extra spaces or a prefix added by the model. Since version 0.3 also with a lost bracket (`[PERSON_1` or `PERSON_1]`) and with words the model put inside the brackets before the label (`[Mr PERSON_1]`). Russian names are put back in the grammatical case the context requires.
 - **Vault.** AES-256-GCM with a key derived by scrypt, atomic writes, file mode 0600, no symlink following.
 
 Placeholders show the type of each value, for example `[PASSPORT_RU_1]` or `[NHS_1]`, and their numbering shows how many values of each type a document contains.

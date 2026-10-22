@@ -37,7 +37,7 @@ What is kept when restoring:
 - The app blocks its own network connections and has no telemetry or accounts.
 - The link between labels and real values is stored encrypted (AES-256-GCM) in `~/Library/Application Support/pii-roundtrip`; the key is kept in the macOS Keychain.
 - A cleaned Word file has its author and other properties erased; a cleaned PDF is rebuilt so that the masked values are removed from the file, not just covered. Before a cleaned file is saved, the app checks every part of it for the masked values.
-- Detection is not perfect: on the held-out test documents the engine leaves at least one value in 0.2% of Russian and 0.9% of UK documents (see the [report](../REPORT.en.md)). Read the cleaned text before you send it.
+- Detection is not perfect: on held-out set 5 the engine leaves at least one value in 0.2% of Russian and 0.7% of UK documents (see the [report](../REPORT.en.md)). Read the cleaned text before you send it.
 
 ## Build from source
 

@@ -1,0 +1,1789 @@
+{
+ "holdout4": {
+  "gliner_guard+placeholders": {
+   "uk/gemma4:12b": {
+    "answers": 40,
+    "answers_with_labels": 40,
+    "answers_with_failure": 0,
+    "answers_with_failure_share": 0.0,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.0,
+     0.08809730287880235
+    ],
+    "occurrences": 1863,
+    "occurrences_failed": 0,
+    "occurrences_without_input_leaks": 1861,
+    "occurrences_without_input_leaks_failed": 0,
+    "restore_rate_without_input_leaks": 1.0,
+    "answers_with_input_leak": 20
+   },
+   "uk/qwen3.5:9b": {
+    "answers": 40,
+    "answers_with_labels": 40,
+    "answers_with_failure": 0,
+    "answers_with_failure_share": 0.0,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.0,
+     0.08809730287880235
+    ],
+    "occurrences": 1603,
+    "occurrences_failed": 0,
+    "occurrences_without_input_leaks": 1601,
+    "occurrences_without_input_leaks_failed": 0,
+    "restore_rate_without_input_leaks": 1.0,
+    "answers_with_input_leak": 20
+   }
+  },
+  "gliner_guard+placeholders@generic": {
+   "uk/gemma4:12b": {
+    "answers": 40,
+    "answers_with_labels": 40,
+    "answers_with_failure": 1,
+    "answers_with_failure_share": 0.025,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.0006327449320494198,
+     0.1315858584827656
+    ],
+    "occurrences": 1923,
+    "occurrences_failed": 4,
+    "occurrences_without_input_leaks": 1920,
+    "occurrences_without_input_leaks_failed": 4,
+    "restore_rate_without_input_leaks": 0.9979166666666667,
+    "answers_with_input_leak": 20
+   },
+   "uk/qwen3.5:9b": {
+    "answers": 40,
+    "answers_with_labels": 40,
+    "answers_with_failure": 0,
+    "answers_with_failure_share": 0.0,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.0,
+     0.08809730287880235
+    ],
+    "occurrences": 1627,
+    "occurrences_failed": 0,
+    "occurrences_without_input_leaks": 1625,
+    "occurrences_without_input_leaks_failed": 0,
+    "restore_rate_without_input_leaks": 1.0,
+    "answers_with_input_leak": 20
+   }
+  },
+  "pii_guard": {
+   "ru/gemma4:12b": {
+    "answers": 40,
+    "answers_with_labels": 40,
+    "answers_with_failure": 1,
+    "answers_with_failure_share": 0.025,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.0006327449320494198,
+     0.1315858584827656
+    ],
+    "occurrences": 1492,
+    "occurrences_failed": 4,
+    "occurrences_without_input_leaks": 1492,
+    "occurrences_without_input_leaks_failed": 4,
+    "restore_rate_without_input_leaks": 0.9973190348525469,
+    "answers_with_input_leak": 20
+   },
+   "ru/qwen3.5:9b": {
+    "answers": 40,
+    "answers_with_labels": 13,
+    "answers_with_failure": 2,
+    "answers_with_failure_share": 0.15384615384615385,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.01920667198252847,
+     0.45447105567655766
+    ],
+    "occurrences": 353,
+    "occurrences_failed": 8,
+    "occurrences_without_input_leaks": 353,
+    "occurrences_without_input_leaks_failed": 8,
+    "restore_rate_without_input_leaks": 0.9773371104815864,
+    "answers_with_input_leak": 20
+   }
+  },
+  "pii_guard+placeholders": {
+   "ru/gemma4:12b": {
+    "answers": 40,
+    "answers_with_labels": 40,
+    "answers_with_failure": 0,
+    "answers_with_failure_share": 0.0,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.0,
+     0.08809730287880235
+    ],
+    "occurrences": 2153,
+    "occurrences_failed": 0,
+    "occurrences_without_input_leaks": 2153,
+    "occurrences_without_input_leaks_failed": 0,
+    "restore_rate_without_input_leaks": 1.0,
+    "answers_with_input_leak": 20
+   },
+   "ru/qwen3.5:9b": {
+    "answers": 40,
+    "answers_with_labels": 40,
+    "answers_with_failure": 0,
+    "answers_with_failure_share": 0.0,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.0,
+     0.08809730287880235
+    ],
+    "occurrences": 1655,
+    "occurrences_failed": 0,
+    "occurrences_without_input_leaks": 1655,
+    "occurrences_without_input_leaks_failed": 0,
+    "restore_rate_without_input_leaks": 1.0,
+    "answers_with_input_leak": 20
+   }
+  },
+  "pii_guard+placeholders@generic": {
+   "ru/gemma4:12b": {
+    "answers": 40,
+    "answers_with_labels": 40,
+    "answers_with_failure": 0,
+    "answers_with_failure_share": 0.0,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.0,
+     0.08809730287880235
+    ],
+    "occurrences": 2280,
+    "occurrences_failed": 0,
+    "occurrences_without_input_leaks": 2280,
+    "occurrences_without_input_leaks_failed": 0,
+    "restore_rate_without_input_leaks": 1.0,
+    "answers_with_input_leak": 20
+   },
+   "ru/qwen3.5:9b": {
+    "answers": 40,
+    "answers_with_labels": 40,
+    "answers_with_failure": 0,
+    "answers_with_failure_share": 0.0,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.0,
+     0.08809730287880235
+    ],
+    "occurrences": 2011,
+    "occurrences_failed": 0,
+    "occurrences_without_input_leaks": 2011,
+    "occurrences_without_input_leaks_failed": 0,
+    "restore_rate_without_input_leaks": 1.0,
+    "answers_with_input_leak": 20
+   }
+  },
+  "pii_guard@generic": {
+   "ru/gemma4:12b": {
+    "answers": 40,
+    "answers_with_labels": 40,
+    "answers_with_failure": 2,
+    "answers_with_failure_share": 0.05,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.00611364659935084,
+     0.1691968639594177
+    ],
+    "occurrences": 1804,
+    "occurrences_failed": 44,
+    "occurrences_without_input_leaks": 1804,
+    "occurrences_without_input_leaks_failed": 44,
+    "restore_rate_without_input_leaks": 0.975609756097561,
+    "answers_with_input_leak": 20
+   },
+   "ru/qwen3.5:9b": {
+    "answers": 40,
+    "answers_with_labels": 34,
+    "answers_with_failure": 3,
+    "answers_with_failure_share": 0.08823529411764706,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.018579503440840327,
+     0.23677527428693756
+    ],
+    "occurrences": 1450,
+    "occurrences_failed": 46,
+    "occurrences_without_input_leaks": 1450,
+    "occurrences_without_input_leaks_failed": 46,
+    "restore_rate_without_input_leaks": 0.9682758620689655,
+    "answers_with_input_leak": 20
+   }
+  },
+  "pii_guard@generic~tolerant": {
+   "ru/gemma4:12b": {
+    "answers": 40,
+    "answers_with_labels": 40,
+    "answers_with_failure": 0,
+    "answers_with_failure_share": 0.0,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.0,
+     0.08809730287880235
+    ],
+    "occurrences": 1804,
+    "occurrences_failed": 0,
+    "occurrences_without_input_leaks": 1804,
+    "occurrences_without_input_leaks_failed": 0,
+    "restore_rate_without_input_leaks": 1.0,
+    "answers_with_input_leak": 20
+   },
+   "ru/qwen3.5:9b": {
+    "answers": 40,
+    "answers_with_labels": 34,
+    "answers_with_failure": 0,
+    "answers_with_failure_share": 0.0,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.0,
+     0.1028179242590126
+    ],
+    "occurrences": 1450,
+    "occurrences_failed": 0,
+    "occurrences_without_input_leaks": 1450,
+    "occurrences_without_input_leaks_failed": 0,
+    "restore_rate_without_input_leaks": 1.0,
+    "answers_with_input_leak": 20
+   }
+  },
+  "pii_guard~tolerant": {
+   "ru/gemma4:12b": {
+    "answers": 40,
+    "answers_with_labels": 40,
+    "answers_with_failure": 0,
+    "answers_with_failure_share": 0.0,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.0,
+     0.08809730287880235
+    ],
+    "occurrences": 1492,
+    "occurrences_failed": 0,
+    "occurrences_without_input_leaks": 1492,
+    "occurrences_without_input_leaks_failed": 0,
+    "restore_rate_without_input_leaks": 1.0,
+    "answers_with_input_leak": 20
+   },
+   "ru/qwen3.5:9b": {
+    "answers": 40,
+    "answers_with_labels": 13,
+    "answers_with_failure": 0,
+    "answers_with_failure_share": 0.0,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.0,
+     0.24705263800047073
+    ],
+    "occurrences": 353,
+    "occurrences_failed": 0,
+    "occurrences_without_input_leaks": 353,
+    "occurrences_without_input_leaks_failed": 0,
+    "restore_rate_without_input_leaks": 1.0,
+    "answers_with_input_leak": 20
+   }
+  },
+  "pii_roundtrip": {
+   "ru/gemma4:12b": {
+    "answers": 40,
+    "answers_with_labels": 40,
+    "answers_with_failure": 0,
+    "answers_with_failure_share": 0.0,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.0,
+     0.08809730287880235
+    ],
+    "occurrences": 1448,
+    "occurrences_failed": 0,
+    "occurrences_without_input_leaks": 1448,
+    "occurrences_without_input_leaks_failed": 0,
+    "restore_rate_without_input_leaks": 1.0,
+    "answers_with_input_leak": 2
+   },
+   "ru/qwen3.5:9b": {
+    "answers": 40,
+    "answers_with_labels": 40,
+    "answers_with_failure": 0,
+    "answers_with_failure_share": 0.0,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.0,
+     0.08809730287880235
+    ],
+    "occurrences": 1120,
+    "occurrences_failed": 0,
+    "occurrences_without_input_leaks": 1120,
+    "occurrences_without_input_leaks_failed": 0,
+    "restore_rate_without_input_leaks": 1.0,
+    "answers_with_input_leak": 2
+   },
+   "uk/gemma4:12b": {
+    "answers": 40,
+    "answers_with_labels": 40,
+    "answers_with_failure": 0,
+    "answers_with_failure_share": 0.0,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.0,
+     0.08809730287880235
+    ],
+    "occurrences": 1455,
+    "occurrences_failed": 0,
+    "occurrences_without_input_leaks": 1455,
+    "occurrences_without_input_leaks_failed": 0,
+    "restore_rate_without_input_leaks": 1.0,
+    "answers_with_input_leak": 0
+   },
+   "uk/qwen3.5:9b": {
+    "answers": 40,
+    "answers_with_labels": 40,
+    "answers_with_failure": 0,
+    "answers_with_failure_share": 0.0,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.0,
+     0.08809730287880235
+    ],
+    "occurrences": 1201,
+    "occurrences_failed": 0,
+    "occurrences_without_input_leaks": 1201,
+    "occurrences_without_input_leaks_failed": 0,
+    "restore_rate_without_input_leaks": 1.0,
+    "answers_with_input_leak": 0
+   }
+  },
+  "prompt_anonymizer": {
+   "uk/gemma4:12b": {
+    "answers": 40,
+    "answers_with_labels": 40,
+    "answers_with_failure": 1,
+    "answers_with_failure_share": 0.025,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.0006327449320494198,
+     0.1315858584827656
+    ],
+    "occurrences": 1108,
+    "occurrences_failed": 1,
+    "occurrences_without_input_leaks": 1089,
+    "occurrences_without_input_leaks_failed": 1,
+    "restore_rate_without_input_leaks": 0.9990817263544536,
+    "answers_with_input_leak": 40
+   },
+   "uk/qwen3.5:9b": {
+    "answers": 40,
+    "answers_with_labels": 40,
+    "answers_with_failure": 1,
+    "answers_with_failure_share": 0.025,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.0006327449320494198,
+     0.1315858584827656
+    ],
+    "occurrences": 902,
+    "occurrences_failed": 29,
+    "occurrences_without_input_leaks": 889,
+    "occurrences_without_input_leaks_failed": 29,
+    "restore_rate_without_input_leaks": 0.9673790776152981,
+    "answers_with_input_leak": 40
+   }
+  },
+  "_overlap": {
+   "ru": {
+    "competitor_docs": 20,
+    "engine_docs": 20,
+    "shared": [
+     "ru-certificate-016",
+     "ru-certificate-034",
+     "ru-certificate-145",
+     "ru-certificate-195",
+     "ru-contract-030",
+     "ru-contract-065",
+     "ru-contract-126",
+     "ru-contract-194",
+     "ru-hr-097",
+     "ru-hr-115",
+     "ru-hr-120",
+     "ru-hr-166",
+     "ru-letter-007",
+     "ru-letter-024",
+     "ru-letter-053",
+     "ru-letter-124",
+     "ru-medical-099",
+     "ru-medical-110",
+     "ru-medical-155",
+     "ru-medical-195"
+    ]
+   },
+   "uk": {
+    "competitor_docs": 20,
+    "engine_docs": 20,
+    "shared": [
+     "uk-certificate-016",
+     "uk-certificate-034",
+     "uk-certificate-145",
+     "uk-certificate-195",
+     "uk-contract-030",
+     "uk-contract-065",
+     "uk-contract-126",
+     "uk-contract-194",
+     "uk-hr-097",
+     "uk-hr-115",
+     "uk-hr-120",
+     "uk-hr-166",
+     "uk-letter-007",
+     "uk-letter-024",
+     "uk-letter-053",
+     "uk-letter-124",
+     "uk-medical-099",
+     "uk-medical-110",
+     "uk-medical-155",
+     "uk-medical-195"
+    ]
+   }
+  }
+ },
+ "holdout5": {
+  "gliner_guard+placeholders": {
+   "uk/gemma4:12b": {
+    "answers": 40,
+    "answers_with_labels": 40,
+    "answers_with_failure": 2,
+    "answers_with_failure_share": 0.05,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.00611364659935084,
+     0.1691968639594177
+    ],
+    "occurrences": 1923,
+    "occurrences_failed": 3,
+    "occurrences_without_input_leaks": 1923,
+    "occurrences_without_input_leaks_failed": 3,
+    "restore_rate_without_input_leaks": 0.9984399375975039,
+    "answers_with_input_leak": 22
+   },
+   "uk/qwen3.5:9b": {
+    "answers": 40,
+    "answers_with_labels": 40,
+    "answers_with_failure": 0,
+    "answers_with_failure_share": 0.0,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.0,
+     0.08809730287880235
+    ],
+    "occurrences": 1644,
+    "occurrences_failed": 0,
+    "occurrences_without_input_leaks": 1644,
+    "occurrences_without_input_leaks_failed": 0,
+    "restore_rate_without_input_leaks": 1.0,
+    "answers_with_input_leak": 22
+   }
+  },
+  "gliner_guard+placeholders@generic": {
+   "uk/gemma4:12b": {
+    "answers": 40,
+    "answers_with_labels": 40,
+    "answers_with_failure": 1,
+    "answers_with_failure_share": 0.025,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.0006327449320494198,
+     0.1315858584827656
+    ],
+    "occurrences": 1900,
+    "occurrences_failed": 2,
+    "occurrences_without_input_leaks": 1900,
+    "occurrences_without_input_leaks_failed": 2,
+    "restore_rate_without_input_leaks": 0.9989473684210526,
+    "answers_with_input_leak": 22
+   },
+   "uk/qwen3.5:9b": {
+    "answers": 40,
+    "answers_with_labels": 40,
+    "answers_with_failure": 0,
+    "answers_with_failure_share": 0.0,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.0,
+     0.08809730287880235
+    ],
+    "occurrences": 1595,
+    "occurrences_failed": 0,
+    "occurrences_without_input_leaks": 1595,
+    "occurrences_without_input_leaks_failed": 0,
+    "restore_rate_without_input_leaks": 1.0,
+    "answers_with_input_leak": 22
+   }
+  },
+  "pii_guard": {
+   "ru/gemma4:12b": {
+    "answers": 40,
+    "answers_with_labels": 40,
+    "answers_with_failure": 0,
+    "answers_with_failure_share": 0.0,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.0,
+     0.08809730287880235
+    ],
+    "occurrences": 1564,
+    "occurrences_failed": 0,
+    "occurrences_without_input_leaks": 1564,
+    "occurrences_without_input_leaks_failed": 0,
+    "restore_rate_without_input_leaks": 1.0,
+    "answers_with_input_leak": 20
+   },
+   "ru/qwen3.5:9b": {
+    "answers": 40,
+    "answers_with_labels": 15,
+    "answers_with_failure": 1,
+    "answers_with_failure_share": 0.06666666666666667,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.0016864302413527022,
+     0.31948456657830326
+    ],
+    "occurrences": 542,
+    "occurrences_failed": 1,
+    "occurrences_without_input_leaks": 542,
+    "occurrences_without_input_leaks_failed": 1,
+    "restore_rate_without_input_leaks": 0.9981549815498155,
+    "answers_with_input_leak": 20
+   }
+  },
+  "pii_guard+placeholders": {
+   "ru/gemma4:12b": {
+    "answers": 40,
+    "answers_with_labels": 40,
+    "answers_with_failure": 0,
+    "answers_with_failure_share": 0.0,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.0,
+     0.08809730287880235
+    ],
+    "occurrences": 2168,
+    "occurrences_failed": 0,
+    "occurrences_without_input_leaks": 2168,
+    "occurrences_without_input_leaks_failed": 0,
+    "restore_rate_without_input_leaks": 1.0,
+    "answers_with_input_leak": 20
+   },
+   "ru/qwen3.5:9b": {
+    "answers": 40,
+    "answers_with_labels": 40,
+    "answers_with_failure": 0,
+    "answers_with_failure_share": 0.0,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.0,
+     0.08809730287880235
+    ],
+    "occurrences": 1961,
+    "occurrences_failed": 0,
+    "occurrences_without_input_leaks": 1961,
+    "occurrences_without_input_leaks_failed": 0,
+    "restore_rate_without_input_leaks": 1.0,
+    "answers_with_input_leak": 20
+   }
+  },
+  "pii_guard+placeholders@generic": {
+   "ru/gemma4:12b": {
+    "answers": 40,
+    "answers_with_labels": 40,
+    "answers_with_failure": 0,
+    "answers_with_failure_share": 0.0,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.0,
+     0.08809730287880235
+    ],
+    "occurrences": 2297,
+    "occurrences_failed": 0,
+    "occurrences_without_input_leaks": 2297,
+    "occurrences_without_input_leaks_failed": 0,
+    "restore_rate_without_input_leaks": 1.0,
+    "answers_with_input_leak": 20
+   },
+   "ru/qwen3.5:9b": {
+    "answers": 40,
+    "answers_with_labels": 40,
+    "answers_with_failure": 0,
+    "answers_with_failure_share": 0.0,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.0,
+     0.08809730287880235
+    ],
+    "occurrences": 1956,
+    "occurrences_failed": 0,
+    "occurrences_without_input_leaks": 1956,
+    "occurrences_without_input_leaks_failed": 0,
+    "restore_rate_without_input_leaks": 1.0,
+    "answers_with_input_leak": 20
+   }
+  },
+  "pii_guard@generic": {
+   "ru/gemma4:12b": {
+    "answers": 40,
+    "answers_with_labels": 40,
+    "answers_with_failure": 1,
+    "answers_with_failure_share": 0.025,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.0006327449320494198,
+     0.1315858584827656
+    ],
+    "occurrences": 1703,
+    "occurrences_failed": 29,
+    "occurrences_without_input_leaks": 1703,
+    "occurrences_without_input_leaks_failed": 29,
+    "restore_rate_without_input_leaks": 0.9829712272460364,
+    "answers_with_input_leak": 20
+   },
+   "ru/qwen3.5:9b": {
+    "answers": 40,
+    "answers_with_labels": 26,
+    "answers_with_failure": 2,
+    "answers_with_failure_share": 0.07692307692307693,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.009455391003712739,
+     0.25130291669537375
+    ],
+    "occurrences": 1060,
+    "occurrences_failed": 3,
+    "occurrences_without_input_leaks": 1060,
+    "occurrences_without_input_leaks_failed": 3,
+    "restore_rate_without_input_leaks": 0.9971698113207547,
+    "answers_with_input_leak": 20
+   }
+  },
+  "pii_guard@generic~tolerant": {
+   "ru/gemma4:12b": {
+    "answers": 40,
+    "answers_with_labels": 40,
+    "answers_with_failure": 0,
+    "answers_with_failure_share": 0.0,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.0,
+     0.08809730287880235
+    ],
+    "occurrences": 1703,
+    "occurrences_failed": 0,
+    "occurrences_without_input_leaks": 1703,
+    "occurrences_without_input_leaks_failed": 0,
+    "restore_rate_without_input_leaks": 1.0,
+    "answers_with_input_leak": 20
+   },
+   "ru/qwen3.5:9b": {
+    "answers": 40,
+    "answers_with_labels": 26,
+    "answers_with_failure": 0,
+    "answers_with_failure_share": 0.0,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.0,
+     0.13227460449775408
+    ],
+    "occurrences": 1060,
+    "occurrences_failed": 0,
+    "occurrences_without_input_leaks": 1060,
+    "occurrences_without_input_leaks_failed": 0,
+    "restore_rate_without_input_leaks": 1.0,
+    "answers_with_input_leak": 20
+   }
+  },
+  "pii_guard~tolerant": {
+   "ru/gemma4:12b": {
+    "answers": 40,
+    "answers_with_labels": 40,
+    "answers_with_failure": 0,
+    "answers_with_failure_share": 0.0,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.0,
+     0.08809730287880235
+    ],
+    "occurrences": 1564,
+    "occurrences_failed": 0,
+    "occurrences_without_input_leaks": 1564,
+    "occurrences_without_input_leaks_failed": 0,
+    "restore_rate_without_input_leaks": 1.0,
+    "answers_with_input_leak": 20
+   },
+   "ru/qwen3.5:9b": {
+    "answers": 40,
+    "answers_with_labels": 15,
+    "answers_with_failure": 0,
+    "answers_with_failure_share": 0.0,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.0,
+     0.21801936091053387
+    ],
+    "occurrences": 542,
+    "occurrences_failed": 0,
+    "occurrences_without_input_leaks": 542,
+    "occurrences_without_input_leaks_failed": 0,
+    "restore_rate_without_input_leaks": 1.0,
+    "answers_with_input_leak": 20
+   }
+  },
+  "pii_roundtrip": {
+   "ru/gemma4:12b": {
+    "answers": 380,
+    "answers_with_labels": 380,
+    "answers_with_failure": 6,
+    "answers_with_failure_share": 0.015789473684210527,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.00581593252992531,
+     0.03404863990669549
+    ],
+    "occurrences": 13722,
+    "occurrences_failed": 8,
+    "occurrences_without_input_leaks": 13722,
+    "occurrences_without_input_leaks_failed": 8,
+    "restore_rate_without_input_leaks": 0.9994169946072001,
+    "answers_with_input_leak": 0
+   },
+   "ru/qwen3.5:9b": {
+    "answers": 380,
+    "answers_with_labels": 380,
+    "answers_with_failure": 9,
+    "answers_with_failure_share": 0.02368421052631579,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.010885821415139534,
+     0.044482508805285814
+    ],
+    "occurrences": 12274,
+    "occurrences_failed": 10,
+    "occurrences_without_input_leaks": 12274,
+    "occurrences_without_input_leaks_failed": 10,
+    "restore_rate_without_input_leaks": 0.9991852696757373,
+    "answers_with_input_leak": 0
+   },
+   "uk/gemma4:12b": {
+    "answers": 380,
+    "answers_with_labels": 380,
+    "answers_with_failure": 0,
+    "answers_with_failure_share": 0.0,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.0,
+     0.009660611079882253
+    ],
+    "occurrences": 13857,
+    "occurrences_failed": 0,
+    "occurrences_without_input_leaks": 13857,
+    "occurrences_without_input_leaks_failed": 0,
+    "restore_rate_without_input_leaks": 1.0,
+    "answers_with_input_leak": 0
+   },
+   "uk/qwen3.5:9b": {
+    "answers": 380,
+    "answers_with_labels": 380,
+    "answers_with_failure": 0,
+    "answers_with_failure_share": 0.0,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.0,
+     0.009660611079882253
+    ],
+    "occurrences": 11963,
+    "occurrences_failed": 0,
+    "occurrences_without_input_leaks": 11963,
+    "occurrences_without_input_leaks_failed": 0,
+    "restore_rate_without_input_leaks": 1.0,
+    "answers_with_input_leak": 0
+   }
+  },
+  "prompt_anonymizer": {
+   "uk/gemma4:12b": {
+    "answers": 40,
+    "answers_with_labels": 40,
+    "answers_with_failure": 0,
+    "answers_with_failure_share": 0.0,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.0,
+     0.08809730287880235
+    ],
+    "occurrences": 1132,
+    "occurrences_failed": 0,
+    "occurrences_without_input_leaks": 1115,
+    "occurrences_without_input_leaks_failed": 0,
+    "restore_rate_without_input_leaks": 1.0,
+    "answers_with_input_leak": 40
+   },
+   "uk/qwen3.5:9b": {
+    "answers": 40,
+    "answers_with_labels": 40,
+    "answers_with_failure": 0,
+    "answers_with_failure_share": 0.0,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.0,
+     0.08809730287880235
+    ],
+    "occurrences": 923,
+    "occurrences_failed": 0,
+    "occurrences_without_input_leaks": 911,
+    "occurrences_without_input_leaks_failed": 0,
+    "restore_rate_without_input_leaks": 1.0,
+    "answers_with_input_leak": 40
+   }
+  },
+  "_overlap": {
+   "ru": {
+    "competitor_docs": 20,
+    "engine_docs": 190,
+    "shared": [
+     "ru-certificate-016",
+     "ru-certificate-034",
+     "ru-certificate-145",
+     "ru-certificate-195",
+     "ru-contract-030",
+     "ru-contract-126",
+     "ru-hr-120",
+     "ru-letter-007",
+     "ru-letter-124"
+    ]
+   },
+   "uk": {
+    "competitor_docs": 20,
+    "engine_docs": 190,
+    "shared": [
+     "uk-certificate-016",
+     "uk-certificate-034",
+     "uk-certificate-145",
+     "uk-certificate-195",
+     "uk-contract-030",
+     "uk-contract-126",
+     "uk-hr-120",
+     "uk-letter-007",
+     "uk-letter-124"
+    ]
+   }
+  }
+ },
+ "_failures": {
+  "holdout4": {
+   "pii_guard": {
+    "ru/gemma4:12b": [
+     {
+      "id": "ru-hr-097",
+      "task": "summary",
+      "label": "<PII type=\"SNILS\" id=\"1\" />",
+      "value": "50276393782"
+     },
+     {
+      "id": "ru-hr-097",
+      "task": "summary",
+      "label": "<PII type=\"BIK\" id=\"1\" />",
+      "value": "042784436"
+     },
+     {
+      "id": "ru-hr-097",
+      "task": "summary",
+      "label": "<PII type=\"BIK\" id=\"2\" />",
+      "value": "042268658"
+     },
+     {
+      "id": "ru-hr-097",
+      "task": "summary",
+      "label": "<PII type=\"BIK\" id=\"3\" />",
+      "value": "041716898"
+     }
+    ],
+    "ru/qwen3.5:9b": [
+     {
+      "id": "ru-certificate-034",
+      "task": "reply",
+      "label": "<PII type=\"PERSON\" gender=\"male\" id=\"4\" />",
+      "value": "Миронов"
+     },
+     {
+      "id": "ru-certificate-034",
+      "task": "reply",
+      "label": "<PII type=\"DATE_TIME\" id=\"3\" />",
+      "value": "27.11.2023"
+     },
+     {
+      "id": "ru-certificate-034",
+      "task": "reply",
+      "label": "<PII type=\"PERSON\" gender=\"male\" id=\"4\" />",
+      "value": "Миронов"
+     },
+     {
+      "id": "ru-letter-024",
+      "task": "summary",
+      "label": "<PII type=\"PERSON\" gender=\"male\" id=\"2\" />",
+      "value": "Лобанов Комаров"
+     },
+     {
+      "id": "ru-letter-024",
+      "task": "summary",
+      "label": "<PII type=\"PERSON\" gender=\"female\" id=\"5\" />",
+      "value": "Комарова Милица Даниловна"
+     },
+     {
+      "id": "ru-letter-024",
+      "task": "summary",
+      "label": "<PII type=\"PERSON\" gender=\"male\" id=\"7\" />",
+      "value": "Зайцев Нестор Иосипович"
+     },
+     {
+      "id": "ru-letter-024",
+      "task": "summary",
+      "label": "<PII type=\"PERSON\" gender=\"female\" id=\"8\" />",
+      "value": "Комарова"
+     },
+     {
+      "id": "ru-letter-024",
+      "task": "summary",
+      "label": "<PII type=\"PERSON\" gender=\"male\" id=\"11\" />",
+      "value": "Зайцев"
+     }
+    ]
+   },
+   "pii_guard@generic": {
+    "ru/gemma4:12b": [
+     {
+      "id": "ru-certificate-034",
+      "task": "reply",
+      "label": "<PII type=\"PERSON\" gender=\"male\" id=\"7\" />",
+      "value": "Морозов"
+     },
+     {
+      "id": "ru-certificate-034",
+      "task": "reply",
+      "label": "<PII type=\"PERSON\" gender=\"male\" id=\"8\" />",
+      "value": "Рогов"
+     },
+     {
+      "id": "ru-certificate-034",
+      "task": "reply",
+      "label": "<PII type=\"PERSON\" gender=\"male\" id=\"7\" />",
+      "value": "Морозов"
+     },
+     {
+      "id": "ru-certificate-034",
+      "task": "reply",
+      "label": "<PII type=\"PERSON\" gender=\"male\" id=\"8\" />",
+      "value": "Рогов"
+     },
+     {
+      "id": "ru-certificate-034",
+      "task": "reply",
+      "label": "<PII type=\"PERSON\" gender=\"female\" id=\"1\" />",
+      "value": "Лапина Евфросиния Руслановна"
+     },
+     {
+      "id": "ru-certificate-034",
+      "task": "reply",
+      "label": "<PII type=\"DATE_TIME\" id=\"2\" />",
+      "value": "23.01.2000"
+     },
+     {
+      "id": "ru-certificate-034",
+      "task": "reply",
+      "label": "<PII type=\"SNILS\" id=\"1\" />",
+      "value": "742-121-096 52"
+     },
+     {
+      "id": "ru-certificate-034",
+      "task": "reply",
+      "label": "<PII type=\"INN\" id=\"1\" />",
+      "value": "200170411500"
+     },
+     {
+      "id": "ru-certificate-034",
+      "task": "reply",
+      "label": "<PII type=\"BANK_ACCOUNT\" id=\"1\" />",
+      "value": "40802810338080491196"
+     },
+     {
+      "id": "ru-certificate-034",
+      "task": "reply",
+      "label": "<PII type=\"CREDIT_CARD\" id=\"1\" />",
+      "value": "2200 8252 1396 1000"
+     },
+     {
+      "id": "ru-certificate-034",
+      "task": "reply",
+      "label": "<PII type=\"PERSON\" gender=\"male\" id=\"5\" />",
+      "value": "Назаров Лука Игнатьевич"
+     },
+     {
+      "id": "ru-certificate-034",
+      "task": "reply",
+      "label": "<PII type=\"DATE_TIME\" id=\"4\" />",
+      "value": "28.09.1974"
+     },
+     {
+      "id": "ru-certificate-034",
+      "task": "reply",
+      "label": "<PII type=\"PASSPORT\" id=\"1\" />",
+      "value": "32 17 824941"
+     },
+     {
+      "id": "ru-certificate-034",
+      "task": "reply",
+      "label": "<PII type=\"DATE_TIME\" id=\"5\" />",
+      "value": "22.11.2019"
+     },
+     {
+      "id": "ru-certificate-034",
+      "task": "reply",
+      "label": "<PII type=\"SNILS\" id=\"2\" />",
+      "value": "705-596-704 20"
+     },
+     {
+      "id": "ru-certificate-034",
+      "task": "reply",
+      "label": "<PII type=\"INN\" id=\"2\" />",
+      "value": "233065847074"
+     },
+     {
+      "id": "ru-certificate-034",
+      "task": "reply",
+      "label": "<PII type=\"PHONE_NUMBER\" id=\"1\" />",
+      "value": "+79857157865"
+     },
+     {
+      "id": "ru-certificate-034",
+      "task": "reply",
+      "label": "<PII type=\"EMAIL_ADDRESS\" id=\"1\" />",
+      "value": "anzhelikanoskova@yahoo.com"
+     },
+     {
+      "id": "ru-certificate-034",
+      "task": "reply",
+      "label": "<PII type=\"BANK_ACCOUNT\" id=\"2\" />",
+      "value": "40817810295082811684"
+     },
+     {
+      "id": "ru-certificate-034",
+      "task": "reply",
+      "label": "<PII type=\"BIK\" id=\"1\" />",
+      "value": "046544182"
+     },
+     {
+      "id": "ru-certificate-034",
+      "task": "reply",
+      "label": "<PII type=\"CREDIT_CARD\" id=\"2\" />",
+      "value": "2200 7126 6898 5942"
+     },
+     {
+      "id": "ru-certificate-034",
+      "task": "reply",
+      "label": "<PII type=\"PERSON\" gender=\"male\" id=\"6\" />",
+      "value": "Романов Устин Гаврилович"
+     },
+     {
+      "id": "ru-certificate-034",
+      "task": "reply",
+      "label": "<PII type=\"DATE_TIME\" id=\"6\" />",
+      "value": "19.05.1983"
+     },
+     {
+      "id": "ru-certificate-034",
+      "task": "reply",
+      "label": "<PII type=\"PASSPORT\" id=\"2\" />",
+      "value": "76 03 498510"
+     },
+     {
+      "id": "ru-certificate-034",
+      "task": "reply",
+      "label": "<PII type=\"DATE_TIME\" id=\"7\" />",
+      "value": "28.05.2003"
+     },
+     {
+      "id": "ru-certificate-034",
+      "task": "reply",
+      "label": "<PII type=\"SNILS\" id=\"3\" />",
+      "value": "849-970-678 94"
+     },
+     {
+      "id": "ru-certificate-034",
+      "task": "reply",
+      "label": "<PII type=\"INN\" id=\"3\" />",
+      "value": "078858439795"
+     },
+     {
+      "id": "ru-certificate-034",
+      "task": "reply",
+      "label": "<PII type=\"POSTAL_CODE\" id=\"1\" />",
+      "value": "451917"
+     },
+     {
+      "id": "ru-certificate-034",
+      "task": "reply",
+      "label": "<PII type=\"PHONE_NUMBER\" id=\"2\" />",
+      "value": "8 (952) 494-83-55"
+     },
+     {
+      "id": "ru-certificate-034",
+      "task": "reply",
+      "label": "<PII type=\"EMAIL_ADDRESS\" id=\"2\" />",
+      "value": "ermilalekseev@yahoo.com"
+     },
+     {
+      "id": "ru-certificate-034",
+      "task": "reply",
+      "label": "<PII type=\"BANK_ACCOUNT\" id=\"3\" />",
+      "value": "40817810657282197595"
+     },
+     {
+      "id": "ru-certificate-034",
+      "task": "reply",
+      "label": "<PII type=\"BIK\" id=\"2\" />",
+      "value": "049007160"
+     },
+     {
+      "id": "ru-certificate-034",
+      "task": "reply",
+      "label": "<PII type=\"CREDIT_CARD\" id=\"3\" />",
+      "value": "4012 0069 2307 8989"
+     },
+     {
+      "id": "ru-contract-194",
+      "task": "reply",
+      "label": "<PII type=\"PERSON\" gender=\"female\" id=\"1\" />",
+      "value": "Федотова Василиса Феликсовна"
+     },
+     {
+      "id": "ru-contract-194",
+      "task": "reply",
+      "label": "<PII type=\"PERSON\" gender=\"female\" id=\"2\" />",
+      "value": "Федотова Евфросиния Владиславовна"
+     },
+     {
+      "id": "ru-contract-194",
+      "task": "reply",
+      "label": "<PII type=\"PERSON\" gender=\"male\" id=\"3\" />",
+      "value": "Шарапов"
+     },
+     {
+      "id": "ru-contract-194",
+      "task": "reply",
+      "label": "<PII type=\"PERSON\" gender=\"male\" id=\"4\" />",
+      "value": "Быков"
+     },
+     {
+      "id": "ru-contract-194",
+      "task": "reply",
+      "label": "<PII type=\"PERSON\" gender=\"unknown\" id=\"5\" />",
+      "value": "Кириллов"
+     },
+     {
+      "id": "ru-contract-194",
+      "task": "reply",
+      "label": "<PII type=\"PERSON\" gender=\"male\" id=\"6\" />",
+      "value": "Федотов"
+     },
+     {
+      "id": "ru-contract-194",
+      "task": "reply",
+      "label": "<PII type=\"PERSON\" gender=\"male\" id=\"7\" />",
+      "value": "Кулаки Варлаы Игоревич"
+     },
+     {
+      "id": "ru-contract-194",
+      "task": "reply",
+      "label": "<PII type=\"PERSON\" gender=\"female\" id=\"1\" />",
+      "value": "Федотова Василиса Феликсовна"
+     },
+     {
+      "id": "ru-contract-194",
+      "task": "reply",
+      "label": "<PII type=\"PASSPORT\" id=\"1\" />",
+      "value": "71 97 907460"
+     },
+     {
+      "id": "ru-contract-194",
+      "task": "reply",
+      "label": "<PII type=\"PERSON\" gender=\"female\" id=\"2\" />",
+      "value": "Федотова Евфросиния Владиславовна"
+     },
+     {
+      "id": "ru-contract-194",
+      "task": "reply",
+      "label": "<PII type=\"PERSON\" gender=\"male\" id=\"7\" />",
+      "value": "Кулаки Варлаы Игоревич"
+     }
+    ],
+    "ru/qwen3.5:9b": [
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"PASSPORT\" id=\"1\" />",
+      "value": "17 21 582804"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"DATE_TIME\" id=\"2\" />",
+      "value": "02.03.2022"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"SNILS\" id=\"1\" />",
+      "value": "846-446-980 55"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"INN\" id=\"2\" />",
+      "value": "032875263802"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"LOCATION\" id=\"5\" />",
+      "value": "Краснокамск"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"LOCATION\" id=\"6\" />",
+      "value": "пр. Коммунальный"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"LOCATION\" id=\"7\" />",
+      "value": "д. 3/5 стр. 69"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"PHONE_NUMBER\" id=\"1\" />",
+      "value": "8-952-365-55-47"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"EMAIL_ADDRESS\" id=\"2\" />",
+      "value": "oksana38@gmail.com"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"BANK_ACCOUNT\" id=\"1\" />",
+      "value": "40702810669651788976"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"BIK\" id=\"1\" />",
+      "value": "048055530"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"CREDIT_CARD\" id=\"1\" />",
+      "value": "2201 8874 9795 5404"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"PASSPORT\" id=\"2\" />",
+      "value": "04 97 278152"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"DATE_TIME\" id=\"3\" />",
+      "value": "07.11.1997"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"SNILS\" id=\"2\" />",
+      "value": "610-450-612 32"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"INN\" id=\"3\" />",
+      "value": "495974813836"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"LOCATION\" id=\"2\" />",
+      "value": "Каргополь"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"LOCATION\" id=\"3\" />",
+      "value": "ш. Васильковое"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"LOCATION\" id=\"4\" />",
+      "value": "д. 33 стр. 2"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"PHONE_NUMBER\" id=\"2\" />",
+      "value": "8-917-819-46-16"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"EMAIL_ADDRESS\" id=\"1\" />",
+      "value": "iosif_2023@rambler.ru"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"BANK_ACCOUNT\" id=\"2\" />",
+      "value": "40817810867617777744"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"BIK\" id=\"2\" />",
+      "value": "046510240"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"CREDIT_CARD\" id=\"2\" />",
+      "value": "5200 8466 7858 7869"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"PERSON\" gender=\"male\" id=\"3\" />",
+      "value": "Филиппы"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"INN\" id=\"1\" />",
+      "value": "0252632167"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"LOCATION\" id=\"2\" />",
+      "value": "Каргополь"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"LOCATION\" id=\"3\" />",
+      "value": "ш. Васильковое"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"LOCATION\" id=\"4\" />",
+      "value": "д. 33 стр. 2"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"EMAIL_ADDRESS\" id=\"1\" />",
+      "value": "iosif_2023@rambler.ru"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"PASSPORT\" id=\"3\" />",
+      "value": "28 15 822449"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"DATE_TIME\" id=\"7\" />",
+      "value": "05.11.2017"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"SNILS\" id=\"3\" />",
+      "value": "589-238-662 61"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"INN\" id=\"4\" />",
+      "value": "625752832437"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"LOCATION\" id=\"8\" />",
+      "value": "Курск"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"LOCATION\" id=\"9\" />",
+      "value": "ул. Тенистая"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"LOCATION\" id=\"10\" />",
+      "value": "д. 2 стр. 82"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"POSTAL_CODE\" id=\"1\" />",
+      "value": "227572"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"PHONE_NUMBER\" id=\"3\" />",
+      "value": "8 (960) 504-21-76"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"EMAIL_ADDRESS\" id=\"3\" />",
+      "value": "miheevavalerija@gmail.com"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"BANK_ACCOUNT\" id=\"3\" />",
+      "value": "40817810357370490268"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"BIK\" id=\"3\" />",
+      "value": "042574144"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "<PII type=\"CREDIT_CARD\" id=\"3\" />",
+      "value": "2200 0616 1940 1330"
+     },
+     {
+      "id": "ru-letter-024",
+      "task": "summary",
+      "label": "<PII type=\"PERSON\" gender=\"male\" id=\"2\" />",
+      "value": "Лобанов Комаров"
+     },
+     {
+      "id": "ru-letter-024",
+      "task": "summary",
+      "label": "<PII type=\"PERSON\" gender=\"female\" id=\"3\" />",
+      "value": "Архипова"
+     },
+     {
+      "id": "ru-letter-024",
+      "task": "reply",
+      "label": "<PII type=\"PERSON\" gender=\"male\" id=\"1\" />",
+      "value": "Емельянов Иванов"
+     }
+    ]
+   }
+  },
+  "holdout5": {
+   "pii_guard": {
+    "ru/qwen3.5:9b": [
+     {
+      "id": "ru-medical-195",
+      "task": "reply",
+      "label": "<PII type=\"PERSON\" gender=\"male\" id=\"3\" />",
+      "value": "Пахомов Иисдоры Герасимович"
+     }
+    ]
+   },
+   "pii_guard@generic": {
+    "ru/gemma4:12b": [
+     {
+      "id": "ru-contract-194",
+      "task": "reply",
+      "label": "<PII type=\"PERSON\" gender=\"male\" id=\"1\" />",
+      "value": "Чернов Пимен Демьянович"
+     },
+     {
+      "id": "ru-contract-194",
+      "task": "reply",
+      "label": "<PII type=\"PERSON\" gender=\"male\" id=\"2\" />",
+      "value": "Тихонов Ипат Исидорович"
+     },
+     {
+      "id": "ru-contract-194",
+      "task": "reply",
+      "label": "<PII type=\"PERSON\" gender=\"male\" id=\"1\" />",
+      "value": "Чернов Пимен Демьянович"
+     },
+     {
+      "id": "ru-contract-194",
+      "task": "reply",
+      "label": "<PII type=\"PERSON\" gender=\"male\" id=\"2\" />",
+      "value": "Тихонов Ипат Исидорович"
+     },
+     {
+      "id": "ru-contract-194",
+      "task": "reply",
+      "label": "<PII type=\"PERSON\" gender=\"male\" id=\"1\" />",
+      "value": "Чернов Пимен Демьянович"
+     },
+     {
+      "id": "ru-contract-194",
+      "task": "reply",
+      "label": "<PII type=\"PASSPORT\" id=\"1\" />",
+      "value": "93 05 357122"
+     },
+     {
+      "id": "ru-contract-194",
+      "task": "reply",
+      "label": "<PII type=\"DATE_TIME\" id=\"2\" />",
+      "value": "08.11.2005"
+     },
+     {
+      "id": "ru-contract-194",
+      "task": "reply",
+      "label": "<PII type=\"SNILS\" id=\"1\" />",
+      "value": "523-571-511 68"
+     },
+     {
+      "id": "ru-contract-194",
+      "task": "reply",
+      "label": "<PII type=\"INN\" id=\"2\" />",
+      "value": "367178026649"
+     },
+     {
+      "id": "ru-contract-194",
+      "task": "reply",
+      "label": "<PII type=\"POSTAL_CODE\" id=\"2\" />",
+      "value": "668370"
+     },
+     {
+      "id": "ru-contract-194",
+      "task": "reply",
+      "label": "<PII type=\"PHONE_NUMBER\" id=\"1\" />",
+      "value": "8-909-795-59-58"
+     },
+     {
+      "id": "ru-contract-194",
+      "task": "reply",
+      "label": "<PII type=\"EMAIL_ADDRESS\" id=\"2\" />",
+      "value": "karpovilarion@yandex.ru"
+     },
+     {
+      "id": "ru-contract-194",
+      "task": "reply",
+      "label": "<PII type=\"BANK_ACCOUNT\" id=\"1\" />",
+      "value": "40702810366682434366"
+     },
+     {
+      "id": "ru-contract-194",
+      "task": "reply",
+      "label": "<PII type=\"BIK\" id=\"1\" />",
+      "value": "044790993"
+     },
+     {
+      "id": "ru-contract-194",
+      "task": "reply",
+      "label": "<PII type=\"CREDIT_CARD\" id=\"1\" />",
+      "value": "5110 2505 8346 3424"
+     },
+     {
+      "id": "ru-contract-194",
+      "task": "reply",
+      "label": "<PII type=\"PERSON\" gender=\"male\" id=\"2\" />",
+      "value": "Тихонов Ипат Исидорович"
+     },
+     {
+      "id": "ru-contract-194",
+      "task": "reply",
+      "label": "<PII type=\"PASSPORT\" id=\"2\" />",
+      "value": "18 19 800701"
+     },
+     {
+      "id": "ru-contract-194",
+      "task": "reply",
+      "label": "<PII type=\"DATE_TIME\" id=\"3\" />",
+      "value": "19.11.2019"
+     },
+     {
+      "id": "ru-contract-194",
+      "task": "reply",
+      "label": "<PII type=\"SNILS\" id=\"2\" />",
+      "value": "882-692-760 70"
+     },
+     {
+      "id": "ru-contract-194",
+      "task": "reply",
+      "label": "<PII type=\"INN\" id=\"3\" />",
+      "value": "450556015803"
+     },
+     {
+      "id": "ru-contract-194",
+      "task": "reply",
+      "label": "<PII type=\"POSTAL_CODE\" id=\"1\" />",
+      "value": "357271"
+     },
+     {
+      "id": "ru-contract-194",
+      "task": "reply",
+      "label": "<PII type=\"SNILS\" id=\"3\" />",
+      "value": "79169384368"
+     },
+     {
+      "id": "ru-contract-194",
+      "task": "reply",
+      "label": "<PII type=\"EMAIL_ADDRESS\" id=\"1\" />",
+      "value": "afanasialeksandrov@yahoo.com"
+     },
+     {
+      "id": "ru-contract-194",
+      "task": "reply",
+      "label": "<PII type=\"BANK_ACCOUNT\" id=\"2\" />",
+      "value": "40701810828901986720"
+     },
+     {
+      "id": "ru-contract-194",
+      "task": "reply",
+      "label": "<PII type=\"BIK\" id=\"2\" />",
+      "value": "045279485"
+     },
+     {
+      "id": "ru-contract-194",
+      "task": "reply",
+      "label": "<PII type=\"CREDIT_CARD\" id=\"2\" />",
+      "value": "4822 4916 2167 8100"
+     },
+     {
+      "id": "ru-contract-194",
+      "task": "reply",
+      "label": "<PII type=\"INN\" id=\"1\" />",
+      "value": "7558974308"
+     },
+     {
+      "id": "ru-contract-194",
+      "task": "reply",
+      "label": "<PII type=\"POSTAL_CODE\" id=\"1\" />",
+      "value": "357271"
+     },
+     {
+      "id": "ru-contract-194",
+      "task": "reply",
+      "label": "<PII type=\"EMAIL_ADDRESS\" id=\"1\" />",
+      "value": "afanasialeksandrov@yahoo.com"
+     }
+    ],
+    "ru/qwen3.5:9b": [
+     {
+      "id": "ru-medical-195",
+      "task": "summary",
+      "label": "<PII type=\"PERSON\" gender=\"male\" id=\"3\" />",
+      "value": "Пахомов Иисдоры Герасимович"
+     },
+     {
+      "id": "ru-medical-195",
+      "task": "reply",
+      "label": "<PII type=\"PERSON\" gender=\"male\" id=\"3\" />",
+      "value": "Пахомов Иисдоры Герасимович"
+     },
+     {
+      "id": "ru-medical-195",
+      "task": "reply",
+      "label": "<PII type=\"PERSON\" gender=\"male\" id=\"3\" />",
+      "value": "Пахомов Иисдоры Герасимович"
+     }
+    ]
+   },
+   "pii_roundtrip": {
+    "ru/gemma4:12b": [
+     {
+      "id": "ru-hr-022",
+      "task": "summary",
+      "label": "[PERSON_2]",
+      "value": "Большаков Андреевич"
+     },
+     {
+      "id": "ru-hr-022",
+      "task": "summary",
+      "label": "[PERSON_2]",
+      "value": "Большаков Андреевич"
+     },
+     {
+      "id": "ru-hr-022",
+      "task": "summary",
+      "label": "[PERSON_2]",
+      "value": "Большаков Андреевич"
+     },
+     {
+      "id": "ru-hr-022",
+      "task": "reply",
+      "label": "[PERSON_2]",
+      "value": "Большаков Андреевич"
+     },
+     {
+      "id": "ru-hr-043",
+      "task": "summary",
+      "label": "[PERSON_7]",
+      "value": "Третьяков Фадей Изотович"
+     },
+     {
+      "id": "ru-letter-155",
+      "task": "summary",
+      "label": "[PERSON_6]",
+      "value": "Третьяков Пимен Валерьянович"
+     },
+     {
+      "id": "ru-letter-131",
+      "task": "summary",
+      "label": "[PERSON_10]",
+      "value": "Афанасьева Майя Ждановна"
+     },
+     {
+      "id": "ru-letter-131",
+      "task": "reply",
+      "label": "[PERSON_10]",
+      "value": "Афанасьева Майя Ждановна"
+     }
+    ],
+    "ru/qwen3.5:9b": [
+     {
+      "id": "ru-hr-043",
+      "task": "summary",
+      "label": "[PERSON_7]",
+      "value": "Третьяков Фадей Изотович"
+     },
+     {
+      "id": "ru-hr-043",
+      "task": "reply",
+      "label": "[PERSON_7]",
+      "value": "Третьяков Фадей Изотович"
+     },
+     {
+      "id": "ru-hr-043",
+      "task": "reply",
+      "label": "[PERSON_7]",
+      "value": "Третьяков Фадей Изотович"
+     },
+     {
+      "id": "ru-letter-155",
+      "task": "summary",
+      "label": "[PERSON_6]",
+      "value": "Третьяков Пимен Валерьянович"
+     },
+     {
+      "id": "ru-letter-155",
+      "task": "reply",
+      "label": "[PERSON_6]",
+      "value": "Третьяков Пимен Валерьянович"
+     },
+     {
+      "id": "ru-letter-131",
+      "task": "summary",
+      "label": "[PERSON_10]",
+      "value": "Афанасьева Майя Ждановна"
+     },
+     {
+      "id": "ru-letter-131",
+      "task": "reply",
+      "label": "[PERSON_10]",
+      "value": "Афанасьева Майя Ждановна"
+     },
+     {
+      "id": "ru-letter-145",
+      "task": "summary",
+      "label": "[PERSON_3]",
+      "value": "Рыбаков Аверкий"
+     },
+     {
+      "id": "ru-letter-129",
+      "task": "summary",
+      "label": "[PERSON_3]",
+      "value": "Буров А.Ф."
+     },
+     {
+      "id": "ru-medical-165",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Ильина Майя Геннадиевна"
+     }
+    ]
+   }
+  }
+ },
+ "_note": "Added after review, not pre-registered. Computed from the saved answers; no model was asked."
+}
