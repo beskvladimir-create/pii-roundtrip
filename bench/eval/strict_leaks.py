@@ -32,12 +32,19 @@ DATA = [
     "holdout4_uk",
     "holdout5_ru",
     "holdout5_uk",
+    "holdout6_ru",
+    "holdout6_uk",
     "hivetrace_pii_bench",
     "redmadrobot_pii_benchmark",
     "nemotron_uk",
     "nemotron_uk_ids",
 ]
+EXAMPLES = "holdout6_uk"  # 20 examples of what stayed visible (held-out set 5 in release 0.3.1)
 NUMBERS = set(metrics.STRUCTURED["ru"] + metrics.STRUCTURED["uk"])
+# the types of the recall thresholds: structured identifiers, names, addresses, organisations
+# (until 22.10.2026 every annotated type of the leak measure was counted, also phone, e-mail and
+# date of birth; on held-out set 5 this changed no figure)
+THRESHOLD_TYPES = NUMBERS | set(metrics.NAMES)
 
 
 def group(t: str) -> str:
@@ -86,7 +93,7 @@ def main() -> None:
                 gold = [
                     g
                     for g in d["entities"]
-                    if g["type"] in metrics.TYPES and metrics._essential_positions(text, g["start"], g["end"])
+                    if g["type"] in THRESHOLD_TYPES and metrics._essential_positions(text, g["start"], g["end"])
                 ]
                 open_ = [g for g in gold if not metrics._covered_loose(text, g["start"], g["end"], preds)]
                 allc[0] += bool(open_)
@@ -99,7 +106,7 @@ def main() -> None:
                     c = by_noise.setdefault("noisy" if d["noisy"] else "clean", [0, 0])
                     c[0] += bool(open_)
                     c[1] += 1
-                if tool == "pii_roundtrip" and ds == "holdout5_uk":
+                if tool == "pii_roundtrip" and ds == EXAMPLES:
                     for g in open_:
                         if g["type"] in ("ADDRESS", "ORG"):
                             examples.append(
@@ -117,7 +124,7 @@ def main() -> None:
             }
             print(f"done {tool}/{ds}", file=sys.stderr)
     rng = random.Random(0)
-    out["_examples_pii_roundtrip_holdout5_uk"] = {
+    out[f"_examples_pii_roundtrip_{EXAMPLES}"] = {
         "total": len(examples),
         "sample": rng.sample(examples, min(20, len(examples))),
     }

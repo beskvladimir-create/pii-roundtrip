@@ -27,7 +27,7 @@ from bench import ROOT
 from bench.eval import run
 
 LOG = ROOT / "results" / "holdout_runs.jsonl"
-SETS = {"1": "holdout", "2": "holdout2", "3": "holdout3", "4": "holdout4", "5": "holdout5"}
+SETS = {"1": "holdout", "2": "holdout2", "3": "holdout3", "4": "holdout4", "5": "holdout5", "6": "holdout6"}
 
 
 def check_hashes(folder: str) -> None:

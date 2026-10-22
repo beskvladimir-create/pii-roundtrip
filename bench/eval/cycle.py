@@ -77,6 +77,7 @@ DATA = {
     "holdout3": "data/holdout3",
     "holdout4": "data/holdout4",
     "holdout5": "data/holdout5",
+    "holdout6": "data/holdout6",
 }
 
 
@@ -89,13 +90,40 @@ def pick_docs(lang: str, per_type: int, data: str = "synthetic") -> list[dict]:
     return [d for t in sorted(by_type) for d in rng.sample(by_type[t], per_type)]
 
 
+# Case endings added to a surname or a first name by rule (evaluator version 2, fixed on
+# 22.10.2026 before held-out set 6 was generated): the dictionary reads "Третьяков" as a form of
+# "третьяк" and gives no forms of "Майя", so correctly restored "Третьякова" and "Майи" were
+# counted as failures on held-out set 5.
+EVALUATOR = 2  # the version of name matching; 1 reproduces the figures of held-out sets 4 and 5
+_SURNAME_FORMS = {
+    r"(ов|ев|ёв|ин|ын)$": ("а", "у", "ым", "ом", "е", "ы", "ых", "ыми"),
+    r"(ова|ева|ёва|ина|ына)$": ("ой", "у", "ы"),
+}
+_NAME_FORMS = {
+    r"[^и]я$": ("и", "е", "ю", "ей", "ею"),
+    r"ия$": ("ии", "ию", "ией"),
+    r"[^ая]а$": ("ы", "и", "е", "у", "ой"),
+}
+
+
 @lru_cache(maxsize=50000)
-def _ru_forms(word: str) -> frozenset[str]:
+def _ru_forms(word: str, evaluator: int = 2) -> frozenset[str]:
+    """Case forms of a word of a value. Version 1 (held-out sets 4 and 5 as run): the lexemes of the
+    first three dictionary parses. Version 2 adds every parse and the case endings above."""
     from pii_roundtrip.names import morph
 
     forms = {word.lower()}
-    for p in morph().parse(word)[:3]:
+    parses = morph().parse(word)
+    for p in parses[:3] if evaluator == 1 else parses:
         forms.update(lex.word for lex in p.lexeme)
+    if evaluator >= 2:
+        low = word.lower()
+        for rules in (_SURNAME_FORMS, _NAME_FORMS):
+            for rx, ends in rules.items():
+                if re.search(rx, low):
+                    stem = low[:-1] if rules is _NAME_FORMS or not re.search(r"(ов|ев|ёв|ин|ын)$", low) else low
+                    forms.update(stem + e for e in ends)
+                    break
     return frozenset(f.replace("ё", "е") for f in forms)
 
 
@@ -120,7 +148,7 @@ def _value_restored(value: str, restored: str, lang: str, is_person: bool = Fals
         return bool(digits)
     text_words = {w.lower().replace("ё", "е") for w in re.findall(r"[А-Яа-яЁё-]+", restored)}
     text_words |= {p for w in list(text_words) for p in w.split("-")}
-    return all(_ru_forms(w) & text_words for w in words)
+    return all(_ru_forms(w, EVALUATOR) & text_words for w in words)
 
 
 def _identity(family: str, label: str, known_types: set[str] | None = None) -> tuple[str, str] | None:

@@ -73,6 +73,19 @@ def test_female_surname_and_gender():
     assert parse("ИВАНОВ ПЁТР СЕРГЕЕВИЧ", "ru").display == "Иванов Пётр Сергеевич"
 
 
+def test_first_name_unknown_to_the_dictionary_is_kept():
+    """ru-hr-022 of held-out set 5: «Милан» is not a known first name and was dropped from the
+    stored value, so it was lost on restoration."""
+    from pii_roundtrip.names import parse
+
+    assert parse("Большакова Милан Андреевича", "ru").display == "Большаков Милан Андреевич"
+    assert parse("Милан Большаков", "ru").display == "Большаков Милан"
+    # held-out set 5 (found by the value fidelity check): a verb form taken into the name span
+    assert parse("Выдана Крюковой Марине Никифоровне", "ru").display == "Крюкова Марина Никифоровна"
+    assert parse("Лихачёва Карла Фомича", "ru").display == "Лихачёв Карл Фомич"
+    assert parse("Ермакова Клавдия Фокича", "ru").display == "Ермаков Клавдий Фокич"
+
+
 def test_propagation_variants(eng):
     a, _ = eng.anonymize("BETWEEN: JOHN SMITH and Mr John Smith; Mr O'Brien met O’Brien.", "en-GB")
     assert "JOHN" not in a and "Brien" not in a
@@ -419,3 +432,108 @@ def test_lenient_forms_leave_other_text_alone(eng):
 def test_restore_ru_label_with_a_lost_bracket(eng):
     s = Session("ru", {"[ORG_1]": "ООО «Восход»", "[INN_1]": "7707083893"})
     assert eng.deanonymize("Договор с ORG_1], ИНН [INN_1.", s) == "Договор с ООО «Восход», ИНН 7707083893."
+
+
+def test_restore_ru_two_names_without_a_space(eng):
+    """ru-letter-145 and ru-letter-129 of held-out set 5: a model wrote two name placeholders
+    without a space, and the surname of the second name was lost on restoration."""
+    from pii_roundtrip.adapters.pii_guard import PiiGuardInflector
+
+    if not PiiGuardInflector.available():
+        pytest.skip("pii-guard is not installed")
+    s = Session("ru", {"[PERSON_2]": "Гущин Олег Петрович", "[PERSON_3]": "Рыбаков Аверкий"})
+    s.genders = {"[PERSON_2]": "male", "[PERSON_3]": "male"}
+    out = eng.deanonymize("Письмо руководителя организации [PERSON_2][PERSON_3] получено.", s)
+    assert "Рыбаков" in out and "Гущин" in out, out
+
+
+class _Fake:
+    """A detector that returns the given fragments with the given types."""
+
+    name, languages = "fake", frozenset({"ru", "en-GB"})
+
+    def __init__(self, parts):
+        self.parts = parts
+
+    def detect(self, text, lang):
+        from pii_roundtrip.detect import Span
+
+        out = []
+        for etype, word in self.parts:
+            i = text.find(word)
+            if i >= 0:
+                out.append(Span(etype, i, i + len(word), "fake"))
+        return out
+
+
+@pytest.mark.parametrize(
+    "text,lang,parts,rest",
+    [
+        # held-out set 5: the parts of an address and an organisation left visible by 0.3
+        (
+            "Адрес: с. Березники, пер. Комарова, д. 221 стр. 698, 721980.",
+            "ru",
+            [("ADDRESS", "Березники, пер. Комарова, д. 221 стр")],
+            ["698", "721980"],
+        ),
+        (
+            "Адрес: п. Соликамск, ш. Луначарского, д. 486 к. 50, 247671.",
+            "ru",
+            [("ADDRESS", "Соликамск, ш. Луначарского, д. 486 к.")],
+            [" 50", "247671"],
+        ),
+        (
+            "Адрес: д. Быково (метеост.), ш. Монтажников, д. 345 к. 52, 319324.",
+            "ru",
+            [("ADDRESS", "д. Быково"), ("ADDRESS", "ш. Монтажников, д. 345 к. 52, 319324")],
+            ["метеост", "Монтажников"],
+        ),
+        (
+            "Адрес: г. Карабулак, ш. 9 мая, д. 6/4 к. 75, 689383.",
+            "ru",
+            [("ADDRESS", "Карабулак")],
+            ["мая", "6/4", "689383"],
+        ),
+        (
+            "Адрес: г. Приозерск, алл. Марта 8, д. 327 стр. 468, 061293.",
+            "ru",
+            [("ADDRESS", "Приозерск, алл. Марта")],
+            ["Марта", " 8,", "468"],
+        ),
+        ("Поставщик: Компания Адамас, тел. не указан.", "ru", [("ORG", "Адамас")], ["Компания", "Адамас"]),
+        ("Покупатель: Hoff (Домашний интерьер), Москва.", "ru", [("ORG", "Hoff")], ["Домашний"]),
+        ("Работодатель: ГКНПЦ им. М.В.Хруничева.", "ru", [("ORG", "ГКНПЦ")], ["им.", "Хруничева"]),
+        ("Юрист: Лобанова и партнеры.", "ru", [("PERSON", "Лобанова")], ["партнеры"]),
+        ("Address: 45 Harding Dam, West Mathewhaven B7 9LL.", "en-GB", [], ["Harding", "Mathewhaven", "B7"]),
+        (
+            "Address: 840 Carter Road, Lake Georgia W5G 3NE.",
+            "en-GB",
+            [("ADDRESS", "840 Carter Road"), ("ADDRESS", "W5G 3NE")],
+            ["Lake Georgia"],
+        ),
+        ("Admitted to General Hospital, Shirleyborough on 3 May.", "en-GB", [], ["Shirleyborough", "General"]),
+        ("Seen at University Hospital Stephanietown.", "en-GB", [], ["Stephanietown"]),
+        ("Solicitors: Chadwick, O'Brien and Stokes.", "en-GB", [], ["Chadwick", "Brien", "Stokes"]),
+    ],
+)
+def test_addresses_and_orgs_masked_whole(text, lang, parts, rest):
+    models = Models(use_pii_guard=False, use_gliner=False)
+    models._detectors = [_Fake(parts)]
+    a, _ = Engine(models).anonymize(text, lang)
+    for w in rest:
+        assert w not in a, a
+
+
+@pytest.mark.parametrize(
+    "text,lang,kept",
+    [
+        ("ООО «Ромашка» (далее Исполнитель) обязуется", "ru", "(далее Исполнитель)"),
+        ("Hospital Number: 12345", "en-GB", "Hospital Number"),
+        ("Адрес: г. Тула, ул. Ленина, д. 5. Срок 9 мая.", "ru", "Срок 9 мая"),
+    ],
+)
+def test_address_and_org_extensions_stop_in_time(text, lang, kept):
+    models = Models(use_pii_guard=False, use_gliner=False)
+    models._detectors = [_Fake([("ADDRESS", "г. Тула"), ("ORG", "ООО «Ромашка»")])]
+    a, _ = Engine(models).anonymize(text, lang)
+    assert kept in a, a

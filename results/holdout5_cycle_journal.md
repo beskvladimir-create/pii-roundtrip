@@ -37,6 +37,10 @@ Written on 22.10.2026, after the run, from the files only: the run logs, the cre
 
 Each answer file has exactly one line per (document, task, prompt hash): no answer was requested twice, and none is missing.
 
+> Clarification of 22 October 2026: each answer was requested from a model once. On the resumption the command for the other configurations was started a second time, found every answer saved and made no new request.
+
+> Addition of 22 October 2026: the cause of the interruption is established from the session logs of this machine. Another Claude Code session, working on a different project (nl2sql-onprem-bench) on the same Ollama server, ran `ollama stop gemma4:12b` at 23:58:06 on 20.10, `pkill -f 'ollama serve'` at 00:03:00 on 21.10 and then started `ollama serve` again (the same Homebrew binary, 0.40.4); from 23:57 it also sent its own requests to other models on that server. The kill closed the connection during the 72nd answer. Answers up to the 71st of Russian gemma4:12b were therefore produced while the other session was using the server; at temperature 0 and seed 0 this is not expected to change an answer, but it was not checked by asking again.
+
 ## Deviations from the plan in HOLDOUT.md
 
 - One interruption (above). The resumed commands were the same as in the plan; no code, data or model changed between the interruption and the resumption.
@@ -81,6 +85,10 @@ Each answer file has exactly one line per (document, task, prompt hash): no answ
 | каждая из 7 остальных конфигураций | 40 (20 документов × 2 задания) | 0 |
 
 В каждом файле ответов ровно одна строка на (документ, задание, хеш запроса): ни один ответ не запрошен дважды и ни один не пропущен.
+
+> Уточнение от 22.10.2026: каждый ответ запрошен у нейросети один раз. При продолжении команда остальных конфигураций была запущена второй раз, нашла все ответы сохранёнными и новых запросов не делала.
+
+> Дополнение от 22.10.2026: причина остановки установлена по журналам сессий на этом компьютере. Другая сессия Claude Code, работавшая над другим проектом (nl2sql-onprem-bench) на том же сервере Ollama, выполнила `ollama stop gemma4:12b` в 23:58:06 20.10, `pkill -f 'ollama serve'` в 00:03:00 21.10 и затем снова запустила `ollama serve` (тот же бинарник из Homebrew, 0.40.4); с 23:57 она также отправляла этому серверу свои запросы к другим моделям. Остановка процесса оборвала соединение во время 72-го ответа. Ответы русского gemma4:12b до 71-го получены, пока сервером пользовалась другая сессия; при температуре 0 и зерне 0 это не должно менять ответ, но повторным запросом это не проверялось.
 
 ## Отступления от плана в HOLDOUT.md
 

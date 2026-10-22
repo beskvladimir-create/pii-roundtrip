@@ -95,3 +95,41 @@ uv run python -m bench.generator.generate --seed 20261020 --per-type 200 --hard 
 - The thresholds behind the verdicts were set in the project's original brief before development began. The brief is not published; its SHA-256 at the private commit c6477ac of 12.10.2026 is `a0e5bc6602334b9e79da1836c04608e6dd50b023e7dbd3055abbad43e5612f29`, so the date of the thresholds can be checked if the file is published.
 - The course of the round trip on set 5, including one interruption and its continuation with the same commands, is recorded in `results/holdout5_cycle_journal.md`. The round-trip commands do not write to `results/holdout_runs.jsonl`, so the continuation is recorded there, not in that log.
 
+### Set 5 becomes development data (22 October 2026)
+
+Set 5 was run once and checked version 0.3 (results above and in releases 0.3.0 and 0.3.1). Its incompletely masked values and restoration failures were then analysed by hand (report, section 11). For version 0.4 set 5 is therefore development data, like sets 1 to 4. Version 0.4 is checked on a new set 6, generated and published before the first run. The external datasets are not used to tune version 0.4: their results before and after are only reported.
+
+## Set 6 (independent check of version 0.4)
+
+Generated on 22 October 2026 at 11:21 +04 after the engine changes of 0.4 (whole addresses and organisations, keeping a first name the dictionary does not know, keeping a non-name word out of the stored value, short patronymics, two name placeholders without a space; developed on sets 1 to 5 and the development set). The generator is unchanged since commit 22d154d (16 October 2026); same size and parameters as sets 3 to 5, a new seed. Regenerating with this command gives the same hashes (checked). This section, the set files and the code it checks were published in the open repository before any tool was run on set 6.
+
+```bash
+uv run python -m bench.generator.generate --seed 20261022 --per-type 200 --hard 0.3 --now 2026-10-22 --out data/holdout6
+```
+
+| File | SHA-256 |
+|---|---|
+| data/holdout6/ru.jsonl | `8ab98e467b87a7ba47f963a864d4eec51687947bae7fedad49c356271c3063be` |
+| data/holdout6/uk.jsonl | `4990b7e0137e805e74157d8080d95e88792910418d70002689208e7278cb9e54` |
+
+Code under test: engine 0.4.0, private commit 2e33854. Git tree hashes by which the code can be matched in any repository (`git rev-parse <commit>:pii_roundtrip` and `:bench`): `pii_roundtrip` 6be0f1891ce5759a402130bb637d861fa4f46745, `bench` 8e81c328ef661ca8b14e5618f923e2f7ff7a1a9f. The run uses the commit that records this section; these trees are the same in it. The public pre-registration commit and the time it was pushed to GitHub are added below after the push.
+
+### Rules fixed before the run
+
+- Thresholds as before: structured identifiers at least 99%, names, addresses and organisations at least 95%, documents with a leak at most 2%, restoration at least 99% (the worse of two LLMs).
+- A fifth measure, new: the strict share of documents with a leak at most 2%. A document counts if at least one value of the threshold types (structured identifiers, names, addresses, organisations) is not fully masked: some meaningful word of it is visible (`bench/eval/strict_leaks.py`, the same criterion as recall). Wilson interval.
+- The leak metric as in 0.3.1 (numbers with dots and several separators). Intervals for recall and precision: document-level cluster bootstrap (`bench/eval/cluster_ci.py`, 2,000 resamples, seed 0); a verdict that changes with seeds 0 to 5 is recorded as undetermined, borderline. With no miss the lower bound is 0.025^(1/n) over documents with values. The shares of documents with a leak, ordinary and strict: Wilson intervals.
+- Restoration: the share of issued placeholder occurrences restored correctly, with a bootstrap interval over answers (2,000 resamples, seed 0); with no error the lower bound is 0.025^(1/n), n the number of answers with placeholders (99.03% for 380 answers). Bounds with no error are rounded down.
+- Restoration evaluator version 2 (`bench/eval/cycle.py`, `EVALUATOR = 2`), fixed on 22 October 2026 before this set was generated: besides the dictionary, the case endings of surnames in -ов/-ев/-ин/-ын and -ова/-ева/-ина/-ына and of first names in -а/-я/-ия are added to the forms of a value's words, and every dictionary parse is used, not the first three. Reason: on set 5 correctly restored "Третьякова" and "Майи" were not recognised. Set 5 is rescored with both versions (`results/evaluator_versions.holdout5.json`): 10 and 8 engine failures with version 1, 2 and 0 with version 2. Restoration on set 6 is reported with version 2 (for the verdict) and version 1 (for reference). A limitation of both: the evaluator compares the answer with the value the tool stored and cannot see an error in the stored value itself.
+- Companion measures without a threshold: the share of answers with at least one failed occurrence (Clopper-Pearson interval), and value fidelity: the share of name mentions in the round-trip documents whose stored value lost a word of the source mention (`bench/eval/cycle_extras.py`, `value_fidelity`).
+- A threshold is met when the whole 95% interval is on the right side of it, not met when it is wholly on the wrong side, otherwise undetermined.
+
+### Run plan (each step once, from committed code)
+
+1. Detection by every tool, so that the comparison is on the same documents: `uv run python -m bench.eval.holdout --set 6 --tools regex_baseline,presidio,pii_guard,gliner_guard,privacy_filter,prompt_anonymizer,pii_roundtrip`.
+2. The engine's round trip: `uv run python -m bench.eval.cycle --data holdout6 --tools pii_roundtrip --per-type 38`. 38 documents of each of 5 types, 2 tasks each: 380 answers per model and language.
+3. The round trip of the other configurations is not repeated on set 6: their detection and restorers did not change, and their round trips are on sets 4 and 5.
+4. LLMs: qwen3.5:9b and gemma4:12b, temperature 0, seed 0, `num_ctx` 16384; Ollama server 0.40.4 (Homebrew) with default settings, one request at a time. Concurrent requests (`OLLAMA_NUM_PARALLEL=2`) were tested on synthetic documents on 22 October 2026: for qwen3.5 the server still runs them one by one ("architecture does not currently support parallel requests"), for gemma4 one answer of six changed, with no speed-up. Concurrent requests are therefore not used. No other task uses the server during the run (on set 5 another session caused the interruption, see `results/holdout5_cycle_journal.md`).
+5. The round-trip journal is kept during the run: `results/holdout6_cycle_journal.md` (start, interruptions, continuations, commit). A continuation after an interruption uses only the same command and the saved answers.
+6. A detection rerun is allowed only with a stated reason recorded in `results/holdout_runs.jsonl`.
+

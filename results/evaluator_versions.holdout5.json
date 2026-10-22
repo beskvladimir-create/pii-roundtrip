@@ -1,0 +1,163 @@
+{
+ "pii_roundtrip ru/qwen3.5:9b": {
+  "evaluator_1": {
+   "labels_in_answer": 12274,
+   "occurrences_failed": 10,
+   "restore_rate": 0.9991852696757373,
+   "answers_with_failure": 9,
+   "answers_with_labels": 380
+  },
+  "evaluator_2": {
+   "labels_in_answer": 12274,
+   "occurrences_failed": 2,
+   "restore_rate": 0.9998370539351474,
+   "answers_with_failure": 2,
+   "answers_with_labels": 380
+  }
+ },
+ "pii_roundtrip ru/gemma4:12b": {
+  "evaluator_1": {
+   "labels_in_answer": 13722,
+   "occurrences_failed": 8,
+   "restore_rate": 0.9994169946072001,
+   "answers_with_failure": 6,
+   "answers_with_labels": 380
+  },
+  "evaluator_2": {
+   "labels_in_answer": 13722,
+   "occurrences_failed": 0,
+   "restore_rate": 1.0,
+   "answers_with_failure": 0,
+   "answers_with_labels": 380
+  }
+ },
+ "pii_guard ru/qwen3.5:9b": {
+  "evaluator_1": {
+   "labels_in_answer": 542,
+   "occurrences_failed": 1,
+   "restore_rate": 0.9981549815498155,
+   "answers_with_failure": 1,
+   "answers_with_labels": 15
+  },
+  "evaluator_2": {
+   "labels_in_answer": 542,
+   "occurrences_failed": 0,
+   "restore_rate": 1.0,
+   "answers_with_failure": 0,
+   "answers_with_labels": 15
+  }
+ },
+ "pii_guard~tolerant ru/qwen3.5:9b": {
+  "evaluator_1": {
+   "labels_in_answer": 542,
+   "occurrences_failed": 0,
+   "restore_rate": 1.0,
+   "answers_with_failure": 0,
+   "answers_with_labels": 15
+  },
+  "evaluator_2": {
+   "labels_in_answer": 542,
+   "occurrences_failed": 0,
+   "restore_rate": 1.0,
+   "answers_with_failure": 0,
+   "answers_with_labels": 15
+  }
+ },
+ "pii_guard ru/gemma4:12b": {
+  "evaluator_1": {
+   "labels_in_answer": 1564,
+   "occurrences_failed": 0,
+   "restore_rate": 1.0,
+   "answers_with_failure": 0,
+   "answers_with_labels": 40
+  },
+  "evaluator_2": {
+   "labels_in_answer": 1564,
+   "occurrences_failed": 0,
+   "restore_rate": 1.0,
+   "answers_with_failure": 0,
+   "answers_with_labels": 40
+  }
+ },
+ "pii_guard~tolerant ru/gemma4:12b": {
+  "evaluator_1": {
+   "labels_in_answer": 1564,
+   "occurrences_failed": 0,
+   "restore_rate": 1.0,
+   "answers_with_failure": 0,
+   "answers_with_labels": 40
+  },
+  "evaluator_2": {
+   "labels_in_answer": 1564,
+   "occurrences_failed": 0,
+   "restore_rate": 1.0,
+   "answers_with_failure": 0,
+   "answers_with_labels": 40
+  }
+ },
+ "pii_guard@generic ru/qwen3.5:9b": {
+  "evaluator_1": {
+   "labels_in_answer": 1060,
+   "occurrences_failed": 3,
+   "restore_rate": 0.9971698113207547,
+   "answers_with_failure": 2,
+   "answers_with_labels": 26
+  },
+  "evaluator_2": {
+   "labels_in_answer": 1060,
+   "occurrences_failed": 0,
+   "restore_rate": 1.0,
+   "answers_with_failure": 0,
+   "answers_with_labels": 26
+  }
+ },
+ "pii_guard@generic~tolerant ru/qwen3.5:9b": {
+  "evaluator_1": {
+   "labels_in_answer": 1060,
+   "occurrences_failed": 0,
+   "restore_rate": 1.0,
+   "answers_with_failure": 0,
+   "answers_with_labels": 26
+  },
+  "evaluator_2": {
+   "labels_in_answer": 1060,
+   "occurrences_failed": 0,
+   "restore_rate": 1.0,
+   "answers_with_failure": 0,
+   "answers_with_labels": 26
+  }
+ },
+ "pii_guard@generic ru/gemma4:12b": {
+  "evaluator_1": {
+   "labels_in_answer": 1703,
+   "occurrences_failed": 29,
+   "restore_rate": 0.9829712272460364,
+   "answers_with_failure": 1,
+   "answers_with_labels": 40
+  },
+  "evaluator_2": {
+   "labels_in_answer": 1703,
+   "occurrences_failed": 29,
+   "restore_rate": 0.9829712272460364,
+   "answers_with_failure": 1,
+   "answers_with_labels": 40
+  }
+ },
+ "pii_guard@generic~tolerant ru/gemma4:12b": {
+  "evaluator_1": {
+   "labels_in_answer": 1703,
+   "occurrences_failed": 0,
+   "restore_rate": 1.0,
+   "answers_with_failure": 0,
+   "answers_with_labels": 40
+  },
+  "evaluator_2": {
+   "labels_in_answer": 1703,
+   "occurrences_failed": 0,
+   "restore_rate": 1.0,
+   "answers_with_failure": 0,
+   "answers_with_labels": 40
+  }
+ },
+ "_note": "Held-out set 5, Russian, saved answers, engine 0.3 (commit 42de91a): restoration scored with evaluator version 1 (as run and published) and version 2 (surname and first-name case forms added by rule, fixed 22.10.2026 before set 6). Not pre-registered, for reference. Both versions compare the answer with the value stored by the tool, so an error in the stored value itself (ru-hr-022, the dropped first name) is not visible to either."
+}

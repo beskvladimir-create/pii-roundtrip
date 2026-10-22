@@ -105,6 +105,8 @@ RU_ORG = [
     re.compile(_OPF + r"\s*\"[^\"\n]{1,80}\""),
     re.compile(_OPF + r"[ \t]+[А-ЯЁ][\w-]{1,40}(?:[ \t]+[А-ЯЁ][\w-]{1,40}){0,2}"),
 ]
+# a UK surname, also "O'Brien", "McDonald", "MacLeod" and double-barrelled ones
+_UK_SURNAME = r"(?:[A-Z]['’])?(?:Ma?c)?[A-Z][a-z'’-]{1,30}(?:-[A-Z][a-z'’-]{1,30})?"
 UK_ORG = [
     re.compile(
         r"\b(?!(?:Employer|Dear|Signed|Re|The|Our|Your|To|From|By|At|For)\b)"
@@ -113,9 +115,14 @@ UK_ORG = [
     re.compile(r"\b[A-Z][A-Z&'’-]{1,40}(?: [A-Z&'’-]{1,40}){0,4} (?:LIMITED|LTD|LLP|PLC)\b"),
     # family firms: "Lewis and Sons", "Hale & Co"
     re.compile(r"\b[A-Z][a-z'’-]{1,30}(?:-[A-Z][a-z'’-]{1,30})? (?:and|&) (?:Sons|Daughters|Co)\b\.?"),
-    # UK firm names such as "Wright, Middleton and Francis"
+    # UK firm names such as "Wright, Middleton and Francis", "Chadwick, O'Brien and McDonald"
+    re.compile(rf"\b{_UK_SURNAME}, {_UK_SURNAME} (?:and|&) {_UK_SURNAME}(?![\w'’])"),
+    # hospitals with the town in the name: "General Hospital, Shirleyborough",
+    # "University Hospital Stephanietown", "Royal Infirmary of Bath"
     re.compile(
-        r"\b[A-Z][a-z'’-]{1,30}(?:-[A-Z][a-z'’-]{1,30})?, [A-Z][a-z'’-]{1,30}(?:-[A-Z][a-z'’-]{1,30})? (?:and|&) [A-Z][a-z'’-]{1,30}(?:-[A-Z][a-z'’-]{1,30})?\b"
+        r"\b(?!(?:The|At|In|To|From|Dear|Our|Your|Re)\b)(?:[A-Z][\w'’-]+[ \t]+){1,3}(?:Hospital|Infirmary)\b"
+        r"(?:(?:[ \t]+of|,)?[ \t]+(?!(?:Number|No|Ref|Reference|Tel|Telephone|Phone|Email|Fax|Address|Record|Records)\b)"
+        r"(?:[A-Z][\w'’-]+[ \t]+)?[A-Z][\w'’-]+)?"
     ),
 ]
 

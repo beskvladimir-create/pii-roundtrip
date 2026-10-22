@@ -8,6 +8,8 @@ pii-roundtrip replaces personal data in a document with consistent placeholders 
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23478192.svg)](https://doi.org/10.5281/zenodo.23478192)
 
+DOI 10.5281/zenodo.23478192 covers all versions and always resolves to the latest one; each release also has its own version DOI on Zenodo.
+
 ## Why
 
 Existing open-source tools work well on short messages but leak personal data in synthetic documents such as contracts, letters, HR files and discharge summaries. The table shows the share of documents in which at least one original value remained after anonymisation. It was measured on held-out set 5: 1,000 synthetic documents per language with numbers written in digits, with dots, with typos and in words. It was generated after the changes of version 0.3, published with the rules before the first run, and run once ([HOLDOUT.en.md](HOLDOUT.en.md)). No tool, including pii-roundtrip, was developed on it.
@@ -37,14 +39,14 @@ Russian:
 | Structured identifiers ≥ 99% | 97.7% [96.1; 99.0] undetermined, borderline | 100.0% [100.0; 100.0], for reference | 92.4% [91.6; 93.1] not met | 100.0% [100.0; 100.0] met |
 | Names, addresses, organisations ≥ 95% | 99.5% [98.7; 100.0] met | 100.0% [100.0; 100.0], for reference | 73.8% [73.3; 74.4] not met | 99.7% [99.6; 99.8] met |
 | Documents with a leak ≤ 2% | 0.7% [0.4; 1.2] met | 0.0% [0.0; 0.2], for reference | 58.5% [55.4; 61.5] not met | 0.2% [0.1; 0.7] met |
-| Restoration ≥ 99% (worse of two LLMs) | not measured | not measured | 99.8% [99.4; 100.0] met | 99.9% [99.9; 100.0] met |
+| Restoration ≥ 99% (worse of two LLMs) | not measured | not measured | 99.8% [99.4; 100.0], no verdict (see below) | 99.9% [99.9; 100.0] met |
 | Masked fragments that contain personal data | 96.5% [95.5; 97.5], no threshold | 89.2% [87.8; 90.7], no threshold | 87.6% [87.5; 87.7], no threshold | 98.5% [98.3; 98.6], no threshold |
 
 External sets: hivetrace_pii_bench.
 
 The Russian external datasets were used for error analysis while version 0.1 was developed, so for pii-roundtrip they are not an independent check. Held-out set 5 is.
 
-The restoration verdict for pii-guard is conditional: with qwen3.5:9b only 15 of its 40 answers contain placeholders, and the threshold is checked on those answers.
+No restoration verdict is given for pii-guard: with qwen3.5:9b only 15 of its 40 answers contain placeholders, and with one failure the bootstrap interval is narrower than the zero-error bound of a cell without failures.
 
 UK English:
 

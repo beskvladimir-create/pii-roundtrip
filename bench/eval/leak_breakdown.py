@@ -8,7 +8,8 @@ For every tool and language, from the saved predictions (results/<tool>/holdout4
   breaks its checksum);
 - the number of documents with a leak of each entity type;
 - the share of documents with a leak counting only the types the tool supports
-  (pii-guard has no organisations; Prompt Anonymizer has no NHS, NI numbers or organisations).
+  (pii-guard and OpenAI privacy-filter have no organisations; Prompt Anonymizer has no NHS, NI
+  numbers or organisations).
 Every share comes with a 95% Wilson interval. The leak rule is metrics.leaked_values, the one
 used for the reported leak rate.
 """
@@ -27,7 +28,8 @@ from bench.eval import metrics
 from bench.eval.run import load_docs
 from pii_roundtrip import checksums
 
-UNSUPPORTED = {"pii_guard": {"ORG"}, "prompt_anonymizer": {"NHS", "NINO", "ORG"}}
+# OpenAI privacy-filter has no organisation type (added 22.10.2026 after review)
+UNSUPPORTED = {"pii_guard": {"ORG"}, "prompt_anonymizer": {"NHS", "NINO", "ORG"}, "privacy_filter": {"ORG"}}
 VALID = {
     "INN": checksums.is_valid_inn,
     "SNILS": checksums.is_valid_snils,

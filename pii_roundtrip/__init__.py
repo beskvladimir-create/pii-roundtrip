@@ -17,7 +17,7 @@ from pii_roundtrip.errors import (
 try:
     __version__ = version("pii-roundtrip")
 except PackageNotFoundError:  # running from a source checkout without installation
-    __version__ = "0.3.1"
+    __version__ = "0.4.0"
 
 __all__ = [
     "Engine",

@@ -3,7 +3,7 @@
 Values and masked fragments inside one document are not independent, so the
 Wilson intervals in metrics.json are too narrow. This script resamples whole
 documents (2,000 resamples, seed 0) using the saved predictions.
-Each entry is [k, n, k/n, 2.5th percentile, 97.5th percentile].
+Each entry is [k, n, k/n, 2.5th percentile, 97.5th percentile, documents with values].
 
 python -m bench.eval.cluster_ci > results/cluster_ci.json
 """
@@ -23,6 +23,8 @@ SETS["holdout4_ru"] = (str(ROOT / "data/holdout4/ru.jsonl"), "ru")
 SETS["holdout4_uk"] = (str(ROOT / "data/holdout4/uk.jsonl"), "uk")
 SETS["holdout5_ru"] = (str(ROOT / "data/holdout5/ru.jsonl"), "ru")
 SETS["holdout5_uk"] = (str(ROOT / "data/holdout5/uk.jsonl"), "uk")
+SETS["holdout6_ru"] = (str(ROOT / "data/holdout6/ru.jsonl"), "ru")
+SETS["holdout6_uk"] = (str(ROOT / "data/holdout6/uk.jsonl"), "uk")
 TOOLS = [
     "regex_baseline",
     "presidio",
@@ -62,6 +64,7 @@ def boot(rows: list[tuple], i: int, j: int, reps: int = 2000, seed: int = 0) -> 
         sum(r[i] for r in rows) / tot,
         vals[int(0.025 * reps)],
         vals[int(0.975 * reps) - 1],
+        sum(1 for r in rows if r[j]),  # documents with values: the n of the bound when nothing is missed
     ]
 
 
@@ -71,7 +74,7 @@ def entry(rows: list[tuple]) -> dict:
     for name, i, j in (("structured", 0, 1), ("names", 2, 3), ("precision_fragments", 4, 5), ("precision_chars", 6, 7)):
         out[name] = boot(rows, i, j)
         if out[name]:
-            out[name + "_seeds"] = [boot(rows, i, j, seed=sd)[3:] for sd in SEEDS]
+            out[name + "_seeds"] = [boot(rows, i, j, seed=sd)[3:5] for sd in SEEDS]
     return out
 
 

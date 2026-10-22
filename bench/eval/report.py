@@ -29,6 +29,7 @@ python -m bench.eval.report
 from __future__ import annotations
 
 import json
+import math
 import re
 
 from bench import ROOT
@@ -112,6 +113,7 @@ WORDS = {
         "no_restore": "no restore step, not met",
         "reference": "for reference",
         "no_threshold": "no threshold",
+        "no_verdict": "no verdict (see below)",
     },
     "ru": {
         "na": "нет",
@@ -119,6 +121,7 @@ WORDS = {
         "no_restore": "восстановления нет, не пройден",
         "reference": "справочно",
         "no_threshold": "без порога",
+        "no_verdict": "без вердикта (см. ниже)",
     },
 }
 
@@ -218,7 +221,12 @@ def stats(m: dict, tool: str, sets: list[str]) -> dict | None:
     for key, (k, n) in acc.items():
         boot = cl.get(CLUSTER_METRIC.get(key, ""))
         if boot and boot[0] == k and boot[1] == n:
-            out[key] = (k / n, (boot[3], boot[4]), n)
+            c = (boot[3], boot[4])
+            if k == n and len(boot) > 5 and boot[5]:
+                # nothing missed: the bootstrap collapses to a point, so the lower bound is the
+                # one-sided 97.5% bound over documents with values, 0.025^(1/n), as for restoration
+                c = (zero_error_bound(boot[5]), 1.0)
+            out[key] = (k / n, c, n)
             out[key + "_seeds"] = cl.get(CLUSTER_METRIC[key] + "_seeds")
         else:
             out[key] = (k / n if n else None, wilson(k, n) if n else None, n)
@@ -283,13 +291,19 @@ def restore(cyc: dict, tool: str, lang: str) -> tuple | None:
     )
 
 
+def zero_error_bound(n: int) -> float:
+    """0.025^(1/n), rounded down to 0.1 percentage points so that the shown bound is never
+    above the true one (40 answers: 91.1%; 380 answers: 99.0%, exactly 99.03%)."""
+    return math.floor(0.025 ** (1 / n) * 1000) / 1000
+
+
 def restore_interval(r: tuple) -> tuple[float, float]:
     """The interval of the restored share: bootstrap over answers. With no failed placeholder the
     bootstrap collapses to a point, so the lower bound is the one-sided 97.5% bound over answers,
     0.025^(1/n): with 40 answers it is 91.2%, and about 370 answers are needed to reach 99%."""
     rate, c, _, _, n = r
     if rate == 1.0 and n:
-        return (0.025 ** (1 / n), 1.0)
+        return (zero_error_bound(n), 1.0)
     return c
 
 
@@ -515,7 +529,13 @@ def threshold_table(m: dict, cycles: dict, lang_data: str, lang: str) -> str:
                     cells.append(WORDS[lang]["no_restore"])
                 else:
                     r = restore(cycles.get("holdout5", {}), tool, lang_data)
-                    cells.append(restore_cell(r, lang) if r else WORDS[lang]["na"])
+                    if r and tool != ENGINE:
+                        # 40 answers per model, and with qwen3.5:9b pii-guard's prompt leaves only 15
+                        # with placeholders; a cell with one failure gets a narrower interval than a
+                        # cell without failures, so no verdict is given (as in the paper)
+                        cells.append(f"{restore_cell(r, lang, False)}, {WORDS[lang]['no_verdict']}")
+                    else:
+                        cells.append(restore_cell(r, lang) if r else WORDS[lang]["na"])
                 continue
             s = stats(m, tool, sets)
             if not s or s[metric][0] is None:

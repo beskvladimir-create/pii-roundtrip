@@ -8,6 +8,8 @@ pii-roundtrip replaces personal data in a document with consistent placeholders 
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23478192.svg)](https://doi.org/10.5281/zenodo.23478192)
 
+DOI 10.5281/zenodo.23478192 covers all versions and always resolves to the latest one; each release also has its own version DOI on Zenodo.
+
 ## Why
 
 Existing open-source tools work well on short messages but leak personal data in synthetic documents such as contracts, letters, HR files and discharge summaries. The table shows the share of documents in which at least one original value remained after anonymisation. It was measured on held-out set 5: 1,000 synthetic documents per language with numbers written in digits, with dots, with typos and in words. It was generated after the changes of version 0.3, published with the rules before the first run, and run once ([HOLDOUT.en.md](HOLDOUT.en.md)). No tool, including pii-roundtrip, was developed on it.
@@ -28,7 +30,7 @@ Russian:
 
 The Russian external datasets were used for error analysis while version 0.1 was developed, so for pii-roundtrip they are not an independent check. Held-out set 5 is.
 
-The restoration verdict for {BEST_RU} is conditional: with qwen3.5:9b only {~pii_guard|ru:holdout5@qwen3.5:9b|answers_with_labels} of its {~pii_guard|ru:holdout5@qwen3.5:9b|answers} answers contain placeholders, and the threshold is checked on those answers.
+No restoration verdict is given for {BEST_RU}: with qwen3.5:9b only {~pii_guard|ru:holdout5@qwen3.5:9b|answers_with_labels} of its {~pii_guard|ru:holdout5@qwen3.5:9b|answers} answers contain placeholders, and with one failure the bootstrap interval is narrower than the zero-error bound of a cell without failures.
 
 UK English:
 

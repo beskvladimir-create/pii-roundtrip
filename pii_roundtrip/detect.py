@@ -264,15 +264,34 @@ def extend_persons(text: str, spans: list[Span]) -> list[Span]:
     return out
 
 
+_UK_POSTCODE = r"[A-Z]{1,2}\d[A-Z\d]?[ \t]?\d[A-Z]{2}\b"
+_CAP_WORDS_EN = r"(?:[A-Z][\w'’-]+[ \t]+){0,2}[A-Z][\w'’-]+"
 # Parts of an address that follow the found part on the same line.
 _ADDRESS_TAIL = re.compile(
-    r"(?:[ \t]*\([А-ЯЁ][а-яё]{1,12}\.?\)"  # region in brackets: "(Томск.)"
+    r"(?:[ \t]*\([А-ЯЁа-яё][а-яё]{1,12}\.?\)"  # region or note in brackets: "(Томск.)", "(метеост.)"
     r"|[ \t]*,?[ \t]*(?:д|дом|к|корп|стр|кв|оф|пом)\.?[ \t]*\d[\w/-]*"  # house, building, flat
+    # a street, also one named with a number: ", ш. 9 Января", ", алл. Марта 8"
+    r"|[ \t]*,[ \t]*(?:ул|ш|пер|пр|просп|бул|алл|наб|пл|туп|проезд|мкр)\.[ \t]*(?:\d{1,2}[ \t]+)?"
+    r"[А-ЯЁа-яё][\w.-]*(?:[ \t]+\d{1,2}(?=[ \t]*,))?"
     r"|[ \t]*,[ \t]*\d{6}(?!\d)"  # Russian postcode
-    r"|[ \t]*,?[ \t]*[A-Z]{1,2}\d[A-Z\d]?[ \t]?\d[A-Z]{2}\b)"  # UK postcode
+    r"|[ \t]*,?[ \t]*" + _UK_POSTCODE + r""  # UK postcode
+    # the UK town between the street and the postcode: ", West Mathewhaven B7 9LL"
+    r"|[ \t]*,[ \t]*" + _CAP_WORDS_EN + r"(?=[ \t]*,?[ \t]*" + _UK_POSTCODE + r"))"
 )
+# The number of a house or building cut off after its abbreviation: "д. 486 к." + " 50".
+_ADDRESS_ABBR_END = re.compile(r"(?<![\w])(?:д|дом|к|корп|стр|кв|оф|пом)\.?$")
+_ADDRESS_ABBR_NUMBER = re.compile(r"\.?[ \t]*\d[\w/-]*")
+# A street named with a number after the word, cut off before the number: "алл. Марта" + " 8".
+_ADDRESS_STREET_END = re.compile(
+    r"(?<![\w])(?:ул|ш|пер|пр|просп|бул|алл|наб|пл|туп|проезд|мкр)\.[ \t]*[А-ЯЁа-яё][\w.-]*$"
+)
+_ADDRESS_STREET_NUMBER = re.compile(r"[ \t]+\d{1,2}(?=[ \t]*,)")
 # A UK house number and street before the found town: "4 Conor Motorway, [Julialand]".
 _ADDRESS_HEAD_EN = re.compile(r"(?<![\w])\d{1,5}[A-Za-z]?[ \t]+(?:[A-Z][\w'’-]+[ \t]+){0,3}[A-Z][\w'’-]+,[ \t]*$")
+# A UK house number, street and town before the found postcode: "45 Harding Dam, West Mathewhaven [B7 9LL]".
+_ADDRESS_HEAD_EN_TOWN = re.compile(
+    r"(?<![\w])\d{1,5}[A-Za-z]?[ \t]+(?:[A-Z][\w'’-]+[ \t]+){0,3}[A-Z][\w'’-]+,[ \t]*" + _CAP_WORDS_EN + r",?[ \t]*$"
+)
 
 
 def extend_addresses(text: str, spans: list[Span], lang: str) -> list[Span]:
@@ -281,14 +300,55 @@ def extend_addresses(text: str, spans: list[Span], lang: str) -> list[Span]:
     for s in spans:
         if s.type == "ADDRESS":
             start, end = s.start, s.end
-            while m := _ADDRESS_TAIL.match(text, end):
-                end = m.end()
+            while True:
+                if _ADDRESS_ABBR_END.search(text[start:end]) and (m := _ADDRESS_ABBR_NUMBER.match(text, end)):
+                    end = m.end()
+                    continue
+                if _ADDRESS_STREET_END.search(text[start:end]) and (m := _ADDRESS_STREET_NUMBER.match(text, end)):
+                    end = m.end()
+                    continue
+                if m := _ADDRESS_TAIL.match(text, end):
+                    end = m.end()
+                    continue
+                break
             if lang != RU:
                 line_start = text.rfind("\n", 0, start) + 1
-                m = _ADDRESS_HEAD_EN.search(text[line_start:start])
+                head = text[line_start:start]
+                m = _ADDRESS_HEAD_EN.search(head) or _ADDRESS_HEAD_EN_TOWN.search(head)
                 if m:
                     start = line_start + m.start()
             s = Span(s.type, start, end, s.source)
+        out.append(s)
+    return out
+
+
+# A generic word before an organisation's name: "Компания Адамас".
+_ORG_HEAD_RU = re.compile(r"(?<![\w-])(?:Компания|Компании|Компанию|Компанией|Фирма|Фирмы|Группа компаний)[ \t]+$")
+# A name given in brackets after the organisation: "Hoff (Домашний интерьер)"; not "(далее Исполнитель)".
+_ORG_BRACKET = re.compile(r"[ \t]*\(([A-ZА-ЯЁ][^()\n\d]{1,40})\)")
+# "ГКНПЦ им. М.В.Хруничева", "Лобанова и партнеры"
+_ORG_TAIL_RU = re.compile(r"[ \t]+им\.[ \t]*(?:[А-ЯЁ]\.[ \t]?){0,3}[А-ЯЁ][\w-]+" r"|[ \t]+(?:и|&)[ \t]+[Пп]артн[её]ры")
+
+
+def extend_orgs(text: str, spans: list[Span], lang: str) -> list[Span]:
+    """Extend an organisation to the parts of its name next to it that detectors often miss."""
+    if lang != RU:
+        return spans
+    out = []
+    for s in spans:
+        if s.type in ("ORG", "PERSON"):
+            start, end, etype = s.start, s.end, s.type
+            m = _ORG_TAIL_RU.match(text, end)
+            if m and (etype == "ORG" or "артн" in m.group()):
+                end, etype = m.end(), "ORG"
+            if etype == "ORG":
+                m = _ORG_HEAD_RU.search(text[max(0, start - 25) : start])
+                if m:
+                    start = max(0, start - 25) + m.start()
+                m = _ORG_BRACKET.match(text, end)
+                if m and names.norm(m.group(1).split()[0].strip(".,")) not in lexicon.ROLES | {"далее"}:
+                    end = m.end()
+            s = Span(etype, start, end, s.source)
         out.append(s)
     return out
 
@@ -375,6 +435,10 @@ def clean(text: str, spans: list[Span], mask_dates: bool) -> list[Span]:
 
 def _stronger(a: Span, b: Span) -> Span:
     pa, pb = PRIORITY.get(a.type, 1), PRIORITY.get(b.type, 1)
+    # the same text found by a rule and by a model as a weaker generic type: the rule's type wins
+    # (a UK postcode found by the rule is an address even if GLiNER calls it an ID)
+    if (a.start, a.end) == (b.start, b.end) and max(pa, pb) < 8 and (a.source == "rules") != (b.source == "rules"):
+        return a if a.source == "rules" else b
     if pa != pb:
         return a if pa > pb else b
     return b if b.source == "rules" and a.source != "rules" else a  # a checksum rule beats a model
@@ -389,6 +453,12 @@ def merge(spans: list[Span], text: str = "") -> list[Span]:
         if out and s.start < out[-1].end:
             last = out[-1]
             w = _stronger(last, s)
+            # a name inside an address or an organisation ("475 Michelle Lodge", "Лобанова и
+            # партнеры") does not turn the whole address or organisation into a person
+            if last.type in ("ADDRESS", "ORG") and s.type == "PERSON" and s.end <= last.end:
+                w = last
+            elif s.type in ("ADDRESS", "ORG") and last.type == "PERSON" and s.start <= last.start and s.end >= last.end:
+                w = s
             out[-1] = Span(w.type, last.start, max(last.end, s.end), w.source)
             continue
         if out and text and out[-1].type == s.type and s.type in ("PERSON", "ADDRESS"):
@@ -412,13 +482,29 @@ def _inside(text: str, s: Span) -> Span | None:
     return Span(s.type, start, end, s.source) if start < end else None
 
 
+def _split_lines(text: str, spans: list[Span]) -> list[Span]:
+    """A name from a detector never continues on the next line: a span such as "А.Ф. Рыбакову\n\n
+    Уважаемый Аверкий Фомич" is split into its lines, which are then treated as separate mentions."""
+    out = []
+    for s in spans:
+        if s.type == "PERSON" and "\n" in text[max(0, s.start) : s.end]:
+            pos = max(0, s.start)
+            for part in text[pos : s.end].split("\n"):
+                if part.strip():
+                    out.append(Span(s.type, pos, pos + len(part), s.source))
+                pos += len(part) + 1
+        else:
+            out.append(s)
+    return out
+
+
 def detect(
     text: str, lang: str, models: Models, known: list[tuple[str, str]] | None = None, mask_dates: bool = False
 ) -> list[Span]:
     """Run detectors and rules, then the pipeline stages described in the module docstring."""
-    spans = [s for s in (_inside(text, s) for s in models.detect(text, lang)) if s]
+    spans = [s for s in (_inside(text, s) for s in _split_lines(text, models.detect(text, lang))) if s]
     spans += [Span(h.type, h.start, h.end, "rules") for h in rules.find(text, lang)]
     spans = merge(clean(text, spans, mask_dates), text)
-    spans = merge(extend_addresses(text, extend_persons(text, spans), lang), text)
+    spans = merge(extend_orgs(text, extend_addresses(text, extend_persons(text, spans), lang), lang), text)
     spans = propagate(text, spans, lang, known)
     return merge(attach_initials(text, merge(spans, text)), text)

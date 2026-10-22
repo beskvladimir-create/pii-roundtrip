@@ -1,0 +1,296 @@
+{
+ "_note": "Development data only (held-out sets 1 to 5 and the synthetic development set), rules and pipeline stages of the engine with the detectors' raw spans cached once (bench/eval/dev_cache.py). Engine 0.3 = private commit b29e494, engine 0.4 = 2e33854. strict: documents with at least one value of the threshold types not fully masked. Not pre-registered.",
+ "synthetic_ru": {
+  "0.3": {
+   "docs": 100,
+   "struct": 100.0,
+   "names": 99.85,
+   "leak": 0.0,
+   "prec": 98.49,
+   "strict": 2,
+   "by_type": {
+    "ADDRESS": 2
+   }
+  },
+  "0.4": {
+   "docs": 100,
+   "struct": 100.0,
+   "names": 100.0,
+   "leak": 0.0,
+   "prec": 98.49,
+   "strict": 0,
+   "by_type": {}
+  }
+ },
+ "synthetic_uk": {
+  "0.3": {
+   "docs": 100,
+   "struct": 100.0,
+   "names": 99.54,
+   "leak": 1.0,
+   "prec": 99.97,
+   "strict": 6,
+   "by_type": {
+    "ADDRESS": 4,
+    "PERSON": 1,
+    "ORG": 1
+   }
+  },
+  "0.4": {
+   "docs": 100,
+   "struct": 100.0,
+   "names": 99.92,
+   "leak": 1.0,
+   "prec": 99.97,
+   "strict": 1,
+   "by_type": {
+    "PERSON": 1
+   }
+  }
+ },
+ "holdout_ru": {
+  "0.3": {
+   "docs": 100,
+   "struct": 100.0,
+   "names": 99.77,
+   "leak": 0.0,
+   "prec": 98.64,
+   "strict": 3,
+   "by_type": {
+    "ADDRESS": 2,
+    "ORG": 1
+   }
+  },
+  "0.4": {
+   "docs": 100,
+   "struct": 100.0,
+   "names": 99.92,
+   "leak": 0.0,
+   "prec": 98.63,
+   "strict": 1,
+   "by_type": {
+    "ADDRESS": 1
+   }
+  }
+ },
+ "holdout_uk": {
+  "0.3": {
+   "docs": 100,
+   "struct": 100.0,
+   "names": 99.31,
+   "leak": 0.0,
+   "prec": 99.92,
+   "strict": 9,
+   "by_type": {
+    "ADDRESS": 4,
+    "ORG": 5
+   }
+  },
+  "0.4": {
+   "docs": 100,
+   "struct": 100.0,
+   "names": 100.0,
+   "leak": 0.0,
+   "prec": 99.92,
+   "strict": 0,
+   "by_type": {}
+  }
+ },
+ "holdout2_ru": {
+  "0.3": {
+   "docs": 100,
+   "struct": 100.0,
+   "names": 99.85,
+   "leak": 0.0,
+   "prec": 98.61,
+   "strict": 2,
+   "by_type": {
+    "ADDRESS": 2
+   }
+  },
+  "0.4": {
+   "docs": 100,
+   "struct": 100.0,
+   "names": 100.0,
+   "leak": 0.0,
+   "prec": 98.61,
+   "strict": 0,
+   "by_type": {}
+  }
+ },
+ "holdout2_uk": {
+  "0.3": {
+   "docs": 100,
+   "struct": 100.0,
+   "names": 98.64,
+   "leak": 0.0,
+   "prec": 99.89,
+   "strict": 15,
+   "by_type": {
+    "ADDRESS": 13,
+    "ORG": 3
+   }
+  },
+  "0.4": {
+   "docs": 100,
+   "struct": 100.0,
+   "names": 100.0,
+   "leak": 0.0,
+   "prec": 99.89,
+   "strict": 0,
+   "by_type": {}
+  }
+ },
+ "holdout3_ru": {
+  "0.3": {
+   "docs": 1000,
+   "struct": 99.99,
+   "names": 99.87,
+   "leak": 0.0,
+   "prec": 98.49,
+   "strict": 17,
+   "by_type": {
+    "ADDRESS": 15,
+    "ORG": 1,
+    "PASSPORT_RU": 1
+   }
+  },
+  "0.4": {
+   "docs": 1000,
+   "struct": 99.99,
+   "names": 100.0,
+   "leak": 0.0,
+   "prec": 98.48,
+   "strict": 1,
+   "by_type": {
+    "PASSPORT_RU": 1
+   }
+  }
+ },
+ "holdout3_uk": {
+  "0.3": {
+   "docs": 1000,
+   "struct": 100.0,
+   "names": 98.89,
+   "leak": 0.0,
+   "prec": 99.83,
+   "strict": 143,
+   "by_type": {
+    "ADDRESS": 90,
+    "ORG": 55
+   }
+  },
+  "0.4": {
+   "docs": 1000,
+   "struct": 100.0,
+   "names": 100.0,
+   "leak": 0.0,
+   "prec": 99.83,
+   "strict": 0,
+   "by_type": {}
+  }
+ },
+ "holdout4_ru": {
+  "0.3": {
+   "docs": 1000,
+   "struct": 100.0,
+   "names": 99.79,
+   "leak": 0.2,
+   "prec": 98.5,
+   "strict": 25,
+   "by_type": {
+    "ORG": 8,
+    "ADDRESS": 17
+   }
+  },
+  "0.4": {
+   "docs": 1000,
+   "struct": 100.0,
+   "names": 99.95,
+   "leak": 0.2,
+   "prec": 98.49,
+   "strict": 5,
+   "by_type": {
+    "ORG": 4,
+    "ADDRESS": 1
+   }
+  }
+ },
+ "holdout4_uk": {
+  "0.3": {
+   "docs": 1000,
+   "struct": 100.0,
+   "names": 98.72,
+   "leak": 0.9,
+   "prec": 99.85,
+   "strict": 155,
+   "by_type": {
+    "ADDRESS": 89,
+    "PERSON": 9,
+    "ORG": 61
+   }
+  },
+  "0.4": {
+   "docs": 1000,
+   "struct": 100.0,
+   "names": 99.93,
+   "leak": 0.9,
+   "prec": 99.85,
+   "strict": 9,
+   "by_type": {
+    "PERSON": 9
+   }
+  }
+ },
+ "holdout5_ru": {
+  "0.3": {
+   "docs": 1000,
+   "struct": 100.0,
+   "names": 99.73,
+   "leak": 0.2,
+   "prec": 98.46,
+   "strict": 33,
+   "by_type": {
+    "ORG": 10,
+    "ADDRESS": 23
+   }
+  },
+  "0.4": {
+   "docs": 1000,
+   "struct": 100.0,
+   "names": 99.97,
+   "leak": 0.2,
+   "prec": 98.45,
+   "strict": 3,
+   "by_type": {
+    "ORG": 3
+   }
+  }
+ },
+ "holdout5_uk": {
+  "0.3": {
+   "docs": 1000,
+   "struct": 100.0,
+   "names": 98.88,
+   "leak": 0.7,
+   "prec": 99.84,
+   "strict": 138,
+   "by_type": {
+    "ADDRESS": 80,
+    "PERSON": 5,
+    "ORG": 56
+   }
+  },
+  "0.4": {
+   "docs": 1000,
+   "struct": 100.0,
+   "names": 99.96,
+   "leak": 0.5,
+   "prec": 99.84,
+   "strict": 5,
+   "by_type": {
+    "PERSON": 5
+   }
+  }
+ }
+}

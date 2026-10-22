@@ -68,6 +68,9 @@ _SURN_END = re.compile(
     r"(ов|ев|ёв|ин|ын|ский|цкий|ской|цкой|ова|ева|ёва|ина|ына|ская|цкая)(а|у|ым|ом|е|ой|ую|ых|ыми)?$"
 )
 _PATR_END = re.compile(r"(вич|вн|ичн|ьич)(а|у|ем|ом|е|ы|ой|ну|ам)?$")
+# short patronymics without "в": "Фомич", "Кузьмич", "Лукич"; also "Фокич", unknown to the dictionary,
+# when it follows a first name (see parse)
+_PATR_SHORT_END = re.compile(r"[мкл]ич(а|у|ем|е)?$")
 
 
 def _ru_word_role(word: str) -> tuple[str, object | None]:
@@ -79,7 +82,7 @@ def _ru_word_role(word: str) -> tuple[str, object | None]:
     low = norm(w)
     parses = morph().parse(w)
     by = {k: next((p for p in parses if k in _tags(p)), None) for k in ("Patr", "Name", "Surn")}
-    if by["Patr"] and _PATR_END.search(low):
+    if by["Patr"] and (_PATR_END.search(low) or _PATR_SHORT_END.search(low)):
         return "Patr", by["Patr"]
     if _SURN_END.search(low) and not (by["Name"] and not by["Surn"]):
         return "Surn", by["Surn"]
@@ -102,6 +105,9 @@ def _gender_from_surname(s: str) -> str:
 def _nominative(word: str, p, gender: str) -> str:
     """Nominative case in lower case; the letter ё is kept for display."""
     if p is None:
+        m = _PATR_SHORT_END.search(word.lower())
+        if m and m.group(1):  # an unknown short patronymic in another case: "Фокича" -> "фокич"
+            return word.lower()[: m.start(1)]
         return word.lower()
     g = {"male": "masc", "female": "femn"}.get(gender)
     parses = [q for q in morph().parse(cap(word)) if _tags(q) & {"Surn", "Name", "Patr"}]
@@ -123,6 +129,20 @@ def _restore_yo(form: str, original: str) -> str:
     return form
 
 
+_NOT_NAME_POS = frozenset(
+    {"PRTS", "PRTF", "VERB", "INFN", "GRND", "ADJS", "ADVB", "PREP", "CONJ", "PRCL", "NPRO", "INTJ", "COMP"}
+)
+
+
+def _not_a_name_ru(word: str) -> bool:
+    parses = morph().parse(cap(word))
+    return (
+        bool(parses)
+        and all(p.is_known and str(p.tag.POS) in _NOT_NAME_POS for p in parses)
+        and not any({"Name", "Surn", "Patr"} & _tags(p) for p in parses)
+    )
+
+
 def parse(value: str, lang: str) -> Name:
     tokens = [t for t in _WORD.findall(value)]
     title_gender = ""
@@ -138,7 +158,18 @@ def parse(value: str, lang: str) -> Name:
         words.append(t.rstrip("."))
     n = Name(gender=title_gender)
     if lang == RU:
+        # a word the dictionary knows only as a verb form, adverb or function word is not part of the
+        # name, even if a detector included it ("Выдана Крюковой Марине Никифоровне": "Выдана" used
+        # to be stored as the first name and the real first name was dropped)
+        words = [w for w in words if not _not_a_name_ru(w)] or words
         roles = [(w, *_ru_word_role(w)) for w in words]
+        # an unknown word ending like a short patronymic right after a first name: "Нестор Фокич"
+        roles = [
+            (w, "Patr", None)
+            if kind == "Surn" and p is None and i > 0 and roles[i - 1][1] == "Name" and _PATR_SHORT_END.search(norm(w))
+            else (w, kind, p)
+            for i, (w, kind, p) in enumerate(roles)
+        ]
         g = ""
         for w, kind, _p in roles:
             if kind == "Patr":
@@ -166,6 +197,7 @@ def parse(value: str, lang: str) -> Name:
                         break
         n.gender = n.gender or g
         shown: dict[str, str] = {}
+        surname_oov = False
         for w, kind, p in roles:
             nom = _nominative(w, p, n.gender)
             if kind == "Patr" and not n.patronymic:
@@ -174,6 +206,16 @@ def parse(value: str, lang: str) -> Name:
                 n.first, shown["f"] = norm(nom), nom
             elif not n.surname:
                 n.surname, shown["s"] = norm(nom), nom
+                surname_oov = p is None
+            elif not n.first:
+                # a second word taken for a surname is the first name the dictionary does not know
+                # ("Большакова Милан Андреевича"); it used to be dropped from the stored value. If the
+                # surname so far was an unknown word and this one has a surname ending, they swap.
+                if surname_oov and _SURN_END.search(norm(w)):
+                    n.first, shown["f"] = n.surname, shown["s"]
+                    n.surname, shown["s"] = norm(nom), nom
+                else:
+                    n.first, shown["f"] = norm(nom), nom
         parts = [cap(shown[k]) for k in ("s", "f", "p") if k in shown]
         if initials and not (n.first or n.patronymic):
             parts.append(".".join(c.upper() for c in initials) + ".")

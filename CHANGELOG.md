@@ -4,6 +4,21 @@
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow [Semantic Versioning](https://semver.org/).
 
+## [Unreleased] (0.4.0)
+
+### Changed
+
+- Held-out set 5 becomes development data for version 0.4 (22 October 2026): its incompletely masked values and restoration failures were analysed by hand after its single run. Version 0.4 is checked on a new held-out set 6, published before the first run. The external datasets are not used to tune 0.4.
+- Engine: an address is masked whole: the number of a building or block cut off after its abbreviation ("д. 486 к. 50"), a note in brackets ("(метеост.)"), a street named with a number ("ш. 9 Января", "алл. Марта 8"), and the UK town between the street and the postcode or before a postcode found alone ("45 Harding Dam, West Mathewhaven B7 9LL").
+- Engine: an organisation is masked whole: "Компания Адамас", "Hoff (Домашний интерьер)" (not "(далее Исполнитель)"), "ГКНПЦ им. М.В.Хруничева", "Лобанова и партнеры", hospitals with the town in the name ("General Hospital, Shirleyborough", "University Hospital Stephanietown", "Royal Infirmary of Bath"), firm names with "O'Brien" or "McDonald".
+- Engine: when a rule and a model find the same text, the rule's type wins unless one of them is a checksum-validated number (a UK postcode is an address even if GLiNER calls it an ID); a name inside an address or an organisation no longer turns it into a person.
+- Engine, stored values of Russian names: a first name the dictionary does not know is kept ("Большакова Милан Андреевича" was stored as "Большаков Андреевич", so "Милан" was lost on restoration); a word the dictionary knows only as a verb form or a function word is not stored as a part of the name ("Выдана Крюковой Марине Никифоровне" was stored as "Крюкова Выдана Никифоровна"); short patronymics such as "Фомич" and "Фокич" are kept; a model span that crosses a line break is split into its lines.
+- Engine, restoration: two name placeholders written without a space ("[PERSON_2][PERSON_3]") are both restored; pii-guard's inflection used to lose the surname of the second.
+- Round-trip evaluator version 2 (fixed before held-out set 6): surname and first-name case forms that the dictionary does not produce ("Третьякова", "Майи") are added by rule. Held-out set 5 rescored with both versions: `results/evaluator_versions.holdout5.json`.
+- Strict document measure: only the types of the thresholds are counted, as described (before, also phone, e-mail and date of birth; no figure of set 5 changes, a few of set 4 and the external datasets do).
+- OpenAI privacy-filter is listed as having no organisation type in `results/leak_breakdown*.json`: counting only supported types it leaks in 86.1% [83.8; 88.1] of Russian and 33.5% [30.6; 36.5] of UK documents of set 5.
+- Report and README: a bound with no error is rounded down (91.1% for 40 answers, 99.0% for 380; earlier releases showed 91.2%); recall with no miss is shown with the bound 0.025^(1/n) over documents instead of "100.0% [100.0; 100.0]"; no restoration verdict for pii-guard on set 5; the tools are described as run with the settings from their documentation, not tuned; DOI 10.5281/zenodo.23478192 is named as the DOI of all versions.
+
 ## [0.3.1] - 2026-10-22
 
 The engine is unchanged. This release fixes the leak metric, corrects the documents of 0.2.2 and 0.3.0 after an external review (dated notes, nothing rewritten), and adds measures that were not pre-registered. No model was queried again; every figure is recomputed from the saved predictions and answers.
@@ -21,6 +36,8 @@ The engine is unchanged. This release fixes the leak metric, corrects the docume
 - Round-trip measures, not pre-registered (`bench/eval/cycle_extras.py`, `results/cycle_extras.json`): answers with at least one failed occurrence with a Clopper-Pearson interval (pii-roundtrip on set 5: 9 of 380 and 6 of 380 answers in Russian, 0 of 380 in UK English), restoration without values leaked into the input, the overlap of the samples (9 of the 20 competitor documents per language are among the 190 engine documents) and every failed occurrence of pii-roundtrip and pii-guard.
 - Manual check of the failures on set 5: of the 8 failed occurrences of pii-roundtrip with Russian gemma4:12b, 4 are real (a noisy document where the uninflected first name was dropped from the stored value) and 4 are evaluator misses on rare patronymics; the 1 and 3 failures of pii-guard on ru-medical-195 are real (a misspelt first name inflected wrongly).
 - `results/holdout5_cycle_journal.md`: the course of the round trip on set 5 from logs and file times, including the interruption at the 72nd answer of Russian gemma4:12b (21.10.2026, about 00:01) and its continuation; no answer was requested twice.
+
+> Correction of 22 October 2026 (second round of review): the cause of the evaluator misses given above is wrong. The patronymics are in the dictionary; it does not produce the surname form "Третьякова" of "Третьяков" or the first-name form "Майи" of "Майя". Of the 10 qwen3.5:9b failures 7 are evaluator misses, 1 is a wrong case and 2 are real (two name placeholders without a space); of the 8 gemma4:12b failures 4 are evaluator misses and 4 are real.
 
 ## [0.3.0] - 2026-10-22
 

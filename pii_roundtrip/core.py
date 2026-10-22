@@ -279,6 +279,9 @@ class Engine:
         guard = "⁣"
         staged = text.replace("<PII", "<" + guard + "PII")
         staged = PLACEHOLDER_ANY.sub(sub, staged)
+        # two names written without a space ("[PERSON_2][PERSON_3]"): pii-guard's inflection loses
+        # the surname of the second one, so the names are separated by a space
+        staged = re.sub(r'(<PII type="PERSON"[^>]*/>)(?=<PII type="PERSON")', r"\1 ", staged)
         if tagmap:
             inflector = self._get_inflector()
             restored = None
