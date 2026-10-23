@@ -10,6 +10,8 @@ UK: spaCy en_core_web_lg + встроенные UK_NHS, UK_NINO, IBAN, карт�
 
 from __future__ import annotations
 
+import importlib.metadata
+
 from presidio_analyzer import AnalyzerEngine, Pattern, PatternRecognizer, RecognizerRegistry
 from presidio_analyzer.nlp_engine import NlpEngineProvider
 from presidio_analyzer.predefined_recognizers import (
@@ -141,10 +143,8 @@ class PresidioRunner(Runner):
         self.engine = AnalyzerEngine(nlp_engine=nlp, registry=registry, supported_languages=["en", "ru"])
 
     def config(self) -> dict:
-        import presidio_analyzer
-
         return {
-            "version": getattr(presidio_analyzer, "__version__", "2.2.364+"),
+            "version": importlib.metadata.version("presidio-analyzer"),
             "score_threshold": SCORE_THRESHOLD,
             "nlp": NLP_CONFIG,
             "ru_custom": [

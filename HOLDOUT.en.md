@@ -137,3 +137,39 @@ Code under test: engine 0.4.0, private commit 2e33854. Git tree hashes by which 
 
 > Added after the push, before the first run: the public pre-registration commit 444c4bd was pushed to GitHub on 22 October 2026 at 07:57:47 UTC (11:57:47 +04). Its `pii_roundtrip` and `bench` trees are the ones given above.
 
+## Set 7 (independent check of version 0.5, the last one for the paper)
+
+Generated on 23 October 2026 at 15:24 +04 after the engine changes of 0.5 (storing and restoring Russian names; developed on sets 1 to 6 and the development set; set 6 became development data after the analysis of stored names in release 0.4.1). The generator is unchanged since commit 22d154d (16 October 2026); same size and parameters as sets 3 to 6, a new seed. Regenerating with this command gives the same hashes (checked). This section, the set files and the code it checks were published in the open repository before any tool was run on set 7.
+
+```bash
+uv run python -m bench.generator.generate --seed 20261023 --per-type 200 --hard 0.3 --now 2026-10-23 --out data/holdout7
+```
+
+| File | SHA-256 |
+|---|---|
+| data/holdout7/ru.jsonl | `f2df8c64f730ad0f893662c6fad201797adb6b55bda8604c20345b30a56dc330` |
+| data/holdout7/uk.jsonl | `3e85284b32f1d1f683171b8537d97e794eab15ce44f8cfdd84bb950b34697281` |
+
+Code under test: engine 0.5.0, private commit 5159948. Git tree hashes (`git rev-parse <commit>:pii_roundtrip` and `:bench`): `pii_roundtrip` e58cbfd6a621c87e6a422ae11335b147aa91fd82, `bench` 269e4e02655081737515bf9cbf15a5e25f4e72a9. The run uses the commit that records this section; these trees are the same in it. The public pre-registration commit and the push time are added below after the push.
+
+### Stopping rule
+
+Set 7 is the last held-out set for this paper. Its result is published whatever it is. Until the paper is published there will be no further cycle of "development, then a check on a new set"; errors found after the run are described and fixed only in later versions, without a new set for this paper.
+
+### Rules fixed before the run
+
+- The five thresholds as before: structured identifiers at least 99%, names, addresses and organisations at least 95%, documents with a leak at most 2%, the strict count (any value of the threshold types not fully masked) at most 2%, restoration at least 99% of placeholders (the worse of two LLMs).
+- A sixth threshold, new: restoration of name placeholders `[PERSON_n]` only, at least 99% (the worse of two LLMs), with the same interval as restoration.
+- Intervals, the leak metric and the verdict rule as for set 6: cluster bootstrap for recall and precision with the borderline rule over seeds 0 to 5; Wilson for shares of documents; restoration over issued occurrences with a bootstrap over answers (2,000 resamples, seed 0), with no error the lower bound 0.025^(1/n), rounded down.
+- Restoration evaluator version 3 (`bench/eval/cycle.py`, `EVALUATOR = 3`): a restored name must match both the value the tool stored and the name in the generator's annotation. Every word of the annotated name that the document has must be found in the restored text in a correct form: a surname in -ов/-ев/-ин/-ын and a man's first name ending in a consonant by the declension rule, other words by the dictionary (singular), or exactly as the document wrote it (a typo of the text is not an error). Only the words of the mention closest to the stored value are required (a placeholder for "N. Johnston" or "Lucy" does not require the full name). A known limitation: a gender error where the masculine and feminine forms coincide ("Копылову") is not visible to it; stored names are therefore also checked against the annotation and by hand (below). Checked on sets 5 and 6 for reference (`results/evaluator_versions.holdout5.json`, `results/evaluator_versions.holdout6.json`).
+- Companion measures without a threshold: the share of answers with at least one failed occurrence (Clopper-Pearson); stored names compared with the annotation (`bench/eval/stored_names.py`), every mismatch checked by hand; restoration with occurrences of wrongly stored names counted as failures.
+
+### Run plan (each step once, from committed code)
+
+1. Detection by every tool: `uv run python -m bench.eval.holdout --set 7 --tools regex_baseline,presidio,pii_guard,gliner_guard,privacy_filter,prompt_anonymizer,pii_roundtrip`.
+2. The engine's round trip: `uv run python -m bench.eval.cycle --data holdout7 --tools pii_roundtrip --per-type 38` (380 answers per model and language).
+3. The round trip of the other configurations is not repeated: their detection and restorers did not change, and their round trips are on sets 4 and 5.
+4. LLMs: qwen3.5:9b and gemma4:12b, Ollama 0.40.4 (Homebrew) with default settings, one request at a time, temperature 0, seed 0, `num_ctx` 16384. No other task uses the server; the Mac is on mains power.
+5. The run journal is kept during the run: `results/holdout7_cycle_journal.md`. A continuation after an interruption uses only the same command and the saved answers.
+6. After the run: `bench/eval/stored_names.py holdout7`, a manual check of every failure and every stored-name mismatch.
+

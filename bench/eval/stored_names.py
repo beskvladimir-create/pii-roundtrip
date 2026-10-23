@@ -1,5 +1,5 @@
-"""Stored names and the restoration they allow (not pre-registered for sets 5 and 6; added after
-review). For every name pii-roundtrip masked in the round-trip documents of a held-out set, the
+"""Stored names and the restoration they allow (added after review: not pre-registered for sets 5 and 6,
+pre-registered as a companion measure for set 7). For every name pii-roundtrip masked in the round-trip documents of a held-out set, the
 value it stored is compared with the generator's annotation; then restoration is recomputed from
 the saved answers with every occurrence of a wrongly stored name counted as a failure.
 

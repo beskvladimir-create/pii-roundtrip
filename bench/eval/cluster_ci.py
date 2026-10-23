@@ -25,6 +25,8 @@ SETS["holdout5_ru"] = (str(ROOT / "data/holdout5/ru.jsonl"), "ru")
 SETS["holdout5_uk"] = (str(ROOT / "data/holdout5/uk.jsonl"), "uk")
 SETS["holdout6_ru"] = (str(ROOT / "data/holdout6/ru.jsonl"), "ru")
 SETS["holdout6_uk"] = (str(ROOT / "data/holdout6/uk.jsonl"), "uk")
+SETS["holdout7_ru"] = (str(ROOT / "data/holdout7/ru.jsonl"), "ru")
+SETS["holdout7_uk"] = (str(ROOT / "data/holdout7/uk.jsonl"), "uk")
 TOOLS = [
     "regex_baseline",
     "presidio",

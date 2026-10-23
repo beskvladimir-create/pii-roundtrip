@@ -34,12 +34,14 @@ DATA = [
     "holdout5_uk",
     "holdout6_ru",
     "holdout6_uk",
+    "holdout7_ru",
+    "holdout7_uk",
     "hivetrace_pii_bench",
     "redmadrobot_pii_benchmark",
     "nemotron_uk",
     "nemotron_uk_ids",
 ]
-EXAMPLES = "holdout6_uk"  # 20 examples of what stayed visible (held-out set 5 in release 0.3.1)
+EXAMPLES = "holdout7_uk"  # 20 examples of what stayed visible (held-out set 5 in release 0.3.1)
 NUMBERS = set(metrics.STRUCTURED["ru"] + metrics.STRUCTURED["uk"])
 # the types of the recall thresholds: structured identifiers, names, addresses, organisations
 # (until 22.10.2026 every annotated type of the leak measure was counted, also phone, e-mail and

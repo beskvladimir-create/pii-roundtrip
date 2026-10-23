@@ -164,7 +164,7 @@ class Engine:
             for s in spans:
                 value = text[s.start : s.end]
                 out.append(text[pos : s.start])
-                out.append(self._label(work, s.type, value, lang))
+                out.append(self._label(work, s.type, value, lang, text[max(0, s.start - 40) : s.start]))
                 pos = s.end
             out.append(text[pos:])
             session._replace_with(work)
@@ -177,9 +177,9 @@ class Engine:
             if f"{etype}_{n}" not in session.reserved:
                 return f"[{etype}_{n}]"
 
-    def _label(self, session: Session, etype: str, value: str, lang: str) -> str:
+    def _label(self, session: Session, etype: str, value: str, lang: str, left: str = "") -> str:
         if etype == "PERSON":
-            return self._person_label(session, value, lang)
+            return self._person_label(session, value, lang, left)
         key = f"{etype}|{_org_key(value) if etype == 'ORG' else _value_key(value)}"
         label = session.keys.get(key)
         if label is None:
@@ -190,8 +190,8 @@ class Engine:
             session.mapping[label] = value.strip()  # keep the full form with the legal form
         return label
 
-    def _person_label(self, session: Session, value: str, lang: str) -> str:
-        mention = names.parse(value, lang)
+    def _person_label(self, session: Session, value: str, lang: str, left: str = "") -> str:
+        mention = names.parse(value, lang, left)
         candidates = [(lab, n) for lab, n in session.people if names.compatible(n, mention)]
         if len(candidates) > 1:
             # with several compatible people, only an unambiguous first-name match is accepted
@@ -285,9 +285,13 @@ class Engine:
         if tagmap:
             inflector = self._get_inflector()
             restored = None
+            # a first name the dictionary does not know ("Пров") is inflected through a proxy name of
+            # the same declension, and its endings are carried back ("Агафоном" -> "Провом")
+            proxies = names.proxy_first_names(tagmap, staged)
             if inflector:
                 try:
-                    restored = inflector.restore(staged, tagmap)
+                    restored = inflector.restore(staged, {t: proxies.get(t, (v, None))[0] for t, v in tagmap.items()})
+                    restored = names.carry_back(restored, proxies)
                 except Exception as e:
                     if self.strict_inflection:
                         raise

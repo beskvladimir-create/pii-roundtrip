@@ -21,13 +21,23 @@ from bench import ROOT
 from bench.eval import cycle
 
 MODELS = ["qwen3.5:9b", "gemma4:12b"]
-KEYS = ("labels_in_answer", "occurrences_failed", "restore_rate", "answers_with_failure", "answers_with_labels")
+KEYS = (
+    "labels_in_answer",
+    "occurrences_failed",
+    "restore_rate",
+    "restore_ci",
+    "answers_with_failure",
+    "answers_with_labels",
+    "person_labels",
+    "restore_rate_person",
+    "restore_ci_person",
+)
 
 
 def main() -> None:
     os.chdir(ROOT)
     data = sys.argv[1]
-    versions = range(1, cycle.EVALUATOR + 1)
+    versions = [int(v) for v in sys.argv[2].split(",")] if len(sys.argv) > 2 else range(1, cycle.EVALUATOR + 1)
     out: dict = {}
     failures: dict = {}
     for ev in versions:
@@ -39,7 +49,7 @@ def main() -> None:
         for (_tool, lang, model), rs in sorted(rows.items()):
             a = cycle.aggregate(rs)
             out.setdefault(f"{lang}/{model}", {})[f"evaluator_{ev}"] = {k: a[k] for k in KEYS}
-            if ev == 1:
+            if ev == min(versions):
                 failures[f"{lang}/{model}"] = [
                     {"id": r["id"], "task": r["task"], "label": k, "value": v}
                     for r in rs

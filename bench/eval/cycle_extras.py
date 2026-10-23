@@ -34,6 +34,7 @@ PER_TYPE = {
     "holdout5": {"pii_roundtrip": 38, "other": 4},
     # set 6: only the engine; the other configurations were not run again (their detection is unchanged)
     "holdout6": {"pii_roundtrip": 38, "other": 0},
+    "holdout7": {"pii_roundtrip": 38, "other": 0},
 }
 MODELS = ["qwen3.5:9b", "gemma4:12b"]
 OTHER = {
@@ -175,7 +176,7 @@ def main() -> None:
             b = {d["id"] for d in cycle.pick_docs(lang, per["pii_roundtrip"], data)}
             overlap[lang] = {"competitor_docs": len(a), "engine_docs": len(b), "shared": sorted(a & b)}
         out[data]["_overlap"] = overlap
-        if data == "holdout6":
+        if data in ("holdout6", "holdout7"):
             with contextlib.redirect_stdout(sys.stderr):
                 out[data]["_value_fidelity"] = {
                     lang: value_fidelity(data, lang, per["pii_roundtrip"]) for lang in ("ru", "uk")

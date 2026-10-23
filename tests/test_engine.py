@@ -537,3 +537,45 @@ def test_address_and_org_extensions_stop_in_time(text, lang, kept):
     models._detectors = [_Fake([("ADDRESS", "г. Тула"), ("ORG", "ООО «Ромашка»")])]
     a, _ = Engine(models).anonymize(text, lang)
     assert kept in a, a
+
+
+@pytest.mark.parametrize(
+    "value,left,display",
+    [
+        # held-out set 6, names stored wrongly by 0.4 (results/stored_names_review.holdout6.json)
+        ("Абрамов Болеслав", "", "Абрамов Болеслав"),  # not "Абрамы"
+        ("Игнатов Пров Филиппович", "", "Игнатов Пров Филиппович"),
+        ("Кириллов Давыд Гурьевич", "", "Кириллов Давыд Гурьевич"),  # not read as a first name
+        ("Копыловой А.В.", "", "Копылова А.В."),  # "-ой" decides the gender
+        ("Т.Т. Исаевой", "", "Исаева Т.Т."),
+        ("Субботина П.Х.", "в лице ", "Субботин П.Х."),  # genitive after "в лице"
+        ("Кононова Л.Г.", "Основание: личное заявление ", "Кононов Л.Г."),
+        ("Кононова Л.Г.", "Руководитель ____________ ", "Кононова Л.Г."),  # signature: nominative
+        ("Субботина П.Х.", "Стороны подтверждают, что ", "Субботина П.Х."),  # undecided: as written
+        ("Полякову А.А.", "ООО «Ромашка»\n", "Поляков А.А."),  # dative in a letter's address
+        ("Полякову А.А.", "Приказываю принять ", "Полякова А.А."),  # accusative after a verb
+        ("Зимину Софии Эдуардовне", "Выдана ", "Зимина София Эдуардовна"),
+        ("Ситниковой Натальи Константиновны", "", "Ситникова Наталья Константиновна"),
+        ("Ситникова Нинель Павловна", "", "Ситникова Нинель Павловна"),  # not dropped as an adjective
+        ("Лидии Петровой", "", "Петрова Лидия"),
+        ("Сидоровой Анне", "", "Сидорова Анна"),
+        ("Горбачеав А.В.", "", "Горбачеав А.В."),  # a typo of the text kept, initials kept
+    ],
+)
+def test_russian_names_stored_in_the_right_form(value, left, display):
+    from pii_roundtrip.names import parse
+
+    assert parse(value, "ru", left).display == display
+
+
+def test_restore_ru_rare_first_name_through_a_proxy(eng):
+    """Held-out set 6: pii-guard inflected the first name «Пров» as «Провым» and «Прва»."""
+    from pii_roundtrip.adapters.pii_guard import PiiGuardInflector
+
+    if not PiiGuardInflector.available():
+        pytest.skip("pii-guard is not installed")
+    s = Session("ru", {"[PERSON_1]": "Щербаков Пров Тимурович", "[PERSON_2]": "Иванов Пётр Сергеевич"})
+    s.genders = {"[PERSON_1]": "male", "[PERSON_2]": "male"}
+    out = eng.deanonymize("Документы для [PERSON_1] и [PERSON_2] готовы. Мы говорили о [PERSON_1].", s)
+    assert "Щербакова Прова Тимуровича" in out and "Иванова Петра Сергеевича" in out, out
+    assert "Щербакове Прове Тимуровиче" in out and "Прва" not in out and "Провым" not in out, out

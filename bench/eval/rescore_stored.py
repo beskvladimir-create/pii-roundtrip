@@ -29,6 +29,7 @@ for name, folder in (
     ("holdout4", "holdout4"),
     ("holdout5", "holdout5"),
     ("holdout6", "holdout6"),
+    ("holdout7", "holdout7"),
 ):
     for lang in ("ru", "uk"):
         SETS[f"{name}_{lang}"] = (str(ROOT / "data" / folder / f"{lang}.jsonl"), lang)

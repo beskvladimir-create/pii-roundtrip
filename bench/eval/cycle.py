@@ -78,6 +78,7 @@ DATA = {
     "holdout4": "data/holdout4",
     "holdout5": "data/holdout5",
     "holdout6": "data/holdout6",
+    "holdout7": "data/holdout7",
 }
 
 
@@ -94,7 +95,7 @@ def pick_docs(lang: str, per_type: int, data: str = "synthetic") -> list[dict]:
 # 22.10.2026 before held-out set 6 was generated): the dictionary reads "Третьяков" as a form of
 # "третьяк" and gives no forms of "Майя", so correctly restored "Третьякова" and "Майи" were
 # counted as failures on held-out set 5.
-EVALUATOR = 2  # the version of name matching; 1 reproduces the figures of held-out sets 4 and 5
+EVALUATOR = 3  # the version of name matching; 1: sets 4 and 5 as run, 2: set 6 as run, 3: fixed before set 7
 _SURNAME_FORMS = {
     r"(ов|ев|ёв|ин|ын)$": ("а", "у", "ым", "ом", "е", "ы", "ых", "ыми"),
     r"(ова|ева|ёва|ина|ына)$": ("ой", "у", "ы"),
@@ -170,7 +171,110 @@ def _identity(family: str, label: str, known_types: set[str] | None = None) -> t
     return (t, n)
 
 
-def evaluate_answer(family: str, mapping: dict, answer: str, restored: str, lang: str) -> dict:
+_PERSON_LABEL = re.compile(r"PERSON|\bNAME\b|_NAME|\bPER\b", re.I)
+_FAMILY = re.compile(r"^(?P<base>[а-яё-]{2,}?(?:ов|ев|ёв|ин|ын))(?:а|у|ым|ом|е|ой|ую|ою)?$")
+
+
+def _canon_forms(word: str, role: str) -> set[str]:
+    """Evaluator 3: the correct case forms of a word of the annotated name, by its role in the
+    annotation ("surname", "first", "patronymic" for Russian; "en" for English). A surname in
+    -ов/-ев/-ин/-ын and a man's first name in a consonant by rule (the dictionary reads "Абрамов"
+    as the plural of "Абрам" and gives "Провым"); other words: the singular forms of their
+    dictionary name, surname or patronymic parses."""
+    from pii_roundtrip.names import morph
+
+    low = word.lower().replace("ё", "е")
+    if role == "en":
+        return {low, low + "'s", low + "’s", low + "s'"}
+    m = _FAMILY.match(low)
+    if role == "surname" and m:
+        b = m.group("base")
+        return {b, b + "а", b + "у", b + "ым", b + "ом", b + "е", b + "ой", b + "ую", b + "ою"}
+    if role == "first" and re.search(r"[бвгджзклмнпрстфхцчшщ]$", low):
+        return {low, low + "а", low + "у", low + "ом", low + "е"}
+    if role == "patronymic" and re.search(r"ич$", low):
+        return {low, low + "а", low + "у", low + "ем", low + "е"}
+    if role == "patronymic" and re.search(r"на$", low):
+        b = low[:-1]
+        return {low, b + "ы", b + "е", b + "у", b + "ой", b + "ою"}
+    forms = {low}
+    tag = {"surname": "Surn", "first": "Name", "patronymic": "Patr"}.get(role, "Name")
+    for p in morph().parse(word):
+        if tag in p.tag.grammemes:
+            forms.update(x.word.replace("ё", "е") for x in p.lexeme if x.tag.number != "plur")
+    for rx, ends in _NAME_FORMS.items():
+        if role == "first" and re.search(rx, low):
+            forms.update(low[:-1] + e for e in ends)
+            break
+    return forms
+
+
+def _lev(a: str, b: str) -> int:
+    prev = list(range(len(b) + 1))
+    for i, ca in enumerate(a, 1):
+        cur = [i]
+        for j, cb in enumerate(b, 1):
+            cur.append(min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (ca != cb)))
+        prev = cur
+    return prev[-1]
+
+
+def _words(s: str) -> list[str]:
+    return [w.lower().replace("ё", "е") for w in re.findall(r"[А-Яа-яЁёA-Za-z'’-]{2,}", s)]
+
+
+def _close(a: str, b: str) -> bool:
+    return a[:4] == b[:4] or _lev(a, b) <= 2
+
+
+def person_canonicals(value: str, entities: list[dict], text: str) -> tuple[list[tuple[str, str]], set[str]] | None:
+    """Evaluator 3: the words of the annotated name that the mention a stored value stands for
+    actually has (a mention "N. Johnston" or "Lucy" does not require the full name), with their
+    roles, and the words of that mention as the document wrote them; None if no annotated name
+    matches the value. The mention is the annotated one most similar to the stored value."""
+    vw = _words(value)
+    best, key = None, (0, 0)
+    for g in entities:
+        if g["type"] != "PERSON":
+            continue
+        gw = _words(g["value"])
+        sc = sum(1 for w in vw if any(_close(w, x) for x in gw))
+        k = (sc, -abs(len(gw) - len(vw)))
+        if sc and k > key:
+            best, key = g, k
+    if not best:
+        return None
+    canon = best.get("canonical", best["value"])
+    mention = _words(best["value"])
+    cw = re.findall(r"[А-Яа-яЁёA-Za-z'’-]{2,}", canon)
+    cyr = bool(re.search(r"[А-Яа-яЁё]", canon))
+    roles = (["surname", "first", "patronymic"] + ["first"] * len(cw))[: len(cw)] if cyr else ["en"] * len(cw)
+    required = [
+        (w, r) for w, r in zip(cw, roles, strict=True) if any(_close(w.lower().replace("ё", "е"), x) for x in mention)
+    ]
+    # how the document wrote this person anywhere (a typo of the text counts as written)
+    written = {
+        x
+        for g in entities
+        if g["type"] == "PERSON" and g.get("canonical", g["value"]) == canon
+        for x in _words(g["value"])
+    }
+    return required, written
+
+
+def _name_matches_annotation(words: list[tuple[str, str]], restored: str, source_words: set[str]) -> bool:
+    """Every annotated word is in the restored text in a correct form, or exactly as the document
+    wrote it (a typo of the document's own text is kept)."""
+    text_words = {w.lower().replace("ё", "е") for w in re.findall(r"[А-Яа-яЁёA-Za-z'’-]+", restored)}
+    for w, role in words:
+        low = w.lower().replace("ё", "е")
+        as_written = {x for x in source_words if _close(x, low)}
+        if not (_canon_forms(w, role) & text_words) and not (as_written & text_words):
+            return False
+    return True
+
+
+def evaluate_answer(family: str, mapping: dict, answer: str, restored: str, lang: str, doc: dict | None = None) -> dict:
     """Метки делятся на выданные инструментом (их тип и номер есть в таблице) и выдуманные
     нейросетью. Доля восстановления считается по выданным: дословным и искажённым."""
     pat = LABEL_PATTERNS[family]
@@ -190,6 +294,16 @@ def evaluate_answer(family: str, mapping: dict, answer: str, restored: str, lang
     residual = [r for r in pat.findall(restored) if _identity(family, r, types) in issued_ids]
     used_keys = {key_ids[i] for i in issued_ids}
     lost = [k for k in used_keys if not _value_restored(mapping[k], restored, lang, "PERSON" in k.upper())]
+    if EVALUATOR >= 3 and doc is not None:
+        # a name must also be the annotated person's name, not only the value the tool stored
+        for k in used_keys:
+            if k in lost or not _PERSON_LABEL.search(k):
+                continue
+            found = person_canonicals(mapping[k], doc["entities"], doc["text"])
+            if found and found[0]:
+                words, as_written = found
+                if not _name_matches_annotation(words, restored, as_written):
+                    lost.append(k)
     # Each occurrence the tool issued is judged once. It fails if it is still in the text after
     # restoration, if its value is not in the restored text, or if the tool's restorer scrubbed
     # it ("****"; scrubs beyond the number of invented labels are the tool's own altered tags).
@@ -316,7 +430,7 @@ def run(
                                 f.flush()
                             restored = tool.deanonymize(answer, mapping)
                             plain = getattr(mapping, "mapping", mapping)  # движок отдаёт Session
-                            ev = evaluate_answer(family, plain, answer, restored, lang)
+                            ev = evaluate_answer(family, plain, answer, restored, lang, d)
                             ev["input_leaked_values"] = metrics.leaked_values(d, anon)
                             ev["input_leaks"] = len(ev["input_leaked_values"])
                             ev.update({"id": d["id"], "task": task})
@@ -324,7 +438,7 @@ def run(
                             if family == "pii_guard":
                                 # the same answer restored by label type and number, not by pii-guard
                                 ev_t = evaluate_answer(
-                                    family, plain, answer, tolerant_restore(family, plain, answer), lang
+                                    family, plain, answer, tolerant_restore(family, plain, answer), lang, d
                                 )
                                 ev_t.update({k: ev[k] for k in ("input_leaked_values", "input_leaks", "id", "task")})
                                 rows_tolerant.append(ev_t)
@@ -379,6 +493,29 @@ def bootstrap_ci(rows: list[dict], n: int = 2000, seed: int = 0) -> tuple[float,
     return (stats[int(0.025 * n)], stats[int(0.975 * n) - 1])
 
 
+def _person_rate(rows: list[dict]) -> dict:
+    pairs = []
+    for r in rows:
+        det = [bad for key, _v, bad in r.get("occurrence_detail", []) if _PERSON_LABEL.search(key)]
+        if det:
+            pairs.append((sum(1 for b in det if not b), len(det)))
+    ok, n = sum(k for k, _ in pairs), sum(t for _, t in pairs)
+    if not n:
+        return {"person_labels": 0, "restore_rate_person": None, "restore_ci_person": None, "answers_with_person": 0}
+    rng, stats = random.Random(0), []
+    for _ in range(2000):
+        sample = [pairs[rng.randrange(len(pairs))] for _ in pairs]
+        tot = sum(t for _, t in sample)
+        stats.append(sum(k for k, _ in sample) / tot if tot else 1.0)
+    stats.sort()
+    return {
+        "person_labels": n,
+        "restore_rate_person": ok / n,
+        "restore_ci_person": (stats[50], stats[1949]),
+        "answers_with_person": len(pairs),
+    }
+
+
 def aggregate(rows: list[dict]) -> dict:
     def s(k: str) -> int:
         return sum(r[k] for r in rows)
@@ -395,6 +532,9 @@ def aggregate(rows: list[dict]) -> dict:
         "invented": s("invented"),
         "restore_rate": ok / labels if labels else None,
         "restore_ci": bootstrap_ci(rows),
+        # name placeholders only (evaluator 3; threshold from held-out set 7): occurrences issued for a
+        # PERSON label, the same bootstrap over answers
+        **_person_rate(rows),
         "restore_ci_method": "bootstrap по ответам, 2000 повторов",
         "residual_labels": s("residual_after_restore"),
         "scrubbed": max(0, s("scrubbed")),
