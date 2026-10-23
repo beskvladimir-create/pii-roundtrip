@@ -182,6 +182,8 @@ Second round of review (23 October 2026):
 
 **Evaluator versions 1 and 2 on set 6** (engine failures, version 1 / version 2): {EVALUATOR_VERSIONS_SET6}. The verdict uses version 2, as pre-registered.
 
+**Manual check of the 37 version 1 failures on set 6** (19 placeholder-in-answer groups, 23 October 2026). Correctly restored and missed by version 1: every "Майя" ("Туровой Майи Артёмовны", "Носовой Майе Робертовне"), the surname "Большаков" ("Большакова Епифана Жановича") and "Щербакове Прове Тимуровиче", "Сорокине Прове Ефремовиче". Real errors that version 2 counted as correct: "Щербаковым Провым Тимуровичем" (should be "Провом") and "Лобанова Прва Игнатьевича", so pii-guard's inflection fails on the rare first name Пров, and "Игнатов Прова Филипповича" (3 occurrences), a consequence of the stored "Игнаты". Four groups could not be isolated automatically. Evaluator version 2 is too lenient for the name "Пров": the dictionary gives it forms the language does not have. This is one more reason to consider the 99% threshold for Russian names not established.
+
 **The other configurations, set 5** (not pre-registered, added on 22 October 2026 after review; pii-roundtrip here is version 0.3):
 
 {TABLE_CYCLE_EXTRAS_5}
