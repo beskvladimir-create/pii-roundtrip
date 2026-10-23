@@ -1,0 +1,107 @@
+{
+ "_note": "pii-roundtrip on the external datasets, for reference (they were not used to tune 0.4). 0.3 = the stored predictions of releases 0.2 to 0.3.1 (detection unchanged since 0.2), kept in results/pii_roundtrip_0.3/; 0.4 = engine 0.4.0, commit 21ebb9d. hivetrace and redmadrobot are home datasets of the engine's components.",
+ "hivetrace_pii_bench": {
+  "0.3": {
+   "structured": 1.0,
+   "names": 1.0,
+   "leak_rate": 0.0,
+   "precision_fragments": 0.891993551853842,
+   "strict": 0.0,
+   "strict_ci": [
+    0.0,
+    0.00211793576682771
+   ],
+   "docs": 1810
+  },
+  "0.4": {
+   "structured": 1.0,
+   "names": 1.0,
+   "leak_rate": 0.0,
+   "precision_fragments": 0.8918191603875134,
+   "strict": 0.0,
+   "strict_ci": [
+    0.0,
+    0.00211793576682771
+   ],
+   "docs": 1810
+  }
+ },
+ "redmadrobot_pii_benchmark": {
+  "0.3": {
+   "structured": 0.9873203719357565,
+   "names": 0.9834881320949432,
+   "leak_rate": 0.010559662090813094,
+   "precision_fragments": 0.7648327939590076,
+   "strict": 0.013375571981696586,
+   "strict_ci": [
+    0.009760432040539023,
+    0.018304961828841965
+   ],
+   "docs": 2841
+  },
+  "0.4": {
+   "structured": 0.9873203719357565,
+   "names": 0.9829721362229102,
+   "leak_rate": 0.010559662090813094,
+   "precision_fragments": 0.7640086206896551,
+   "strict": 0.013375571981696586,
+   "strict_ci": [
+    0.009760432040539023,
+    0.018304961828841965
+   ],
+   "docs": 2841
+  }
+ },
+ "nemotron_uk": {
+  "0.3": {
+   "structured": 1.0,
+   "names": 0.9640287769784173,
+   "leak_rate": 0.00749063670411985,
+   "precision_fragments": 0.9294621979734996,
+   "strict": 0.05742821473158552,
+   "strict_ci": [
+    0.04332856371618724,
+    0.07575275613606691
+   ],
+   "docs": 801
+  },
+  "0.4": {
+   "structured": 1.0,
+   "names": 0.9712230215827338,
+   "leak_rate": 0.00749063670411985,
+   "precision_fragments": 0.9303871724677356,
+   "strict": 0.0449438202247191,
+   "strict_ci": [
+    0.03263834687944688,
+    0.06159336281349145
+   ],
+   "docs": 801
+  }
+ },
+ "nemotron_uk_ids": {
+  "0.3": {
+   "structured": 0.9996865203761756,
+   "names": 0.9886425094645754,
+   "leak_rate": 0.009429918559794257,
+   "precision_fragments": 0.9352,
+   "strict": 0.013716245177882554,
+   "strict_ci": [
+    0.009732533404487391,
+    0.019298788187870425
+   ],
+   "docs": 2333
+  },
+  "0.4": {
+   "structured": 0.9996865203761756,
+   "names": 0.9889129259058951,
+   "leak_rate": 0.009429918559794257,
+   "precision_fragments": 0.9360069398104898,
+   "strict": 0.013287612516073724,
+   "strict_ci": [
+    0.009376700890538244,
+    0.018798764660913764
+   ],
+   "docs": 2333
+  }
+ }
+}

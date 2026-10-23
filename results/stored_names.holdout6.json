@@ -1,0 +1,1655 @@
+{
+ "_note": "Found after the run on held-out set 6, not pre-registered. For each name the engine 0.4 masked in the round-trip documents (190 per language), is the surname it stored the nominative surname of the generator's annotation? The round-trip evaluator compares answers with the stored value, so a wrong stored value is restored as it is and still counted as restored. Script: the stored value of each PERSON label against the annotation's canonical form; categories by rule.",
+ "ru": {
+  "names": 1097,
+  "categories": {
+   "plural_form": 42,
+   "typo_in_source_text": 11,
+   "gender_or_case": 103,
+   "surname_not_in_text_or_other": 41
+  },
+  "answer_placeholder_occurrences": {
+   "qwen3.5_9b": 12777,
+   "gemma4_12b": 13481
+  },
+  "occurrences_with_wrong_stored_name": {
+   "qwen3.5_9b/plural_form": 100,
+   "qwen3.5_9b/gender_or_case": 163,
+   "gemma4_12b/plural_form": 100,
+   "gemma4_12b/gender_or_case": 161
+  },
+  "examples": [
+   {
+    "id": "ru-certificate-065",
+    "label": "[PERSON_5]",
+    "canonical": "Ефремов Порфирий Захарьевич",
+    "stored": "Ефремы П.З.",
+    "category": "plural_form"
+   },
+   {
+    "id": "ru-certificate-126",
+    "label": "[PERSON_3]",
+    "canonical": "Сафонов Олимпий Харлампьевич",
+    "stored": "Сафоны Олимпий Харлампьевич",
+    "category": "plural_form"
+   },
+   {
+    "id": "ru-certificate-126",
+    "label": "[PERSON_5]",
+    "canonical": "Максимов Осип Филатович",
+    "stored": "Максимы О.Ф.",
+    "category": "plural_form"
+   },
+   {
+    "id": "ru-certificate-120",
+    "label": "[PERSON_5]",
+    "canonical": "Кулагин Агап Вячеславович",
+    "stored": "Клуагин А.В.",
+    "category": "typo_in_source_text"
+   },
+   {
+    "id": "ru-certificate-110",
+    "label": "[PERSON_2]",
+    "canonical": "Игнатов Ярополк Харламович",
+    "stored": "Игнаты Ярополк Харламович",
+    "category": "plural_form"
+   },
+   {
+    "id": "ru-certificate-114",
+    "label": "[PERSON_5]",
+    "canonical": "Пахомов Демьян Жоресович",
+    "stored": "Пахмоов Д.Ж.",
+    "category": "typo_in_source_text"
+   },
+   {
+    "id": "ru-certificate-151",
+    "label": "[PERSON_5]",
+    "canonical": "Игнатов Герасим Зиновьевич",
+    "stored": "Игнаты Г.З.",
+    "category": "plural_form"
+   },
+   {
+    "id": "ru-certificate-081",
+    "label": "[PERSON_3]",
+    "canonical": "Ефимов Кузьма Иларионович",
+    "stored": "Ефимы Кузьма Иларионович",
+    "category": "plural_form"
+   },
+   {
+    "id": "ru-certificate-185",
+    "label": "[PERSON_3]",
+    "canonical": "Панфилов Кир Игоревич",
+    "stored": "Панфилы Киры Игоревич",
+    "category": "plural_form"
+   },
+   {
+    "id": "ru-certificate-005",
+    "label": "[PERSON_1]",
+    "canonical": "Зимина София Эдуардовна",
+    "stored": "Зимину Софии Эдуардовна",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-certificate-005",
+    "label": "[PERSON_2]",
+    "canonical": "Владимиров Любим Харитонович",
+    "stored": "Владимиры Любим Харитонович",
+    "category": "plural_form"
+   },
+   {
+    "id": "ru-contract-195",
+    "label": "[PERSON_3]",
+    "canonical": "Копылова Анна Валериевна",
+    "stored": "Копылов А.В.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-contract-112",
+    "label": "[PERSON_3]",
+    "canonical": "Субботин Парамон Харитонович",
+    "stored": "Субботина П.Х.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-contract-126",
+    "label": "[PERSON_3]",
+    "canonical": "Савельева Ия Ждановна",
+    "stored": "Савельев И.Ж.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-contract-141",
+    "label": "[PERSON_3]",
+    "canonical": "Фролова Лора Олеговна",
+    "stored": "Фролов Л.О.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-contract-059",
+    "label": "[PERSON_3]",
+    "canonical": "Кабанова Алевтина Николаевна",
+    "stored": "Кабанов А.Н.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-contract-088",
+    "label": "[PERSON_3]",
+    "canonical": "Дроздова Елизавета Олеговна",
+    "stored": "Дроздов Е.О.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-contract-199",
+    "label": "[PERSON_1]",
+    "canonical": "Панфилов Юрий Иосипович",
+    "stored": "Панфилы Юрий Иосипович",
+    "category": "plural_form"
+   },
+   {
+    "id": "ru-contract-199",
+    "label": "[PERSON_3]",
+    "canonical": "Панфилов Юрий Иосипович",
+    "stored": "Панфилова Ю.И.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-contract-173",
+    "label": "[PERSON_3]",
+    "canonical": "Королева Варвара Феликсовна",
+    "stored": "Королёв В.Ф.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-contract-056",
+    "label": "[PERSON_3]",
+    "canonical": "Фадеев Влас Яковлевич",
+    "stored": "Фадеева В.Я.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-contract-117",
+    "label": "[PERSON_3]",
+    "canonical": "Федосеева Вера Харитоновна",
+    "stored": "Федосеев В.Х.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-contract-074",
+    "label": "[PERSON_3]",
+    "canonical": "Константинов Милован Данилович",
+    "stored": "Константинова М.Д.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-contract-005",
+    "label": "[PERSON_3]",
+    "canonical": "Карпов Спартак Фролович",
+    "stored": "Карпова С.Ф.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-contract-106",
+    "label": "[PERSON_3]",
+    "canonical": "Куликова Глафира Ивановна",
+    "stored": "Куликов Г.И.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-contract-142",
+    "label": "[PERSON_1]",
+    "canonical": "Ситникова Нинель Павловна",
+    "stored": "Нинель Павловна",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "ru-contract-142",
+    "label": "[PERSON_3]",
+    "canonical": "Ситникова Нинель Павловна",
+    "stored": "Ситниковой Н.П.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-contract-164",
+    "label": "[PERSON_3]",
+    "canonical": "Быков Прокофий Егорович",
+    "stored": "Быкова П.Е.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-contract-025",
+    "label": "[PERSON_3]",
+    "canonical": "Сысоева Нина Рудольфовна",
+    "stored": "Сысоев Н.Р.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-contract-025",
+    "label": "[PERSON_4]",
+    "canonical": "Максимов Фрол Ефремович",
+    "stored": "Максимы Фрол Ефремович",
+    "category": "plural_form"
+   },
+   {
+    "id": "ru-contract-047",
+    "label": "[PERSON_3]",
+    "canonical": "Самойлова Таисия Сергеевна",
+    "stored": "Самойлов Т.С.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-contract-075",
+    "label": "[PERSON_3]",
+    "canonical": "Крюкова Агата Геннадиевна",
+    "stored": "Крюков А.Г.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-contract-030",
+    "label": "[PERSON_3]",
+    "canonical": "Кулакова Светлана Андреевна",
+    "stored": "Кулаков С.А.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-contract-085",
+    "label": "[PERSON_1]",
+    "canonical": "Борисов Сергей Евстигнеевич",
+    "stored": "Борисы Сергей Евстигнеевич",
+    "category": "plural_form"
+   },
+   {
+    "id": "ru-contract-085",
+    "label": "[PERSON_3]",
+    "canonical": "Борисов Сергей Евстигнеевич",
+    "stored": "Борисова С.Е.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-contract-085",
+    "label": "[PERSON_4]",
+    "canonical": "Борисов Лукьян Феодосьевич",
+    "stored": "Борисы Лукьян Феодосьевич",
+    "category": "plural_form"
+   },
+   {
+    "id": "ru-contract-128",
+    "label": "[PERSON_3]",
+    "canonical": "Громов Григорий Ильич",
+    "stored": "Громова Г.И.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-contract-108",
+    "label": "[PERSON_3]",
+    "canonical": "Блинов Евстафий Теймуразович",
+    "stored": "Блинова Е.Т.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-contract-108",
+    "label": "[PERSON_4]",
+    "canonical": "Никонов Остромир Эдгарович",
+    "stored": "Никоны Остромир Эдгарович",
+    "category": "plural_form"
+   },
+   {
+    "id": "ru-contract-129",
+    "label": "[PERSON_3]",
+    "canonical": "Попов Лука Геннадиевич",
+    "stored": "Попова Л.Г.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-contract-171",
+    "label": "[PERSON_3]",
+    "canonical": "Савин Ульян Геннадиевич",
+    "stored": "Савина У.Г.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-contract-048",
+    "label": "[PERSON_3]",
+    "canonical": "Веселова Фаина Яковлевна",
+    "stored": "Веселов Ф.Я.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-contract-077",
+    "label": "[PERSON_3]",
+    "canonical": "Лебедев Назар Александрович",
+    "stored": "Лебедева Н.А.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-contract-072",
+    "label": "[PERSON_3]",
+    "canonical": "Баранов Казимир Данилович",
+    "stored": "Баранова К.Д.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-contract-150",
+    "label": "[PERSON_3]",
+    "canonical": "Носова Майя Робертовна",
+    "stored": "Носов М.Р.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-contract-127",
+    "label": "[PERSON_3]",
+    "canonical": "Силин Наркис Харлампович",
+    "stored": "Силина Н.Х.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-contract-127",
+    "label": "[PERSON_4]",
+    "canonical": "Абрамов Остап Августович",
+    "stored": "Абрамы Остап Августович",
+    "category": "plural_form"
+   },
+   {
+    "id": "ru-contract-176",
+    "label": "[PERSON_3]",
+    "canonical": "Юдин Фока Фокич",
+    "stored": "Юдина Ф.Ф.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-contract-100",
+    "label": "[PERSON_3]",
+    "canonical": "Андреева Елизавета Богдановна",
+    "stored": "Андреев Е.Б.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-contract-175",
+    "label": "[PERSON_3]",
+    "canonical": "Горбачева Антонина Вениаминовна",
+    "stored": "Горбачеав",
+    "category": "typo_in_source_text"
+   },
+   {
+    "id": "ru-contract-175",
+    "label": "[PERSON_4]",
+    "canonical": "Ильина Марфа Антоновна",
+    "stored": "Ильин М.А.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-contract-175",
+    "label": "[PERSON_5]",
+    "canonical": "Моисеева Феврония Феликсовна",
+    "stored": "Феврония Моисевеа Феликсовна",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "ru-contract-008",
+    "label": "[PERSON_3]",
+    "canonical": "Афанасьева Зинаида Вениаминовна",
+    "stored": "Афанасьев З.В.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-contract-008",
+    "label": "[PERSON_6]",
+    "canonical": "Афанасьева Зинаида Вениаминовна",
+    "stored": "Афанасьеав",
+    "category": "typo_in_source_text"
+   },
+   {
+    "id": "ru-contract-122",
+    "label": "[PERSON_3]",
+    "canonical": "Рожкова Дарья Петровна",
+    "stored": "Рожков Д.П.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-contract-062",
+    "label": "[PERSON_3]",
+    "canonical": "Устинов Станислав Алексеевич",
+    "stored": "Устинова С.А.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-contract-103",
+    "label": "[PERSON_3]",
+    "canonical": "Кузьмин Родион Евстигнеевич",
+    "stored": "Кузьмина Р.Е.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-contract-187",
+    "label": "[PERSON_3]",
+    "canonical": "Овчинников Автоном Чеславович",
+    "stored": "Овчинникова А.Ч.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-hr-170",
+    "label": "[PERSON_2]",
+    "canonical": "Бобылева Алевтина Юрьевна",
+    "stored": "Бобылев А.Ю.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-hr-044",
+    "label": "[PERSON_5]",
+    "canonical": "Ефремов Автоном Всеволодович",
+    "stored": "Ефремы Автоном Всеволодович",
+    "category": "plural_form"
+   },
+   {
+    "id": "ru-hr-093",
+    "label": "[PERSON_2]",
+    "canonical": "Мухина Милица Романовна",
+    "stored": "Мухин М.Р.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-hr-093",
+    "label": "[PERSON_4]",
+    "canonical": "Гаврилов Боян Евсеевич",
+    "stored": "Гаврилы Боян Евсеевич",
+    "category": "plural_form"
+   },
+   {
+    "id": "ru-hr-140",
+    "label": "[PERSON_2]",
+    "canonical": "Гришин Эрнест Елизарович",
+    "stored": "Гришина Э.Е.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-hr-140",
+    "label": "[PERSON_6]",
+    "canonical": "Максимов Анисим Федотович",
+    "stored": "Максимы А.Ф.",
+    "category": "plural_form"
+   },
+   {
+    "id": "ru-hr-179",
+    "label": "[PERSON_3]",
+    "canonical": "Абрамов Болеслав Георгиевич",
+    "stored": "Абрамы Болеслав",
+    "category": "plural_form"
+   },
+   {
+    "id": "ru-hr-172",
+    "label": "[PERSON_1]",
+    "canonical": "Исаева Татьяна Тимофеевна",
+    "stored": "Исаев Т.Т.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-hr-188",
+    "label": "[PERSON_1]",
+    "canonical": "Князева Александра Евгеньевна",
+    "stored": "Князеув Александра Евгеньевна",
+    "category": "typo_in_source_text"
+   },
+   {
+    "id": "ru-hr-188",
+    "label": "[PERSON_2]",
+    "canonical": "Князева Александра Евгеньевна",
+    "stored": "Князев А.Е.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-hr-095",
+    "label": "[PERSON_2]",
+    "canonical": "Веселов Милован Валерианович",
+    "stored": "Веселова М.В.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-hr-022",
+    "label": "[PERSON_2]",
+    "canonical": "Тимофеева Елизавета Натановна",
+    "stored": "Тимофеев Е.Н.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-hr-112",
+    "label": "[PERSON_2]",
+    "canonical": "Николаев Любосмысл Аверьянович",
+    "stored": "Николаева Л.А.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-hr-169",
+    "label": "[PERSON_2]",
+    "canonical": "Иванова Любовь Рудольфовна",
+    "stored": "Иванов Л.Р.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-hr-130",
+    "label": "[PERSON_2]",
+    "canonical": "Давыдов Лука Дмитриевич",
+    "stored": "Давыдова Л.Д.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-hr-027",
+    "label": "[PERSON_2]",
+    "canonical": "Костина Мария Львовна",
+    "stored": "Костин М.Л.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-hr-041",
+    "label": "[PERSON_2]",
+    "canonical": "Вишняков Ираклий Алексеевич",
+    "stored": "Вишнякова И.А.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-hr-133",
+    "label": "[PERSON_2]",
+    "canonical": "Лебедева Галина Григорьевна",
+    "stored": "Лебедев Г.Г.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-hr-133",
+    "label": "[PERSON_5]",
+    "canonical": "Федотов Гаврила Ермолаевич",
+    "stored": "Федоты Гаврил Ермолаевич",
+    "category": "plural_form"
+   },
+   {
+    "id": "ru-hr-100",
+    "label": "[PERSON_2]",
+    "canonical": "Шилова Ирина Яковлевна",
+    "stored": "Шилов И.Я.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-hr-094",
+    "label": "[PERSON_2]",
+    "canonical": "Зуева Нина Эльдаровна",
+    "stored": "Зуев Н.Э.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-hr-094",
+    "label": "[PERSON_3]",
+    "canonical": "Панфилов Остап Владиленович",
+    "stored": "Панфилы Остап Владиленович",
+    "category": "plural_form"
+   },
+   {
+    "id": "ru-hr-007",
+    "label": "[PERSON_1]",
+    "canonical": "Мясникова Нинель Геннадьевна",
+    "stored": "Мясников Н.Г.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-hr-007",
+    "label": "[PERSON_3]",
+    "canonical": "Гаврилов Юрий Фёдорович",
+    "stored": "Гаврилы Юрий Фёдорович",
+    "category": "plural_form"
+   },
+   {
+    "id": "ru-hr-120",
+    "label": "[PERSON_2]",
+    "canonical": "Логинов Гедеон Филимонович",
+    "stored": "Логинова Г.Ф.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-hr-011",
+    "label": "[PERSON_2]",
+    "canonical": "Турова Майя Артемовна",
+    "stored": "Туров М.А.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-hr-011",
+    "label": "[PERSON_4]",
+    "canonical": "Игнатов Назар Трофимович",
+    "stored": "Игнаты Назар Трофимович",
+    "category": "plural_form"
+   },
+   {
+    "id": "ru-hr-078",
+    "label": "[PERSON_2]",
+    "canonical": "Осипов Ипат Викторович",
+    "stored": "Осипова И.В.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-hr-157",
+    "label": "[PERSON_2]",
+    "canonical": "Щукина Полина Рубеновна",
+    "stored": "Щукин П.Р.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-hr-151",
+    "label": "[PERSON_2]",
+    "canonical": "Михайлова Лукия Захаровна",
+    "stored": "Михайлов Л.З.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-hr-148",
+    "label": "[PERSON_2]",
+    "canonical": "Королев Карл Демидович",
+    "stored": "Королёва К.Д.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-hr-148",
+    "label": "[PERSON_4]",
+    "canonical": "Самсонов Арефий Фёдорович",
+    "stored": "Самсоны Арефий Фёдорович",
+    "category": "plural_form"
+   },
+   {
+    "id": "ru-hr-184",
+    "label": "[PERSON_2]",
+    "canonical": "Карпова Майя Юрьевна",
+    "stored": "Карпов М.Ю.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-hr-043",
+    "label": "[PERSON_2]",
+    "canonical": "Дорофеев Август Терентьевич",
+    "stored": "Дорофеева А.Т.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-hr-194",
+    "label": "[PERSON_2]",
+    "canonical": "Гуляев Агафон Герасимович",
+    "stored": "Гуляева А.Г.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-hr-058",
+    "label": "[PERSON_2]",
+    "canonical": "Рыбаков Гордей Анатольевич",
+    "stored": "Рыбакова Г.А.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-hr-058",
+    "label": "[PERSON_3]",
+    "canonical": "Рыбаков Гордей Анатольевич",
+    "stored": "Рбыаков Гордей Анатольевич",
+    "category": "typo_in_source_text"
+   },
+   {
+    "id": "ru-hr-003",
+    "label": "[PERSON_2]",
+    "canonical": "Гаврилов Родион Евсеевич",
+    "stored": "Гаврилова Р.Е.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-hr-003",
+    "label": "[PERSON_3]",
+    "canonical": "Гаврилов Родион Евсеевич",
+    "stored": "Гаврилы Родион Евсеевич",
+    "category": "plural_form"
+   },
+   {
+    "id": "ru-hr-051",
+    "label": "[PERSON_1]",
+    "canonical": "Маслова Галина Евгеньевна",
+    "stored": "Маслов Г.Е.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-hr-138",
+    "label": "[PERSON_2]",
+    "canonical": "Калинин Богдан Трофимович",
+    "stored": "Калинина Б.Т.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-hr-196",
+    "label": "[PERSON_2]",
+    "canonical": "Белозерова Наина Мироновна",
+    "stored": "Белозеров Н.М.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-hr-059",
+    "label": "[PERSON_2]",
+    "canonical": "Петрова Ангелина Ильинична",
+    "stored": "Петров А.И.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-hr-103",
+    "label": "[PERSON_2]",
+    "canonical": "Панов Алексей Жоресович",
+    "stored": "Панова А.Ж.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-letter-088",
+    "label": "[PERSON_1]",
+    "canonical": "Федорова Надежда Андреевна",
+    "stored": "Фёдоров Н.А.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-letter-088",
+    "label": "[PERSON_2]",
+    "canonical": "Федорова Надежда Андреевна",
+    "stored": "Надежда Андреевна",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "ru-letter-088",
+    "label": "[PERSON_6]",
+    "canonical": "Зыкова Полина Робертовна",
+    "stored": "Зыков П.Р.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-letter-147",
+    "label": "[PERSON_2]",
+    "canonical": "Зайцев Чеслав Валерьевич",
+    "stored": "Чеслав Валерьевич",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "ru-letter-147",
+    "label": "[PERSON_6]",
+    "canonical": "Соловьева Алла Робертовна",
+    "stored": "Соловьёв А.Р.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-letter-090",
+    "label": "[PERSON_2]",
+    "canonical": "Емельянов Орест Давыдович",
+    "stored": "Оерст Давыдович",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "ru-letter-117",
+    "label": "[PERSON_2]",
+    "canonical": "Семенов Станимир Ефимович",
+    "stored": "Станимир Ефимович",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "ru-letter-068",
+    "label": "[PERSON_1]",
+    "canonical": "Корнилова Нонна Захаровна",
+    "stored": "Корнилов Н.З.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-letter-068",
+    "label": "[PERSON_2]",
+    "canonical": "Корнилова Нонна Захаровна",
+    "stored": "Нонна Захаровна",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "ru-letter-068",
+    "label": "[PERSON_6]",
+    "canonical": "Владимиров Дмитрий Власович",
+    "stored": "Владимиры Дмитрий Власович",
+    "category": "plural_form"
+   },
+   {
+    "id": "ru-letter-168",
+    "label": "[PERSON_1]",
+    "canonical": "Маркова Полина Антоновна",
+    "stored": "Марков П.А.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-letter-168",
+    "label": "[PERSON_2]",
+    "canonical": "Маркова Полина Антоновна",
+    "stored": "Полина Антоновна",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "ru-letter-140",
+    "label": "[PERSON_1]",
+    "canonical": "Лазарева Жанна Ниловна",
+    "stored": "Лазарев Ж.Н.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-letter-140",
+    "label": "[PERSON_2]",
+    "canonical": "Лазарева Жанна Ниловна",
+    "stored": "Жанна Ниловна",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "ru-letter-140",
+    "label": "[PERSON_3]",
+    "canonical": "Игнатов Рубен Адамович",
+    "stored": "Игнаты Рубен Адамович",
+    "category": "plural_form"
+   },
+   {
+    "id": "ru-letter-140",
+    "label": "[PERSON_7]",
+    "canonical": "Владимиров Богдан Феофанович",
+    "stored": "Владимиры Богдан Феофанович",
+    "category": "plural_form"
+   },
+   {
+    "id": "ru-letter-155",
+    "label": "[PERSON_2]",
+    "canonical": "Рогов Софон Вилорович",
+    "stored": "Софон Вилорович",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "ru-letter-186",
+    "label": "[PERSON_1]",
+    "canonical": "Комарова Прасковья Владиславовна",
+    "stored": "Комаров П.В.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-letter-186",
+    "label": "[PERSON_2]",
+    "canonical": "Комарова Прасковья Владиславовна",
+    "stored": "Прасковья Владиславовна",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "ru-letter-186",
+    "label": "[PERSON_4]",
+    "canonical": "Кудрявцев Елисей Эдуардович",
+    "stored": "Кдурявцев Елисей Эдуардович",
+    "category": "typo_in_source_text"
+   },
+   {
+    "id": "ru-letter-001",
+    "label": "[PERSON_2]",
+    "canonical": "Горбачев Василий Виленович",
+    "stored": "Василий Виленович",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "ru-letter-001",
+    "label": "[PERSON_4]",
+    "canonical": "Кириллов Давыд Гурьевич",
+    "stored": "Давыд Кириллы Гурьевич",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "ru-letter-001",
+    "label": "[PERSON_6]",
+    "canonical": "Ильина Лариса Львовна",
+    "stored": "Ильин Л.Л.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-letter-098",
+    "label": "[PERSON_3]",
+    "canonical": "Куликов Константин Иосифович",
+    "stored": "Константин Иосифович",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "ru-letter-098",
+    "label": "[PERSON_7]",
+    "canonical": "Дементьева Людмила Вячеславовна",
+    "stored": "Дементьев Л.В.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-letter-131",
+    "label": "[PERSON_1]",
+    "canonical": "Лобанова Евпраксия Кузьминична",
+    "stored": "Лобанов Е.К.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-letter-131",
+    "label": "[PERSON_2]",
+    "canonical": "Лобанова Евпраксия Кузьминична",
+    "stored": "Евпраксия Кузьминична",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "ru-letter-033",
+    "label": "[PERSON_2]",
+    "canonical": "Прохоров Тарас Ефимович",
+    "stored": "Тарас Ефимович",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "ru-letter-132",
+    "label": "[PERSON_2]",
+    "canonical": "Самсонов Сильвестр Афанасьевич",
+    "stored": "Сильвестр Афанасьевич",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "ru-letter-132",
+    "label": "[PERSON_6]",
+    "canonical": "Крюкова Лидия Харитоновна",
+    "stored": "Крюков Л.Х.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-letter-143",
+    "label": "[PERSON_2]",
+    "canonical": "Федоров Харлампий Арсеньевич",
+    "stored": "Харлампий Арсеньевич",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "ru-letter-052",
+    "label": "[PERSON_2]",
+    "canonical": "Александров Кондрат Александрович",
+    "stored": "Кондрат Александрович",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "ru-letter-052",
+    "label": "[PERSON_6]",
+    "canonical": "Волкова Ольга Евгеньевна",
+    "stored": "Волков О.Е.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-letter-109",
+    "label": "[PERSON_2]",
+    "canonical": "Трофимов Савва Ануфриевич",
+    "stored": "Савва Ануфриевич",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "ru-letter-014",
+    "label": "[PERSON_1]",
+    "canonical": "Миронова Анжела Кузьминична",
+    "stored": "Миронов А.К.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-letter-014",
+    "label": "[PERSON_2]",
+    "canonical": "Миронова Анжела Кузьминична",
+    "stored": "Анжела Кузьминична",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "ru-letter-123",
+    "label": "[PERSON_1]",
+    "canonical": "Белякова Ангелина Викторовна",
+    "stored": "Беляков А.В.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-letter-123",
+    "label": "[PERSON_2]",
+    "canonical": "Белякова Ангелина Викторовна",
+    "stored": "Ангелина Викторовна",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "ru-letter-093",
+    "label": "[PERSON_1]",
+    "canonical": "Шашкова Варвара Рудольфовна",
+    "stored": "Шашков В.Р.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-letter-093",
+    "label": "[PERSON_2]",
+    "canonical": "Шашкова Варвара Рудольфовна",
+    "stored": "Варвара Рудольфовна",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "ru-letter-093",
+    "label": "[PERSON_4]",
+    "canonical": "Ситникова Наталья Константиновна",
+    "stored": "Ситниковой Наталья Константиновна",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-letter-093",
+    "label": "[PERSON_6]",
+    "canonical": "Князева Анжелика Захаровна",
+    "stored": "Князев А.З.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-letter-145",
+    "label": "[PERSON_2]",
+    "canonical": "Беспалов Гедеон Эдгарович",
+    "stored": "Гедеон Эдгарович",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "ru-letter-145",
+    "label": "[PERSON_6]",
+    "canonical": "Денисов Федосий Фролович",
+    "stored": "Дениосв Федосий Фролович",
+    "category": "typo_in_source_text"
+   },
+   {
+    "id": "ru-letter-145",
+    "label": "[PERSON_7]",
+    "canonical": "Орехов Гремислав Игнатович",
+    "stored": "Орехам Г.И.",
+    "category": "typo_in_source_text"
+   },
+   {
+    "id": "ru-letter-141",
+    "label": "[PERSON_2]",
+    "canonical": "Попов Савелий Архипович",
+    "stored": "Савелий Архипович",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "ru-letter-051",
+    "label": "[PERSON_1]",
+    "canonical": "Авдеева Зинаида Дмитриевна",
+    "stored": "Авдеев З.Д.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-letter-051",
+    "label": "[PERSON_2]",
+    "canonical": "Авдеева Зинаида Дмитриевна",
+    "stored": "Зинаида Дмитриевна",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "ru-letter-129",
+    "label": "[PERSON_1]",
+    "canonical": "Новикова Агафья Игоревна",
+    "stored": "Новиков А.И.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-letter-129",
+    "label": "[PERSON_2]",
+    "canonical": "Новикова Агафья Игоревна",
+    "stored": "Агафья Игоревна",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "ru-letter-129",
+    "label": "[PERSON_6]",
+    "canonical": "Симонова Анастасия Кузьминична",
+    "stored": "Симонов А.К.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-letter-105",
+    "label": "[PERSON_1]",
+    "canonical": "Макарова Иванна Алексеевна",
+    "stored": "Макаров И.А.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-letter-105",
+    "label": "[PERSON_2]",
+    "canonical": "Макарова Иванна Алексеевна",
+    "stored": "Иванна Алексеевна",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "ru-letter-105",
+    "label": "[PERSON_3]",
+    "canonical": "Борисов Михаил Фадеевич",
+    "stored": "Борисы Михаил Фадеевич",
+    "category": "plural_form"
+   },
+   {
+    "id": "ru-letter-124",
+    "label": "[PERSON_1]",
+    "canonical": "Блинова Надежда Вениаминовна",
+    "stored": "Блинов Н.В.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-letter-124",
+    "label": "[PERSON_2]",
+    "canonical": "Блинова Надежда Вениаминовна",
+    "stored": "Надежда Вениаминовна",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "ru-letter-091",
+    "label": "[PERSON_2]",
+    "canonical": "Тетерин Парфен Федотович",
+    "stored": "Парфён Федотович",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "ru-letter-091",
+    "label": "[PERSON_6]",
+    "canonical": "Степанова Глафира Семеновна",
+    "stored": "Степанов Г.С.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-letter-106",
+    "label": "[PERSON_1]",
+    "canonical": "Маслов Орест Андреевич",
+    "stored": "Маслова О.А.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-letter-106",
+    "label": "[PERSON_2]",
+    "canonical": "Маслов Орест Андреевич",
+    "stored": "Орест Андреевич",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "ru-letter-106",
+    "label": "[PERSON_6]",
+    "canonical": "Николаев Твердислав Яковлевич",
+    "stored": "Николаева Т.Я.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-letter-199",
+    "label": "[PERSON_1]",
+    "canonical": "Полякова Надежда Натановна",
+    "stored": "Поляков Н.Н.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-letter-199",
+    "label": "[PERSON_2]",
+    "canonical": "Полякова Надежда Натановна",
+    "stored": "Надежда Натановна",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "ru-letter-199",
+    "label": "[PERSON_7]",
+    "canonical": "Уварова Агата Оскаровна",
+    "stored": "Уваров А.О.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-letter-000",
+    "label": "[PERSON_2]",
+    "canonical": "Якушев Феофан Вячеславович",
+    "stored": "Феофан Вячеславович",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "ru-letter-000",
+    "label": "[PERSON_6]",
+    "canonical": "Щукина Маргарита Ивановна",
+    "stored": "Щукин М.И.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-letter-137",
+    "label": "[PERSON_3]",
+    "canonical": "Герасимов Петр Ермилович",
+    "stored": "Пётр Ермилович",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "ru-letter-137",
+    "label": "[PERSON_4]",
+    "canonical": "Филиппов Роман Ярославович",
+    "stored": "Филиппы Роман Ярославович",
+    "category": "plural_form"
+   },
+   {
+    "id": "ru-letter-137",
+    "label": "[PERSON_8]",
+    "canonical": "Борисов Милован Владленович",
+    "stored": "Борисы Владленович",
+    "category": "plural_form"
+   },
+   {
+    "id": "ru-letter-138",
+    "label": "[PERSON_1]",
+    "canonical": "Исаев Валерий Дмитриевич",
+    "stored": "Исавеу",
+    "category": "typo_in_source_text"
+   },
+   {
+    "id": "ru-letter-138",
+    "label": "[PERSON_2]",
+    "canonical": "Исаев Валерий Дмитриевич",
+    "stored": "Валерий Дмитриевич",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "ru-letter-138",
+    "label": "[PERSON_6]",
+    "canonical": "Филатов Капитон Елизарович",
+    "stored": "Филаты Капитон Елизарович",
+    "category": "plural_form"
+   },
+   {
+    "id": "ru-letter-159",
+    "label": "[PERSON_2]",
+    "canonical": "Владимиров Никита Демидович",
+    "stored": "Никита Демидович",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "ru-letter-159",
+    "label": "[PERSON_6]",
+    "canonical": "Дорофеева Пелагея Вениаминовна",
+    "stored": "Дорофеев П.В.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-letter-156",
+    "label": "[PERSON_1]",
+    "canonical": "Белова Фёкла Ниловна",
+    "stored": "Белов Ф.Н.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-letter-156",
+    "label": "[PERSON_2]",
+    "canonical": "Белова Фёкла Ниловна",
+    "stored": "Фёкла Ниловна",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "ru-letter-156",
+    "label": "[PERSON_6]",
+    "canonical": "Маркова Евгения Яковлевна",
+    "stored": "Марков Е.Я.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-letter-084",
+    "label": "[PERSON_2]",
+    "canonical": "Гришин Вениамин Демидович",
+    "stored": "Вениамин Демидович",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "ru-letter-196",
+    "label": "[PERSON_2]",
+    "canonical": "Воронов Борислав Феоктистович",
+    "stored": "Борислав Феоктистович",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "ru-letter-196",
+    "label": "[PERSON_6]",
+    "canonical": "Горбачева Зоя Юльевна",
+    "stored": "Горбачёв З.Ю.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-letter-153",
+    "label": "[PERSON_2]",
+    "canonical": "Андреев Савватий Валерьянович",
+    "stored": "Савватий Валерьянович",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "ru-letter-153",
+    "label": "[PERSON_6]",
+    "canonical": "Егорова Глафира Кузьминична",
+    "stored": "Егоров Г.К.",
+    "category": "gender_or_case"
+   },
+   {
+    "id": "ru-letter-153",
+    "label": "[PERSON_7]",
+    "canonical": "Федотов Феофан Эдуардович",
+    "stored": "Федоты Феофан Эдуардович",
+    "category": "plural_form"
+   },
+   {
+    "id": "ru-letter-007",
+    "label": "[PERSON_2]",
+    "canonical": "Фролов Валентин Яковлевич",
+    "stored": "Валентин Яковлевич",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "ru-medical-149",
+    "label": "[PERSON_5]",
+    "canonical": "Дроздова Таисия Львовна",
+    "stored": "Дродзова Т.Л.",
+    "category": "typo_in_source_text"
+   },
+   {
+    "id": "ru-medical-063",
+    "label": "[PERSON_2]",
+    "canonical": "Самсонов Галактион Иосипович",
+    "stored": "Самсоны Галактион Иосипович",
+    "category": "plural_form"
+   },
+   {
+    "id": "ru-medical-068",
+    "label": "[PERSON_3]",
+    "canonical": "Панфилов Алексей Иларионович",
+    "stored": "Панфилы Алексей Иларионович",
+    "category": "plural_form"
+   },
+   {
+    "id": "ru-medical-047",
+    "label": "[PERSON_3]",
+    "canonical": "Гаврилов Родион Брониславович",
+    "stored": "Гаврилы Родион Брониславович",
+    "category": "plural_form"
+   },
+   {
+    "id": "ru-medical-074",
+    "label": "[PERSON_1]",
+    "canonical": "Агафонов Аверьян Антипович",
+    "stored": "Агафоны Аверьян Антипович",
+    "category": "plural_form"
+   },
+   {
+    "id": "ru-medical-191",
+    "label": "[PERSON_2]",
+    "canonical": "Филатов Кирилл Федосеевич",
+    "stored": "Филаты Икрилл Федосеевич",
+    "category": "plural_form"
+   },
+   {
+    "id": "ru-medical-135",
+    "label": "[PERSON_3]",
+    "canonical": "Игнатов Пров Филиппович",
+    "stored": "Игнаты Пров Филиппович",
+    "category": "plural_form"
+   },
+   {
+    "id": "ru-medical-165",
+    "label": "[PERSON_3]",
+    "canonical": "Сафонов Кирилл Алексеевич",
+    "stored": "Сафоны Кирилл Алексеевич",
+    "category": "plural_form"
+   },
+   {
+    "id": "ru-medical-116",
+    "label": "[PERSON_3]",
+    "canonical": "Панфилов Пимен Исидорович",
+    "stored": "Панфилы Пимен Исидорович",
+    "category": "plural_form"
+   },
+   {
+    "id": "ru-medical-116",
+    "label": "[PERSON_4]",
+    "canonical": "Гаврилов Харлампий Васильевич",
+    "stored": "Гаврилы Х.В.",
+    "category": "plural_form"
+   },
+   {
+    "id": "ru-medical-127",
+    "label": "[PERSON_1]",
+    "canonical": "Владимиров Венедикт Германович",
+    "stored": "Владимиры Венедикт Германович",
+    "category": "plural_form"
+   }
+  ]
+ },
+ "uk": {
+  "names": 965,
+  "categories": {
+   "typo_in_source_text": 22,
+   "surname_not_in_text_or_other": 12
+  },
+  "answer_placeholder_occurrences": {
+   "qwen3.5_9b": 11798,
+   "gemma4_12b": 13803
+  },
+  "occurrences_with_wrong_stored_name": {},
+  "examples": [
+   {
+    "id": "uk-certificate-007",
+    "label": "[PERSON_2]",
+    "canonical": "Malcolm Ford",
+    "stored": "Malcolm Frod",
+    "category": "typo_in_source_text"
+   },
+   {
+    "id": "uk-certificate-114",
+    "label": "[PERSON_5]",
+    "canonical": "Sharon Howarth",
+    "stored": "Sharon Hoawrth",
+    "category": "typo_in_source_text"
+   },
+   {
+    "id": "uk-certificate-108",
+    "label": "[PERSON_4]",
+    "canonical": "Hugh Lowe",
+    "stored": "Hugh Loew",
+    "category": "typo_in_source_text"
+   },
+   {
+    "id": "uk-contract-025",
+    "label": "[PERSON_3]",
+    "canonical": "Justin Smart",
+    "stored": "Smatr",
+    "category": "typo_in_source_text"
+   },
+   {
+    "id": "uk-contract-025",
+    "label": "[PERSON_4]",
+    "canonical": "Justin Smart",
+    "stored": "Justin Smrat",
+    "category": "typo_in_source_text"
+   },
+   {
+    "id": "uk-contract-128",
+    "label": "[PERSON_3]",
+    "canonical": "Arthur Ferguson",
+    "stored": "Arthur Ferugson",
+    "category": "typo_in_source_text"
+   },
+   {
+    "id": "uk-contract-128",
+    "label": "[PERSON_4]",
+    "canonical": "Arthur Ferguson",
+    "stored": "Arthur eFrguson",
+    "category": "typo_in_source_text"
+   },
+   {
+    "id": "uk-contract-128",
+    "label": "[PERSON_7]",
+    "canonical": "Alice Barton",
+    "stored": "Alice Bartno",
+    "category": "typo_in_source_text"
+   },
+   {
+    "id": "uk-contract-122",
+    "label": "[PERSON_3]",
+    "canonical": "Leigh Ford",
+    "stored": "Leigh oFrd",
+    "category": "typo_in_source_text"
+   },
+   {
+    "id": "uk-contract-122",
+    "label": "[PERSON_4]",
+    "canonical": "Vincent Bird",
+    "stored": "Vincent iBrd",
+    "category": "typo_in_source_text"
+   },
+   {
+    "id": "uk-contract-187",
+    "label": "[PERSON_2]",
+    "canonical": "Clare Nicholls",
+    "stored": "Clare Nicohlls",
+    "category": "typo_in_source_text"
+   },
+   {
+    "id": "uk-hr-170",
+    "label": "[PERSON_1]",
+    "canonical": "Sandra Jones",
+    "stored": "Sandra",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "uk-hr-044",
+    "label": "[PERSON_1]",
+    "canonical": "Eric Porter",
+    "stored": "Eric",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "uk-hr-093",
+    "label": "[PERSON_3]",
+    "canonical": "Donald Williams",
+    "stored": "Donald Williasm",
+    "category": "typo_in_source_text"
+   },
+   {
+    "id": "uk-hr-179",
+    "label": "[PERSON_1]",
+    "canonical": "Kimberley Williams",
+    "stored": "Kimberley",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "uk-hr-188",
+    "label": "[PERSON_5]",
+    "canonical": "Kimberley Davidson",
+    "stored": "K. Dvaidson",
+    "category": "typo_in_source_text"
+   },
+   {
+    "id": "uk-hr-022",
+    "label": "[PERSON_2]",
+    "canonical": "Denise Butler",
+    "stored": "Denise Btuler",
+    "category": "typo_in_source_text"
+   },
+   {
+    "id": "uk-hr-100",
+    "label": "[PERSON_1]",
+    "canonical": "Lucy Crawford",
+    "stored": "Lucy",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "uk-hr-094",
+    "label": "[PERSON_1]",
+    "canonical": "Patrick Dennis",
+    "stored": "Patrick",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "uk-hr-120",
+    "label": "[PERSON_1]",
+    "canonical": "Grace Harrison",
+    "stored": "Grace",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "uk-hr-184",
+    "label": "[PERSON_1]",
+    "canonical": "Timothy Shepherd",
+    "stored": "Timothy",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "uk-hr-003",
+    "label": "[PERSON_1]",
+    "canonical": "Vincent Martin",
+    "stored": "Vincent",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "uk-hr-051",
+    "label": "[PERSON_1]",
+    "canonical": "Judith Parker",
+    "stored": "Judith",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "uk-hr-138",
+    "label": "[PERSON_1]",
+    "canonical": "Fiona Richards",
+    "stored": "Fiona",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "uk-hr-103",
+    "label": "[PERSON_1]",
+    "canonical": "Marilyn Byrne",
+    "stored": "Marilyn",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "uk-hr-131",
+    "label": "[PERSON_2]",
+    "canonical": "Maria Cook",
+    "stored": "Maria oCok",
+    "category": "typo_in_source_text"
+   },
+   {
+    "id": "uk-letter-093",
+    "label": "[PERSON_4]",
+    "canonical": "Sean Burgess",
+    "stored": "Sean Burgses",
+    "category": "typo_in_source_text"
+   },
+   {
+    "id": "uk-letter-124",
+    "label": "[PERSON_2]",
+    "canonical": "Robert Khan",
+    "stored": "Robert Khna",
+    "category": "typo_in_source_text"
+   },
+   {
+    "id": "uk-letter-106",
+    "label": "[PERSON_3]",
+    "canonical": "Clare Watson",
+    "stored": "Clare Watsno",
+    "category": "typo_in_source_text"
+   },
+   {
+    "id": "uk-letter-196",
+    "label": "[PERSON_4]",
+    "canonical": "Alice Edwards",
+    "stored": "Alice Ewdards",
+    "category": "typo_in_source_text"
+   },
+   {
+    "id": "uk-medical-058",
+    "label": "[PERSON_5]",
+    "canonical": "Sara Ryan",
+    "stored": "Ryna",
+    "category": "typo_in_source_text"
+   },
+   {
+    "id": "uk-medical-068",
+    "label": "[PERSON_1]",
+    "canonical": "Louis Ellis",
+    "stored": "Elils Louis",
+    "category": "surname_not_in_text_or_other"
+   },
+   {
+    "id": "uk-medical-068",
+    "label": "[PERSON_6]",
+    "canonical": "Douglas Collins",
+    "stored": "Clolins",
+    "category": "typo_in_source_text"
+   },
+   {
+    "id": "uk-medical-127",
+    "label": "[PERSON_2]",
+    "canonical": "Andrew Barker",
+    "stored": "Bakrer",
+    "category": "typo_in_source_text"
+   }
+  ]
+ }
+}

@@ -44,7 +44,10 @@ EXTERNAL = {
     "uk": ["nemotron_uk", "nemotron_uk_ids"],
 }
 DOWNLOAD_MAC = "https://github.com/beskvladimir-create/pii-roundtrip/releases/latest/download/pii-roundtrip-mac.dmg"
-HOLDOUT = {"ru": "holdout5_ru", "uk": "holdout5_uk"}  # the independent held-out set of this version
+HOLDOUT = {"ru": "holdout6_ru", "uk": "holdout6_uk"}
+HOLDOUT_NO = 6  # the number of the held-out set in the text
+CYCLE_SET = "holdout6"  # the engine's round trip on that set
+CYCLE_REF = "holdout5"  # the other configurations: last run on set 5 (not repeated on set 6)
 SYNTH = {"ru": "synthetic_ru", "uk": "synthetic_uk"}
 TOOLS = [
     "pii_roundtrip",
@@ -114,6 +117,7 @@ WORDS = {
         "reference": "for reference",
         "no_threshold": "no threshold",
         "no_verdict": "no verdict (see below)",
+        "set5_no_verdict": "set 5, no verdict (see below)",
     },
     "ru": {
         "na": "нет",
@@ -122,6 +126,7 @@ WORDS = {
         "reference": "справочно",
         "no_threshold": "без порога",
         "no_verdict": "без вердикта (см. ниже)",
+        "set5_no_verdict": "набор 5, без вердикта (см. ниже)",
     },
 }
 
@@ -134,10 +139,15 @@ WORDS["tex"] = WORDS["en"]
 # ---------- числа ----------
 
 
+def _digits(x: float) -> int:
+    """One decimal, two just below 100% so that 99.98% is not shown as 100.0%."""
+    return 2 if 0.9995 <= x < 1 else 1
+
+
 def pct(x: float | None, lang: str) -> str:
     if x is None:
         return WORDS[lang]["na"]
-    v = f"{100 * x:.1f}%"
+    v = f"{100 * x:.{_digits(x)}f}%"
     if lang == "tex":
         return v.replace("%", "\\%")
     return v.replace(".", ",") if lang == "ru" else v
@@ -146,7 +156,7 @@ def pct(x: float | None, lang: str) -> str:
 def interval(c, lang: str) -> str:
     if not c:
         return ""
-    lo, hi = (f"{100 * c[0]:.1f}", f"{100 * c[1]:.1f}")
+    lo, hi = (f"{100 * c[0]:.{_digits(c[0])}f}", f"{100 * c[1]:.{_digits(c[1])}f}")
     if lang == "ru":
         lo, hi = lo.replace(".", ","), hi.replace(".", ",")
     return f" [{lo}; {hi}]"
@@ -265,7 +275,7 @@ def best_tool(m: dict, lang: str) -> str:
 def load_cycles() -> dict[str, dict]:
     out = {}
     # version 0.2 measures the round trip on the held-out set only; cycle_metrics.json holds version 0.1 runs
-    for data, name in (("holdout5", "cycle_metrics.holdout5.json"),):
+    for data, name in (("holdout6", "cycle_metrics.holdout6.json"), ("holdout5", "cycle_metrics.holdout5.json")):
         p = RESULTS / name
         out[data] = json.loads(p.read_text()) if p.exists() else {}
     return out
@@ -412,8 +422,20 @@ def _supplement(name: str) -> dict:
     return json.loads(p.read_text()) if p.exists() else {}
 
 
+def strict_share(tool: str, sets) -> tuple | None:
+    """The strict share of documents with a leak over one or several datasets: (rate, Wilson
+    interval, documents), from results/strict_leaks.json."""
+    sets = [sets] if isinstance(sets, str) else sets
+    data = _supplement("strict_leaks.json").get(tool, {})
+    rows = [data[ds]["all"] for ds in sets if ds in data]
+    if not rows:
+        return None
+    k, n = sum(x["strict_docs"] for x in rows), sum(x["docs"] for x in rows)
+    return (k / n, wilson(k, n), n)
+
+
 def strict_table(lang: str) -> str:
-    """Added after review, not pre-registered (results/strict_leaks.json): held-out set 5, the
+    """Added after review, not pre-registered (results/strict_leaks.json): the held-out set (HOLDOUT), the
     share of documents with at least one value of the threshold types not fully masked, overall
     and among the documents that contain each group of types; Wilson intervals."""
     data = _supplement("strict_leaks.json")
@@ -436,11 +458,12 @@ def strict_table(lang: str) -> str:
     return "\n".join(rows) if len(rows) > 2 else ""
 
 
-def cycle_extras_table(lang: str) -> str:
-    """Added after review, not pre-registered (results/cycle_extras.json): held-out set 5, answers
+def cycle_extras_table(lang: str, data_set: str = CYCLE_SET) -> str:
+    """Added after review, not pre-registered (results/cycle_extras*.json): the held-out set, answers
     with at least one failed occurrence (Clopper-Pearson interval) and restoration without the
     occurrences whose value had leaked into the cleaned input."""
-    data = _supplement("cycle_extras.json").get("holdout5", {})
+    name = "cycle_extras.json" if data_set in ("holdout4", "holdout5") else f"cycle_extras.{data_set}.json"
+    data = _supplement(name).get(data_set, {})
     if lang == "ru":
         head = "| Конфигурация | Язык, модель | Ответы с провалом | Восстановление без утёкших во вход значений |"
     else:
@@ -467,6 +490,110 @@ def cycle_extras_table(lang: str) -> str:
     return "\n".join(rows) if len(rows) > 2 else ""
 
 
+def value_fidelity_text(lang: str) -> str:
+    """Pre-registered companion measure for held-out set 6 (results/cycle_extras.holdout6.json)."""
+    vf = _supplement(f"cycle_extras.{CYCLE_SET}.json").get(CYCLE_SET, {}).get("_value_fidelity", {})
+    if not vf:
+        return WORDS[lang]["na"]
+    names = {"ru": ("русский", "британский английский"), "en": ("Russian", "UK English")}[
+        "ru" if lang == "ru" else "en"
+    ]
+    word = "из" if lang == "ru" else "of"
+    return "; ".join(
+        f"{nm}: {vf[lg]['lost']} {word} {vf[lg]['mentions']}"
+        for nm, lg in zip(names, ("ru", "uk"), strict=True)
+        if lg in vf
+    )
+
+
+def evaluator_versions_text(lang: str) -> str:
+    """Failed occurrences of the engine on held-out set 6 with evaluator versions 1 and 2
+    (results/evaluator_versions.holdout6.json)."""
+    ev = _supplement(f"evaluator_versions.{CYCLE_SET}.json")
+    parts = []
+    for lm in ("ru/qwen3.5:9b", "ru/gemma4:12b", "uk/qwen3.5:9b", "uk/gemma4:12b"):
+        if lm not in ev:
+            continue
+        v1, v2 = ev[lm]["evaluator_1"]["occurrences_failed"], ev[lm]["evaluator_2"]["occurrences_failed"]
+        parts.append(f"{lm}: {v1} / {v2}")
+    return "; ".join(parts) or WORDS[lang]["na"]
+
+
+def stored_names_text(lang: str) -> str:
+    """Found after the run on set 6 (results/stored_names.holdout6.json): Russian names stored in a
+    wrong form, and the share of placeholder occurrences in the answers they affect."""
+    sn = _supplement(f"stored_names.{CYCLE_SET}.json").get("ru")
+    cyc = _load_cycle_set(CYCLE_SET).get(ENGINE, {})
+    if not sn or not cyc:
+        return WORDS[lang]["na"]
+    cats, occ = sn["categories"], sn["occurrences_with_wrong_stored_name"]
+    parts = []
+    for model in ("qwen3.5:9b", "gemma4:12b"):
+        key = model.replace(":", "_")
+        plural = occ.get(f"{key}/plural_form", 0)
+        both = plural + occ.get(f"{key}/gender_or_case", 0)
+        n = cyc[f"ru/{model}"]["labels_in_answer"]
+        parts.append((model, plural, both, n))
+    if lang == "ru":
+        head = (
+            f"из {sn['names']} русских имён в документах полного цикла {cats.get('plural_form', 0)} сохранены во множественном "
+            f"числе («Абрамов» как «Абрамы») и {cats.get('gender_or_case', 0)} в другом роде или падеже (чаще всего, когда в тексте "
+            "есть только фамилия с инициалами)"
+        )
+        tail = "; ".join(
+            f"{m}: {p} из {n} вхождений меток с однозначно неверной фамилией, {b} вместе с родом и падежом ({pct(p / n, lang)}–{pct(b / n, lang)})"
+            for m, p, b, n in parts
+        )
+    else:
+        head = (
+            f"of {sn['names']} Russian names in the round-trip documents {cats.get('plural_form', 0)} were stored in the plural "
+            f"(\"Абрамов\" as \"Абрамы\") and {cats.get('gender_or_case', 0)} in another gender or case (mostly when the text "
+            "has only the surname with initials)"
+        )
+        tail = "; ".join(
+            f"{m}: {p} of {n} placeholder occurrences with a surely wrong surname, {b} with gender and case ({pct(p / n, lang)} to {pct(b / n, lang)})"
+            for m, p, b, n in parts
+        )
+    return f"{head}. {tail}"
+
+
+def _load_cycle_set(name: str) -> dict:
+    p = RESULTS / f"cycle_metrics.{name}.json"
+    return json.loads(p.read_text()) if p.exists() else {}
+
+
+def engine_versions_table(lang: str) -> str:
+    """pii-roundtrip 0.3 and 0.4 on the development data (held-out sets 4 and 5, cached detector
+    spans) and on the external datasets, from results/engine_dev_0.3_0.4.json and
+    results/engine_external_0.3_0.4.json. For reference: these sets were development data or were
+    not used for tuning; the independent check of 0.4 is held-out set 6."""
+    dev, ext = _supplement("engine_dev_0.3_0.4.json"), _supplement("engine_external_0.3_0.4.json")
+    if lang == "ru":
+        head = "| Набор | Строгий счёт 0.3 → 0.4 | Утечки 0.3 → 0.4 | Имена, адреса, организации 0.3 → 0.4 | Точность 0.3 → 0.4 |"
+    else:
+        head = "| Set | Strict 0.3 → 0.4 | Leaks 0.3 → 0.4 | Names, addresses, organisations 0.3 → 0.4 | Precision 0.3 → 0.4 |"
+    rows = [head, "|---|---|---|---|---|"]
+    for ds in ("holdout5_ru", "holdout5_uk", "holdout4_ru", "holdout4_uk"):
+        if ds not in dev:
+            continue
+        a, b = dev[ds]["0.3"], dev[ds]["0.4"]
+        f = (lambda x: f"{x:.2f}".replace(".", ",")) if lang == "ru" else (lambda x: f"{x:.2f}")
+        rows.append(
+            f"| {ds} | {a['strict']} → {b['strict']} из {a['docs']} | {f(a['leak'])}% → {f(b['leak'])}% | {f(a['names'])}% → {f(b['names'])}% | {f(a['prec'])}% → {f(b['prec'])}% |"
+            if lang == "ru"
+            else f"| {ds} | {a['strict']} → {b['strict']} of {a['docs']} | {f(a['leak'])}% → {f(b['leak'])}% | {f(a['names'])}% → {f(b['names'])}% | {f(a['prec'])}% → {f(b['prec'])}% |"
+        )
+    for ds in ("hivetrace_pii_bench", "redmadrobot_pii_benchmark", "nemotron_uk", "nemotron_uk_ids"):
+        if ds not in ext:
+            continue
+        a, b = ext[ds]["0.3"], ext[ds]["0.4"]
+        p = lambda x: pct(x, lang)  # noqa: E731
+        rows.append(
+            f"| {ds} | {p(a['strict'])} → {p(b['strict'])} | {p(a['leak_rate'])} → {p(b['leak_rate'])} | {p(a['names'])} → {p(b['names'])} | {p(a['precision_fragments'])} → {p(b['precision_fragments'])} |"
+        )
+    return "\n".join(rows) if len(rows) > 2 else ""
+
+
 def precision_table(m: dict, lang: str) -> str:
     """Доля скрытых фрагментов, задевающих персональные данные, на отложенном наборе 5."""
     head = "| Tool | Russian | UK English |" if lang == "en" else "| Инструмент | Русский | Британский английский |"
@@ -482,7 +609,7 @@ def precision_table(m: dict, lang: str) -> str:
 
 def threshold_table(m: dict, cycles: dict, lang_data: str, lang: str) -> str:
     """Лучший существующий инструмент и движок на одних и тех же данных: внешние наборы без
-    домашнего набора этого инструмента и отложенный набор 5."""
+    домашнего набора этого инструмента и отложенный набор (HOLDOUT)."""
     x = best_tool(m, lang_data)
     ext = ext_sets(lang_data, x)
     h3 = [HOLDOUT[lang_data]]
@@ -492,14 +619,15 @@ def threshold_table(m: dict, cycles: dict, lang_data: str, lang: str) -> str:
         heads = [
             f"{n[x]}, external",
             f"{n[ENGINE]}, same external sets",
-            f"{n[x]}, held-out set 5",
-            f"{n[ENGINE]}, held-out set 5",
+            f"{n[x]}, held-out set {HOLDOUT_NO}",
+            f"{n[ENGINE]}, held-out set {HOLDOUT_NO}",
         ]
         labels = {
             "struct": "Structured identifiers ≥ 99%",
             "names": "Names, addresses, organisations ≥ 95%",
             "leak": "Documents with a leak ≤ 2%",
             "restore": "Restoration ≥ 99% (worse of two LLMs)",
+            "strict": "Documents with a value not fully masked ≤ 2% (strict, new)",
             "prec": "Masked fragments that contain personal data",
         }
         first = "Threshold"
@@ -507,19 +635,20 @@ def threshold_table(m: dict, cycles: dict, lang_data: str, lang: str) -> str:
         heads = [
             f"{n[x]}, внешние",
             f"{n[ENGINE]}, те же внешние наборы",
-            f"{n[x]}, отложенный набор 5",
-            f"{n[ENGINE]}, отложенный набор 5",
+            f"{n[x]}, отложенный набор {HOLDOUT_NO}",
+            f"{n[ENGINE]}, отложенный набор {HOLDOUT_NO}",
         ]
         labels = {
             "struct": "Номера ≥ 99%",
             "names": "Имена, адреса, организации ≥ 95%",
             "leak": "Документы с утечкой ≤ 2%",
             "restore": "Восстановление ≥ 99% (худшая из двух нейросетей)",
+            "strict": "Документы со значением, скрытым не полностью ≤ 2% (строгий, новый)",
             "prec": "Скрытые фрагменты, содержащие персональные данные",
         }
         first = "Порог"
     rows = [f"| {first} | " + " | ".join(heads) + " |", "|---" * (len(heads) + 1) + "|"]
-    for metric in ("struct", "names", "leak", "restore", "prec"):
+    for metric in ("struct", "names", "leak", "strict", "restore", "prec"):
         cells = []
         for tool, sets in cols:
             if metric == "restore":
@@ -528,14 +657,23 @@ def threshold_table(m: dict, cycles: dict, lang_data: str, lang: str) -> str:
                 elif tool not in NATIVE_RESTORE:
                     cells.append(WORDS[lang]["no_restore"])
                 else:
-                    r = restore(cycles.get("holdout5", {}), tool, lang_data)
+                    r = restore(cycles.get(CYCLE_SET if tool == ENGINE else CYCLE_REF, {}), tool, lang_data)
                     if r and tool != ENGINE:
                         # 40 answers per model, and with qwen3.5:9b pii-guard's prompt leaves only 15
                         # with placeholders; a cell with one failure gets a narrower interval than a
                         # cell without failures, so no verdict is given (as in the paper)
-                        cells.append(f"{restore_cell(r, lang, False)}, {WORDS[lang]['no_verdict']}")
+                        cells.append(f"{restore_cell(r, lang, False)}, {WORDS[lang]['set5_no_verdict']}")
                     else:
                         cells.append(restore_cell(r, lang) if r else WORDS[lang]["na"])
+                continue
+            if metric == "strict":
+                st = strict_share(tool, sets)
+                if not st:
+                    cells.append(WORDS[lang]["na"])
+                elif sets is h3:
+                    cells.append(cell(st[0], st[1], "leak", lang))
+                else:  # pre-registered for the held-out set only
+                    cells.append(f"{cell(st[0], st[1], 'leak', lang, False)}, {WORDS[lang]['reference']}")
                 continue
             s = stats(m, tool, sets)
             if not s or s[metric][0] is None:
@@ -562,9 +700,12 @@ def engine_values(m: dict, cycles: dict) -> dict:
         if not s:
             continue
         rows = {k.upper(): (s[k][0], s[k][1], status_of(s, k)) for k in ("struct", "names", "leak")}
-        r = restore(cycles.get("holdout5", {}), ENGINE, lg)
+        r = restore(cycles.get(CYCLE_SET, {}), ENGINE, lg)
         if r:
             rows["RESTORE"] = (r[0], restore_interval(r), restore_status(r))
+        st = strict_share(ENGINE, HOLDOUT[lg])
+        if st:
+            rows["STRICT"] = (st[0], st[1], status("leak", st[0], st[1]))
         vals[key] = rows
     return vals
 
@@ -575,8 +716,20 @@ VERDICT_GROUPS = {"met": ("met",), "undetermined": ("undetermined", "borderline"
 def fill(text: str, m: dict, cycles: dict, lang: str) -> str:
     vals = engine_values(m, cycles)
     names = {
-        "ru": {"STRUCT": "номера", "NAMES": "имена и адреса", "LEAK": "утечки", "RESTORE": "восстановление"},
-        "en": {"STRUCT": "identifiers", "NAMES": "names and addresses", "LEAK": "leaks", "RESTORE": "restoration"},
+        "ru": {
+            "STRUCT": "номера",
+            "NAMES": "имена и адреса",
+            "LEAK": "утечки",
+            "STRICT": "строгий счёт утечек",
+            "RESTORE": "восстановление",
+        },
+        "en": {
+            "STRUCT": "identifiers",
+            "NAMES": "names and addresses",
+            "LEAK": "leaks",
+            "STRICT": "strict leaks",
+            "RESTORE": "restoration",
+        },
     }["ru" if lang == "ru" else "en"]
     summary = []
     for key, rows in vals.items():
@@ -605,6 +758,11 @@ def fill(text: str, m: dict, cycles: dict, lang: str) -> str:
     text = text.replace("{TABLE_THRESHOLDS_UK}", threshold_table(m, cycles, "uk", lang))
     text = text.replace("{TABLE_STRICT}", strict_table(lang))
     text = text.replace("{TABLE_CYCLE_EXTRAS}", cycle_extras_table(lang))
+    text = text.replace("{TABLE_CYCLE_EXTRAS_5}", cycle_extras_table(lang, "holdout5"))
+    text = text.replace("{TABLE_ENGINE_VERSIONS}", engine_versions_table(lang))
+    text = text.replace("{VALUE_FIDELITY}", value_fidelity_text(lang))
+    text = text.replace("{EVALUATOR_VERSIONS_SET6}", evaluator_versions_text(lang))
+    text = text.replace("{STORED_NAMES}", stored_names_text(lang))
     return _REF.sub(lambda mt: _ref(m, cycles, mt, lang), text)
 
 
@@ -653,20 +811,23 @@ def build(m: dict, cycles: dict) -> str:
         x = best_tool(m, lang)
         gaps = []
         for metric in ("struct", "names", "leak"):
-            for sets, where in ((ext_sets(lang, x), "внешние"), ([HOLDOUT[lang]], "набор 5")):
+            for sets, where in ((ext_sets(lang, x), "внешние"), ([HOLDOUT[lang]], f"набор {HOLDOUT_NO}")):
                 s = stats(m, x, sets)
                 if s and s[metric][0] is not None and status_of(s, metric) == "not met":
                     gaps.append(f"{metric} ({where})")
         if x not in NATIVE_RESTORE:
             gaps.append("восстановление (нет своего)")
         else:
-            r = restore(cycles.get("holdout5", {}), x, lang)
+            r = restore(cycles.get(CYCLE_REF, {}), x, lang)
             if r and status("restore", r[0], r[1]) == "not met":
                 gaps.append("восстановление")
         verdict_gap[lang] = (x, gaps)
 
     L.append("### П3. Полный цикл (очистка, ответ нейросети, восстановление)\n")
-    for data, title in (("holdout5", "Отложенный набор 5"),):
+    for data, title in (
+        (CYCLE_SET, f"Отложенный набор {HOLDOUT_NO}, pii-roundtrip 0.4"),
+        (CYCLE_REF, "Отложенный набор 5, все конфигурации (pii-roundtrip 0.3, оценщик версии 1)"),
+    ):
         cyc = cycles.get(data, {})
         L.append(f"#### {title}\n")
         if not cyc:
@@ -690,7 +851,7 @@ def build(m: dict, cycles: dict) -> str:
         L.append("")
 
     L.append("### П4. Показательные пропуски (до 10 на инструмент)\n")
-    L.append("Сначала отложенный набор 5, затем внешние наборы без домашнего.\n")
+    L.append(f"Сначала отложенный набор {HOLDOUT_NO}, затем внешние наборы без домашнего.\n")
     for tool in TOOLS:
         if tool not in m:
             continue
@@ -752,8 +913,8 @@ def render(outreach: bool = True) -> dict[str, str]:
         ("outreach/habr/article.ru.md", "outreach/habr/article.ru.tpl.md", "ru"),
         ("outreach/linkedin/post-v0.2.en.md", "outreach/linkedin/post-v0.2.en.tpl.md", "en"),
         ("outreach/linkedin/post-v0.2.ru.md", "outreach/linkedin/post-v0.2.ru.tpl.md", "ru"),
-        ("site/index.html", "site/index.tpl.html", "ru"),
-        ("site/uk/index.html", "site/uk/index.tpl.html", "en"),
+        ("site/index.html", "site/index.tpl.html", "en"),
+        ("site/ru/index.html", "site/ru/index.tpl.html", "ru"),
     ):
         if (ROOT / src).exists() and (outreach or not out.startswith("outreach/")):
             docs[out] = tpl(src, lang)

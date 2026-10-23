@@ -1,0 +1,297 @@
+{
+ "ru/qwen3.5:9b": {
+  "evaluator_1": {
+   "labels_in_answer": 12720,
+   "occurrences_failed": 20,
+   "restore_rate": 0.9984276729559748,
+   "answers_with_failure": 10,
+   "answers_with_labels": 380
+  },
+  "evaluator_2": {
+   "labels_in_answer": 12720,
+   "occurrences_failed": 0,
+   "restore_rate": 1.0,
+   "answers_with_failure": 0,
+   "answers_with_labels": 380
+  }
+ },
+ "ru/gemma4:12b": {
+  "evaluator_1": {
+   "labels_in_answer": 13481,
+   "occurrences_failed": 17,
+   "restore_rate": 0.9987389659520807,
+   "answers_with_failure": 9,
+   "answers_with_labels": 380
+  },
+  "evaluator_2": {
+   "labels_in_answer": 13481,
+   "occurrences_failed": 0,
+   "restore_rate": 1.0,
+   "answers_with_failure": 0,
+   "answers_with_labels": 380
+  }
+ },
+ "uk/qwen3.5:9b": {
+  "evaluator_1": {
+   "labels_in_answer": 11792,
+   "occurrences_failed": 0,
+   "restore_rate": 1.0,
+   "answers_with_failure": 0,
+   "answers_with_labels": 380
+  },
+  "evaluator_2": {
+   "labels_in_answer": 11792,
+   "occurrences_failed": 0,
+   "restore_rate": 1.0,
+   "answers_with_failure": 0,
+   "answers_with_labels": 380
+  }
+ },
+ "uk/gemma4:12b": {
+  "evaluator_1": {
+   "labels_in_answer": 13803,
+   "occurrences_failed": 0,
+   "restore_rate": 1.0,
+   "answers_with_failure": 0,
+   "answers_with_labels": 380
+  },
+  "evaluator_2": {
+   "labels_in_answer": 13803,
+   "occurrences_failed": 0,
+   "restore_rate": 1.0,
+   "answers_with_failure": 0,
+   "answers_with_labels": 380
+  }
+ },
+ "_failures_evaluator_1": {
+  "ru/qwen3.5:9b": [
+   {
+    "id": "ru-certificate-120",
+    "task": "summary",
+    "label": "[PERSON_3]",
+    "value": "Большаков Святополк Арсеньевич"
+   },
+   {
+    "id": "ru-certificate-120",
+    "task": "reply",
+    "label": "[PERSON_3]",
+    "value": "Большаков Святополк Арсеньевич"
+   },
+   {
+    "id": "ru-hr-044",
+    "task": "summary",
+    "label": "[PERSON_4]",
+    "value": "Большаков Епифан Жанович"
+   },
+   {
+    "id": "ru-hr-011",
+    "task": "summary",
+    "label": "[PERSON_1]",
+    "value": "Турова Майя Артёмовна"
+   },
+   {
+    "id": "ru-hr-011",
+    "task": "summary",
+    "label": "[PERSON_1]",
+    "value": "Турова Майя Артёмовна"
+   },
+   {
+    "id": "ru-hr-011",
+    "task": "summary",
+    "label": "[PERSON_1]",
+    "value": "Турова Майя Артёмовна"
+   },
+   {
+    "id": "ru-hr-011",
+    "task": "reply",
+    "label": "[PERSON_1]",
+    "value": "Турова Майя Артёмовна"
+   },
+   {
+    "id": "ru-hr-011",
+    "task": "reply",
+    "label": "[PERSON_1]",
+    "value": "Турова Майя Артёмовна"
+   },
+   {
+    "id": "ru-hr-184",
+    "task": "summary",
+    "label": "[PERSON_1]",
+    "value": "Карпова Майя Юрьевна"
+   },
+   {
+    "id": "ru-hr-184",
+    "task": "summary",
+    "label": "[PERSON_1]",
+    "value": "Карпова Майя Юрьевна"
+   },
+   {
+    "id": "ru-hr-184",
+    "task": "summary",
+    "label": "[PERSON_1]",
+    "value": "Карпова Майя Юрьевна"
+   },
+   {
+    "id": "ru-hr-184",
+    "task": "summary",
+    "label": "[PERSON_1]",
+    "value": "Карпова Майя Юрьевна"
+   },
+   {
+    "id": "ru-hr-184",
+    "task": "reply",
+    "label": "[PERSON_1]",
+    "value": "Карпова Майя Юрьевна"
+   },
+   {
+    "id": "ru-hr-184",
+    "task": "reply",
+    "label": "[PERSON_1]",
+    "value": "Карпова Майя Юрьевна"
+   },
+   {
+    "id": "ru-hr-184",
+    "task": "reply",
+    "label": "[PERSON_1]",
+    "value": "Карпова Майя Юрьевна"
+   },
+   {
+    "id": "ru-hr-043",
+    "task": "summary",
+    "label": "[PERSON_4]",
+    "value": "Денисова Майя Юрьевна"
+   },
+   {
+    "id": "ru-hr-059",
+    "task": "summary",
+    "label": "[PERSON_3]",
+    "value": "Щербаков Пров Тимурович"
+   },
+   {
+    "id": "ru-medical-135",
+    "task": "reply",
+    "label": "[PERSON_3]",
+    "value": "Игнаты Пров Филиппович"
+   },
+   {
+    "id": "ru-medical-135",
+    "task": "reply",
+    "label": "[PERSON_3]",
+    "value": "Игнаты Пров Филиппович"
+   },
+   {
+    "id": "ru-medical-135",
+    "task": "reply",
+    "label": "[PERSON_3]",
+    "value": "Игнаты Пров Филиппович"
+   }
+  ],
+  "ru/gemma4:12b": [
+   {
+    "id": "ru-contract-199",
+    "task": "reply",
+    "label": "[PERSON_2]",
+    "value": "Яковлева Майя Ильинична"
+   },
+   {
+    "id": "ru-contract-199",
+    "task": "reply",
+    "label": "[PERSON_2]",
+    "value": "Яковлева Майя Ильинична"
+   },
+   {
+    "id": "ru-contract-199",
+    "task": "reply",
+    "label": "[PERSON_2]",
+    "value": "Яковлева Майя Ильинична"
+   },
+   {
+    "id": "ru-contract-150",
+    "task": "reply",
+    "label": "[PERSON_1]",
+    "value": "Носова Майя Робертовна"
+   },
+   {
+    "id": "ru-contract-150",
+    "task": "reply",
+    "label": "[PERSON_1]",
+    "value": "Носова Майя Робертовна"
+   },
+   {
+    "id": "ru-contract-150",
+    "task": "reply",
+    "label": "[PERSON_1]",
+    "value": "Носова Майя Робертовна"
+   },
+   {
+    "id": "ru-hr-044",
+    "task": "summary",
+    "label": "[PERSON_4]",
+    "value": "Большаков Епифан Жанович"
+   },
+   {
+    "id": "ru-hr-011",
+    "task": "summary",
+    "label": "[PERSON_1]",
+    "value": "Турова Майя Артёмовна"
+   },
+   {
+    "id": "ru-hr-011",
+    "task": "summary",
+    "label": "[PERSON_1]",
+    "value": "Турова Майя Артёмовна"
+   },
+   {
+    "id": "ru-hr-011",
+    "task": "summary",
+    "label": "[PERSON_1]",
+    "value": "Турова Майя Артёмовна"
+   },
+   {
+    "id": "ru-hr-184",
+    "task": "summary",
+    "label": "[PERSON_1]",
+    "value": "Карпова Майя Юрьевна"
+   },
+   {
+    "id": "ru-hr-184",
+    "task": "summary",
+    "label": "[PERSON_1]",
+    "value": "Карпова Майя Юрьевна"
+   },
+   {
+    "id": "ru-hr-184",
+    "task": "summary",
+    "label": "[PERSON_1]",
+    "value": "Карпова Майя Юрьевна"
+   },
+   {
+    "id": "ru-hr-059",
+    "task": "reply",
+    "label": "[PERSON_3]",
+    "value": "Щербаков Пров Тимурович"
+   },
+   {
+    "id": "ru-letter-131",
+    "task": "summary",
+    "label": "[PERSON_5]",
+    "value": "Гордеева Майя Захаровна"
+   },
+   {
+    "id": "ru-letter-105",
+    "task": "summary",
+    "label": "[PERSON_6]",
+    "value": "Лобанов Пров Игнатьевич"
+   },
+   {
+    "id": "ru-medical-023",
+    "task": "summary",
+    "label": "[PERSON_3]",
+    "value": "Сорокин Пров Ефремович"
+   }
+  ],
+  "uk/qwen3.5:9b": [],
+  "uk/gemma4:12b": []
+ },
+ "_note": "Held-out set 6, engine 0.4: restoration scored with evaluator version 1 (as on sets 4 and 5) and version 2 (pre-registered for set 6)."
+}

@@ -133,3 +133,5 @@ Code under test: engine 0.4.0, private commit 2e33854. Git tree hashes by which 
 5. The round-trip journal is kept during the run: `results/holdout6_cycle_journal.md` (start, interruptions, continuations, commit). A continuation after an interruption uses only the same command and the saved answers.
 6. A detection rerun is allowed only with a stated reason recorded in `results/holdout_runs.jsonl`.
 
+> Added after the push, before the first run: the public pre-registration commit 444c4bd was pushed to GitHub on 22 October 2026 at 07:57:47 UTC (11:57:47 +04). Its `pii_roundtrip` and `bench` trees are the ones given above.
+

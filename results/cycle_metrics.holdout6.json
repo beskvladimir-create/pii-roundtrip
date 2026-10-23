@@ -1,0 +1,629 @@
+{
+ "pii_roundtrip": {
+  "ru/qwen3.5:9b": {
+   "answers": 380,
+   "answers_with_labels": 380,
+   "labels_in_answer": 12720,
+   "exact_share": 0.9988993710691824,
+   "altered": 14,
+   "altered_recoverable": 14,
+   "invented": 57,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "restore_ci_method": "bootstrap по ответам, 2000 повторов",
+   "residual_labels": 0,
+   "scrubbed": 0,
+   "occurrences_failed": 0,
+   "failed_altered": 0,
+   "failed_intact": 0,
+   "answers_with_altered": 9,
+   "docs_with_altered": [
+    "ru-certificate-056",
+    "ru-certificate-126",
+    "ru-certificate-145",
+    "ru-contract-150",
+    "ru-hr-130",
+    "ru-hr-140",
+    "ru-hr-157",
+    "ru-letter-186",
+    "ru-medical-040"
+   ],
+   "answers_with_failure": 0,
+   "docs_with_failure": [],
+   "values_lost": 0,
+   "used_values": 11227,
+   "docs_with_input_leak": 0,
+   "examples": [
+    {
+     "id": "ru-certificate-034",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[ORG_2]",
+      "[ORG_2]"
+     ]
+    },
+    {
+     "id": "ru-certificate-145",
+     "task": "summary",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "[PHONE_3"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "ru-certificate-126",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "[CITY_ORG_1]"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "ru-certificate-099",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[ORG_2]",
+      "[ORG_2]"
+     ]
+    },
+    {
+     "id": "ru-certificate-178",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[ADDRESS_7]"
+     ]
+    },
+    {
+     "id": "ru-certificate-005",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[ORG_2]",
+      "[ORG_2]"
+     ]
+    },
+    {
+     "id": "ru-certificate-173",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[ORG_2]",
+      "[ORG_2]"
+     ]
+    },
+    {
+     "id": "ru-certificate-056",
+     "task": "summary",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "[BANK_ACCOUNT_RU_2",
+      "[CARD_2"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "ru-contract-195",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[DOC_NUMBER_1]",
+      "[DATE_DEADLINE_1]"
+     ]
+    },
+    {
+     "id": "ru-contract-150",
+     "task": "summary",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "[PERSON_2"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "ru-hr-140",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "[BANK_NAME_FOR_PERSON_1]",
+      "[BANK_NAME_FOR_PERSON_3]",
+      "[BANK_NAME_FOR_PERSON_4]"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "ru-hr-130",
+     "task": "summary",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "[BANK_ACCOUNT_RU_2",
+      "[CARD_2"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "ru-hr-157",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "[POSITION_OF_PERSON_5]"
+     ],
+     "invented_examples": [
+      "[ORG_2]",
+      "[ORG_2]"
+     ]
+    },
+    {
+     "id": "ru-hr-043",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[PERSON_7]",
+      "[POSITION_7]",
+      "[PHONE_7]"
+     ]
+    },
+    {
+     "id": "ru-hr-103",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[ORG_2]"
+     ]
+    }
+   ]
+  },
+  "ru/gemma4:12b": {
+   "answers": 380,
+   "answers_with_labels": 380,
+   "labels_in_answer": 13481,
+   "exact_share": 1.0,
+   "altered": 0,
+   "altered_recoverable": 0,
+   "invented": 0,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "restore_ci_method": "bootstrap по ответам, 2000 повторов",
+   "residual_labels": 0,
+   "scrubbed": 0,
+   "occurrences_failed": 0,
+   "failed_altered": 0,
+   "failed_intact": 0,
+   "answers_with_altered": 0,
+   "docs_with_altered": [],
+   "answers_with_failure": 0,
+   "docs_with_failure": [],
+   "values_lost": 0,
+   "used_values": 12438,
+   "docs_with_input_leak": 0,
+   "examples": []
+  },
+  "uk/qwen3.5:9b": {
+   "answers": 380,
+   "answers_with_labels": 380,
+   "labels_in_answer": 11792,
+   "exact_share": 0.9993215739484396,
+   "altered": 8,
+   "altered_recoverable": 8,
+   "invented": 6,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "restore_ci_method": "bootstrap по ответам, 2000 повторов",
+   "residual_labels": 0,
+   "scrubbed": 0,
+   "occurrences_failed": 0,
+   "failed_altered": 0,
+   "failed_intact": 0,
+   "answers_with_altered": 8,
+   "docs_with_altered": [
+    "uk-certificate-007",
+    "uk-certificate-056",
+    "uk-certificate-114",
+    "uk-certificate-173",
+    "uk-certificate-189",
+    "uk-contract-175",
+    "uk-hr-131",
+    "uk-letter-105"
+   ],
+   "answers_with_failure": 0,
+   "docs_with_failure": [],
+   "values_lost": 0,
+   "used_values": 10441,
+   "docs_with_input_leak": 1,
+   "examples": [
+    {
+     "id": "uk-certificate-007",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "ORG_1]"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-114",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "ORG_1]"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-189",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "ORG_1]"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-055",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[EMAIL_4]"
+     ]
+    },
+    {
+     "id": "uk-certificate-173",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "ORG_1]"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-056",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "ORG_1]"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-contract-126",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[POSTCODE_1]",
+      "[POSTCODE_2]"
+     ]
+    },
+    {
+     "id": "uk-contract-173",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[POSTCODE_1]"
+     ]
+    },
+    {
+     "id": "uk-contract-171",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[POSTCODE_1]"
+     ]
+    },
+    {
+     "id": "uk-contract-175",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "ADDRESS_3]"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-hr-131",
+     "task": "summary",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "ID_1"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-letter-105",
+     "task": "summary",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "ID_1"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-medical-021",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [],
+     "invented_examples": [
+      "[PHONE_3]"
+     ]
+    }
+   ]
+  },
+  "uk/gemma4:12b": {
+   "answers": 380,
+   "answers_with_labels": 380,
+   "labels_in_answer": 13803,
+   "exact_share": 0.9967398391653989,
+   "altered": 45,
+   "altered_recoverable": 45,
+   "invented": 0,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "restore_ci_method": "bootstrap по ответам, 2000 повторов",
+   "residual_labels": 0,
+   "scrubbed": 0,
+   "occurrences_failed": 0,
+   "failed_altered": 0,
+   "failed_intact": 0,
+   "answers_with_altered": 45,
+   "docs_with_altered": [
+    "uk-certificate-000",
+    "uk-certificate-005",
+    "uk-certificate-007",
+    "uk-certificate-024",
+    "uk-certificate-034",
+    "uk-certificate-053",
+    "uk-certificate-056",
+    "uk-certificate-058",
+    "uk-certificate-097",
+    "uk-certificate-099",
+    "uk-certificate-110",
+    "uk-certificate-114",
+    "uk-certificate-138",
+    "uk-certificate-145",
+    "uk-certificate-151",
+    "uk-certificate-173",
+    "uk-certificate-178",
+    "uk-certificate-190",
+    "uk-certificate-195",
+    "uk-hr-003",
+    "uk-hr-051",
+    "uk-hr-100",
+    "uk-hr-120",
+    "uk-hr-170",
+    "uk-hr-184",
+    "uk-medical-003",
+    "uk-medical-008",
+    "uk-medical-018",
+    "uk-medical-023",
+    "uk-medical-043",
+    "uk-medical-045",
+    "uk-medical-047",
+    "uk-medical-065",
+    "uk-medical-068",
+    "uk-medical-071",
+    "uk-medical-074",
+    "uk-medical-088",
+    "uk-medical-121",
+    "uk-medical-135",
+    "uk-medical-140",
+    "uk-medical-159",
+    "uk-medical-162",
+    "uk-medical-165",
+    "uk-medical-168",
+    "uk-medical-191"
+   ],
+   "answers_with_failure": 0,
+   "docs_with_failure": [],
+   "values_lost": 0,
+   "used_values": 11848,
+   "docs_with_input_leak": 1,
+   "examples": [
+    {
+     "id": "uk-certificate-034",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "[ORG_1"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-145",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "ORG_2"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-195",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "ORG_2"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-097",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "[ORG_1"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-053",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "[ORG_1"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-024",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "[ORG_1"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-007",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "[ORG_1"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-099",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "ORG_2]"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-110",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "[ORG_1"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-000",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "ORG_2"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-178",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "ORG_2]"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-114",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "[ORG_1"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-058",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "ORG_2]"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-151",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "[ORG_1"
+     ],
+     "invented_examples": []
+    },
+    {
+     "id": "uk-certificate-005",
+     "task": "reply",
+     "lost_examples": [],
+     "residual_examples": [],
+     "altered_examples": [
+      "[ORG_1"
+     ],
+     "invented_examples": []
+    }
+   ]
+  }
+ }
+}

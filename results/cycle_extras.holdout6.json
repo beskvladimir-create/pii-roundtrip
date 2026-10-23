@@ -1,0 +1,347 @@
+{
+ "holdout6": {
+  "pii_roundtrip": {
+   "ru/gemma4:12b": {
+    "answers": 380,
+    "answers_with_labels": 380,
+    "answers_with_failure": 0,
+    "answers_with_failure_share": 0.0,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.0,
+     0.009660611079882253
+    ],
+    "occurrences": 13481,
+    "occurrences_failed": 0,
+    "occurrences_without_input_leaks": 13481,
+    "occurrences_without_input_leaks_failed": 0,
+    "restore_rate_without_input_leaks": 1.0,
+    "answers_with_input_leak": 0
+   },
+   "ru/qwen3.5:9b": {
+    "answers": 380,
+    "answers_with_labels": 380,
+    "answers_with_failure": 0,
+    "answers_with_failure_share": 0.0,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.0,
+     0.009660611079882253
+    ],
+    "occurrences": 12720,
+    "occurrences_failed": 0,
+    "occurrences_without_input_leaks": 12720,
+    "occurrences_without_input_leaks_failed": 0,
+    "restore_rate_without_input_leaks": 1.0,
+    "answers_with_input_leak": 0
+   },
+   "uk/gemma4:12b": {
+    "answers": 380,
+    "answers_with_labels": 380,
+    "answers_with_failure": 0,
+    "answers_with_failure_share": 0.0,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.0,
+     0.009660611079882253
+    ],
+    "occurrences": 13803,
+    "occurrences_failed": 0,
+    "occurrences_without_input_leaks": 13803,
+    "occurrences_without_input_leaks_failed": 0,
+    "restore_rate_without_input_leaks": 1.0,
+    "answers_with_input_leak": 2
+   },
+   "uk/qwen3.5:9b": {
+    "answers": 380,
+    "answers_with_labels": 380,
+    "answers_with_failure": 0,
+    "answers_with_failure_share": 0.0,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.0,
+     0.009660611079882253
+    ],
+    "occurrences": 11792,
+    "occurrences_failed": 0,
+    "occurrences_without_input_leaks": 11792,
+    "occurrences_without_input_leaks_failed": 0,
+    "restore_rate_without_input_leaks": 1.0,
+    "answers_with_input_leak": 2
+   }
+  },
+  "_overlap": {},
+  "_value_fidelity": {
+   "ru": {
+    "mentions": 1452,
+    "lost": 12,
+    "examples": [
+     {
+      "id": "ru-contract-059",
+      "mention": "Кабанова Алевтина Николаевна",
+      "stored": "Кабанова Алевтина Ниоклаевна",
+      "missing": [
+       "Николаевна"
+      ]
+     },
+     {
+      "id": "ru-contract-173",
+      "mention": "Королева Варвара Феликсован",
+      "stored": "Королёва Варвара Феликсовна",
+      "missing": [
+       "Феликсован"
+      ]
+     },
+     {
+      "id": "ru-contract-108",
+      "mention": "Панфилова Анастасия Александрован",
+      "stored": "Панфилова Анастасия",
+      "missing": [
+       "Александрован"
+      ]
+     },
+     {
+      "id": "ru-contract-108",
+      "mention": "Панфилова Анастасия Александровна",
+      "stored": "Панфилова Анастасия",
+      "missing": [
+       "Александровна"
+      ]
+     },
+     {
+      "id": "ru-hr-179",
+      "mention": "Абрамов Болеслав Георгиеивч",
+      "stored": "Абрамы Болеслав",
+      "missing": [
+       "Георгиеивч"
+      ]
+     },
+     {
+      "id": "ru-hr-003",
+      "mention": "Гаврилова Родиона Евсееивча",
+      "stored": "Гаврилов Родион",
+      "missing": [
+       "Евсееивча"
+      ]
+     },
+     {
+      "id": "ru-letter-068",
+      "mention": "Тихонов Серафим Ермолавеич",
+      "stored": "Тихонов Серафим",
+      "missing": [
+       "Ермолавеич"
+      ]
+     },
+     {
+      "id": "ru-letter-186",
+      "mention": "Кудрявцев Елисей Эдуардовчи",
+      "stored": "Кудрявцев Елисей",
+      "missing": [
+       "Эдуардовчи"
+      ]
+     },
+     {
+      "id": "ru-letter-014",
+      "mention": "Воронцова Галина Степанонва",
+      "stored": "Воронцова Галина",
+      "missing": [
+       "Степанонва"
+      ]
+     },
+     {
+      "id": "ru-letter-137",
+      "mention": "Леруа Мерлен Восток",
+      "stored": "Леруа Мерлены",
+      "missing": [
+       "Восток"
+      ]
+     },
+     {
+      "id": "ru-letter-137",
+      "mention": "Леруа Мерлен Восток",
+      "stored": "Леруа Мерлены",
+      "missing": [
+       "Восток"
+      ]
+     },
+     {
+      "id": "ru-letter-138",
+      "mention": "Исаков Серафим Владленвоич",
+      "stored": "Исаков Серафим",
+      "missing": [
+       "Владленвоич"
+      ]
+     }
+    ],
+    "_all": [
+     {
+      "id": "ru-contract-059",
+      "mention": "Кабанова Алевтина Николаевна",
+      "stored": "Кабанова Алевтина Ниоклаевна",
+      "missing": [
+       "Николаевна"
+      ]
+     },
+     {
+      "id": "ru-contract-173",
+      "mention": "Королева Варвара Феликсован",
+      "stored": "Королёва Варвара Феликсовна",
+      "missing": [
+       "Феликсован"
+      ]
+     },
+     {
+      "id": "ru-contract-108",
+      "mention": "Панфилова Анастасия Александрован",
+      "stored": "Панфилова Анастасия",
+      "missing": [
+       "Александрован"
+      ]
+     },
+     {
+      "id": "ru-contract-108",
+      "mention": "Панфилова Анастасия Александровна",
+      "stored": "Панфилова Анастасия",
+      "missing": [
+       "Александровна"
+      ]
+     },
+     {
+      "id": "ru-hr-179",
+      "mention": "Абрамов Болеслав Георгиеивч",
+      "stored": "Абрамы Болеслав",
+      "missing": [
+       "Георгиеивч"
+      ]
+     },
+     {
+      "id": "ru-hr-003",
+      "mention": "Гаврилова Родиона Евсееивча",
+      "stored": "Гаврилов Родион",
+      "missing": [
+       "Евсееивча"
+      ]
+     },
+     {
+      "id": "ru-letter-068",
+      "mention": "Тихонов Серафим Ермолавеич",
+      "stored": "Тихонов Серафим",
+      "missing": [
+       "Ермолавеич"
+      ]
+     },
+     {
+      "id": "ru-letter-186",
+      "mention": "Кудрявцев Елисей Эдуардовчи",
+      "stored": "Кудрявцев Елисей",
+      "missing": [
+       "Эдуардовчи"
+      ]
+     },
+     {
+      "id": "ru-letter-014",
+      "mention": "Воронцова Галина Степанонва",
+      "stored": "Воронцова Галина",
+      "missing": [
+       "Степанонва"
+      ]
+     },
+     {
+      "id": "ru-letter-137",
+      "mention": "Леруа Мерлен Восток",
+      "stored": "Леруа Мерлены",
+      "missing": [
+       "Восток"
+      ]
+     },
+     {
+      "id": "ru-letter-137",
+      "mention": "Леруа Мерлен Восток",
+      "stored": "Леруа Мерлены",
+      "missing": [
+       "Восток"
+      ]
+     },
+     {
+      "id": "ru-letter-138",
+      "mention": "Исаков Серафим Владленвоич",
+      "stored": "Исаков Серафим",
+      "missing": [
+       "Владленвоич"
+      ]
+     }
+    ]
+   },
+   "uk": {
+    "mentions": 1341,
+    "lost": 4,
+    "examples": [
+     {
+      "id": "uk-contract-126",
+      "mention": "Natalie Johnston",
+      "stored": "N. Johnston",
+      "missing": [
+       "Natalie"
+      ]
+     },
+     {
+      "id": "uk-contract-126",
+      "mention": "Natalie Johnston",
+      "stored": "N. Johnston",
+      "missing": [
+       "Natalie"
+      ]
+     },
+     {
+      "id": "uk-contract-106",
+      "mention": "Allan Wood",
+      "stored": "A. Wood",
+      "missing": [
+       "Allan"
+      ]
+     },
+     {
+      "id": "uk-contract-106",
+      "mention": "Allan Wood",
+      "stored": "A. Wood",
+      "missing": [
+       "Allan"
+      ]
+     }
+    ],
+    "_all": [
+     {
+      "id": "uk-contract-126",
+      "mention": "Natalie Johnston",
+      "stored": "N. Johnston",
+      "missing": [
+       "Natalie"
+      ]
+     },
+     {
+      "id": "uk-contract-126",
+      "mention": "Natalie Johnston",
+      "stored": "N. Johnston",
+      "missing": [
+       "Natalie"
+      ]
+     },
+     {
+      "id": "uk-contract-106",
+      "mention": "Allan Wood",
+      "stored": "A. Wood",
+      "missing": [
+       "Allan"
+      ]
+     },
+     {
+      "id": "uk-contract-106",
+      "mention": "Allan Wood",
+      "stored": "A. Wood",
+      "missing": [
+       "Allan"
+      ]
+     }
+    ]
+   }
+  }
+ },
+ "_failures": {},
+ "_note": "Added after review, not pre-registered. Computed from the saved answers; no model was asked."
+}

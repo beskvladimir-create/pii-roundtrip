@@ -276,6 +276,144 @@
     }
    }
   },
+  "holdout6_ru": {
+   "all": {
+    "docs": 1000,
+    "strict_docs": 1000,
+    "rate": 1.0,
+    "ci": [
+     0.9961731014136095,
+     1.0
+    ]
+   },
+   "by_group": {
+    "ADDRESS": {
+     "docs": 1000,
+     "strict_docs": 626,
+     "rate": 0.626,
+     "ci": [
+      0.5955811892071059,
+      0.6554544323491238
+     ]
+    },
+    "ORG": {
+     "docs": 999,
+     "strict_docs": 242,
+     "rate": 0.24224224224224225,
+     "ci": [
+      0.2166939169679122,
+      0.26976536034966214
+     ]
+    },
+    "PERSON": {
+     "docs": 1000,
+     "strict_docs": 638,
+     "rate": 0.638,
+     "ci": [
+      0.607737663737362,
+      0.6672061122527942
+     ]
+    },
+    "numbers": {
+     "docs": 1000,
+     "strict_docs": 997,
+     "rate": 0.997,
+     "ci": [
+      0.9912168282105721,
+      0.9989792345945557
+     ]
+    }
+   },
+   "by_noise": {
+    "clean": {
+     "docs": 620,
+     "strict_docs": 620,
+     "rate": 1.0,
+     "ci": [
+      0.9938420265657179,
+      0.9999999999999999
+     ]
+    },
+    "noisy": {
+     "docs": 380,
+     "strict_docs": 380,
+     "rate": 1.0,
+     "ci": [
+      0.9899917049116094,
+      1.0
+     ]
+    }
+   }
+  },
+  "holdout6_uk": {
+   "all": {
+    "docs": 1000,
+    "strict_docs": 827,
+    "rate": 0.827,
+    "ci": [
+     0.8023160584363541,
+     0.8491811498881464
+    ]
+   },
+   "by_group": {
+    "ADDRESS": {
+     "docs": 1000,
+     "strict_docs": 547,
+     "rate": 0.547,
+     "ci": [
+      0.5160256008817754,
+      0.5776146706511041
+     ]
+    },
+    "ORG": {
+     "docs": 1000,
+     "strict_docs": 239,
+     "rate": 0.239,
+     "ci": [
+      0.21359749233628916,
+      0.2664001487258067
+     ]
+    },
+    "PERSON": {
+     "docs": 1000,
+     "strict_docs": 340,
+     "rate": 0.34,
+     "ci": [
+      0.31130136795291313,
+      0.369923239594732
+     ]
+    },
+    "numbers": {
+     "docs": 1000,
+     "strict_docs": 306,
+     "rate": 0.306,
+     "ci": [
+      0.278224938136047,
+      0.33525989851547255
+     ]
+    }
+   },
+   "by_noise": {
+    "clean": {
+     "docs": 615,
+     "strict_docs": 467,
+     "rate": 0.759349593495935,
+     "ci": [
+      0.7240205116338969,
+      0.7914587321661322
+     ]
+    },
+    "noisy": {
+     "docs": 385,
+     "strict_docs": 360,
+     "rate": 0.935064935064935,
+     "ci": [
+      0.9059000285170049,
+      0.9556333053649664
+     ]
+    }
+   }
+  },
   "hivetrace_pii_bench": {
    "all": {
     "docs": 1810,
@@ -593,6 +731,75 @@
      "rate": 1.0,
      "ci": [
       0.9904873594003194,
+      1.0
+     ]
+    }
+   }
+  },
+  "holdout6_ru": {
+   "all": {
+    "docs": 1000,
+    "strict_docs": 999,
+    "rate": 0.999,
+    "ci": [
+     0.9943572970398398,
+     0.9998234581709429
+    ]
+   },
+   "by_group": {
+    "ADDRESS": {
+     "docs": 1000,
+     "strict_docs": 911,
+     "rate": 0.911,
+     "ci": [
+      0.891742264575647,
+      0.9271120247863402
+     ]
+    },
+    "ORG": {
+     "docs": 999,
+     "strict_docs": 978,
+     "rate": 0.978978978978979,
+     "ci": [
+      0.968077758066293,
+      0.9862105363163892
+     ]
+    },
+    "PERSON": {
+     "docs": 1000,
+     "strict_docs": 0,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.003826898586390522
+     ]
+    },
+    "numbers": {
+     "docs": 1000,
+     "strict_docs": 358,
+     "rate": 0.358,
+     "ci": [
+      0.32888108037319636,
+      0.38820575882533864
+     ]
+    }
+   },
+   "by_noise": {
+    "clean": {
+     "docs": 620,
+     "strict_docs": 619,
+     "rate": 0.9983870967741936,
+     "ci": [
+      0.9909208510039248,
+      0.9997152335406135
+     ]
+    },
+    "noisy": {
+     "docs": 380,
+     "strict_docs": 380,
+     "rate": 1.0,
+     "ci": [
+      0.9899917049116094,
       1.0
      ]
     }
@@ -958,6 +1165,328 @@
     }
    }
   },
+  "holdout6_ru": {
+   "all": {
+    "docs": 1000,
+    "strict_docs": 2,
+    "rate": 0.002,
+    "ci": [
+     0.000548632102457155,
+     0.007262958889587807
+    ]
+   },
+   "by_group": {
+    "ADDRESS": {
+     "docs": 1000,
+     "strict_docs": 0,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.003826898586390522
+     ]
+    },
+    "ORG": {
+     "docs": 999,
+     "strict_docs": 2,
+     "rate": 0.002002002002002002,
+     "ci": [
+      0.0005491814556410311,
+      0.007270198992876462
+     ]
+    },
+    "PERSON": {
+     "docs": 1000,
+     "strict_docs": 0,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.003826898586390522
+     ]
+    },
+    "numbers": {
+     "docs": 1000,
+     "strict_docs": 0,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.003826898586390522
+     ]
+    }
+   },
+   "by_noise": {
+    "clean": {
+     "docs": 620,
+     "strict_docs": 1,
+     "rate": 0.0016129032258064516,
+     "ci": [
+      0.00028476645938647384,
+      0.009079148996075296
+     ]
+    },
+    "noisy": {
+     "docs": 380,
+     "strict_docs": 1,
+     "rate": 0.002631578947368421,
+     "ci": [
+      0.0004646774871571299,
+      0.01475410025866302
+     ]
+    }
+   }
+  },
+  "holdout6_uk": {
+   "all": {
+    "docs": 1000,
+    "strict_docs": 6,
+    "rate": 0.006,
+    "ci": [
+     0.0027526315709082315,
+     0.013028344232445605
+    ]
+   },
+   "by_group": {
+    "ADDRESS": {
+     "docs": 1000,
+     "strict_docs": 0,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.003826898586390522
+     ]
+    },
+    "ORG": {
+     "docs": 1000,
+     "strict_docs": 0,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.003826898586390522
+     ]
+    },
+    "PERSON": {
+     "docs": 1000,
+     "strict_docs": 6,
+     "rate": 0.006,
+     "ci": [
+      0.0027526315709082315,
+      0.013028344232445605
+     ]
+    },
+    "numbers": {
+     "docs": 1000,
+     "strict_docs": 0,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.003826898586390522
+     ]
+    }
+   },
+   "by_noise": {
+    "clean": {
+     "docs": 615,
+     "strict_docs": 0,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.006207727470163609
+     ]
+    },
+    "noisy": {
+     "docs": 385,
+     "strict_docs": 6,
+     "rate": 0.015584415584415584,
+     "ci": [
+      0.007161444143449687,
+      0.033579052758116394
+     ]
+    }
+   }
+  },
+  "hivetrace_pii_bench": {
+   "all": {
+    "docs": 1810,
+    "strict_docs": 0,
+    "rate": 0.0,
+    "ci": [
+     0.0,
+     0.00211793576682771
+    ]
+   },
+   "by_group": {
+    "ADDRESS": {
+     "docs": 176,
+     "strict_docs": 0,
+     "rate": 0.0,
+     "ci": [
+      1.734723475976807e-18,
+      0.021361019919751596
+     ]
+    },
+    "PERSON": {
+     "docs": 228,
+     "strict_docs": 0,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.016569933954907145
+     ]
+    },
+    "numbers": {
+     "docs": 413,
+     "strict_docs": 0,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.009215970766833252
+     ]
+    }
+   },
+   "by_noise": {}
+  },
+  "redmadrobot_pii_benchmark": {
+   "all": {
+    "docs": 2841,
+    "strict_docs": 38,
+    "rate": 0.013375571981696586,
+    "ci": [
+     0.009760432040539023,
+     0.018304961828841965
+    ]
+   },
+   "by_group": {
+    "ADDRESS": {
+     "docs": 594,
+     "strict_docs": 19,
+     "rate": 0.03198653198653199,
+     "ci": [
+      0.020571395313147226,
+      0.04941637402240921
+     ]
+    },
+    "PERSON": {
+     "docs": 499,
+     "strict_docs": 5,
+     "rate": 0.01002004008016032,
+     "ci": [
+      0.004287280130898918,
+      0.02323947978713491
+     ]
+    },
+    "numbers": {
+     "docs": 827,
+     "strict_docs": 14,
+     "rate": 0.016928657799274487,
+     "ci": [
+      0.010110312324132785,
+      0.028214201036777402
+     ]
+    }
+   },
+   "by_noise": {}
+  },
+  "nemotron_uk": {
+   "all": {
+    "docs": 801,
+    "strict_docs": 36,
+    "rate": 0.0449438202247191,
+    "ci": [
+     0.03263834687944688,
+     0.06159336281349145
+    ]
+   },
+   "by_group": {
+    "ADDRESS": {
+     "docs": 266,
+     "strict_docs": 32,
+     "rate": 0.12030075187969924,
+     "ci": [
+      0.0865164490150199,
+      0.16489623160946495
+     ]
+    },
+    "ORG": {
+     "docs": 358,
+     "strict_docs": 3,
+     "rate": 0.008379888268156424,
+     "ci": [
+      0.0028538781647563845,
+      0.02434476345080136
+     ]
+    },
+    "PERSON": {
+     "docs": 292,
+     "strict_docs": 5,
+     "rate": 0.017123287671232876,
+     "ci": [
+      0.007335551356782339,
+      0.03945164827977993
+     ]
+    },
+    "numbers": {
+     "docs": 58,
+     "strict_docs": 0,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.062119996895293766
+     ]
+    }
+   },
+   "by_noise": {}
+  },
+  "nemotron_uk_ids": {
+   "all": {
+    "docs": 2333,
+    "strict_docs": 31,
+    "rate": 0.013287612516073724,
+    "ci": [
+     0.009376700890538244,
+     0.018798764660913764
+    ]
+   },
+   "by_group": {
+    "ADDRESS": {
+     "docs": 212,
+     "strict_docs": 18,
+     "rate": 0.08490566037735849,
+     "ci": [
+      0.054379944471540285,
+      0.13020727133857232
+     ]
+    },
+    "ORG": {
+     "docs": 616,
+     "strict_docs": 8,
+     "rate": 0.012987012987012988,
+     "ci": [
+      0.006595013538844192,
+      0.025415745338907805
+     ]
+    },
+    "PERSON": {
+     "docs": 1112,
+     "strict_docs": 5,
+     "rate": 0.0044964028776978415,
+     "ci": [
+      0.0019220493904153037,
+      0.010482578649980392
+     ]
+    },
+    "numbers": {
+     "docs": 2333,
+     "strict_docs": 1,
+     "rate": 0.0004286326618088298,
+     "ci": [
+      7.566625095019926e-05,
+      0.002424118073327492
+     ]
+    }
+   },
+   "by_noise": {}
+  }
+ },
+ "pii_roundtrip_0.3": {
   "hivetrace_pii_bench": {
    "all": {
     "docs": 1810,
@@ -1414,6 +1943,144 @@
      "ci": [
       0.9902705287386133,
       1.0
+     ]
+    }
+   }
+  },
+  "holdout6_ru": {
+   "all": {
+    "docs": 1000,
+    "strict_docs": 1000,
+    "rate": 1.0,
+    "ci": [
+     0.9961731014136095,
+     1.0
+    ]
+   },
+   "by_group": {
+    "ADDRESS": {
+     "docs": 1000,
+     "strict_docs": 1000,
+     "rate": 1.0,
+     "ci": [
+      0.9961731014136095,
+      1.0
+     ]
+    },
+    "ORG": {
+     "docs": 999,
+     "strict_docs": 89,
+     "rate": 0.0890890890890891,
+     "ci": [
+      0.07296151213266401,
+      0.1083648309308866
+     ]
+    },
+    "PERSON": {
+     "docs": 1000,
+     "strict_docs": 683,
+     "rate": 0.683,
+     "ci": [
+      0.6535063434106659,
+      0.7110930117067152
+     ]
+    },
+    "numbers": {
+     "docs": 1000,
+     "strict_docs": 374,
+     "rate": 0.374,
+     "ci": [
+      0.34454556765087635,
+      0.40441881079289416
+     ]
+    }
+   },
+   "by_noise": {
+    "clean": {
+     "docs": 620,
+     "strict_docs": 620,
+     "rate": 1.0,
+     "ci": [
+      0.9938420265657179,
+      0.9999999999999999
+     ]
+    },
+    "noisy": {
+     "docs": 380,
+     "strict_docs": 380,
+     "rate": 1.0,
+     "ci": [
+      0.9899917049116094,
+      1.0
+     ]
+    }
+   }
+  },
+  "holdout6_uk": {
+   "all": {
+    "docs": 1000,
+    "strict_docs": 1000,
+    "rate": 1.0,
+    "ci": [
+     0.9961731014136095,
+     1.0
+    ]
+   },
+   "by_group": {
+    "ADDRESS": {
+     "docs": 1000,
+     "strict_docs": 1000,
+     "rate": 1.0,
+     "ci": [
+      0.9961731014136095,
+      1.0
+     ]
+    },
+    "ORG": {
+     "docs": 1000,
+     "strict_docs": 418,
+     "rate": 0.418,
+     "ci": [
+      0.38780002102026195,
+      0.44882759034790615
+     ]
+    },
+    "PERSON": {
+     "docs": 1000,
+     "strict_docs": 319,
+     "rate": 0.319,
+     "ci": [
+      0.29085118095956225,
+      0.34853415632871115
+     ]
+    },
+    "numbers": {
+     "docs": 1000,
+     "strict_docs": 341,
+     "rate": 0.341,
+     "ci": [
+      0.3122768034224175,
+      0.37094015032805483
+     ]
+    }
+   },
+   "by_noise": {
+    "clean": {
+     "docs": 615,
+     "strict_docs": 615,
+     "rate": 1.0,
+     "ci": [
+      0.9937922725298366,
+      1.0
+     ]
+    },
+    "noisy": {
+     "docs": 385,
+     "strict_docs": 385,
+     "rate": 1.0,
+     "ci": [
+      0.9901203986404745,
+      0.9999999999999998
      ]
     }
    }
@@ -1878,6 +2545,144 @@
     }
    }
   },
+  "holdout6_ru": {
+   "all": {
+    "docs": 1000,
+    "strict_docs": 985,
+    "rate": 0.985,
+    "ci": [
+     0.9753988052083976,
+     0.9908891031628037
+    ]
+   },
+   "by_group": {
+    "ADDRESS": {
+     "docs": 1000,
+     "strict_docs": 581,
+     "rate": 0.581,
+     "ci": [
+      0.5501660560097688,
+      0.6112139864192359
+     ]
+    },
+    "ORG": {
+     "docs": 999,
+     "strict_docs": 809,
+     "rate": 0.8098098098098098,
+     "ci": [
+      0.7843041551805601,
+      0.832941878490161
+     ]
+    },
+    "PERSON": {
+     "docs": 1000,
+     "strict_docs": 760,
+     "rate": 0.76,
+     "ci": [
+      0.7325660897012628,
+      0.7854439230338143
+     ]
+    },
+    "numbers": {
+     "docs": 1000,
+     "strict_docs": 326,
+     "rate": 0.326,
+     "ci": [
+      0.29766062459508447,
+      0.3556711361129795
+     ]
+    }
+   },
+   "by_noise": {
+    "clean": {
+     "docs": 620,
+     "strict_docs": 608,
+     "rate": 0.9806451612903225,
+     "ci": [
+      0.9664764288982959,
+      0.9888942934132652
+     ]
+    },
+    "noisy": {
+     "docs": 380,
+     "strict_docs": 377,
+     "rate": 0.9921052631578947,
+     "ci": [
+      0.9770486911603112,
+      0.9973115657790096
+     ]
+    }
+   }
+  },
+  "holdout6_uk": {
+   "all": {
+    "docs": 1000,
+    "strict_docs": 965,
+    "rate": 0.965,
+    "ci": [
+     0.9517130967996695,
+     0.9747278875149873
+    ]
+   },
+   "by_group": {
+    "ADDRESS": {
+     "docs": 1000,
+     "strict_docs": 425,
+     "rate": 0.425,
+     "ci": [
+      0.3947046577558868,
+      0.45586937703207187
+     ]
+    },
+    "ORG": {
+     "docs": 1000,
+     "strict_docs": 853,
+     "rate": 0.853,
+     "ci": [
+      0.8297018143400393,
+      0.873596395257969
+     ]
+    },
+    "PERSON": {
+     "docs": 1000,
+     "strict_docs": 92,
+     "rate": 0.092,
+     "ci": [
+      0.075613625710728,
+      0.1115091235357667
+     ]
+    },
+    "numbers": {
+     "docs": 1000,
+     "strict_docs": 434,
+     "rate": 0.434,
+     "ci": [
+      0.4035912238909395,
+      0.4649139267224641
+     ]
+    }
+   },
+   "by_noise": {
+    "clean": {
+     "docs": 615,
+     "strict_docs": 597,
+     "rate": 0.9707317073170731,
+     "ci": [
+      0.9542113368771743,
+      0.9814077294557937
+     ]
+    },
+    "noisy": {
+     "docs": 385,
+     "strict_docs": 368,
+     "rate": 0.9558441558441558,
+     "ci": [
+      0.9304297977567788,
+      0.9722513968479136
+     ]
+    }
+   }
+  },
   "hivetrace_pii_bench": {
    "all": {
     "docs": 1810,
@@ -2196,6 +3001,75 @@
      "ci": [
       0.9902705287386133,
       1.0
+     ]
+    }
+   }
+  },
+  "holdout6_uk": {
+   "all": {
+    "docs": 1000,
+    "strict_docs": 1000,
+    "rate": 1.0,
+    "ci": [
+     0.9961731014136095,
+     1.0
+    ]
+   },
+   "by_group": {
+    "ADDRESS": {
+     "docs": 1000,
+     "strict_docs": 1000,
+     "rate": 1.0,
+     "ci": [
+      0.9961731014136095,
+      1.0
+     ]
+    },
+    "ORG": {
+     "docs": 1000,
+     "strict_docs": 903,
+     "rate": 0.903,
+     "ci": [
+      0.8830843992979197,
+      0.9198311204414497
+     ]
+    },
+    "PERSON": {
+     "docs": 1000,
+     "strict_docs": 383,
+     "rate": 0.383,
+     "ci": [
+      0.3533721971089626,
+      0.4135232971602528
+     ]
+    },
+    "numbers": {
+     "docs": 1000,
+     "strict_docs": 1000,
+     "rate": 1.0,
+     "ci": [
+      0.9961731014136095,
+      1.0
+     ]
+    }
+   },
+   "by_noise": {
+    "clean": {
+     "docs": 615,
+     "strict_docs": 615,
+     "rate": 1.0,
+     "ci": [
+      0.9937922725298366,
+      1.0
+     ]
+    },
+    "noisy": {
+     "docs": 385,
+     "strict_docs": 385,
+     "rate": 1.0,
+     "ci": [
+      0.9901203986404745,
+      0.9999999999999998
      ]
     }
    }
@@ -2578,6 +3452,144 @@
     }
    }
   },
+  "holdout6_ru": {
+   "all": {
+    "docs": 1000,
+    "strict_docs": 1000,
+    "rate": 1.0,
+    "ci": [
+     0.9961731014136095,
+     1.0
+    ]
+   },
+   "by_group": {
+    "ADDRESS": {
+     "docs": 1000,
+     "strict_docs": 1000,
+     "rate": 1.0,
+     "ci": [
+      0.9961731014136095,
+      1.0
+     ]
+    },
+    "ORG": {
+     "docs": 999,
+     "strict_docs": 999,
+     "rate": 1.0,
+     "ci": [
+      0.9961692853587246,
+      0.9999999999999999
+     ]
+    },
+    "PERSON": {
+     "docs": 1000,
+     "strict_docs": 1000,
+     "rate": 1.0,
+     "ci": [
+      0.9961731014136095,
+      1.0
+     ]
+    },
+    "numbers": {
+     "docs": 1000,
+     "strict_docs": 374,
+     "rate": 0.374,
+     "ci": [
+      0.34454556765087635,
+      0.40441881079289416
+     ]
+    }
+   },
+   "by_noise": {
+    "clean": {
+     "docs": 620,
+     "strict_docs": 620,
+     "rate": 1.0,
+     "ci": [
+      0.9938420265657179,
+      0.9999999999999999
+     ]
+    },
+    "noisy": {
+     "docs": 380,
+     "strict_docs": 380,
+     "rate": 1.0,
+     "ci": [
+      0.9899917049116094,
+      1.0
+     ]
+    }
+   }
+  },
+  "holdout6_uk": {
+   "all": {
+    "docs": 1000,
+    "strict_docs": 1000,
+    "rate": 1.0,
+    "ci": [
+     0.9961731014136095,
+     1.0
+    ]
+   },
+   "by_group": {
+    "ADDRESS": {
+     "docs": 1000,
+     "strict_docs": 1000,
+     "rate": 1.0,
+     "ci": [
+      0.9961731014136095,
+      1.0
+     ]
+    },
+    "ORG": {
+     "docs": 1000,
+     "strict_docs": 1000,
+     "rate": 1.0,
+     "ci": [
+      0.9961731014136095,
+      1.0
+     ]
+    },
+    "PERSON": {
+     "docs": 1000,
+     "strict_docs": 1000,
+     "rate": 1.0,
+     "ci": [
+      0.9961731014136095,
+      1.0
+     ]
+    },
+    "numbers": {
+     "docs": 1000,
+     "strict_docs": 358,
+     "rate": 0.358,
+     "ci": [
+      0.32888108037319636,
+      0.38820575882533864
+     ]
+    }
+   },
+   "by_noise": {
+    "clean": {
+     "docs": 615,
+     "strict_docs": 615,
+     "rate": 1.0,
+     "ci": [
+      0.9937922725298366,
+      1.0
+     ]
+    },
+    "noisy": {
+     "docs": 385,
+     "strict_docs": 385,
+     "rate": 1.0,
+     "ci": [
+      0.9901203986404745,
+      0.9999999999999998
+     ]
+    }
+   }
+  },
   "hivetrace_pii_bench": {
    "all": {
     "docs": 1810,
@@ -2761,130 +3773,9 @@
    "by_noise": {}
   }
  },
- "_examples_pii_roundtrip_holdout5_uk": {
-  "total": 142,
-  "sample": [
-   {
-    "id": "uk-medical-068",
-    "type": "ORG",
-    "value": "General Hospital, Shirleyborough",
-    "visible": "Shirleyborough"
-   },
-   {
-    "id": "uk-medical-087",
-    "type": "ORG",
-    "value": "General Hospital, Richardsonmouth",
-    "visible": "Richardsonmouth"
-   },
-   {
-    "id": "uk-contract-109",
-    "type": "ADDRESS",
-    "value": "9 Suzanne Isle, South Samanthabury S39 0AQ",
-    "visible": "Samanthabury"
-   },
-   {
-    "id": "uk-hr-070",
-    "type": "ADDRESS",
-    "value": "7 Ruth Shore, East Ricky RG04 8PY",
-    "visible": "East Ricky"
-   },
-   {
-    "id": "uk-medical-159",
-    "type": "ADDRESS",
-    "value": "067 Freeman Island, West Lydia N5 2QZ",
-    "visible": "Freeman Island West Lydia"
-   },
-   {
-    "id": "uk-medical-145",
-    "type": "ORG",
-    "value": "General Hospital, West Marion",
-    "visible": "West Marion"
-   },
-   {
-    "id": "uk-medical-083",
-    "type": "ORG",
-    "value": "General Hospital, South Barry",
-    "visible": "South Barry"
-   },
-   {
-    "id": "uk-hr-183",
-    "type": "ADDRESS",
-    "value": "218 Wood Port, East Aaronland L81 7SJ",
-    "visible": "East Aaronland"
-   },
-   {
-    "id": "uk-medical-138",
-    "type": "ORG",
-    "value": "General Hospital, Portermouth",
-    "visible": "Portermouth"
-   },
-   {
-    "id": "uk-medical-048",
-    "type": "ORG",
-    "value": "General Hospital, South Kayleighfurt",
-    "visible": "South Kayleighfurt"
-   },
-   {
-    "id": "uk-letter-140",
-    "type": "ADDRESS",
-    "value": "36 Dixon Summit, North Carlyborough HP1V 5DJ",
-    "visible": "North Carlyborough"
-   },
-   {
-    "id": "uk-medical-158",
-    "type": "ORG",
-    "value": "University Hospital Stephanietown",
-    "visible": "University Hospital Stephanietown"
-   },
-   {
-    "id": "uk-certificate-167",
-    "type": "ADDRESS",
-    "value": "578 Janice Key, North Dennisland ME13 5XT",
-    "visible": "578 Janice Key North Dennisland"
-   },
-   {
-    "id": "uk-hr-117",
-    "type": "ADDRESS",
-    "value": "380 Harris Road, South Georgeland E25 4GJ",
-    "visible": "South Georgeland"
-   },
-   {
-    "id": "uk-certificate-017",
-    "type": "ADDRESS",
-    "value": "652 Garry Island, East Michael SA04 0JE",
-    "visible": "East Michael"
-   },
-   {
-    "id": "uk-hr-012",
-    "type": "ADDRESS",
-    "value": "840 Carter Road, Lake Georgia W5G 3NE",
-    "visible": "Lake Georgia"
-   },
-   {
-    "id": "uk-medical-175",
-    "type": "ORG",
-    "value": "General Hospital, Thomasmouth",
-    "visible": "Thomasmouth"
-   },
-   {
-    "id": "uk-letter-005",
-    "type": "ADDRESS",
-    "value": "418 Carl Tunnel, North Valerie NR01 8RW",
-    "visible": "North Valerie"
-   },
-   {
-    "id": "uk-hr-188",
-    "type": "ADDRESS",
-    "value": "3 Murphy Spurs, North Alan GU75 3UW",
-    "visible": "North Alan"
-   },
-   {
-    "id": "uk-certificate-019",
-    "type": "ADDRESS",
-    "value": "304 Davies Throughway, North Janefort M3B 9WU",
-    "visible": "North Janefort"
-   }
-  ]
+ "_examples_pii_roundtrip_holdout6_uk": {
+  "total": 0,
+  "sample": []
  },
  "_note": "Added after review, not pre-registered. The pre-registered leak measure is leak_rate in metrics.json."
 }

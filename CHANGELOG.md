@@ -4,7 +4,12 @@
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow [Semantic Versioning](https://semver.org/).
 
-## [Unreleased] (0.4.0)
+## [0.4.0] - 2026-10-23
+
+Version 0.4 is checked on held-out set 6, generated after its changes and published with its rules and run plan before any run (public commit 444c4bd, pushed at 07:57:47 UTC on 22 October 2026). Detection by every tool and the engine's round trip ran once, from committed code. On set 6 the engine meets all five thresholds for both languages: structured identifiers 100.0%, names, addresses and organisations 99.98% (Russian) and 99.95% (UK English), documents with a leak 0.1% and 0.6%, the strict count (new, at most 2%) 0.2% and 0.6%, restoration 100.0% with a lower bound of 99.0% for both languages and both LLMs (380 answers per model, no failed occurrence). Full intervals are in REPORT.md and README.md; the course of the run, including a mains power cut and its continuation, is in `results/holdout6_cycle_journal.md`.
+
+**Known issue, found after the run:** the engine stores some Russian surnames in a wrong form: 42 of 1,097 names in the plural ("Абрамов" as "Абрамы", the dictionary reads it as a form of the first name "Абрам") and 103 in another gender or case, mostly when the text has only the surname with initials. The round-trip evaluator compares answers with the stored value and counts such restorations as correct, so the Russian restoration of 100% is overstated: 0.8% to 2.1% of Russian placeholder occurrences carry a wrong surname, and meeting the 99% threshold for Russian names is not established. The error was present in 0.3 too. UK English is not affected. Details: `results/stored_names.holdout6.json`, REPORT section 11. To be fixed in the next version.
+
 
 ### Changed
 
