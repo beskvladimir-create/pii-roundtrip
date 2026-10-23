@@ -15940,7 +15940,7 @@
  },
  "presidio": {
   "_config": {
-   "version": "2.2.364+",
+   "version": "2.2.364",
    "score_threshold": 0.3,
    "nlp": {
     "nlp_engine_name": "spacy",

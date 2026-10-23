@@ -1,6 +1,6 @@
 [project]
 name = "pii-roundtrip-desktop"
-version = "0.3.1"
+version = "0.4.0"
 description = "Desktop app for pii-roundtrip: clean a document before sending it to an LLM, restore the answer locally"
 requires-python = ">=3.12"
 license = "Apache-2.0"

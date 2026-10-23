@@ -519,42 +519,51 @@ def evaluator_versions_text(lang: str) -> str:
     return "; ".join(parts) or WORDS[lang]["na"]
 
 
-def stored_names_text(lang: str) -> str:
-    """Found after the run on set 6 (results/stored_names.holdout6.json): Russian names stored in a
-    wrong form, and the share of placeholder occurrences in the answers they affect."""
-    sn = _supplement(f"stored_names.{CYCLE_SET}.json").get("ru")
-    cyc = _load_cycle_set(CYCLE_SET).get(ENGINE, {})
-    if not sn or not cyc:
+def stored_names_text(lang: str, data_set: str = CYCLE_SET) -> str:
+    """Not pre-registered (results/stored_names.<set>.json, bench/eval/stored_names.py): Russian
+    names stored in a wrong form, and restoration with their occurrences counted as failures."""
+    sn = _supplement(f"stored_names.{data_set}.json")
+    ru = sn.get("ru")
+    if not ru or "restoration" not in sn:
         return WORDS[lang]["na"]
-    cats, occ = sn["categories"], sn["occurrences_with_wrong_stored_name"]
-    parts = []
-    for model in ("qwen3.5:9b", "gemma4:12b"):
-        key = model.replace(":", "_")
-        plural = occ.get(f"{key}/plural_form", 0)
-        both = plural + occ.get(f"{key}/gender_or_case", 0)
-        n = cyc[f"ru/{model}"]["labels_in_answer"]
-        parts.append((model, plural, both, n))
+    c = ru["categories"]
+    plural, gender = c.get("plural_form", 0), c.get("gender_or_case", 0)
+    other = ru["wrong"] - plural - gender
+    rest = sn["restoration"]
+
+    def cellr(x: dict) -> str:
+        return f"{pct(x['rate'], lang)}{interval(x['ci'], lang)}"
+
+    models = [m for m in ("qwen3.5:9b", "gemma4:12b") if f"ru/{m}" in rest]
     if lang == "ru":
+        by = "по ручной проверке" if ru.get("reviewed_by_hand") else "по правилу, без ручной проверки"
         head = (
-            f"из {sn['names']} русских имён в документах полного цикла {cats.get('plural_form', 0)} сохранены во множественном "
-            f"числе («Абрамов» как «Абрамы») и {cats.get('gender_or_case', 0)} в другом роде или падеже (чаще всего, когда в тексте "
-            "есть только фамилия с инициалами)"
+            f"из {ru['names']} русских имён в документах полного цикла {ru['wrong']} сохранены неверно ({by}): "
+            f"{plural} во множественном числе («Абрамов» как «Абрамы»), {gender} в другом роде или падеже, "
+            f"{other} прочие (потеряна фамилия или инициалы, изменён порядок)"
         )
-        tail = "; ".join(
-            f"{m}: {p} из {n} вхождений меток с однозначно неверной фамилией, {b} вместе с родом и падежом ({pct(p / n, lang)}–{pct(b / n, lang)})"
-            for m, p, b, n in parts
-        )
-    else:
-        head = (
-            f"of {sn['names']} Russian names in the round-trip documents {cats.get('plural_form', 0)} were stored in the plural "
-            f"(\"Абрамов\" as \"Абрамы\") and {cats.get('gender_or_case', 0)} in another gender or case (mostly when the text "
-            "has only the surname with initials)"
-        )
-        tail = "; ".join(
-            f"{m}: {p} of {n} placeholder occurrences with a surely wrong surname, {b} with gender and case ({pct(p / n, lang)} to {pct(b / n, lang)})"
-            for m, p, b, n in parts
-        )
-    return f"{head}. {tail}"
+        parts = [
+            f"{m}: по всем выданным меткам {cellr(rest[f'ru/{m}']['all'])}, только по меткам имён "
+            f"{cellr(rest[f'ru/{m}']['person'])}, ответов хотя бы с одной неверной фамилией "
+            f"{rest[f'ru/{m}']['answers_with_a_wrong_name']} из {rest[f'ru/{m}']['all']['answers']}"
+            f"{interval(rest[f'ru/{m}']['answers_with_a_wrong_name_ci'], lang)}"
+            for m in models
+        ]
+        return head + ". Восстановление с учётом этого: " + "; ".join(parts)
+    by = "checked by hand" if ru.get("reviewed_by_hand") else "by rule, not checked by hand"
+    head = (
+        f"of {ru['names']} Russian names in the round-trip documents {ru['wrong']} were stored wrongly ({by}): "
+        f"{plural} in the plural (\"Абрамов\" as \"Абрамы\"), {gender} in another gender or case, "
+        f"{other} other (surname or initials dropped, order changed)"
+    )
+    parts = [
+        f"{m}: over all issued placeholders {cellr(rest[f'ru/{m}']['all'])}, over name placeholders only "
+        f"{cellr(rest[f'ru/{m}']['person'])}, answers with at least one wrong surname "
+        f"{rest[f'ru/{m}']['answers_with_a_wrong_name']} of {rest[f'ru/{m}']['all']['answers']}"
+        f"{interval(rest[f'ru/{m}']['answers_with_a_wrong_name_ci'], lang)}"
+        for m in models
+    ]
+    return head + ". Restoration with this taken into account: " + "; ".join(parts)
 
 
 def _load_cycle_set(name: str) -> dict:
@@ -763,6 +772,7 @@ def fill(text: str, m: dict, cycles: dict, lang: str) -> str:
     text = text.replace("{VALUE_FIDELITY}", value_fidelity_text(lang))
     text = text.replace("{EVALUATOR_VERSIONS_SET6}", evaluator_versions_text(lang))
     text = text.replace("{STORED_NAMES}", stored_names_text(lang))
+    text = text.replace("{STORED_NAMES_5}", stored_names_text(lang, "holdout5"))
     return _REF.sub(lambda mt: _ref(m, cycles, mt, lang), text)
 
 

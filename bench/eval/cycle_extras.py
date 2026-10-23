@@ -181,7 +181,12 @@ def main() -> None:
                     lang: value_fidelity(data, lang, per["pii_roundtrip"]) for lang in ("ru", "uk")
                 }
     out["_failures"] = fails
-    out["_note"] = "Added after review, not pre-registered. Computed from the saved answers; no model was asked."
+    out["_note"] = (
+        "Computed from the saved answers; no model was asked. Held-out set 6: answers with a failure "
+        "(Clopper-Pearson) and value fidelity were pre-registered as companion measures (HOLDOUT.md); "
+        "restoration without values leaked into the input was not. Held-out sets 4 and 5: added after "
+        "review, not pre-registered."
+    )
     json.dump(out, sys.stdout, ensure_ascii=False, indent=1)
     print()
 

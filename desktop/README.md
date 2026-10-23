@@ -37,7 +37,7 @@ What is kept when restoring:
 - The app blocks its own network connections and has no telemetry or accounts.
 - The link between labels and real values is stored encrypted (AES-256-GCM) in `~/Library/Application Support/pii-roundtrip`; the key is kept in the macOS Keychain.
 - A cleaned Word file has its author and other properties erased; a cleaned PDF is rebuilt so that the masked values are removed from the file, not just covered. Before a cleaned file is saved, the app checks every part of it for the masked values.
-- Detection is not perfect: on held-out set 5 the engine leaves at least one value in 0.2% of Russian and 0.7% of UK documents (see the [report](../REPORT.en.md)). Read the cleaned text before you send it.
+- Detection is not perfect: on held-out set 6 engine 0.4 leaves at least one value in 0.1% of Russian and 0.6% of UK documents (see the [report](../REPORT.en.md)). Read the cleaned text before you send it.
 
 ## Build from source
 
@@ -54,7 +54,7 @@ The installer:
 uv run python scripts/collect_models.py         # the pinned models into build/models
 uv run pyinstaller -y pii-roundtrip.spec        # dist/pii-roundtrip.app
 ./dist/pii-roundtrip.app/Contents/MacOS/pii-roundtrip --selftest
-bash scripts/make_dmg.sh 0.3.1                  # dist/pii-roundtrip-0.3.1.dmg
+bash scripts/make_dmg.sh 0.4.0                  # dist/pii-roundtrip-0.4.0.dmg
 ```
 
 The desktop app has its own environment so that its libraries do not change the benchmark environment. Licences of the bundled components are listed in the app (About, Third-party licences) and next to it in the installer.

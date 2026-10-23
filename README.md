@@ -47,7 +47,7 @@ External sets: hivetrace_pii_bench.
 
 The Russian external datasets were used for error analysis while version 0.1 was developed, so for pii-roundtrip they are not an independent check. Held-out set 6 is.
 
-**Russian restoration is overstated.** After the run it was found that the engine stores some Russian surnames in a wrong form ("Абрамов" as "Абрамы"), and the evaluator counts their restoration as correct. Meeting the 99% threshold for Russian names is therefore not established; details in [REPORT.en.md](REPORT.en.md), section 11. UK English is not affected.
+**Russian restoration is overstated.** After the run it was found that the engine stores some Russian surnames in a wrong form ("Абрамов" as "Абрамы"), and the evaluator counts their restoration as correct. Counting such names as failures (not pre-registered), Russian restoration is about 98% over all placeholders and about 90% over name placeholders, so the 99% threshold is not met; details in [REPORT.en.md](REPORT.en.md), section 11. The fix comes in the next version and is checked on set 7. UK English is not affected.
 
 No restoration verdict is given for pii-guard: its round trip was not repeated on set 6, and on set 5 with qwen3.5:9b only 15 of its 40 answers contain placeholders, and with one failure the bootstrap interval is narrower than the zero-error bound of a cell without failures.
 

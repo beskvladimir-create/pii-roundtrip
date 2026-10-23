@@ -4,11 +4,28 @@
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow [Semantic Versioning](https://semver.org/).
 
-## [0.4.0] - 2026-10-23
+## [0.4.1] - 2026-10-23
+
+The engine is unchanged (0.4.0). This release completes the analysis of held-out set 6 after the third round of review; nothing was run again and no model was asked.
+
+### Added
+
+- `bench/eval/stored_names.py` and `results/stored_names.holdout6.json`: every name the engine stored in the round-trip documents of set 6 compared with the generator's annotation, with verdicts by hand for every mismatch (`results/stored_names_review.holdout6.json`). Of 1,097 Russian names 151 are stored wrongly (42 in the plural, 103 in another gender or case, 6 other); no UK name is. Restoration recomputed with their occurrences, and the two inflection errors of the first name "Пров" found by hand, counted as failures, over the occurrences the engine issued (12,720 and 13,481 in Russian): qwen3.5:9b 97.8% over all placeholders and 90.2% over name placeholders, gemma4:12b 98.0% and 90.2%; answers with at least one wrong surname 182 and 180 of 380. Not pre-registered. The same count for set 5 (engine 0.3, verdicts by rule): `results/stored_names.holdout5.json`.
+- `bench/eval/evaluator_versions.py`, the script behind `results/evaluator_versions.holdout{5,6}.json`.
+- `results/rule_changes.md`: every change to the scoring rules made after data had been seen, with its date and the direction it moved the results.
+- The manual check of the 37 evaluator version 1 failures on set 6 (it was committed after the tag v0.4.0).
+
+### Fixed
+
+- REPORT section 1: 0.4 fixes some errors in storing Russian names, not all. Section 11: the stored-name error will be fixed in the next version and can be checked only on a new set. The counts of wrong surnames are stated as plural plus gender or case (up to 263 = 100 + 163 and 261 = 100 + 161 occurrences); the earlier wording in 0.4.0 read as if they were separate.
+- `results/strict_leaks.json`: the examples for the UK part of set 6 were empty because only addresses and organisations were collected; every threshold type is collected now. The notes of `results/strict_leaks.json` and `results/cycle_extras.holdout6.json` say which measures were pre-registered for set 6.
+- HOLDOUT: dated note that there are six held-out sets. `scripts/reproduce.sh`: sets 5 and 6 and the set 6 round trip. `results/metrics.json`: Presidio version 2.2.364 (was "2.2.364+").
+
+
 
 Version 0.4 is checked on held-out set 6, generated after its changes and published with its rules and run plan before any run (public commit 444c4bd, pushed at 07:57:47 UTC on 22 October 2026). Detection by every tool and the engine's round trip ran once, from committed code. On set 6 the engine meets all five thresholds for both languages: structured identifiers 100.0%, names, addresses and organisations 99.98% (Russian) and 99.95% (UK English), documents with a leak 0.1% and 0.6%, the strict count (new, at most 2%) 0.2% and 0.6%, restoration 100.0% with a lower bound of 99.0% for both languages and both LLMs (380 answers per model, no failed occurrence). Full intervals are in REPORT.md and README.md; the course of the run, including a mains power cut and its continuation, is in `results/holdout6_cycle_journal.md`.
 
-**Known issue, found after the run:** the engine stores some Russian surnames in a wrong form: 42 of 1,097 names in the plural ("Абрамов" as "Абрамы", the dictionary reads it as a form of the first name "Абрам") and 103 in another gender or case, mostly when the text has only the surname with initials. The round-trip evaluator compares answers with the stored value and counts such restorations as correct, so the Russian restoration of 100% is overstated: 0.8% to 2.1% of Russian placeholder occurrences carry a wrong surname, and meeting the 99% threshold for Russian names is not established. The error was present in 0.3 too. UK English is not affected. Details: `results/stored_names.holdout6.json`, REPORT section 11. To be fixed in the next version.
+**Known issue, found after the run:** the engine stores some Russian surnames in a wrong form: 42 of 1,097 names in the plural ("Абрамов" as "Абрамы", the dictionary reads it as a form of the first name "Абрам") and 103 in another gender or case, mostly when the text has only the surname with initials. The round-trip evaluator compares answers with the stored value and counts such restorations as correct, so the Russian restoration of 100% is overstated: up to 263 (qwen3.5:9b: 100 in the plural and 163 in another gender or case) and 261 (gemma4:12b: 100 and 161) Russian placeholder occurrences carry a wrong surname, 0.8% to 2.1% and 0.7% to 1.9% of all placeholders, and meeting the 99% threshold for Russian names is not established. The error was present in 0.3 too. UK English is not affected. Details: `results/stored_names.holdout6.json`, REPORT section 11. To be fixed in the next version.
 
 
 ### Changed

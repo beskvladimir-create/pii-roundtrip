@@ -87,10 +87,55 @@ def score(ds: str, verbose: bool = False) -> dict:
     return out
 
 
+def stored_names(ds: str) -> dict:
+    """Stored names against the annotation (bench/eval/stored_names.classify) on every document of a
+    development set, with the cached detector spans."""
+    from collections import Counter
+
+    from bench.eval.stored_names import LABEL, classify
+    from pii_roundtrip.core import Engine
+
+    path, lang = SETS[ds]
+    elang = "en-GB" if lang == "uk" else lang
+    cached = CachedModels(pickle.loads((CACHE / f"{ds}.pkl").read_bytes()))
+    eng = Engine(cached)  # type: ignore[arg-type]
+    cats: Counter = Counter()
+    examples = []
+    for d in load_docs(path):
+        text = d["text"]
+        spans = eng.spans(text, elang)
+        anon, session = eng.anonymize(text, elang)
+        labels = LABEL.findall(anon)
+        if len(labels) != len(spans):
+            continue
+        ms: dict = {}
+        gold: dict = {}
+        for sp, lab in zip(spans, labels, strict=True):
+            if sp.type != "PERSON":
+                continue
+            ms.setdefault(lab, []).append(text[sp.start : sp.end])
+            gold.setdefault(lab, []).extend(
+                g.get("canonical", g["value"])
+                for g in d["entities"]
+                if g["type"] == "PERSON" and g["start"] < sp.end and g["end"] > sp.start
+            )
+        for lab, mentions in ms.items():
+            if not gold.get(lab):
+                continue
+            canonical = max(set(gold[lab]), key=gold[lab].count)
+            c = classify(lang, canonical, session.mapping[lab], mentions)
+            cats[c] += 1
+            if c not in ("right", "no_surname_in_text", "typo_in_source_text") and len(examples) < 30:
+                examples.append(f"{d['id']}: {canonical} | {session.mapping[lab]} | {' / '.join(mentions)}")
+    return {"names": sum(cats.values()), "categories": dict(cats), "examples": examples}
+
+
 if __name__ == "__main__":
     cmd, *sets = sys.argv[1:]
     for ds in sets:
         if cmd == "build":
             build(ds)
+        elif cmd == "names":
+            print(ds, json.dumps(stored_names(ds), ensure_ascii=False))
         else:
             print(ds, json.dumps(score(ds), ensure_ascii=False))

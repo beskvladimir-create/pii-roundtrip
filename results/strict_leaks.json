@@ -3774,8 +3774,45 @@
   }
  },
  "_examples_pii_roundtrip_holdout6_uk": {
-  "total": 0,
-  "sample": []
+  "total": 6,
+  "sample": [
+   {
+    "id": "uk-hr-165",
+    "type": "PERSON",
+    "value": "PERRY, tSanley",
+    "visible": "tSanley"
+   },
+   {
+    "id": "uk-medical-076",
+    "type": "PERSON",
+    "value": "ROBERTS, hCelsea",
+    "visible": "hCelsea"
+   },
+   {
+    "id": "uk-contract-070",
+    "type": "PERSON",
+    "value": "Connor Waltesr",
+    "visible": "Waltesr"
+   },
+   {
+    "id": "uk-letter-164",
+    "type": "PERSON",
+    "value": "Lee iWlson",
+    "visible": "iWlson"
+   },
+   {
+    "id": "uk-hr-073",
+    "type": "PERSON",
+    "value": "Tina rBown",
+    "visible": "rBown"
+   },
+   {
+    "id": "uk-medical-055",
+    "type": "PERSON",
+    "value": "GRANT, eGraldine",
+    "visible": "eGraldine"
+   }
+  ]
  },
- "_note": "Added after review, not pre-registered. The pre-registered leak measure is leak_rate in metrics.json."
+ "_note": "Pre-registered as the fifth threshold (at most 2%) for held-out set 6 (HOLDOUT.md, 22.10.2026). For the other sets (held-out sets 4 and 5, the external datasets) added after review and not pre-registered; there the pre-registered leak measure is leak_rate in metrics.json."
 }

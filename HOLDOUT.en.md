@@ -6,6 +6,8 @@ Four held-out sets of synthetic documents test the engine on data it did not see
 
 > Correction of 22 October 2026: there are five sets, not four. The fifth was added on 19 October 2026 (section "Set 5"); the sentence above dates from version 0.2.
 
+> Correction of 23 October 2026: with set 6 there are six held-out sets (section "Set 6"); set 7 will be the last one for the paper.
+
 The generator in this repository reproduces every set byte for byte. Faker draws some values (the year in an e-mail address) from the range up to "today", so the generator fixes that date: 13 October 2026 by default, and for set 3 it is given in the command (`--now 2026-10-16`). Before 16 October 2026 the date was not fixed, and regenerating set 2 on another day differed from the file in one e-mail address out of 100 documents; the set file and its hash did not change. To check:
 
 ```bash

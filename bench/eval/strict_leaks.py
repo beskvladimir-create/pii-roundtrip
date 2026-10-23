@@ -108,15 +108,15 @@ def main() -> None:
                     c[1] += 1
                 if tool == "pii_roundtrip" and ds == EXAMPLES:
                     for g in open_:
-                        if g["type"] in ("ADDRESS", "ORG"):
-                            examples.append(
-                                {
-                                    "id": d["id"],
-                                    "type": g["type"],
-                                    "value": g["value"],
-                                    "visible": visible(text, g, preds),
-                                }
-                            )
+                        # every threshold type (until 23.10.2026 addresses and organisations only)
+                        examples.append(
+                            {
+                                "id": d["id"],
+                                "type": g["type"],
+                                "value": g["value"],
+                                "visible": visible(text, g, preds),
+                            }
+                        )
             out.setdefault(tool, {})[ds] = {
                 "all": share(*allc),
                 "by_group": {k: share(*v) for k, v in sorted(by_group.items())},
@@ -129,7 +129,9 @@ def main() -> None:
         "sample": rng.sample(examples, min(20, len(examples))),
     }
     out["_note"] = (
-        "Added after review, not pre-registered. The pre-registered leak measure is leak_rate in metrics.json."
+        "Pre-registered as the fifth threshold (at most 2%) for held-out set 6 (HOLDOUT.md, 22.10.2026). "
+        "For the other sets (held-out sets 4 and 5, the external datasets) added after review and not "
+        "pre-registered; there the pre-registered leak measure is leak_rate in metrics.json."
     )
     json.dump(out, sys.stdout, ensure_ascii=False, indent=1)
     print()
