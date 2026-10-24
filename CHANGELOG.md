@@ -4,6 +4,42 @@
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow [Semantic Versioning](https://semver.org/).
 
+## [0.5.0] - 2026-10-24
+
+Version 0.5 is checked on held-out set 7, generated after its changes and published with its rules and run plan before any run (public commit 13c42b8, pushed at 12:01:01 UTC on 23 October 2026). By the stopping rule pre-registered with it, set 7 is the last held-out set for the paper and its result is published as it is. Detection by every tool and the engine's round trip ran once, from committed code; the round trip was interrupted once by a mains power cut and continued by the same command from the saved answers (`results/holdout7_cycle_journal.md`).
+
+### Result on set 7
+
+- Detection, both languages met: structured identifiers 100.0%, names, addresses and organisations 99.9% (Russian) and 99.98% (UK English), documents with a leak 0.3% and 0.2%, strict count 0.8% and 0.2%.
+- Restoration, UK English met: all placeholders 99.99% [99.98; 100.0], name placeholders 99.97% [99.9; 100.0].
+- Restoration, Russian: all placeholders 98.9% [98.6; 99.1], undetermined; name placeholders (the sixth threshold, new) 94.6% [93.6; 95.6], **not met**.
+- Manual check of all 289 failed occurrences (`results/failures_review.holdout7.json`):
+  - 199: a correctly stored name inflected wrongly on restoration, mostly a surname in -ов/-ин in the plural ("Харитоны" for "Харитонов", from pii-guard's inflector);
+  - 82: a name stored wrongly, mostly the first name ("Тимофя" for "Тимофей");
+  - 8: restored correctly, counted as failures by the evaluator.
+- Stored names: 30 of 1,027 Russian names are stored wrongly (`results/stored_names.holdout7.json`); no UK name is.
+
+### Changed
+
+- Russian surnames are stored in the nominative by rule. Gender comes from the patronymic, the surname's ending, the context and initials, and when in doubt the name is stored as written.
+- A first name the dictionary does not know ("Пров") is inflected through a proxy name of the same declension.
+- Detection is unchanged from 0.4.
+- The desktop app 0.5.0 is rebuilt with engine 0.5.
+
+### Added
+
+- Round-trip evaluator version 3: a restored name is compared with the generator's annotation as well as with the stored value. It was fixed before set 7.
+- The sixth threshold: restoration of name placeholders, at least 99%.
+- `results/evaluator_versions.holdout{5,6,7}.json`: every evaluator version on sets 5, 6 and 7.
+- `results/failures_review.holdout7.json` and `results/stored_names_review.holdout7.json`: the manual checks of set 7.
+- `results/rule_changes.md`: rows for set 7.
+
+### Known issues
+
+- Restoration of Russian names: pii-guard's inflector turns a surname whose stem is also a word or a first name into the plural. It also does this where no change is needed.
+- Some first names are stored in a wrong form.
+- By the stopping rule these are fixed only in later versions, without a new held-out check for the paper.
+
 ## [0.4.1] - 2026-10-23
 
 The engine is unchanged (0.4.0). This release completes the analysis of held-out set 6 after the third round of review; nothing was run again and no model was asked.

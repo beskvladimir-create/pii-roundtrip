@@ -34,12 +34,12 @@ FAKE = {
     "pii_guard": {
         "hivetrace_pii_bench": _res((95, 100), (99, 100), 1, 100),
         "redmadrobot_pii_benchmark": _res((100, 100), (100, 100), 0, 100),  # home set: must be excluded
-        "holdout6_ru": _res((900, 1000), (990, 1000), 300, 1000),
+        "holdout7_ru": _res((900, 1000), (990, 1000), 300, 1000),
     },
     "pii_roundtrip": {
         "hivetrace_pii_bench": _res((100, 100), (100, 100), 0, 100),
         "redmadrobot_pii_benchmark": _res((50, 100), (50, 100), 50, 100),
-        "holdout6_ru": _res((1000, 1000), (999, 1000), 5, 1000),
+        "holdout7_ru": _res((1000, 1000), (999, 1000), 5, 1000),
     },
 }
 

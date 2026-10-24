@@ -44,10 +44,10 @@ EXTERNAL = {
     "uk": ["nemotron_uk", "nemotron_uk_ids"],
 }
 DOWNLOAD_MAC = "https://github.com/beskvladimir-create/pii-roundtrip/releases/latest/download/pii-roundtrip-mac.dmg"
-HOLDOUT = {"ru": "holdout6_ru", "uk": "holdout6_uk"}
-HOLDOUT_NO = 6  # the number of the held-out set in the text
-CYCLE_SET = "holdout6"  # the engine's round trip on that set
-CYCLE_REF = "holdout5"  # the other configurations: last run on set 5 (not repeated on set 6)
+HOLDOUT = {"ru": "holdout7_ru", "uk": "holdout7_uk"}
+HOLDOUT_NO = 7  # the number of the held-out set in the text
+CYCLE_SET = "holdout7"  # the engine's round trip on that set
+CYCLE_REF = "holdout5"  # the other configurations: last run on set 5 (not repeated on sets 6 and 7)
 SYNTH = {"ru": "synthetic_ru", "uk": "synthetic_uk"}
 TOOLS = [
     "pii_roundtrip",
@@ -275,27 +275,33 @@ def best_tool(m: dict, lang: str) -> str:
 def load_cycles() -> dict[str, dict]:
     out = {}
     # version 0.2 measures the round trip on the held-out set only; cycle_metrics.json holds version 0.1 runs
-    for data, name in (("holdout6", "cycle_metrics.holdout6.json"), ("holdout5", "cycle_metrics.holdout5.json")):
+    for data, name in (
+        ("holdout7", "cycle_metrics.holdout7.json"),
+        ("holdout6", "cycle_metrics.holdout6.json"),
+        ("holdout5", "cycle_metrics.holdout5.json"),
+    ):
         p = RESULTS / name
         out[data] = json.loads(p.read_text()) if p.exists() else {}
     return out
 
 
-def restore(cyc: dict, tool: str, lang: str) -> tuple | None:
+def restore(cyc: dict, tool: str, lang: str, person: bool = False) -> tuple | None:
     """Восстановление собственным механизмом инструмента, худшая из моделей: (доля вхождений,
-    интервал бутстрепом по ответам, вхождений, ответов без ошибок, ответов с метками)."""
+    интервал бутстрепом по ответам, вхождений, ответов без ошибок, ответов с метками).
+    person=True: only the name placeholders [PERSON_n] (the sixth threshold, from set 7)."""
+    rate = "restore_rate_person" if person else "restore_rate"
     worst = None
     for lm, a in cyc.get(tool, {}).items():
-        usable = lm.startswith(lang) and a.get("restore_rate") is not None
-        if usable and (worst is None or a["restore_rate"] < worst["restore_rate"]):
+        usable = lm.startswith(lang) and a.get(rate) is not None
+        if usable and (worst is None or a[rate] < worst[rate]):
             worst = a
     if not worst:
         return None
-    n = worst["answers_with_labels"]
+    n = worst["answers_with_person"] if person else worst["answers_with_labels"]
     return (
-        worst["restore_rate"],
-        tuple(worst["restore_ci"]),
-        worst["labels_in_answer"],
+        worst[rate],
+        tuple(worst["restore_ci_person" if person else "restore_ci"]),
+        worst["person_labels" if person else "labels_in_answer"],
         n - worst["answers_with_failure"],
         n,
     )
@@ -507,15 +513,15 @@ def value_fidelity_text(lang: str) -> str:
 
 
 def evaluator_versions_text(lang: str) -> str:
-    """Failed occurrences of the engine on held-out set 6 with evaluator versions 1 and 2
-    (results/evaluator_versions.holdout6.json)."""
+    """Failed occurrences of the engine on the held-out set with every evaluator version
+    (results/evaluator_versions.<set>.json)."""
     ev = _supplement(f"evaluator_versions.{CYCLE_SET}.json")
     parts = []
     for lm in ("ru/qwen3.5:9b", "ru/gemma4:12b", "uk/qwen3.5:9b", "uk/gemma4:12b"):
         if lm not in ev:
             continue
-        v1, v2 = ev[lm]["evaluator_1"]["occurrences_failed"], ev[lm]["evaluator_2"]["occurrences_failed"]
-        parts.append(f"{lm}: {v1} / {v2}")
+        vs = sorted(k for k in ev[lm] if k.startswith("evaluator_"))
+        parts.append(f"{lm}: " + " / ".join(str(ev[lm][v]["occurrences_failed"]) for v in vs))
     return "; ".join(parts) or WORDS[lang]["na"]
 
 
@@ -530,6 +536,24 @@ def stored_names_text(lang: str, data_set: str = CYCLE_SET) -> str:
     plural, gender = c.get("plural_form", 0), c.get("gender_or_case", 0)
     other = ru["wrong"] - plural - gender
     rest = sn["restoration"]
+    if not plural and not gender:
+        # set 7: no surname in the plural or another gender; the errors are in first names
+        if lang == "ru":
+            kinds = (
+                f"из {ru['names']} русских имён в документах полного цикла {ru['wrong']} сохранены неверно "
+                "(каждое расхождение с разметкой проверено вручную), почти все из-за имени или отчества: "
+                "«Тимофя» и «Фадя» вместо «Тимофей» и «Фадей», «Данил» и «Гаврил» вместо «Данила» и «Гаврила», "
+                "имя в косвенном падеже («Фортунату»), потерянное редкое имя или отчество с опечаткой"
+            )
+        else:
+            kinds = (
+                f"of {ru['names']} Russian names in the round-trip documents {ru['wrong']} were stored wrongly "
+                "(every mismatch with the annotation checked by hand), nearly all in the first name or patronymic: "
+                "\"Тимофя\" and \"Фадя\" for \"Тимофей\" and \"Фадей\", \"Данил\" and \"Гаврил\" for \"Данила\" "
+                "and \"Гаврила\", a first name left in an oblique case (\"Фортунату\"), a rare first name or a "
+                "misspelt patronymic dropped"
+            )
+        plural = gender = -1
 
     def cellr(x: dict) -> str:
         return f"{pct(x['rate'], lang)}{interval(x['ci'], lang)}"
@@ -538,9 +562,13 @@ def stored_names_text(lang: str, data_set: str = CYCLE_SET) -> str:
     if lang == "ru":
         by = "по ручной проверке" if ru.get("reviewed_by_hand") else "по правилу, без ручной проверки"
         head = (
-            f"из {ru['names']} русских имён в документах полного цикла {ru['wrong']} сохранены неверно ({by}): "
-            f"{plural} во множественном числе («Абрамов» как «Абрамы»), {gender} в другом роде или падеже, "
-            f"{other} прочие (потеряна фамилия или инициалы, изменён порядок)"
+            kinds
+            if plural < 0
+            else (
+                f"из {ru['names']} русских имён в документах полного цикла {ru['wrong']} сохранены неверно ({by}): "
+                f"{plural} во множественном числе («Абрамов» как «Абрамы»), {gender} в другом роде или падеже, "
+                f"{other} прочие (потеряна фамилия или инициалы, изменён порядок)"
+            )
         )
         parts = [
             f"{m}: по всем выданным меткам {cellr(rest[f'ru/{m}']['all'])}, только по меткам имён "
@@ -549,12 +577,17 @@ def stored_names_text(lang: str, data_set: str = CYCLE_SET) -> str:
             f"{interval(rest[f'ru/{m}']['answers_with_a_wrong_name_ci'], lang)}"
             for m in models
         ]
-        return head + ". Восстановление с учётом этого: " + "; ".join(parts)
+        out = head + ". Восстановление с учётом этого: " + "; ".join(parts)
+        return out.replace("неверной фамилией", "неверно сохранённым именем") if plural < 0 else out
     by = "checked by hand" if ru.get("reviewed_by_hand") else "by rule, not checked by hand"
     head = (
-        f"of {ru['names']} Russian names in the round-trip documents {ru['wrong']} were stored wrongly ({by}): "
-        f"{plural} in the plural (\"Абрамов\" as \"Абрамы\"), {gender} in another gender or case, "
-        f"{other} other (surname or initials dropped, order changed)"
+        kinds
+        if plural < 0
+        else (
+            f"of {ru['names']} Russian names in the round-trip documents {ru['wrong']} were stored wrongly ({by}): "
+            f"{plural} in the plural (\"Абрамов\" as \"Абрамы\"), {gender} in another gender or case, "
+            f"{other} other (surname or initials dropped, order changed)"
+        )
     )
     parts = [
         f"{m}: over all issued placeholders {cellr(rest[f'ru/{m}']['all'])}, over name placeholders only "
@@ -563,7 +596,8 @@ def stored_names_text(lang: str, data_set: str = CYCLE_SET) -> str:
         f"{interval(rest[f'ru/{m}']['answers_with_a_wrong_name_ci'], lang)}"
         for m in models
     ]
-    return head + ". Restoration with this taken into account: " + "; ".join(parts)
+    out = head + ". Restoration with this taken into account: " + "; ".join(parts)
+    return out.replace("wrong surname", "wrongly stored name") if plural < 0 else out
 
 
 def _load_cycle_set(name: str) -> dict:
@@ -636,6 +670,7 @@ def threshold_table(m: dict, cycles: dict, lang_data: str, lang: str) -> str:
             "names": "Names, addresses, organisations ≥ 95%",
             "leak": "Documents with a leak ≤ 2%",
             "restore": "Restoration ≥ 99% (worse of two LLMs)",
+            "restore_person": "Restoration of name placeholders ≥ 99% (worse of two LLMs, new)",
             "strict": "Documents with a value not fully masked ≤ 2% (strict, new)",
             "prec": "Masked fragments that contain personal data",
         }
@@ -652,14 +687,22 @@ def threshold_table(m: dict, cycles: dict, lang_data: str, lang: str) -> str:
             "names": "Имена, адреса, организации ≥ 95%",
             "leak": "Документы с утечкой ≤ 2%",
             "restore": "Восстановление ≥ 99% (худшая из двух нейросетей)",
+            "restore_person": "Восстановление меток имён ≥ 99% (худшая из двух нейросетей, новый)",
             "strict": "Документы со значением, скрытым не полностью ≤ 2% (строгий, новый)",
             "prec": "Скрытые фрагменты, содержащие персональные данные",
         }
         first = "Порог"
     rows = [f"| {first} | " + " | ".join(heads) + " |", "|---" * (len(heads) + 1) + "|"]
-    for metric in ("struct", "names", "leak", "strict", "restore", "prec"):
+    for metric in ("struct", "names", "leak", "strict", "restore", "restore_person", "prec"):
         cells = []
         for tool, sets in cols:
+            if metric == "restore_person":
+                r = restore(cycles.get(CYCLE_SET, {}), tool, lang_data, person=True)
+                if sets is h3 and tool == ENGINE and r:
+                    cells.append(restore_cell(r, lang))
+                else:
+                    cells.append(WORDS[lang]["not_measured"])
+                continue
             if metric == "restore":
                 if sets is not h3:
                     cells.append(WORDS[lang]["not_measured"])
@@ -712,6 +755,9 @@ def engine_values(m: dict, cycles: dict) -> dict:
         r = restore(cycles.get(CYCLE_SET, {}), ENGINE, lg)
         if r:
             rows["RESTORE"] = (r[0], restore_interval(r), restore_status(r))
+        r = restore(cycles.get(CYCLE_SET, {}), ENGINE, lg, person=True)
+        if r:
+            rows["RESTORE_PERSON"] = (r[0], restore_interval(r), restore_status(r))
         st = strict_share(ENGINE, HOLDOUT[lg])
         if st:
             rows["STRICT"] = (st[0], st[1], status("leak", st[0], st[1]))
@@ -731,6 +777,7 @@ def fill(text: str, m: dict, cycles: dict, lang: str) -> str:
             "LEAK": "утечки",
             "STRICT": "строгий счёт утечек",
             "RESTORE": "восстановление",
+            "RESTORE_PERSON": "восстановление меток имён",
         },
         "en": {
             "STRUCT": "identifiers",
@@ -738,6 +785,7 @@ def fill(text: str, m: dict, cycles: dict, lang: str) -> str:
             "LEAK": "leaks",
             "STRICT": "strict leaks",
             "RESTORE": "restoration",
+            "RESTORE_PERSON": "restoration of name placeholders",
         },
     }["ru" if lang == "ru" else "en"]
     summary = []
@@ -773,6 +821,8 @@ def fill(text: str, m: dict, cycles: dict, lang: str) -> str:
     text = text.replace("{EVALUATOR_VERSIONS_SET6}", evaluator_versions_text(lang))
     text = text.replace("{STORED_NAMES}", stored_names_text(lang))
     text = text.replace("{STORED_NAMES_5}", stored_names_text(lang, "holdout5"))
+    text = text.replace("{STORED_NAMES_6}", stored_names_text(lang, "holdout6"))
+    text = text.replace("{TABLE_CYCLE_EXTRAS_6}", cycle_extras_table(lang, "holdout6"))
     return _REF.sub(lambda mt: _ref(m, cycles, mt, lang), text)
 
 

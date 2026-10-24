@@ -1,50 +1,108 @@
 {
- "ru/qwen3.5:9b": {
-  "evaluator_1": {
-   "labels_in_answer": 12720,
-   "occurrences_failed": 20,
-   "restore_rate": 0.9984276729559748,
-   "answers_with_failure": 10,
-   "answers_with_labels": 380
-  },
-  "evaluator_2": {
-   "labels_in_answer": 12720,
-   "occurrences_failed": 0,
-   "restore_rate": 1.0,
-   "answers_with_failure": 0,
-   "answers_with_labels": 380
-  }
- },
  "ru/gemma4:12b": {
   "evaluator_1": {
    "labels_in_answer": 13481,
    "occurrences_failed": 17,
    "restore_rate": 0.9987389659520807,
+   "restore_ci": [
+    0.9977849970466627,
+    0.9995560816809707
+   ],
    "answers_with_failure": 9,
-   "answers_with_labels": 380
+   "answers_with_labels": 380,
+   "person_labels": 2784,
+   "restore_rate_person": 0.9938936781609196,
+   "restore_ci_person": [
+    0.9892627057981389,
+    0.9978517722878625
+   ]
   },
   "evaluator_2": {
    "labels_in_answer": 13481,
    "occurrences_failed": 0,
    "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
    "answers_with_failure": 0,
-   "answers_with_labels": 380
+   "answers_with_labels": 380,
+   "person_labels": 2784,
+   "restore_rate_person": 1.0,
+   "restore_ci_person": [
+    1.0,
+    1.0
+   ]
+  },
+  "evaluator_3": {
+   "labels_in_answer": 13481,
+   "occurrences_failed": 173,
+   "restore_rate": 0.987167124100586,
+   "restore_ci": [
+    0.9846304527989151,
+    0.9894525737205675
+   ],
+   "answers_with_failure": 105,
+   "answers_with_labels": 380,
+   "person_labels": 2784,
+   "restore_rate_person": 0.9378591954022989,
+   "restore_ci_person": [
+    0.9256410256410257,
+    0.948910325116113
+   ]
   }
  },
- "uk/qwen3.5:9b": {
+ "ru/qwen3.5:9b": {
   "evaluator_1": {
-   "labels_in_answer": 11792,
-   "occurrences_failed": 0,
-   "restore_rate": 1.0,
-   "answers_with_failure": 0,
-   "answers_with_labels": 380
+   "labels_in_answer": 12720,
+   "occurrences_failed": 20,
+   "restore_rate": 0.9984276729559748,
+   "restore_ci": [
+    0.9973045822102425,
+    0.9993903832965023
+   ],
+   "answers_with_failure": 10,
+   "answers_with_labels": 380,
+   "person_labels": 2825,
+   "restore_rate_person": 0.9929203539823008,
+   "restore_ci_person": [
+    0.9878048780487805,
+    0.9973169796857033
+   ]
   },
   "evaluator_2": {
-   "labels_in_answer": 11792,
+   "labels_in_answer": 12720,
    "occurrences_failed": 0,
    "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
    "answers_with_failure": 0,
-   "answers_with_labels": 380
+   "answers_with_labels": 380,
+   "person_labels": 2825,
+   "restore_rate_person": 1.0,
+   "restore_ci_person": [
+    1.0,
+    1.0
+   ]
+  },
+  "evaluator_3": {
+   "labels_in_answer": 12720,
+   "occurrences_failed": 142,
+   "restore_rate": 0.9888364779874214,
+   "restore_ci": [
+    0.9864372626520964,
+    0.9909596662030598
+   ],
+   "answers_with_failure": 100,
+   "answers_with_labels": 380,
+   "person_labels": 2825,
+   "restore_rate_person": 0.9497345132743363,
+   "restore_ci_person": [
+    0.9382575757575757,
+    0.9602293084915801
+   ]
   }
  },
  "uk/gemma4:12b": {
@@ -52,18 +110,212 @@
    "labels_in_answer": 13803,
    "occurrences_failed": 0,
    "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
    "answers_with_failure": 0,
-   "answers_with_labels": 380
+   "answers_with_labels": 380,
+   "person_labels": 3186,
+   "restore_rate_person": 1.0,
+   "restore_ci_person": [
+    1.0,
+    1.0
+   ]
   },
   "evaluator_2": {
    "labels_in_answer": 13803,
    "occurrences_failed": 0,
    "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
    "answers_with_failure": 0,
-   "answers_with_labels": 380
+   "answers_with_labels": 380,
+   "person_labels": 3186,
+   "restore_rate_person": 1.0,
+   "restore_ci_person": [
+    1.0,
+    1.0
+   ]
+  },
+  "evaluator_3": {
+   "labels_in_answer": 13803,
+   "occurrences_failed": 0,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "answers_with_failure": 0,
+   "answers_with_labels": 380,
+   "person_labels": 3186,
+   "restore_rate_person": 1.0,
+   "restore_ci_person": [
+    1.0,
+    1.0
+   ]
+  }
+ },
+ "uk/qwen3.5:9b": {
+  "evaluator_1": {
+   "labels_in_answer": 11792,
+   "occurrences_failed": 0,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "answers_with_failure": 0,
+   "answers_with_labels": 380,
+   "person_labels": 2559,
+   "restore_rate_person": 1.0,
+   "restore_ci_person": [
+    1.0,
+    1.0
+   ]
+  },
+  "evaluator_2": {
+   "labels_in_answer": 11792,
+   "occurrences_failed": 0,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "answers_with_failure": 0,
+   "answers_with_labels": 380,
+   "person_labels": 2559,
+   "restore_rate_person": 1.0,
+   "restore_ci_person": [
+    1.0,
+    1.0
+   ]
+  },
+  "evaluator_3": {
+   "labels_in_answer": 11792,
+   "occurrences_failed": 2,
+   "restore_rate": 0.9998303934871099,
+   "restore_ci": [
+    0.9995726130438499,
+    1.0
+   ],
+   "answers_with_failure": 2,
+   "answers_with_labels": 380,
+   "person_labels": 2559,
+   "restore_rate_person": 0.9992184447049629,
+   "restore_ci_person": [
+    0.9980330448465775,
+    1.0
+   ]
   }
  },
  "_failures_evaluator_1": {
+  "ru/gemma4:12b": [
+   {
+    "id": "ru-contract-199",
+    "task": "reply",
+    "label": "[PERSON_2]",
+    "value": "Яковлева Майя Ильинична"
+   },
+   {
+    "id": "ru-contract-199",
+    "task": "reply",
+    "label": "[PERSON_2]",
+    "value": "Яковлева Майя Ильинична"
+   },
+   {
+    "id": "ru-contract-199",
+    "task": "reply",
+    "label": "[PERSON_2]",
+    "value": "Яковлева Майя Ильинична"
+   },
+   {
+    "id": "ru-contract-150",
+    "task": "reply",
+    "label": "[PERSON_1]",
+    "value": "Носова Майя Робертовна"
+   },
+   {
+    "id": "ru-contract-150",
+    "task": "reply",
+    "label": "[PERSON_1]",
+    "value": "Носова Майя Робертовна"
+   },
+   {
+    "id": "ru-contract-150",
+    "task": "reply",
+    "label": "[PERSON_1]",
+    "value": "Носова Майя Робертовна"
+   },
+   {
+    "id": "ru-hr-044",
+    "task": "summary",
+    "label": "[PERSON_4]",
+    "value": "Большаков Епифан Жанович"
+   },
+   {
+    "id": "ru-hr-011",
+    "task": "summary",
+    "label": "[PERSON_1]",
+    "value": "Турова Майя Артёмовна"
+   },
+   {
+    "id": "ru-hr-011",
+    "task": "summary",
+    "label": "[PERSON_1]",
+    "value": "Турова Майя Артёмовна"
+   },
+   {
+    "id": "ru-hr-011",
+    "task": "summary",
+    "label": "[PERSON_1]",
+    "value": "Турова Майя Артёмовна"
+   },
+   {
+    "id": "ru-hr-184",
+    "task": "summary",
+    "label": "[PERSON_1]",
+    "value": "Карпова Майя Юрьевна"
+   },
+   {
+    "id": "ru-hr-184",
+    "task": "summary",
+    "label": "[PERSON_1]",
+    "value": "Карпова Майя Юрьевна"
+   },
+   {
+    "id": "ru-hr-184",
+    "task": "summary",
+    "label": "[PERSON_1]",
+    "value": "Карпова Майя Юрьевна"
+   },
+   {
+    "id": "ru-hr-059",
+    "task": "reply",
+    "label": "[PERSON_3]",
+    "value": "Щербаков Пров Тимурович"
+   },
+   {
+    "id": "ru-letter-131",
+    "task": "summary",
+    "label": "[PERSON_5]",
+    "value": "Гордеева Майя Захаровна"
+   },
+   {
+    "id": "ru-letter-105",
+    "task": "summary",
+    "label": "[PERSON_6]",
+    "value": "Лобанов Пров Игнатьевич"
+   },
+   {
+    "id": "ru-medical-023",
+    "task": "summary",
+    "label": "[PERSON_3]",
+    "value": "Сорокин Пров Ефремович"
+   }
+  ],
   "ru/qwen3.5:9b": [
    {
     "id": "ru-certificate-120",
@@ -186,112 +438,8 @@
     "value": "Игнаты Пров Филиппович"
    }
   ],
-  "ru/gemma4:12b": [
-   {
-    "id": "ru-contract-199",
-    "task": "reply",
-    "label": "[PERSON_2]",
-    "value": "Яковлева Майя Ильинична"
-   },
-   {
-    "id": "ru-contract-199",
-    "task": "reply",
-    "label": "[PERSON_2]",
-    "value": "Яковлева Майя Ильинична"
-   },
-   {
-    "id": "ru-contract-199",
-    "task": "reply",
-    "label": "[PERSON_2]",
-    "value": "Яковлева Майя Ильинична"
-   },
-   {
-    "id": "ru-contract-150",
-    "task": "reply",
-    "label": "[PERSON_1]",
-    "value": "Носова Майя Робертовна"
-   },
-   {
-    "id": "ru-contract-150",
-    "task": "reply",
-    "label": "[PERSON_1]",
-    "value": "Носова Майя Робертовна"
-   },
-   {
-    "id": "ru-contract-150",
-    "task": "reply",
-    "label": "[PERSON_1]",
-    "value": "Носова Майя Робертовна"
-   },
-   {
-    "id": "ru-hr-044",
-    "task": "summary",
-    "label": "[PERSON_4]",
-    "value": "Большаков Епифан Жанович"
-   },
-   {
-    "id": "ru-hr-011",
-    "task": "summary",
-    "label": "[PERSON_1]",
-    "value": "Турова Майя Артёмовна"
-   },
-   {
-    "id": "ru-hr-011",
-    "task": "summary",
-    "label": "[PERSON_1]",
-    "value": "Турова Майя Артёмовна"
-   },
-   {
-    "id": "ru-hr-011",
-    "task": "summary",
-    "label": "[PERSON_1]",
-    "value": "Турова Майя Артёмовна"
-   },
-   {
-    "id": "ru-hr-184",
-    "task": "summary",
-    "label": "[PERSON_1]",
-    "value": "Карпова Майя Юрьевна"
-   },
-   {
-    "id": "ru-hr-184",
-    "task": "summary",
-    "label": "[PERSON_1]",
-    "value": "Карпова Майя Юрьевна"
-   },
-   {
-    "id": "ru-hr-184",
-    "task": "summary",
-    "label": "[PERSON_1]",
-    "value": "Карпова Майя Юрьевна"
-   },
-   {
-    "id": "ru-hr-059",
-    "task": "reply",
-    "label": "[PERSON_3]",
-    "value": "Щербаков Пров Тимурович"
-   },
-   {
-    "id": "ru-letter-131",
-    "task": "summary",
-    "label": "[PERSON_5]",
-    "value": "Гордеева Майя Захаровна"
-   },
-   {
-    "id": "ru-letter-105",
-    "task": "summary",
-    "label": "[PERSON_6]",
-    "value": "Лобанов Пров Игнатьевич"
-   },
-   {
-    "id": "ru-medical-023",
-    "task": "summary",
-    "label": "[PERSON_3]",
-    "value": "Сорокин Пров Ефремович"
-   }
-  ],
-  "uk/qwen3.5:9b": [],
-  "uk/gemma4:12b": []
+  "uk/gemma4:12b": [],
+  "uk/qwen3.5:9b": []
  },
- "_note": "Held-out set 6, engine 0.4: restoration scored with evaluator version 1 (as on sets 4 and 5) and version 2 (pre-registered for set 6)."
+ "_note": "Held-out holdout6: the engine's restoration from the saved answers scored with evaluator versions 1, 2, 3 (bench/eval/evaluator_versions.py). Both compare the answer with the value the tool stored; an error in the stored value is not visible to them (see results/stored_names.*.json)."
 }

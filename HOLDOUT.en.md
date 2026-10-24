@@ -173,3 +173,5 @@ Set 7 is the last held-out set for this paper. Its result is published whatever 
 5. The run journal is kept during the run: `results/holdout7_cycle_journal.md`. A continuation after an interruption uses only the same command and the saved answers.
 6. After the run: `bench/eval/stored_names.py holdout7`, a manual check of every failure and every stored-name mismatch.
 
+> Added after the push, before the first run: the public pre-registration commit 13c42b8 was pushed to GitHub on 23 October 2026 at 12:01:01 UTC (16:01:01 +04). Its `pii_roundtrip` and `bench` trees are the ones given above.
+

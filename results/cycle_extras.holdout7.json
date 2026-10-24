@@ -1,0 +1,2080 @@
+{
+ "holdout7": {
+  "pii_roundtrip": {
+   "ru/gemma4:12b": {
+    "answers": 380,
+    "answers_with_labels": 380,
+    "answers_with_failure": 100,
+    "answers_with_failure_share": 0.2631578947368421,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.21956346206659738,
+     0.31048567461508525
+    ],
+    "occurrences": 14045,
+    "occurrences_failed": 145,
+    "occurrences_without_input_leaks": 14045,
+    "occurrences_without_input_leaks_failed": 145,
+    "restore_rate_without_input_leaks": 0.9896760412958349,
+    "answers_with_input_leak": 0
+   },
+   "ru/qwen3.5:9b": {
+    "answers": 380,
+    "answers_with_labels": 380,
+    "answers_with_failure": 99,
+    "answers_with_failure_share": 0.26052631578947366,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.21709516720895583,
+     0.30773274011107254
+    ],
+    "occurrences": 12547,
+    "occurrences_failed": 143,
+    "occurrences_without_input_leaks": 12547,
+    "occurrences_without_input_leaks_failed": 143,
+    "restore_rate_without_input_leaks": 0.9886028532716984,
+    "answers_with_input_leak": 0
+   },
+   "uk/gemma4:12b": {
+    "answers": 380,
+    "answers_with_labels": 380,
+    "answers_with_failure": 1,
+    "answers_with_failure_share": 0.002631578947368421,
+    "answers_with_failure_ci_clopper_pearson": [
+     6.662359103495256e-05,
+     0.01457432486961396
+    ],
+    "occurrences": 13876,
+    "occurrences_failed": 1,
+    "occurrences_without_input_leaks": 13876,
+    "occurrences_without_input_leaks_failed": 1,
+    "restore_rate_without_input_leaks": 0.9999279331219372,
+    "answers_with_input_leak": 0
+   },
+   "uk/qwen3.5:9b": {
+    "answers": 380,
+    "answers_with_labels": 380,
+    "answers_with_failure": 0,
+    "answers_with_failure_share": 0.0,
+    "answers_with_failure_ci_clopper_pearson": [
+     0.0,
+     0.009660611079882253
+    ],
+    "occurrences": 12232,
+    "occurrences_failed": 0,
+    "occurrences_without_input_leaks": 12232,
+    "occurrences_without_input_leaks_failed": 0,
+    "restore_rate_without_input_leaks": 1.0,
+    "answers_with_input_leak": 0
+   }
+  },
+  "_overlap": {},
+  "_value_fidelity": {
+   "ru": {
+    "mentions": 1474,
+    "lost": 13,
+    "examples": [
+     {
+      "id": "ru-certificate-155",
+      "mention": "Воронцов Фадей Дорофеевич",
+      "stored": "Воронцов Фадя Дорофеевич",
+      "missing": [
+       "Фадей"
+      ]
+     },
+     {
+      "id": "ru-certificate-002",
+      "mention": "Выднаа Дмитриевой Элеоноре Ефимовне",
+      "stored": "Дмитриева Выднаа Ефимовна",
+      "missing": [
+       "Элеоноре"
+      ]
+     },
+     {
+      "id": "ru-certificate-002",
+      "mention": "Зиновьев Тимофей Ильич",
+      "stored": "Зиновьев Тимофя Ильич",
+      "missing": [
+       "Тимофей"
+      ]
+     },
+     {
+      "id": "ru-contract-048",
+      "mention": "Сазонов Сидор Елисевеич",
+      "stored": "Сазонов Сидор",
+      "missing": [
+       "Елисевеич"
+      ]
+     },
+     {
+      "id": "ru-contract-100",
+      "mention": "Харитонов Тимофей Ааронович",
+      "stored": "Харитонов Тимофя Ааронович",
+      "missing": [
+       "Тимофей"
+      ]
+     },
+     {
+      "id": "ru-contract-100",
+      "mention": "Харитонов Тимофей Ааронович",
+      "stored": "Харитонов Тимофя Ааронович",
+      "missing": [
+       "Тимофей"
+      ]
+     },
+     {
+      "id": "ru-hr-078",
+      "mention": "Стрелковой П.Ю.",
+      "stored": "Стрелкова Пелагея Юрьевна",
+      "missing": [
+       "Стрелковой"
+      ]
+     },
+     {
+      "id": "ru-hr-138",
+      "mention": "Рожков Фадей Елизарович",
+      "stored": "Рожков Фадя Елизарович",
+      "missing": [
+       "Фадей"
+      ]
+     },
+     {
+      "id": "ru-letter-000",
+      "mention": "Евдокимовой Антонины Афанасьевны",
+      "stored": "Евдокимова А.А.",
+      "missing": [
+       "Антонины",
+       "Афанасьевны"
+      ]
+     },
+     {
+      "id": "ru-letter-000",
+      "mention": "Евдокимова Антонина Афанасьевна",
+      "stored": "Евдокимова А.А.",
+      "missing": [
+       "Антонина",
+       "Афанасьевна"
+      ]
+     },
+     {
+      "id": "ru-letter-153",
+      "mention": "Евсей Иосифович",
+      "stored": "Евся Иосифович",
+      "missing": [
+       "Евсей"
+      ]
+     },
+     {
+      "id": "ru-medical-074",
+      "mention": "Овчинников Фадей Дмитриевич",
+      "stored": "Овчинников Фадя Дмитриевич",
+      "missing": [
+       "Фадей"
+      ]
+     },
+     {
+      "id": "ru-medical-075",
+      "mention": "Гуляев Никон Власоивч",
+      "stored": "Гуляев Никон",
+      "missing": [
+       "Власоивч"
+      ]
+     }
+    ],
+    "_all": [
+     {
+      "id": "ru-certificate-155",
+      "mention": "Воронцов Фадей Дорофеевич",
+      "stored": "Воронцов Фадя Дорофеевич",
+      "missing": [
+       "Фадей"
+      ]
+     },
+     {
+      "id": "ru-certificate-002",
+      "mention": "Выднаа Дмитриевой Элеоноре Ефимовне",
+      "stored": "Дмитриева Выднаа Ефимовна",
+      "missing": [
+       "Элеоноре"
+      ]
+     },
+     {
+      "id": "ru-certificate-002",
+      "mention": "Зиновьев Тимофей Ильич",
+      "stored": "Зиновьев Тимофя Ильич",
+      "missing": [
+       "Тимофей"
+      ]
+     },
+     {
+      "id": "ru-contract-048",
+      "mention": "Сазонов Сидор Елисевеич",
+      "stored": "Сазонов Сидор",
+      "missing": [
+       "Елисевеич"
+      ]
+     },
+     {
+      "id": "ru-contract-100",
+      "mention": "Харитонов Тимофей Ааронович",
+      "stored": "Харитонов Тимофя Ааронович",
+      "missing": [
+       "Тимофей"
+      ]
+     },
+     {
+      "id": "ru-contract-100",
+      "mention": "Харитонов Тимофей Ааронович",
+      "stored": "Харитонов Тимофя Ааронович",
+      "missing": [
+       "Тимофей"
+      ]
+     },
+     {
+      "id": "ru-hr-078",
+      "mention": "Стрелковой П.Ю.",
+      "stored": "Стрелкова Пелагея Юрьевна",
+      "missing": [
+       "Стрелковой"
+      ]
+     },
+     {
+      "id": "ru-hr-138",
+      "mention": "Рожков Фадей Елизарович",
+      "stored": "Рожков Фадя Елизарович",
+      "missing": [
+       "Фадей"
+      ]
+     },
+     {
+      "id": "ru-letter-000",
+      "mention": "Евдокимовой Антонины Афанасьевны",
+      "stored": "Евдокимова А.А.",
+      "missing": [
+       "Антонины",
+       "Афанасьевны"
+      ]
+     },
+     {
+      "id": "ru-letter-000",
+      "mention": "Евдокимова Антонина Афанасьевна",
+      "stored": "Евдокимова А.А.",
+      "missing": [
+       "Антонина",
+       "Афанасьевна"
+      ]
+     },
+     {
+      "id": "ru-letter-153",
+      "mention": "Евсей Иосифович",
+      "stored": "Евся Иосифович",
+      "missing": [
+       "Евсей"
+      ]
+     },
+     {
+      "id": "ru-medical-074",
+      "mention": "Овчинников Фадей Дмитриевич",
+      "stored": "Овчинников Фадя Дмитриевич",
+      "missing": [
+       "Фадей"
+      ]
+     },
+     {
+      "id": "ru-medical-075",
+      "mention": "Гуляев Никон Власоивч",
+      "stored": "Гуляев Никон",
+      "missing": [
+       "Власоивч"
+      ]
+     }
+    ]
+   },
+   "uk": {
+    "mentions": 1334,
+    "lost": 2,
+    "examples": [
+     {
+      "id": "uk-contract-171",
+      "mention": "Clifford Green",
+      "stored": "C. Green",
+      "missing": [
+       "Clifford"
+      ]
+     },
+     {
+      "id": "uk-contract-171",
+      "mention": "Clifford Green",
+      "stored": "C. Green",
+      "missing": [
+       "Clifford"
+      ]
+     }
+    ],
+    "_all": [
+     {
+      "id": "uk-contract-171",
+      "mention": "Clifford Green",
+      "stored": "C. Green",
+      "missing": [
+       "Clifford"
+      ]
+     },
+     {
+      "id": "uk-contract-171",
+      "mention": "Clifford Green",
+      "stored": "C. Green",
+      "missing": [
+       "Clifford"
+      ]
+     }
+    ]
+   }
+  }
+ },
+ "_failures": {
+  "holdout7": {
+   "pii_roundtrip": {
+    "ru/gemma4:12b": [
+     {
+      "id": "ru-certificate-030",
+      "task": "summary",
+      "label": "[PERSON_4]",
+      "value": "Федотов Ф.Ю."
+     },
+     {
+      "id": "ru-certificate-126",
+      "task": "summary",
+      "label": "[PERSON_3]",
+      "value": "Субботин Мокей Феофанович"
+     },
+     {
+      "id": "ru-certificate-126",
+      "task": "reply",
+      "label": "[PERSON_3]",
+      "value": "Субботин Мокей Феофанович"
+     },
+     {
+      "id": "ru-certificate-120",
+      "task": "summary",
+      "label": "[PERSON_2]",
+      "value": "Жуков Венедиктович"
+     },
+     {
+      "id": "ru-certificate-120",
+      "task": "reply",
+      "label": "[PERSON_2]",
+      "value": "Жуков Венедиктович"
+     },
+     {
+      "id": "ru-certificate-124",
+      "task": "summary",
+      "label": "[PERSON_2]",
+      "value": "Ефремво Иван Виленович"
+     },
+     {
+      "id": "ru-certificate-124",
+      "task": "reply",
+      "label": "[PERSON_2]",
+      "value": "Ефремво Иван Виленович"
+     },
+     {
+      "id": "ru-certificate-099",
+      "task": "summary",
+      "label": "[PERSON_3]",
+      "value": "Стрелков Аникита Валентинович"
+     },
+     {
+      "id": "ru-certificate-099",
+      "task": "reply",
+      "label": "[PERSON_3]",
+      "value": "Стрелков Аникита Валентинович"
+     },
+     {
+      "id": "ru-certificate-110",
+      "task": "summary",
+      "label": "[PERSON_5]",
+      "value": "Влдаимиров Ф.Т."
+     },
+     {
+      "id": "ru-certificate-110",
+      "task": "reply",
+      "label": "[PERSON_5]",
+      "value": "Влдаимиров Ф.Т."
+     },
+     {
+      "id": "ru-certificate-110",
+      "task": "reply",
+      "label": "[PERSON_5]",
+      "value": "Влдаимиров Ф.Т."
+     },
+     {
+      "id": "ru-certificate-155",
+      "task": "summary",
+      "label": "[PERSON_4]",
+      "value": "Воронцов Фадя Дорофеевич"
+     },
+     {
+      "id": "ru-certificate-155",
+      "task": "reply",
+      "label": "[PERSON_4]",
+      "value": "Воронцов Фадя Дорофеевич"
+     },
+     {
+      "id": "ru-certificate-178",
+      "task": "summary",
+      "label": "[PERSON_3]",
+      "value": "Русаков Леонид Чеславович"
+     },
+     {
+      "id": "ru-certificate-178",
+      "task": "reply",
+      "label": "[PERSON_3]",
+      "value": "Русаков Леонид Чеславович"
+     },
+     {
+      "id": "ru-certificate-185",
+      "task": "summary",
+      "label": "[PERSON_3]",
+      "value": "Лапин Феликс Гордеевич"
+     },
+     {
+      "id": "ru-certificate-185",
+      "task": "reply",
+      "label": "[PERSON_3]",
+      "value": "Лапин Феликс Гордеевич"
+     },
+     {
+      "id": "ru-certificate-190",
+      "task": "summary",
+      "label": "[PERSON_3]",
+      "value": "Русакова Вероника Максиомвна"
+     },
+     {
+      "id": "ru-certificate-190",
+      "task": "summary",
+      "label": "[PERSON_5]",
+      "value": "Силина Г.Э."
+     },
+     {
+      "id": "ru-certificate-190",
+      "task": "reply",
+      "label": "[PERSON_5]",
+      "value": "Силина Г.Э."
+     },
+     {
+      "id": "ru-certificate-190",
+      "task": "reply",
+      "label": "[PERSON_5]",
+      "value": "Силина Г.Э."
+     },
+     {
+      "id": "ru-certificate-002",
+      "task": "summary",
+      "label": "[PERSON_1]",
+      "value": "Дмитриева Выднаа Ефимовна"
+     },
+     {
+      "id": "ru-certificate-002",
+      "task": "summary",
+      "label": "[PERSON_1]",
+      "value": "Дмитриева Выднаа Ефимовна"
+     },
+     {
+      "id": "ru-certificate-002",
+      "task": "summary",
+      "label": "[PERSON_3]",
+      "value": "Зиновьев Тимофя Ильич"
+     },
+     {
+      "id": "ru-certificate-002",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Дмитриева Выднаа Ефимовна"
+     },
+     {
+      "id": "ru-certificate-002",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Дмитриева Выднаа Ефимовна"
+     },
+     {
+      "id": "ru-certificate-002",
+      "task": "reply",
+      "label": "[PERSON_3]",
+      "value": "Зиновьев Тимофя Ильич"
+     },
+     {
+      "id": "ru-certificate-173",
+      "task": "summary",
+      "label": "[PERSON_4]",
+      "value": "Харитонов П.В."
+     },
+     {
+      "id": "ru-certificate-056",
+      "task": "summary",
+      "label": "[PERSON_1]",
+      "value": "Максимов Юрий Тимурович"
+     },
+     {
+      "id": "ru-contract-173",
+      "task": "summary",
+      "label": "[PERSON_3]",
+      "value": "Никонов Тимур Бориславович"
+     },
+     {
+      "id": "ru-contract-173",
+      "task": "reply",
+      "label": "[PERSON_3]",
+      "value": "Никонов Тимур Бориславович"
+     },
+     {
+      "id": "ru-contract-056",
+      "task": "summary",
+      "label": "[PERSON_3]",
+      "value": "Орехов Творимир Гавриилович"
+     },
+     {
+      "id": "ru-contract-056",
+      "task": "summary",
+      "label": "[PERSON_3]",
+      "value": "Орехов Творимир Гавриилович"
+     },
+     {
+      "id": "ru-contract-056",
+      "task": "reply",
+      "label": "[PERSON_3]",
+      "value": "Орехов Творимир Гавриилович"
+     },
+     {
+      "id": "ru-contract-074",
+      "task": "summary",
+      "label": "[PERSON_2]",
+      "value": "Гуляева София Феликсовна"
+     },
+     {
+      "id": "ru-contract-074",
+      "task": "summary",
+      "label": "[PERSON_2]",
+      "value": "Гуляева София Феликсовна"
+     },
+     {
+      "id": "ru-contract-161",
+      "task": "summary",
+      "label": "[PERSON_1]",
+      "value": "Матвеев Власович"
+     },
+     {
+      "id": "ru-contract-161",
+      "task": "summary",
+      "label": "[PERSON_1]",
+      "value": "Матвеев Власович"
+     },
+     {
+      "id": "ru-contract-161",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Матвеев Власович"
+     },
+     {
+      "id": "ru-contract-161",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Матвеев Власович"
+     },
+     {
+      "id": "ru-contract-161",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Матвеев Власович"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "[PERSON_3]",
+      "value": "Максимов Порфирий Давидович"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "summary",
+      "label": "[PERSON_3]",
+      "value": "Максимов Порфирий Давидович"
+     },
+     {
+      "id": "ru-contract-030",
+      "task": "reply",
+      "label": "[PERSON_3]",
+      "value": "Максимов Порфирий Давидович"
+     },
+     {
+      "id": "ru-contract-048",
+      "task": "summary",
+      "label": "[PERSON_8]",
+      "value": "Сазонов Сидор"
+     },
+     {
+      "id": "ru-contract-048",
+      "task": "reply",
+      "label": "[PERSON_8]",
+      "value": "Сазонов Сидор"
+     },
+     {
+      "id": "ru-contract-150",
+      "task": "summary",
+      "label": "[PERSON_3]",
+      "value": "Русаков Вышеслав Викентьевич"
+     },
+     {
+      "id": "ru-contract-150",
+      "task": "summary",
+      "label": "[PERSON_4]",
+      "value": "Семенов Ипполит Александрович"
+     },
+     {
+      "id": "ru-contract-150",
+      "task": "reply",
+      "label": "[PERSON_3]",
+      "value": "Русаков Вышеслав Викентьевич"
+     },
+     {
+      "id": "ru-contract-150",
+      "task": "reply",
+      "label": "[PERSON_4]",
+      "value": "Семенов Ипполит Александрович"
+     },
+     {
+      "id": "ru-contract-100",
+      "task": "summary",
+      "label": "[PERSON_1]",
+      "value": "Харитонов Тимофя Ааронович"
+     },
+     {
+      "id": "ru-contract-100",
+      "task": "summary",
+      "label": "[PERSON_1]",
+      "value": "Харитонов Тимофя Ааронович"
+     },
+     {
+      "id": "ru-contract-100",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Харитонов Тимофя Ааронович"
+     },
+     {
+      "id": "ru-contract-100",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Харитонов Тимофя Ааронович"
+     },
+     {
+      "id": "ru-contract-100",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Харитонов Тимофя Ааронович"
+     },
+     {
+      "id": "ru-contract-122",
+      "task": "summary",
+      "label": "[PERSON_2]",
+      "value": "Игнатов Пимен Федосьевич"
+     },
+     {
+      "id": "ru-contract-122",
+      "task": "summary",
+      "label": "[PERSON_2]",
+      "value": "Игнатов Пимен Федосьевич"
+     },
+     {
+      "id": "ru-contract-122",
+      "task": "reply",
+      "label": "[PERSON_2]",
+      "value": "Игнатов Пимен Федосьевич"
+     },
+     {
+      "id": "ru-contract-122",
+      "task": "reply",
+      "label": "[PERSON_2]",
+      "value": "Игнатов Пимен Федосьевич"
+     },
+     {
+      "id": "ru-hr-093",
+      "task": "summary",
+      "label": "[PERSON_2]",
+      "value": "Коновалова Анжела Ждановна"
+     },
+     {
+      "id": "ru-hr-112",
+      "task": "summary",
+      "label": "[PERSON_3]",
+      "value": "Пестова Алевтина Игоревна"
+     },
+     {
+      "id": "ru-hr-130",
+      "task": "summary",
+      "label": "[PERSON_3]",
+      "value": "Зимина Ираида Павловна"
+     },
+     {
+      "id": "ru-hr-027",
+      "task": "summary",
+      "label": "[PERSON_3]",
+      "value": "Харитонов Дмитрий Измаилович"
+     },
+     {
+      "id": "ru-hr-027",
+      "task": "reply",
+      "label": "[PERSON_3]",
+      "value": "Харитонов Дмитрий Измаилович"
+     },
+     {
+      "id": "ru-hr-041",
+      "task": "summary",
+      "label": "[PERSON_1]",
+      "value": "Меркушев Лазарь Дорофеевич"
+     },
+     {
+      "id": "ru-hr-041",
+      "task": "summary",
+      "label": "[PERSON_1]",
+      "value": "Меркушев Лазарь Дорофеевич"
+     },
+     {
+      "id": "ru-hr-133",
+      "task": "reply",
+      "label": "[PERSON_5]",
+      "value": "Ефимова О.Е."
+     },
+     {
+      "id": "ru-hr-133",
+      "task": "reply",
+      "label": "[PERSON_5]",
+      "value": "Ефимова О.Е."
+     },
+     {
+      "id": "ru-hr-094",
+      "task": "summary",
+      "label": "[PERSON_1]",
+      "value": "Сафонов Варлаы Валерьянович"
+     },
+     {
+      "id": "ru-hr-094",
+      "task": "summary",
+      "label": "[PERSON_1]",
+      "value": "Сафонов Варлаы Валерьянович"
+     },
+     {
+      "id": "ru-hr-094",
+      "task": "summary",
+      "label": "[PERSON_1]",
+      "value": "Сафонов Варлаы Валерьянович"
+     },
+     {
+      "id": "ru-hr-094",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Сафонов Варлаы Валерьянович"
+     },
+     {
+      "id": "ru-hr-094",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Сафонов Варлаы Валерьянович"
+     },
+     {
+      "id": "ru-hr-007",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Харитонов Всеволод Иосипович"
+     },
+     {
+      "id": "ru-hr-007",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Харитонов Всеволод Иосипович"
+     },
+     {
+      "id": "ru-hr-078",
+      "task": "summary",
+      "label": "[PERSON_3]",
+      "value": "Евсеева София Тарасовна"
+     },
+     {
+      "id": "ru-hr-157",
+      "task": "reply",
+      "label": "[PERSON_2]",
+      "value": "Трофимов Фотий Александрович"
+     },
+     {
+      "id": "ru-hr-151",
+      "task": "reply",
+      "label": "[PERSON_3]",
+      "value": "Агафонов Макар Теймуразович"
+     },
+     {
+      "id": "ru-hr-148",
+      "task": "reply",
+      "label": "[PERSON_3]",
+      "value": "Самсонов Сократ Филимонович"
+     },
+     {
+      "id": "ru-hr-043",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Харитонов Ефрем Феодосьевич"
+     },
+     {
+      "id": "ru-hr-043",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Харитонов Ефрем Феодосьевич"
+     },
+     {
+      "id": "ru-hr-058",
+      "task": "summary",
+      "label": "[PERSON_2]",
+      "value": "Зыков Прохор Устинович"
+     },
+     {
+      "id": "ru-hr-058",
+      "task": "summary",
+      "label": "[PERSON_4]",
+      "value": "Никонов Станислав Федотович"
+     },
+     {
+      "id": "ru-hr-138",
+      "task": "summary",
+      "label": "[PERSON_3]",
+      "value": "Рожков Фадя Елизарович"
+     },
+     {
+      "id": "ru-hr-138",
+      "task": "reply",
+      "label": "[PERSON_3]",
+      "value": "Рожков Фадя Елизарович"
+     },
+     {
+      "id": "ru-hr-196",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Никонов Н.И."
+     },
+     {
+      "id": "ru-hr-196",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Никонов Н.И."
+     },
+     {
+      "id": "ru-letter-147",
+      "task": "summary",
+      "label": "[PERSON_5]",
+      "value": "Турова София Алексеевна"
+     },
+     {
+      "id": "ru-letter-147",
+      "task": "summary",
+      "label": "[PERSON_1]",
+      "value": "Ситниоквой Л.В."
+     },
+     {
+      "id": "ru-letter-147",
+      "task": "reply",
+      "label": "[PERSON_5]",
+      "value": "Турова София Алексеевна"
+     },
+     {
+      "id": "ru-letter-147",
+      "task": "reply",
+      "label": "[PERSON_6]",
+      "value": "Ильин Серафим Витальевич"
+     },
+     {
+      "id": "ru-letter-147",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Ситниоквой Л.В."
+     },
+     {
+      "id": "ru-letter-140",
+      "task": "summary",
+      "label": "[PERSON_8]",
+      "value": "Трофимов А.Г."
+     },
+     {
+      "id": "ru-letter-140",
+      "task": "reply",
+      "label": "[PERSON_8]",
+      "value": "Трофимов А.Г."
+     },
+     {
+      "id": "ru-letter-140",
+      "task": "reply",
+      "label": "[PERSON_8]",
+      "value": "Трофимов А.Г."
+     },
+     {
+      "id": "ru-letter-155",
+      "task": "summary",
+      "label": "[PERSON_1]",
+      "value": "Ильин Я.Ф."
+     },
+     {
+      "id": "ru-letter-155",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Ильин Я.Ф."
+     },
+     {
+      "id": "ru-letter-155",
+      "task": "reply",
+      "label": "[PERSON_4]",
+      "value": "Пестова Наина Львовна"
+     },
+     {
+      "id": "ru-letter-155",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Ильин Я.Ф."
+     },
+     {
+      "id": "ru-letter-052",
+      "task": "summary",
+      "label": "[PERSON_5]",
+      "value": "Ефимов Николай Ильич"
+     },
+     {
+      "id": "ru-letter-052",
+      "task": "reply",
+      "label": "[PERSON_5]",
+      "value": "Ефимов Николай Ильич"
+     },
+     {
+      "id": "ru-letter-109",
+      "task": "reply",
+      "label": "[PERSON_5]",
+      "value": "Субботин Терентий Власович"
+     },
+     {
+      "id": "ru-letter-145",
+      "task": "summary",
+      "label": "[PERSON_8]",
+      "value": "Трофимов П.Э."
+     },
+     {
+      "id": "ru-letter-145",
+      "task": "reply",
+      "label": "[PERSON_8]",
+      "value": "Трофимов П.Э."
+     },
+     {
+      "id": "ru-letter-145",
+      "task": "reply",
+      "label": "[PERSON_6]",
+      "value": "Орехов Остромир Харлампович"
+     },
+     {
+      "id": "ru-letter-129",
+      "task": "summary",
+      "label": "[PERSON_6]",
+      "value": "Колобов Киры Трифонович"
+     },
+     {
+      "id": "ru-letter-105",
+      "task": "summary",
+      "label": "[PERSON_6]",
+      "value": "Сафонов Сила Филимонович"
+     },
+     {
+      "id": "ru-letter-105",
+      "task": "reply",
+      "label": "[PERSON_6]",
+      "value": "Сафонов Сила Филимонович"
+     },
+     {
+      "id": "ru-letter-091",
+      "task": "summary",
+      "label": "[PERSON_7]",
+      "value": "Самсонов Болеслав Елисеевич"
+     },
+     {
+      "id": "ru-letter-091",
+      "task": "reply",
+      "label": "[PERSON_7]",
+      "value": "Самсонов Болеслав Елисеевич"
+     },
+     {
+      "id": "ru-letter-106",
+      "task": "reply",
+      "label": "[PERSON_6]",
+      "value": "Беляков Лучезар Ерофеевич"
+     },
+     {
+      "id": "ru-letter-199",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Ефимов О.Э."
+     },
+     {
+      "id": "ru-letter-138",
+      "task": "reply",
+      "label": "[PERSON_4]",
+      "value": "Федотов Тихон Брониславович"
+     },
+     {
+      "id": "ru-medical-058",
+      "task": "reply",
+      "label": "[PERSON_3]",
+      "value": "Лапин Андрон Эдгардович"
+     },
+     {
+      "id": "ru-medical-008",
+      "task": "summary",
+      "label": "[PERSON_2]",
+      "value": "Рюрик Новкиов Фёдорович"
+     },
+     {
+      "id": "ru-medical-018",
+      "task": "summary",
+      "label": "[PERSON_1]",
+      "value": "Ситников Устин Филиппович"
+     },
+     {
+      "id": "ru-medical-018",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Ситников Устин Филиппович"
+     },
+     {
+      "id": "ru-medical-018",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Ситников Устин Филиппович"
+     },
+     {
+      "id": "ru-medical-018",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Ситников Устин Филиппович"
+     },
+     {
+      "id": "ru-medical-021",
+      "task": "reply",
+      "label": "[PERSON_3]",
+      "value": "Сафонов Владилен Юлианович"
+     },
+     {
+      "id": "ru-medical-003",
+      "task": "summary",
+      "label": "[PERSON_3]",
+      "value": "Фокин Никита Елзиарович"
+     },
+     {
+      "id": "ru-medical-071",
+      "task": "summary",
+      "label": "[PERSON_4]",
+      "value": "Исаков Милйя Евсеевич"
+     },
+     {
+      "id": "ru-medical-071",
+      "task": "reply",
+      "label": "[PERSON_4]",
+      "value": "Исаков Милйя Евсеевич"
+     },
+     {
+      "id": "ru-medical-063",
+      "task": "summary",
+      "label": "[PERSON_5]",
+      "value": "Ильин Ю.М."
+     },
+     {
+      "id": "ru-medical-063",
+      "task": "reply",
+      "label": "[PERSON_5]",
+      "value": "Ильин Ю.М."
+     },
+     {
+      "id": "ru-medical-063",
+      "task": "reply",
+      "label": "[PERSON_5]",
+      "value": "Ильин Ю.М."
+     },
+     {
+      "id": "ru-medical-047",
+      "task": "summary",
+      "label": "[PERSON_3]",
+      "value": "Пономарев Нуы Абрамович"
+     },
+     {
+      "id": "ru-medical-047",
+      "task": "reply",
+      "label": "[PERSON_3]",
+      "value": "Пономарев Нуы Абрамович"
+     },
+     {
+      "id": "ru-medical-074",
+      "task": "summary",
+      "label": "[PERSON_2]",
+      "value": "Овчинников Фадя Дмитриевич"
+     },
+     {
+      "id": "ru-medical-074",
+      "task": "summary",
+      "label": "[PERSON_4]",
+      "value": "Владимиров А.В."
+     },
+     {
+      "id": "ru-medical-074",
+      "task": "reply",
+      "label": "[PERSON_4]",
+      "value": "Владимиров А.В."
+     },
+     {
+      "id": "ru-medical-074",
+      "task": "reply",
+      "label": "[PERSON_4]",
+      "value": "Владимиров А.В."
+     },
+     {
+      "id": "ru-medical-074",
+      "task": "reply",
+      "label": "[PERSON_2]",
+      "value": "Овчинников Фадя Дмитриевич"
+     },
+     {
+      "id": "ru-medical-069",
+      "task": "summary",
+      "label": "[PERSON_4]",
+      "value": "Егорова София Натановна"
+     },
+     {
+      "id": "ru-medical-069",
+      "task": "reply",
+      "label": "[PERSON_4]",
+      "value": "Егорова София Натановна"
+     },
+     {
+      "id": "ru-medical-165",
+      "task": "summary",
+      "label": "[PERSON_1]",
+      "value": "Кириллов Илья Ааронович"
+     },
+     {
+      "id": "ru-medical-165",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Кириллов Илья Ааронович"
+     },
+     {
+      "id": "ru-medical-165",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Кириллов Илья Ааронович"
+     },
+     {
+      "id": "ru-medical-165",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Кириллов Илья Ааронович"
+     },
+     {
+      "id": "ru-medical-075",
+      "task": "summary",
+      "label": "[PERSON_2]",
+      "value": "Гуляев Никон"
+     },
+     {
+      "id": "ru-medical-075",
+      "task": "reply",
+      "label": "[PERSON_2]",
+      "value": "Гуляев Никон"
+     },
+     {
+      "id": "ru-medical-116",
+      "task": "reply",
+      "label": "[PERSON_5]",
+      "value": "Игнатов Д.Е."
+     },
+     {
+      "id": "ru-medical-116",
+      "task": "reply",
+      "label": "[PERSON_5]",
+      "value": "Игнатов Д.Е."
+     },
+     {
+      "id": "ru-medical-082",
+      "task": "summary",
+      "label": "[PERSON_3]",
+      "value": "Суворова София Викторовна"
+     }
+    ],
+    "ru/qwen3.5:9b": [
+     {
+      "id": "ru-certificate-030",
+      "task": "summary",
+      "label": "[PERSON_1]",
+      "value": "Громова София Степановна"
+     },
+     {
+      "id": "ru-certificate-030",
+      "task": "summary",
+      "label": "[PERSON_4]",
+      "value": "Федотов Ф.Ю."
+     },
+     {
+      "id": "ru-certificate-030",
+      "task": "reply",
+      "label": "[PERSON_4]",
+      "value": "Федотов Ф.Ю."
+     },
+     {
+      "id": "ru-certificate-126",
+      "task": "reply",
+      "label": "[PERSON_3]",
+      "value": "Субботин Мокей Феофанович"
+     },
+     {
+      "id": "ru-certificate-120",
+      "task": "summary",
+      "label": "[PERSON_2]",
+      "value": "Жуков Венедиктович"
+     },
+     {
+      "id": "ru-certificate-120",
+      "task": "reply",
+      "label": "[PERSON_2]",
+      "value": "Жуков Венедиктович"
+     },
+     {
+      "id": "ru-certificate-124",
+      "task": "summary",
+      "label": "[PERSON_2]",
+      "value": "Ефремво Иван Виленович"
+     },
+     {
+      "id": "ru-certificate-124",
+      "task": "reply",
+      "label": "[PERSON_2]",
+      "value": "Ефремво Иван Виленович"
+     },
+     {
+      "id": "ru-certificate-099",
+      "task": "summary",
+      "label": "[PERSON_3]",
+      "value": "Стрелков Аникита Валентинович"
+     },
+     {
+      "id": "ru-certificate-099",
+      "task": "reply",
+      "label": "[PERSON_3]",
+      "value": "Стрелков Аникита Валентинович"
+     },
+     {
+      "id": "ru-certificate-110",
+      "task": "summary",
+      "label": "[PERSON_5]",
+      "value": "Влдаимиров Ф.Т."
+     },
+     {
+      "id": "ru-certificate-110",
+      "task": "reply",
+      "label": "[PERSON_5]",
+      "value": "Влдаимиров Ф.Т."
+     },
+     {
+      "id": "ru-certificate-155",
+      "task": "summary",
+      "label": "[PERSON_4]",
+      "value": "Воронцов Фадя Дорофеевич"
+     },
+     {
+      "id": "ru-certificate-155",
+      "task": "reply",
+      "label": "[PERSON_4]",
+      "value": "Воронцов Фадя Дорофеевич"
+     },
+     {
+      "id": "ru-certificate-178",
+      "task": "summary",
+      "label": "[PERSON_3]",
+      "value": "Русаков Леонид Чеславович"
+     },
+     {
+      "id": "ru-certificate-178",
+      "task": "reply",
+      "label": "[PERSON_3]",
+      "value": "Русаков Леонид Чеславович"
+     },
+     {
+      "id": "ru-certificate-185",
+      "task": "reply",
+      "label": "[PERSON_3]",
+      "value": "Лапин Феликс Гордеевич"
+     },
+     {
+      "id": "ru-certificate-190",
+      "task": "summary",
+      "label": "[PERSON_1]",
+      "value": "Панфилов Панкратий Георгиевич"
+     },
+     {
+      "id": "ru-certificate-190",
+      "task": "summary",
+      "label": "[PERSON_3]",
+      "value": "Русакова Вероника Максиомвна"
+     },
+     {
+      "id": "ru-certificate-190",
+      "task": "summary",
+      "label": "[PERSON_5]",
+      "value": "Силина Г.Э."
+     },
+     {
+      "id": "ru-certificate-190",
+      "task": "reply",
+      "label": "[PERSON_5]",
+      "value": "Силина Г.Э."
+     },
+     {
+      "id": "ru-certificate-002",
+      "task": "summary",
+      "label": "[PERSON_1]",
+      "value": "Дмитриева Выднаа Ефимовна"
+     },
+     {
+      "id": "ru-certificate-002",
+      "task": "summary",
+      "label": "[PERSON_3]",
+      "value": "Зиновьев Тимофя Ильич"
+     },
+     {
+      "id": "ru-certificate-002",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Дмитриева Выднаа Ефимовна"
+     },
+     {
+      "id": "ru-certificate-002",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Дмитриева Выднаа Ефимовна"
+     },
+     {
+      "id": "ru-certificate-002",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Дмитриева Выднаа Ефимовна"
+     },
+     {
+      "id": "ru-certificate-002",
+      "task": "reply",
+      "label": "[PERSON_3]",
+      "value": "Зиновьев Тимофя Ильич"
+     },
+     {
+      "id": "ru-certificate-173",
+      "task": "summary",
+      "label": "[PERSON_4]",
+      "value": "Харитонов П.В."
+     },
+     {
+      "id": "ru-certificate-173",
+      "task": "reply",
+      "label": "[PERSON_4]",
+      "value": "Харитонов П.В."
+     },
+     {
+      "id": "ru-certificate-056",
+      "task": "summary",
+      "label": "[PERSON_1]",
+      "value": "Максимов Юрий Тимурович"
+     },
+     {
+      "id": "ru-contract-056",
+      "task": "summary",
+      "label": "[PERSON_3]",
+      "value": "Орехов Творимир Гавриилович"
+     },
+     {
+      "id": "ru-contract-056",
+      "task": "reply",
+      "label": "[PERSON_3]",
+      "value": "Орехов Творимир Гавриилович"
+     },
+     {
+      "id": "ru-contract-074",
+      "task": "summary",
+      "label": "[PERSON_2]",
+      "value": "Гуляева София Феликсовна"
+     },
+     {
+      "id": "ru-contract-074",
+      "task": "summary",
+      "label": "[PERSON_3]",
+      "value": "Трофимов Геннадий Бориславович"
+     },
+     {
+      "id": "ru-contract-161",
+      "task": "summary",
+      "label": "[PERSON_1]",
+      "value": "Матвеев Власович"
+     },
+     {
+      "id": "ru-contract-161",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Матвеев Власович"
+     },
+     {
+      "id": "ru-contract-161",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Матвеев Власович"
+     },
+     {
+      "id": "ru-contract-048",
+      "task": "summary",
+      "label": "[PERSON_8]",
+      "value": "Сазонов Сидор"
+     },
+     {
+      "id": "ru-contract-048",
+      "task": "reply",
+      "label": "[PERSON_8]",
+      "value": "Сазонов Сидор"
+     },
+     {
+      "id": "ru-contract-150",
+      "task": "summary",
+      "label": "[PERSON_3]",
+      "value": "Русаков Вышеслав Викентьевич"
+     },
+     {
+      "id": "ru-contract-150",
+      "task": "summary",
+      "label": "[PERSON_4]",
+      "value": "Семенов Ипполит Александрович"
+     },
+     {
+      "id": "ru-contract-150",
+      "task": "reply",
+      "label": "[PERSON_3]",
+      "value": "Русаков Вышеслав Викентьевич"
+     },
+     {
+      "id": "ru-contract-150",
+      "task": "reply",
+      "label": "[PERSON_4]",
+      "value": "Семенов Ипполит Александрович"
+     },
+     {
+      "id": "ru-contract-150",
+      "task": "reply",
+      "label": "[PERSON_3]",
+      "value": "Русаков Вышеслав Викентьевич"
+     },
+     {
+      "id": "ru-contract-150",
+      "task": "reply",
+      "label": "[PERSON_4]",
+      "value": "Семенов Ипполит Александрович"
+     },
+     {
+      "id": "ru-contract-100",
+      "task": "summary",
+      "label": "[PERSON_1]",
+      "value": "Харитонов Тимофя Ааронович"
+     },
+     {
+      "id": "ru-contract-100",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Харитонов Тимофя Ааронович"
+     },
+     {
+      "id": "ru-contract-100",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Харитонов Тимофя Ааронович"
+     },
+     {
+      "id": "ru-contract-100",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Харитонов Тимофя Ааронович"
+     },
+     {
+      "id": "ru-contract-100",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Харитонов Тимофя Ааронович"
+     },
+     {
+      "id": "ru-contract-100",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Харитонов Тимофя Ааронович"
+     },
+     {
+      "id": "ru-contract-008",
+      "task": "summary",
+      "label": "[PERSON_2]",
+      "value": "Мишина Лдюмила Степановна"
+     },
+     {
+      "id": "ru-contract-122",
+      "task": "reply",
+      "label": "[PERSON_2]",
+      "value": "Игнатов Пимен Федосьевич"
+     },
+     {
+      "id": "ru-contract-122",
+      "task": "reply",
+      "label": "[PERSON_2]",
+      "value": "Игнатов Пимен Федосьевич"
+     },
+     {
+      "id": "ru-contract-122",
+      "task": "reply",
+      "label": "[PERSON_2]",
+      "value": "Игнатов Пимен Федосьевич"
+     },
+     {
+      "id": "ru-contract-122",
+      "task": "reply",
+      "label": "[PERSON_2]",
+      "value": "Игнатов Пимен Федосьевич"
+     },
+     {
+      "id": "ru-hr-179",
+      "task": "summary",
+      "label": "[PERSON_3]",
+      "value": "Котов Валентин Валетнинович"
+     },
+     {
+      "id": "ru-hr-172",
+      "task": "reply",
+      "label": "[PERSON_5]",
+      "value": "Субботина Алевтина Анатольевна"
+     },
+     {
+      "id": "ru-hr-112",
+      "task": "reply",
+      "label": "[PERSON_3]",
+      "value": "Пестова Алевтина Игоревна"
+     },
+     {
+      "id": "ru-hr-169",
+      "task": "summary",
+      "label": "[PERSON_4]",
+      "value": "Михеев Милены Адрианович"
+     },
+     {
+      "id": "ru-hr-130",
+      "task": "summary",
+      "label": "[PERSON_3]",
+      "value": "Зимина Ираида Павловна"
+     },
+     {
+      "id": "ru-hr-130",
+      "task": "reply",
+      "label": "[PERSON_3]",
+      "value": "Зимина Ираида Павловна"
+     },
+     {
+      "id": "ru-hr-027",
+      "task": "reply",
+      "label": "[PERSON_3]",
+      "value": "Харитонов Дмитрий Измаилович"
+     },
+     {
+      "id": "ru-hr-027",
+      "task": "reply",
+      "label": "[PERSON_3]",
+      "value": "Харитонов Дмитрий Измаилович"
+     },
+     {
+      "id": "ru-hr-041",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Меркушев Лазарь Дорофеевич"
+     },
+     {
+      "id": "ru-hr-041",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Меркушев Лазарь Дорофеевич"
+     },
+     {
+      "id": "ru-hr-133",
+      "task": "summary",
+      "label": "[PERSON_5]",
+      "value": "Ефимова О.Е."
+     },
+     {
+      "id": "ru-hr-094",
+      "task": "summary",
+      "label": "[PERSON_1]",
+      "value": "Сафонов Варлаы Валерьянович"
+     },
+     {
+      "id": "ru-hr-094",
+      "task": "summary",
+      "label": "[PERSON_1]",
+      "value": "Сафонов Варлаы Валерьянович"
+     },
+     {
+      "id": "ru-hr-094",
+      "task": "summary",
+      "label": "[PERSON_1]",
+      "value": "Сафонов Варлаы Валерьянович"
+     },
+     {
+      "id": "ru-hr-094",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Сафонов Варлаы Валерьянович"
+     },
+     {
+      "id": "ru-hr-094",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Сафонов Варлаы Валерьянович"
+     },
+     {
+      "id": "ru-hr-007",
+      "task": "summary",
+      "label": "[PERSON_1]",
+      "value": "Харитонов Всеволод Иосипович"
+     },
+     {
+      "id": "ru-hr-007",
+      "task": "summary",
+      "label": "[PERSON_1]",
+      "value": "Харитонов Всеволод Иосипович"
+     },
+     {
+      "id": "ru-hr-157",
+      "task": "reply",
+      "label": "[PERSON_2]",
+      "value": "Трофимов Фотий Александрович"
+     },
+     {
+      "id": "ru-hr-157",
+      "task": "reply",
+      "label": "[PERSON_2]",
+      "value": "Трофимов Фотий Александрович"
+     },
+     {
+      "id": "ru-hr-151",
+      "task": "summary",
+      "label": "[PERSON_3]",
+      "value": "Агафонов Макар Теймуразович"
+     },
+     {
+      "id": "ru-hr-151",
+      "task": "reply",
+      "label": "[PERSON_3]",
+      "value": "Агафонов Макар Теймуразович"
+     },
+     {
+      "id": "ru-hr-148",
+      "task": "reply",
+      "label": "[PERSON_3]",
+      "value": "Самсонов Сократ Филимонович"
+     },
+     {
+      "id": "ru-hr-043",
+      "task": "reply",
+      "label": "[PERSON_5]",
+      "value": "Афаансьева К.Т."
+     },
+     {
+      "id": "ru-hr-058",
+      "task": "summary",
+      "label": "[PERSON_2]",
+      "value": "Зыков Прохор Устинович"
+     },
+     {
+      "id": "ru-hr-058",
+      "task": "summary",
+      "label": "[PERSON_4]",
+      "value": "Никонов Станислав Федотович"
+     },
+     {
+      "id": "ru-hr-058",
+      "task": "reply",
+      "label": "[PERSON_4]",
+      "value": "Никонов Станислав Федотович"
+     },
+     {
+      "id": "ru-hr-058",
+      "task": "reply",
+      "label": "[PERSON_4]",
+      "value": "Никонов Станислав Федотович"
+     },
+     {
+      "id": "ru-hr-138",
+      "task": "summary",
+      "label": "[PERSON_3]",
+      "value": "Рожков Фадя Елизарович"
+     },
+     {
+      "id": "ru-hr-138",
+      "task": "reply",
+      "label": "[PERSON_3]",
+      "value": "Рожков Фадя Елизарович"
+     },
+     {
+      "id": "ru-hr-196",
+      "task": "summary",
+      "label": "[PERSON_1]",
+      "value": "Никонов Н.И."
+     },
+     {
+      "id": "ru-hr-196",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Никонов Н.И."
+     },
+     {
+      "id": "ru-hr-196",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Никонов Н.И."
+     },
+     {
+      "id": "ru-hr-196",
+      "task": "reply",
+      "label": "[PERSON_3]",
+      "value": "Субботина Евдокия Альбертовна"
+     },
+     {
+      "id": "ru-hr-196",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Никонов Н.И."
+     },
+     {
+      "id": "ru-letter-147",
+      "task": "summary",
+      "label": "[PERSON_1]",
+      "value": "Ситниоквой Л.В."
+     },
+     {
+      "id": "ru-letter-147",
+      "task": "summary",
+      "label": "[PERSON_6]",
+      "value": "Ильин Серафим Витальевич"
+     },
+     {
+      "id": "ru-letter-147",
+      "task": "reply",
+      "label": "[PERSON_6]",
+      "value": "Ильин Серафим Витальевич"
+     },
+     {
+      "id": "ru-letter-147",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Ситниоквой Л.В."
+     },
+     {
+      "id": "ru-letter-155",
+      "task": "reply",
+      "label": "[PERSON_4]",
+      "value": "Пестова Наина Львовна"
+     },
+     {
+      "id": "ru-letter-052",
+      "task": "reply",
+      "label": "[PERSON_5]",
+      "value": "Ефимов Николай Ильич"
+     },
+     {
+      "id": "ru-letter-052",
+      "task": "reply",
+      "label": "[PERSON_5]",
+      "value": "Ефимов Николай Ильич"
+     },
+     {
+      "id": "ru-letter-109",
+      "task": "summary",
+      "label": "[PERSON_5]",
+      "value": "Субботин Терентий Власович"
+     },
+     {
+      "id": "ru-letter-109",
+      "task": "reply",
+      "label": "[PERSON_5]",
+      "value": "Субботин Терентий Власович"
+     },
+     {
+      "id": "ru-letter-145",
+      "task": "summary",
+      "label": "[PERSON_6]",
+      "value": "Орехов Остромир Харлампович"
+     },
+     {
+      "id": "ru-letter-145",
+      "task": "summary",
+      "label": "[PERSON_8]",
+      "value": "Трофимов П.Э."
+     },
+     {
+      "id": "ru-letter-145",
+      "task": "reply",
+      "label": "[PERSON_8]",
+      "value": "Трофимов П.Э."
+     },
+     {
+      "id": "ru-letter-145",
+      "task": "reply",
+      "label": "[PERSON_6]",
+      "value": "Орехов Остромир Харлампович"
+     },
+     {
+      "id": "ru-letter-051",
+      "task": "summary",
+      "label": "[PERSON_6]",
+      "value": "Беспалов Геогрий Витальевич"
+     },
+     {
+      "id": "ru-letter-051",
+      "task": "reply",
+      "label": "[PERSON_7]",
+      "value": "Самсонов Олимпий Филатович"
+     },
+     {
+      "id": "ru-letter-129",
+      "task": "reply",
+      "label": "[PERSON_6]",
+      "value": "Колобов Киры Трифонович"
+     },
+     {
+      "id": "ru-letter-105",
+      "task": "reply",
+      "label": "[PERSON_6]",
+      "value": "Сафонов Сила Филимонович"
+     },
+     {
+      "id": "ru-letter-105",
+      "task": "reply",
+      "label": "[PERSON_10]",
+      "value": "Кзуьмина А.Т."
+     },
+     {
+      "id": "ru-letter-091",
+      "task": "summary",
+      "label": "[PERSON_7]",
+      "value": "Самсонов Болеслав Елисеевич"
+     },
+     {
+      "id": "ru-letter-091",
+      "task": "reply",
+      "label": "[PERSON_7]",
+      "value": "Самсонов Болеслав Елисеевич"
+     },
+     {
+      "id": "ru-letter-106",
+      "task": "summary",
+      "label": "[PERSON_6]",
+      "value": "Беляков Лучезар Ерофеевич"
+     },
+     {
+      "id": "ru-letter-199",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Ефимов О.Э."
+     },
+     {
+      "id": "ru-letter-199",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Ефимов О.Э."
+     },
+     {
+      "id": "ru-letter-138",
+      "task": "summary",
+      "label": "[PERSON_4]",
+      "value": "Федотов Тихон Брониславович"
+     },
+     {
+      "id": "ru-letter-138",
+      "task": "reply",
+      "label": "[PERSON_4]",
+      "value": "Федотов Тихон Брониславович"
+     },
+     {
+      "id": "ru-letter-153",
+      "task": "summary",
+      "label": "[PERSON_2]",
+      "value": "Евся Иосифович"
+     },
+     {
+      "id": "ru-medical-058",
+      "task": "summary",
+      "label": "[PERSON_3]",
+      "value": "Лапин Андрон Эдгардович"
+     },
+     {
+      "id": "ru-medical-140",
+      "task": "summary",
+      "label": "[PERSON_5]",
+      "value": "Игнатов Ю.Ч."
+     },
+     {
+      "id": "ru-medical-018",
+      "task": "summary",
+      "label": "[PERSON_1]",
+      "value": "Ситников Устин Филиппович"
+     },
+     {
+      "id": "ru-medical-018",
+      "task": "reply",
+      "label": "[PERSON_1]",
+      "value": "Ситников Устин Филиппович"
+     },
+     {
+      "id": "ru-medical-021",
+      "task": "summary",
+      "label": "[PERSON_4]",
+      "value": "Тихноова Т.С."
+     },
+     {
+      "id": "ru-medical-071",
+      "task": "summary",
+      "label": "[PERSON_4]",
+      "value": "Исаков Милйя Евсеевич"
+     },
+     {
+      "id": "ru-medical-071",
+      "task": "reply",
+      "label": "[PERSON_4]",
+      "value": "Исаков Милйя Евсеевич"
+     },
+     {
+      "id": "ru-medical-071",
+      "task": "reply",
+      "label": "[PERSON_4]",
+      "value": "Исаков Милйя Евсеевич"
+     },
+     {
+      "id": "ru-medical-063",
+      "task": "summary",
+      "label": "[PERSON_5]",
+      "value": "Ильин Ю.М."
+     },
+     {
+      "id": "ru-medical-063",
+      "task": "reply",
+      "label": "[PERSON_5]",
+      "value": "Ильин Ю.М."
+     },
+     {
+      "id": "ru-medical-028",
+      "task": "reply",
+      "label": "[PERSON_4]",
+      "value": "Михеева Алевтина Амтвеевна"
+     },
+     {
+      "id": "ru-medical-028",
+      "task": "reply",
+      "label": "[PERSON_4]",
+      "value": "Михеева Алевтина Амтвеевна"
+     },
+     {
+      "id": "ru-medical-159",
+      "task": "summary",
+      "label": "[PERSON_6]",
+      "value": "Гаврилов Б.И."
+     },
+     {
+      "id": "ru-medical-159",
+      "task": "reply",
+      "label": "[PERSON_6]",
+      "value": "Гаврилов Б.И."
+     },
+     {
+      "id": "ru-medical-159",
+      "task": "reply",
+      "label": "[PERSON_6]",
+      "value": "Гаврилов Б.И."
+     },
+     {
+      "id": "ru-medical-047",
+      "task": "summary",
+      "label": "[PERSON_3]",
+      "value": "Пономарев Нуы Абрамович"
+     },
+     {
+      "id": "ru-medical-047",
+      "task": "reply",
+      "label": "[PERSON_3]",
+      "value": "Пономарев Нуы Абрамович"
+     },
+     {
+      "id": "ru-medical-074",
+      "task": "summary",
+      "label": "[PERSON_2]",
+      "value": "Овчинников Фадя Дмитриевич"
+     },
+     {
+      "id": "ru-medical-074",
+      "task": "summary",
+      "label": "[PERSON_4]",
+      "value": "Владимиров А.В."
+     },
+     {
+      "id": "ru-medical-074",
+      "task": "reply",
+      "label": "[PERSON_2]",
+      "value": "Овчинников Фадя Дмитриевич"
+     },
+     {
+      "id": "ru-medical-074",
+      "task": "reply",
+      "label": "[PERSON_4]",
+      "value": "Владимиров А.В."
+     },
+     {
+      "id": "ru-medical-069",
+      "task": "summary",
+      "label": "[PERSON_4]",
+      "value": "Егорова София Натановна"
+     },
+     {
+      "id": "ru-medical-165",
+      "task": "summary",
+      "label": "[PERSON_1]",
+      "value": "Кириллов Илья Ааронович"
+     },
+     {
+      "id": "ru-medical-075",
+      "task": "summary",
+      "label": "[PERSON_2]",
+      "value": "Гуляев Никон"
+     },
+     {
+      "id": "ru-medical-075",
+      "task": "reply",
+      "label": "[PERSON_2]",
+      "value": "Гуляев Никон"
+     },
+     {
+      "id": "ru-medical-082",
+      "task": "summary",
+      "label": "[PERSON_3]",
+      "value": "Суворова София Викторовна"
+     }
+    ],
+    "uk/gemma4:12b": [
+     {
+      "id": "uk-hr-058",
+      "task": "reply",
+      "label": "[PERSON_6]",
+      "value": "Kate Matthews"
+     }
+    ]
+   }
+  }
+ },
+ "_note": "Computed from the saved answers; no model was asked. Held-out set 6: answers with a failure (Clopper-Pearson) and value fidelity were pre-registered as companion measures (HOLDOUT.md); restoration without values leaked into the input was not. Held-out sets 4 and 5: added after review, not pre-registered."
+}

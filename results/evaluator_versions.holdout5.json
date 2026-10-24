@@ -1,163 +1,461 @@
 {
- "pii_roundtrip ru/qwen3.5:9b": {
+ "ru/gemma4:12b": {
+  "evaluator_1": {
+   "labels_in_answer": 13722,
+   "occurrences_failed": 8,
+   "restore_rate": 0.9994169946072001,
+   "restore_ci": [
+    0.998776186019725,
+    0.9998544819557625
+   ],
+   "answers_with_failure": 6,
+   "answers_with_labels": 380,
+   "person_labels": 3236,
+   "restore_rate_person": 0.9975278121137207,
+   "restore_ci_person": [
+    0.9948296836982968,
+    0.9993815708101422
+   ]
+  },
+  "evaluator_2": {
+   "labels_in_answer": 13722,
+   "occurrences_failed": 0,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "answers_with_failure": 0,
+   "answers_with_labels": 380,
+   "person_labels": 3236,
+   "restore_rate_person": 1.0,
+   "restore_ci_person": [
+    1.0,
+    1.0
+   ]
+  },
+  "evaluator_3": {
+   "labels_in_answer": 13722,
+   "occurrences_failed": 347,
+   "restore_rate": 0.9747121410873051,
+   "restore_ci": [
+    0.9714788474228316,
+    0.9777875200935262
+   ],
+   "answers_with_failure": 180,
+   "answers_with_labels": 380,
+   "person_labels": 3236,
+   "restore_rate_person": 0.8927688504326329,
+   "restore_ci_person": [
+    0.8780795957043588,
+    0.9063751154912226
+   ]
+  }
+ },
+ "ru/qwen3.5:9b": {
   "evaluator_1": {
    "labels_in_answer": 12274,
    "occurrences_failed": 10,
    "restore_rate": 0.9991852696757373,
+   "restore_ci": [
+    0.9985828609536512,
+    0.9996767937944409
+   ],
    "answers_with_failure": 9,
-   "answers_with_labels": 380
+   "answers_with_labels": 380,
+   "person_labels": 3097,
+   "restore_rate_person": 0.9967710687762351,
+   "restore_ci_person": [
+    0.9944262295081967,
+    0.9987092610519522
+   ]
   },
   "evaluator_2": {
    "labels_in_answer": 12274,
    "occurrences_failed": 2,
    "restore_rate": 0.9998370539351474,
+   "restore_ci": [
+    0.9995874247050086,
+    1.0
+   ],
    "answers_with_failure": 2,
-   "answers_with_labels": 380
+   "answers_with_labels": 380,
+   "person_labels": 3097,
+   "restore_rate_person": 0.999354213755247,
+   "restore_ci_person": [
+    0.998373454782043,
+    1.0
+   ]
+  },
+  "evaluator_3": {
+   "labels_in_answer": 12274,
+   "occurrences_failed": 338,
+   "restore_rate": 0.9724621150399217,
+   "restore_ci": [
+    0.9687068194749248,
+    0.9760446120012567
+   ],
+   "answers_with_failure": 172,
+   "answers_with_labels": 380,
+   "person_labels": 3097,
+   "restore_rate_person": 0.8908621246367452,
+   "restore_ci_person": [
+    0.8749598199935712,
+    0.905144694533762
+   ]
   }
  },
- "pii_roundtrip ru/gemma4:12b": {
+ "uk/gemma4:12b": {
   "evaluator_1": {
-   "labels_in_answer": 13722,
-   "occurrences_failed": 8,
-   "restore_rate": 0.9994169946072001,
-   "answers_with_failure": 6,
-   "answers_with_labels": 380
+   "labels_in_answer": 13857,
+   "occurrences_failed": 0,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "answers_with_failure": 0,
+   "answers_with_labels": 380,
+   "person_labels": 3278,
+   "restore_rate_person": 1.0,
+   "restore_ci_person": [
+    1.0,
+    1.0
+   ]
   },
   "evaluator_2": {
-   "labels_in_answer": 13722,
+   "labels_in_answer": 13857,
    "occurrences_failed": 0,
    "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
    "answers_with_failure": 0,
-   "answers_with_labels": 380
+   "answers_with_labels": 380,
+   "person_labels": 3278,
+   "restore_rate_person": 1.0,
+   "restore_ci_person": [
+    1.0,
+    1.0
+   ]
+  },
+  "evaluator_3": {
+   "labels_in_answer": 13857,
+   "occurrences_failed": 0,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "answers_with_failure": 0,
+   "answers_with_labels": 380,
+   "person_labels": 3278,
+   "restore_rate_person": 1.0,
+   "restore_ci_person": [
+    1.0,
+    1.0
+   ]
   }
  },
- "pii_guard ru/qwen3.5:9b": {
+ "uk/qwen3.5:9b": {
   "evaluator_1": {
-   "labels_in_answer": 542,
-   "occurrences_failed": 1,
-   "restore_rate": 0.9981549815498155,
-   "answers_with_failure": 1,
-   "answers_with_labels": 15
+   "labels_in_answer": 11963,
+   "occurrences_failed": 0,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "answers_with_failure": 0,
+   "answers_with_labels": 380,
+   "person_labels": 2650,
+   "restore_rate_person": 1.0,
+   "restore_ci_person": [
+    1.0,
+    1.0
+   ]
   },
   "evaluator_2": {
-   "labels_in_answer": 542,
+   "labels_in_answer": 11963,
    "occurrences_failed": 0,
    "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
    "answers_with_failure": 0,
-   "answers_with_labels": 15
-  }
- },
- "pii_guard~tolerant ru/qwen3.5:9b": {
-  "evaluator_1": {
-   "labels_in_answer": 542,
-   "occurrences_failed": 0,
-   "restore_rate": 1.0,
-   "answers_with_failure": 0,
-   "answers_with_labels": 15
+   "answers_with_labels": 380,
+   "person_labels": 2650,
+   "restore_rate_person": 1.0,
+   "restore_ci_person": [
+    1.0,
+    1.0
+   ]
   },
-  "evaluator_2": {
-   "labels_in_answer": 542,
-   "occurrences_failed": 0,
-   "restore_rate": 1.0,
-   "answers_with_failure": 0,
-   "answers_with_labels": 15
+  "evaluator_3": {
+   "labels_in_answer": 11963,
+   "occurrences_failed": 7,
+   "restore_rate": 0.9994148624926857,
+   "restore_ci": [
+    0.9988277652181194,
+    0.9999150237933379
+   ],
+   "answers_with_failure": 5,
+   "answers_with_labels": 380,
+   "person_labels": 2650,
+   "restore_rate_person": 0.9973584905660378,
+   "restore_ci_person": [
+    0.9947249434815373,
+    0.9996170049789352
+   ]
   }
  },
- "pii_guard ru/gemma4:12b": {
-  "evaluator_1": {
-   "labels_in_answer": 1564,
-   "occurrences_failed": 0,
-   "restore_rate": 1.0,
-   "answers_with_failure": 0,
-   "answers_with_labels": 40
+ "_failures_evaluator_1": {
+  "ru/gemma4:12b": [
+   {
+    "id": "ru-hr-022",
+    "task": "summary",
+    "label": "[PERSON_2]",
+    "value": "Большаков Андреевич"
+   },
+   {
+    "id": "ru-hr-022",
+    "task": "summary",
+    "label": "[PERSON_2]",
+    "value": "Большаков Андреевич"
+   },
+   {
+    "id": "ru-hr-022",
+    "task": "summary",
+    "label": "[PERSON_2]",
+    "value": "Большаков Андреевич"
+   },
+   {
+    "id": "ru-hr-022",
+    "task": "reply",
+    "label": "[PERSON_2]",
+    "value": "Большаков Андреевич"
+   },
+   {
+    "id": "ru-hr-043",
+    "task": "summary",
+    "label": "[PERSON_7]",
+    "value": "Третьяков Фадей Изотович"
+   },
+   {
+    "id": "ru-letter-155",
+    "task": "summary",
+    "label": "[PERSON_6]",
+    "value": "Третьяков Пимен Валерьянович"
+   },
+   {
+    "id": "ru-letter-131",
+    "task": "summary",
+    "label": "[PERSON_10]",
+    "value": "Афанасьева Майя Ждановна"
+   },
+   {
+    "id": "ru-letter-131",
+    "task": "reply",
+    "label": "[PERSON_10]",
+    "value": "Афанасьева Майя Ждановна"
+   }
+  ],
+  "ru/qwen3.5:9b": [
+   {
+    "id": "ru-hr-043",
+    "task": "summary",
+    "label": "[PERSON_7]",
+    "value": "Третьяков Фадей Изотович"
+   },
+   {
+    "id": "ru-hr-043",
+    "task": "reply",
+    "label": "[PERSON_7]",
+    "value": "Третьяков Фадей Изотович"
+   },
+   {
+    "id": "ru-hr-043",
+    "task": "reply",
+    "label": "[PERSON_7]",
+    "value": "Третьяков Фадей Изотович"
+   },
+   {
+    "id": "ru-letter-155",
+    "task": "summary",
+    "label": "[PERSON_6]",
+    "value": "Третьяков Пимен Валерьянович"
+   },
+   {
+    "id": "ru-letter-155",
+    "task": "reply",
+    "label": "[PERSON_6]",
+    "value": "Третьяков Пимен Валерьянович"
+   },
+   {
+    "id": "ru-letter-131",
+    "task": "summary",
+    "label": "[PERSON_10]",
+    "value": "Афанасьева Майя Ждановна"
+   },
+   {
+    "id": "ru-letter-131",
+    "task": "reply",
+    "label": "[PERSON_10]",
+    "value": "Афанасьева Майя Ждановна"
+   },
+   {
+    "id": "ru-letter-145",
+    "task": "summary",
+    "label": "[PERSON_3]",
+    "value": "Рыбаков Аверкий"
+   },
+   {
+    "id": "ru-letter-129",
+    "task": "summary",
+    "label": "[PERSON_3]",
+    "value": "Буров А.Ф."
+   },
+   {
+    "id": "ru-medical-165",
+    "task": "reply",
+    "label": "[PERSON_1]",
+    "value": "Ильина Майя Геннадиевна"
+   }
+  ],
+  "uk/gemma4:12b": [],
+  "uk/qwen3.5:9b": []
+ },
+ "_note": "Held-out holdout5: the engine's restoration from the saved answers scored with evaluator versions 1, 2, 3 (bench/eval/evaluator_versions.py). Both compare the answer with the value the tool stored; an error in the stored value is not visible to them (see results/stored_names.*.json). The pii-guard entries under _pii_guard_evaluators_1_2 are kept from the earlier run (versions 1 and 2 only; pii-guard was not rescored with version 3).",
+ "_pii_guard_evaluators_1_2": {
+  "pii_guard ru/qwen3.5:9b": {
+   "evaluator_1": {
+    "labels_in_answer": 542,
+    "occurrences_failed": 1,
+    "restore_rate": 0.9981549815498155,
+    "answers_with_failure": 1,
+    "answers_with_labels": 15
+   },
+   "evaluator_2": {
+    "labels_in_answer": 542,
+    "occurrences_failed": 0,
+    "restore_rate": 1.0,
+    "answers_with_failure": 0,
+    "answers_with_labels": 15
+   }
   },
-  "evaluator_2": {
-   "labels_in_answer": 1564,
-   "occurrences_failed": 0,
-   "restore_rate": 1.0,
-   "answers_with_failure": 0,
-   "answers_with_labels": 40
-  }
- },
- "pii_guard~tolerant ru/gemma4:12b": {
-  "evaluator_1": {
-   "labels_in_answer": 1564,
-   "occurrences_failed": 0,
-   "restore_rate": 1.0,
-   "answers_with_failure": 0,
-   "answers_with_labels": 40
+  "pii_guard~tolerant ru/qwen3.5:9b": {
+   "evaluator_1": {
+    "labels_in_answer": 542,
+    "occurrences_failed": 0,
+    "restore_rate": 1.0,
+    "answers_with_failure": 0,
+    "answers_with_labels": 15
+   },
+   "evaluator_2": {
+    "labels_in_answer": 542,
+    "occurrences_failed": 0,
+    "restore_rate": 1.0,
+    "answers_with_failure": 0,
+    "answers_with_labels": 15
+   }
   },
-  "evaluator_2": {
-   "labels_in_answer": 1564,
-   "occurrences_failed": 0,
-   "restore_rate": 1.0,
-   "answers_with_failure": 0,
-   "answers_with_labels": 40
-  }
- },
- "pii_guard@generic ru/qwen3.5:9b": {
-  "evaluator_1": {
-   "labels_in_answer": 1060,
-   "occurrences_failed": 3,
-   "restore_rate": 0.9971698113207547,
-   "answers_with_failure": 2,
-   "answers_with_labels": 26
+  "pii_guard ru/gemma4:12b": {
+   "evaluator_1": {
+    "labels_in_answer": 1564,
+    "occurrences_failed": 0,
+    "restore_rate": 1.0,
+    "answers_with_failure": 0,
+    "answers_with_labels": 40
+   },
+   "evaluator_2": {
+    "labels_in_answer": 1564,
+    "occurrences_failed": 0,
+    "restore_rate": 1.0,
+    "answers_with_failure": 0,
+    "answers_with_labels": 40
+   }
   },
-  "evaluator_2": {
-   "labels_in_answer": 1060,
-   "occurrences_failed": 0,
-   "restore_rate": 1.0,
-   "answers_with_failure": 0,
-   "answers_with_labels": 26
-  }
- },
- "pii_guard@generic~tolerant ru/qwen3.5:9b": {
-  "evaluator_1": {
-   "labels_in_answer": 1060,
-   "occurrences_failed": 0,
-   "restore_rate": 1.0,
-   "answers_with_failure": 0,
-   "answers_with_labels": 26
+  "pii_guard~tolerant ru/gemma4:12b": {
+   "evaluator_1": {
+    "labels_in_answer": 1564,
+    "occurrences_failed": 0,
+    "restore_rate": 1.0,
+    "answers_with_failure": 0,
+    "answers_with_labels": 40
+   },
+   "evaluator_2": {
+    "labels_in_answer": 1564,
+    "occurrences_failed": 0,
+    "restore_rate": 1.0,
+    "answers_with_failure": 0,
+    "answers_with_labels": 40
+   }
   },
-  "evaluator_2": {
-   "labels_in_answer": 1060,
-   "occurrences_failed": 0,
-   "restore_rate": 1.0,
-   "answers_with_failure": 0,
-   "answers_with_labels": 26
-  }
- },
- "pii_guard@generic ru/gemma4:12b": {
-  "evaluator_1": {
-   "labels_in_answer": 1703,
-   "occurrences_failed": 29,
-   "restore_rate": 0.9829712272460364,
-   "answers_with_failure": 1,
-   "answers_with_labels": 40
+  "pii_guard@generic ru/qwen3.5:9b": {
+   "evaluator_1": {
+    "labels_in_answer": 1060,
+    "occurrences_failed": 3,
+    "restore_rate": 0.9971698113207547,
+    "answers_with_failure": 2,
+    "answers_with_labels": 26
+   },
+   "evaluator_2": {
+    "labels_in_answer": 1060,
+    "occurrences_failed": 0,
+    "restore_rate": 1.0,
+    "answers_with_failure": 0,
+    "answers_with_labels": 26
+   }
   },
-  "evaluator_2": {
-   "labels_in_answer": 1703,
-   "occurrences_failed": 29,
-   "restore_rate": 0.9829712272460364,
-   "answers_with_failure": 1,
-   "answers_with_labels": 40
-  }
- },
- "pii_guard@generic~tolerant ru/gemma4:12b": {
-  "evaluator_1": {
-   "labels_in_answer": 1703,
-   "occurrences_failed": 0,
-   "restore_rate": 1.0,
-   "answers_with_failure": 0,
-   "answers_with_labels": 40
+  "pii_guard@generic~tolerant ru/qwen3.5:9b": {
+   "evaluator_1": {
+    "labels_in_answer": 1060,
+    "occurrences_failed": 0,
+    "restore_rate": 1.0,
+    "answers_with_failure": 0,
+    "answers_with_labels": 26
+   },
+   "evaluator_2": {
+    "labels_in_answer": 1060,
+    "occurrences_failed": 0,
+    "restore_rate": 1.0,
+    "answers_with_failure": 0,
+    "answers_with_labels": 26
+   }
   },
-  "evaluator_2": {
-   "labels_in_answer": 1703,
-   "occurrences_failed": 0,
-   "restore_rate": 1.0,
-   "answers_with_failure": 0,
-   "answers_with_labels": 40
+  "pii_guard@generic ru/gemma4:12b": {
+   "evaluator_1": {
+    "labels_in_answer": 1703,
+    "occurrences_failed": 29,
+    "restore_rate": 0.9829712272460364,
+    "answers_with_failure": 1,
+    "answers_with_labels": 40
+   },
+   "evaluator_2": {
+    "labels_in_answer": 1703,
+    "occurrences_failed": 29,
+    "restore_rate": 0.9829712272460364,
+    "answers_with_failure": 1,
+    "answers_with_labels": 40
+   }
+  },
+  "pii_guard@generic~tolerant ru/gemma4:12b": {
+   "evaluator_1": {
+    "labels_in_answer": 1703,
+    "occurrences_failed": 0,
+    "restore_rate": 1.0,
+    "answers_with_failure": 0,
+    "answers_with_labels": 40
+   },
+   "evaluator_2": {
+    "labels_in_answer": 1703,
+    "occurrences_failed": 0,
+    "restore_rate": 1.0,
+    "answers_with_failure": 0,
+    "answers_with_labels": 40
+   }
   }
- },
- "_note": "Held-out set 5, Russian, saved answers, engine 0.3 (commit 42de91a): restoration scored with evaluator version 1 (as run and published) and version 2 (surname and first-name case forms added by rule, fixed 22.10.2026 before set 6). Not pre-registered, for reference. Both versions compare the answer with the value stored by the tool, so an error in the stored value itself (ru-hr-022, the dropped first name) is not visible to either."
+ }
 }

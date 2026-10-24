@@ -1,0 +1,529 @@
+{
+ "ru/gemma4:12b": {
+  "evaluator_1": {
+   "labels_in_answer": 14045,
+   "occurrences_failed": 24,
+   "restore_rate": 0.9982912068351727,
+   "restore_ci": [
+    0.9973337176623189,
+    0.9991475456418271
+   ],
+   "answers_with_failure": 16,
+   "answers_with_labels": 380,
+   "person_labels": 2756,
+   "restore_rate_person": 0.9912917271407837,
+   "restore_ci_person": [
+    0.9863518996680192,
+    0.9956011730205279
+   ]
+  },
+  "evaluator_2": {
+   "labels_in_answer": 14045,
+   "occurrences_failed": 10,
+   "restore_rate": 0.9992880028479886,
+   "restore_ci": [
+    0.99873078550275,
+    0.9997200643851915
+   ],
+   "answers_with_failure": 8,
+   "answers_with_labels": 380,
+   "person_labels": 2756,
+   "restore_rate_person": 0.9963715529753265,
+   "restore_ci_person": [
+    0.9934924078091106,
+    0.9985749910936943
+   ]
+  },
+  "evaluator_3": {
+   "labels_in_answer": 14045,
+   "occurrences_failed": 145,
+   "restore_rate": 0.9896760412958349,
+   "restore_ci": [
+    0.9877313665697468,
+    0.9916159082766034
+   ],
+   "answers_with_failure": 100,
+   "answers_with_labels": 380,
+   "person_labels": 2756,
+   "restore_rate_person": 0.9473875181422351,
+   "restore_ci_person": [
+    0.9376140094855892,
+    0.957378223495702
+   ]
+  }
+ },
+ "ru/qwen3.5:9b": {
+  "evaluator_1": {
+   "labels_in_answer": 12547,
+   "occurrences_failed": 27,
+   "restore_rate": 0.9978480911771739,
+   "restore_ci": [
+    0.9967266775777414,
+    0.9988826815642458
+   ],
+   "answers_with_failure": 18,
+   "answers_with_labels": 380,
+   "person_labels": 2638,
+   "restore_rate_person": 0.989764973464746,
+   "restore_ci_person": [
+    0.9843032159264931,
+    0.9946626000762485
+   ]
+  },
+  "evaluator_2": {
+   "labels_in_answer": 12547,
+   "occurrences_failed": 7,
+   "restore_rate": 0.9994420977126006,
+   "restore_ci": [
+    0.9988098071887646,
+    0.9999196658097687
+   ],
+   "answers_with_failure": 5,
+   "answers_with_labels": 380,
+   "person_labels": 2638,
+   "restore_rate_person": 0.9973464746019712,
+   "restore_ci_person": [
+    0.9943714821763602,
+    0.9996180290297937
+   ]
+  },
+  "evaluator_3": {
+   "labels_in_answer": 12547,
+   "occurrences_failed": 143,
+   "restore_rate": 0.9886028532716984,
+   "restore_ci": [
+    0.9864026717557252,
+    0.9908076165462902
+   ],
+   "answers_with_failure": 99,
+   "answers_with_labels": 380,
+   "person_labels": 2638,
+   "restore_rate_person": 0.94579226686884,
+   "restore_ci_person": [
+    0.9356223175965666,
+    0.9564528899445764
+   ]
+  }
+ },
+ "uk/gemma4:12b": {
+  "evaluator_1": {
+   "labels_in_answer": 13876,
+   "occurrences_failed": 0,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "answers_with_failure": 0,
+   "answers_with_labels": 380,
+   "person_labels": 3165,
+   "restore_rate_person": 1.0,
+   "restore_ci_person": [
+    1.0,
+    1.0
+   ]
+  },
+  "evaluator_2": {
+   "labels_in_answer": 13876,
+   "occurrences_failed": 0,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "answers_with_failure": 0,
+   "answers_with_labels": 380,
+   "person_labels": 3165,
+   "restore_rate_person": 1.0,
+   "restore_ci_person": [
+    1.0,
+    1.0
+   ]
+  },
+  "evaluator_3": {
+   "labels_in_answer": 13876,
+   "occurrences_failed": 1,
+   "restore_rate": 0.9999279331219372,
+   "restore_ci": [
+    0.999781532187591,
+    1.0
+   ],
+   "answers_with_failure": 1,
+   "answers_with_labels": 380,
+   "person_labels": 3165,
+   "restore_rate_person": 0.9996840442338073,
+   "restore_ci_person": [
+    0.9990381532542482,
+    1.0
+   ]
+  }
+ },
+ "uk/qwen3.5:9b": {
+  "evaluator_1": {
+   "labels_in_answer": 12232,
+   "occurrences_failed": 0,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "answers_with_failure": 0,
+   "answers_with_labels": 380,
+   "person_labels": 2543,
+   "restore_rate_person": 1.0,
+   "restore_ci_person": [
+    1.0,
+    1.0
+   ]
+  },
+  "evaluator_2": {
+   "labels_in_answer": 12232,
+   "occurrences_failed": 0,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "answers_with_failure": 0,
+   "answers_with_labels": 380,
+   "person_labels": 2543,
+   "restore_rate_person": 1.0,
+   "restore_ci_person": [
+    1.0,
+    1.0
+   ]
+  },
+  "evaluator_3": {
+   "labels_in_answer": 12232,
+   "occurrences_failed": 0,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "answers_with_failure": 0,
+   "answers_with_labels": 380,
+   "person_labels": 2543,
+   "restore_rate_person": 1.0,
+   "restore_ci_person": [
+    1.0,
+    1.0
+   ]
+  }
+ },
+ "_failures_evaluator_1": {
+  "ru/gemma4:12b": [
+   {
+    "id": "ru-certificate-002",
+    "task": "reply",
+    "label": "[PERSON_1]",
+    "value": "Дмитриева Выднаа Ефимовна"
+   },
+   {
+    "id": "ru-certificate-002",
+    "task": "reply",
+    "label": "[PERSON_1]",
+    "value": "Дмитриева Выднаа Ефимовна"
+   },
+   {
+    "id": "ru-contract-074",
+    "task": "summary",
+    "label": "[PERSON_2]",
+    "value": "Гуляева София Феликсовна"
+   },
+   {
+    "id": "ru-contract-074",
+    "task": "summary",
+    "label": "[PERSON_2]",
+    "value": "Гуляева София Феликсовна"
+   },
+   {
+    "id": "ru-hr-112",
+    "task": "reply",
+    "label": "[PERSON_2]",
+    "value": "Артемьева Майя Макаровна"
+   },
+   {
+    "id": "ru-hr-112",
+    "task": "reply",
+    "label": "[PERSON_2]",
+    "value": "Артемьева Майя Макаровна"
+   },
+   {
+    "id": "ru-hr-112",
+    "task": "reply",
+    "label": "[PERSON_2]",
+    "value": "Артемьева Майя Макаровна"
+   },
+   {
+    "id": "ru-hr-011",
+    "task": "reply",
+    "label": "[PERSON_2]",
+    "value": "Шубина Майя Ефимовна"
+   },
+   {
+    "id": "ru-hr-078",
+    "task": "summary",
+    "label": "[PERSON_3]",
+    "value": "Евсеева София Тарасовна"
+   },
+   {
+    "id": "ru-hr-043",
+    "task": "reply",
+    "label": "[PERSON_3]",
+    "value": "Павлова Майя Васильевна"
+   },
+   {
+    "id": "ru-hr-043",
+    "task": "reply",
+    "label": "[PERSON_3]",
+    "value": "Павлова Майя Васильевна"
+   },
+   {
+    "id": "ru-hr-043",
+    "task": "reply",
+    "label": "[PERSON_3]",
+    "value": "Павлова Майя Васильевна"
+   },
+   {
+    "id": "ru-hr-128",
+    "task": "summary",
+    "label": "[PERSON_5]",
+    "value": "Большаков Ф.Т."
+   },
+   {
+    "id": "ru-hr-128",
+    "task": "reply",
+    "label": "[PERSON_5]",
+    "value": "Большаков Ф.Т."
+   },
+   {
+    "id": "ru-hr-128",
+    "task": "reply",
+    "label": "[PERSON_5]",
+    "value": "Большаков Ф.Т."
+   },
+   {
+    "id": "ru-letter-147",
+    "task": "summary",
+    "label": "[PERSON_5]",
+    "value": "Турова София Алексеевна"
+   },
+   {
+    "id": "ru-letter-147",
+    "task": "reply",
+    "label": "[PERSON_5]",
+    "value": "Турова София Алексеевна"
+   },
+   {
+    "id": "ru-medical-008",
+    "task": "summary",
+    "label": "[PERSON_5]",
+    "value": "Большаков Д.М."
+   },
+   {
+    "id": "ru-medical-008",
+    "task": "reply",
+    "label": "[PERSON_5]",
+    "value": "Большаков Д.М."
+   },
+   {
+    "id": "ru-medical-008",
+    "task": "reply",
+    "label": "[PERSON_5]",
+    "value": "Большаков Д.М."
+   },
+   {
+    "id": "ru-medical-068",
+    "task": "summary",
+    "label": "[PERSON_3]",
+    "value": "Большаков Поликарп Германович"
+   },
+   {
+    "id": "ru-medical-069",
+    "task": "summary",
+    "label": "[PERSON_4]",
+    "value": "Егорова София Натановна"
+   },
+   {
+    "id": "ru-medical-069",
+    "task": "reply",
+    "label": "[PERSON_4]",
+    "value": "Егорова София Натановна"
+   },
+   {
+    "id": "ru-medical-082",
+    "task": "summary",
+    "label": "[PERSON_3]",
+    "value": "Суворова София Викторовна"
+   }
+  ],
+  "ru/qwen3.5:9b": [
+   {
+    "id": "ru-certificate-030",
+    "task": "summary",
+    "label": "[PERSON_1]",
+    "value": "Громова София Степановна"
+   },
+   {
+    "id": "ru-certificate-002",
+    "task": "reply",
+    "label": "[PERSON_1]",
+    "value": "Дмитриева Выднаа Ефимовна"
+   },
+   {
+    "id": "ru-certificate-002",
+    "task": "reply",
+    "label": "[PERSON_1]",
+    "value": "Дмитриева Выднаа Ефимовна"
+   },
+   {
+    "id": "ru-certificate-002",
+    "task": "reply",
+    "label": "[PERSON_1]",
+    "value": "Дмитриева Выднаа Ефимовна"
+   },
+   {
+    "id": "ru-contract-141",
+    "task": "summary",
+    "label": "[PERSON_1]",
+    "value": "Большаков Устин Денисович"
+   },
+   {
+    "id": "ru-contract-141",
+    "task": "reply",
+    "label": "[PERSON_1]",
+    "value": "Большаков Устин Денисович"
+   },
+   {
+    "id": "ru-contract-141",
+    "task": "reply",
+    "label": "[PERSON_1]",
+    "value": "Большаков Устин Денисович"
+   },
+   {
+    "id": "ru-contract-141",
+    "task": "reply",
+    "label": "[PERSON_1]",
+    "value": "Большаков Устин Денисович"
+   },
+   {
+    "id": "ru-contract-074",
+    "task": "summary",
+    "label": "[PERSON_2]",
+    "value": "Гуляева София Феликсовна"
+   },
+   {
+    "id": "ru-hr-112",
+    "task": "summary",
+    "label": "[PERSON_2]",
+    "value": "Артемьева Майя Макаровна"
+   },
+   {
+    "id": "ru-hr-112",
+    "task": "summary",
+    "label": "[PERSON_2]",
+    "value": "Артемьева Майя Макаровна"
+   },
+   {
+    "id": "ru-hr-112",
+    "task": "reply",
+    "label": "[PERSON_2]",
+    "value": "Артемьева Майя Макаровна"
+   },
+   {
+    "id": "ru-hr-100",
+    "task": "summary",
+    "label": "[PERSON_3]",
+    "value": "Третьяков Лукьян Августович"
+   },
+   {
+    "id": "ru-hr-011",
+    "task": "reply",
+    "label": "[PERSON_2]",
+    "value": "Шубина Майя Ефимовна"
+   },
+   {
+    "id": "ru-hr-011",
+    "task": "reply",
+    "label": "[PERSON_2]",
+    "value": "Шубина Майя Ефимовна"
+   },
+   {
+    "id": "ru-hr-043",
+    "task": "summary",
+    "label": "[PERSON_3]",
+    "value": "Павлова Майя Васильевна"
+   },
+   {
+    "id": "ru-hr-043",
+    "task": "reply",
+    "label": "[PERSON_3]",
+    "value": "Павлова Майя Васильевна"
+   },
+   {
+    "id": "ru-hr-043",
+    "task": "reply",
+    "label": "[PERSON_3]",
+    "value": "Павлова Майя Васильевна"
+   },
+   {
+    "id": "ru-hr-128",
+    "task": "summary",
+    "label": "[PERSON_5]",
+    "value": "Большаков Ф.Т."
+   },
+   {
+    "id": "ru-letter-068",
+    "task": "summary",
+    "label": "[PERSON_2]",
+    "value": "Майя Ефимовна"
+   },
+   {
+    "id": "ru-medical-008",
+    "task": "summary",
+    "label": "[PERSON_5]",
+    "value": "Большаков Д.М."
+   },
+   {
+    "id": "ru-medical-008",
+    "task": "reply",
+    "label": "[PERSON_5]",
+    "value": "Большаков Д.М."
+   },
+   {
+    "id": "ru-medical-008",
+    "task": "reply",
+    "label": "[PERSON_5]",
+    "value": "Большаков Д.М."
+   },
+   {
+    "id": "ru-medical-068",
+    "task": "reply",
+    "label": "[PERSON_3]",
+    "value": "Большаков Поликарп Германович"
+   },
+   {
+    "id": "ru-medical-068",
+    "task": "reply",
+    "label": "[PERSON_3]",
+    "value": "Большаков Поликарп Германович"
+   },
+   {
+    "id": "ru-medical-069",
+    "task": "summary",
+    "label": "[PERSON_4]",
+    "value": "Егорова София Натановна"
+   },
+   {
+    "id": "ru-medical-082",
+    "task": "summary",
+    "label": "[PERSON_3]",
+    "value": "Суворова София Викторовна"
+   }
+  ],
+  "uk/gemma4:12b": [],
+  "uk/qwen3.5:9b": []
+ },
+ "_note": "Held-out holdout7: the engine's restoration from the saved answers scored with evaluator versions 1, 2, 3 (bench/eval/evaluator_versions.py). Both compare the answer with the value the tool stored; an error in the stored value is not visible to them (see results/stored_names.*.json)."
+}
