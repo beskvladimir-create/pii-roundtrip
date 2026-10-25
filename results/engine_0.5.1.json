@@ -1,0 +1,559 @@
+{
+ "_note": "pii-roundtrip 0.5.1 against 0.5.0. Development data: held-out sets 3 to 6 with cached detector spans (bench/eval/dev_cache.py names, score). Set 7: its saved answers scored with 0.5.1 and evaluator version 3; set 7 was seen before 0.5.1 was written (its failures were analysed by hand), so these figures are for reference, not an independent check. Answers whose prompt changed in 0.5.1 (two mentions of one person now share a placeholder) are skipped.",
+ "stored_names_ru": {
+  "0.5.0": {
+   "holdout3_ru": {
+    "names": 5384,
+    "wrong": 139,
+    "categories": {
+     "right": 4938,
+     "typo_in_source_text": 96,
+     "first_or_patronymic": 126,
+     "other": 6,
+     "no_surname_in_text": 211,
+     "gender_or_case": 5,
+     "plural_form": 2
+    }
+   },
+   "holdout4_ru": {
+    "names": 5416,
+    "wrong": 157,
+    "categories": {
+     "right": 4962,
+     "typo_in_source_text": 86,
+     "first_or_patronymic": 138,
+     "gender_or_case": 12,
+     "other": 7,
+     "no_surname_in_text": 211
+    }
+   },
+   "holdout5_ru": {
+    "names": 5361,
+    "wrong": 125,
+    "categories": {
+     "right": 4945,
+     "first_or_patronymic": 115,
+     "typo_in_source_text": 80,
+     "other": 4,
+     "no_surname_in_text": 211,
+     "gender_or_case": 6
+    }
+   },
+   "holdout6_ru": {
+    "names": 5354,
+    "wrong": 138,
+    "categories": {
+     "right": 4923,
+     "typo_in_source_text": 90,
+     "first_or_patronymic": 131,
+     "gender_or_case": 6,
+     "no_surname_in_text": 203,
+     "other": 1
+    }
+   }
+  },
+  "0.5.1": {
+   "holdout3_ru": {
+    "names": 5361,
+    "wrong": 39,
+    "categories": {
+     "right": 5014,
+     "typo_in_source_text": 97,
+     "other": 5,
+     "first_or_patronymic": 27,
+     "no_surname_in_text": 211,
+     "gender_or_case": 5,
+     "plural_form": 2
+    }
+   },
+   "holdout4_ru": {
+    "names": 5404,
+    "wrong": 59,
+    "categories": {
+     "right": 5047,
+     "typo_in_source_text": 87,
+     "gender_or_case": 12,
+     "first_or_patronymic": 40,
+     "other": 7,
+     "no_surname_in_text": 211
+    }
+   },
+   "holdout5_ru": {
+    "names": 5348,
+    "wrong": 35,
+    "categories": {
+     "right": 5020,
+     "typo_in_source_text": 82,
+     "first_or_patronymic": 26,
+     "no_surname_in_text": 211,
+     "gender_or_case": 6,
+     "other": 3
+    }
+   },
+   "holdout6_ru": {
+    "names": 5344,
+    "wrong": 41,
+    "categories": {
+     "right": 5009,
+     "typo_in_source_text": 92,
+     "gender_or_case": 5,
+     "no_surname_in_text": 202,
+     "first_or_patronymic": 35,
+     "other": 1
+    }
+   }
+  }
+ },
+ "detection": "identical on holdout4_ru, holdout5_ru, holdout6_ru (struct, names, leak, precision, strict)",
+ "persons_split_or_merged_ru": {
+  "0.5.0": {
+   "holdout3_ru": [
+    0,
+    298
+   ],
+   "holdout4_ru": [
+    1,
+    301
+   ],
+   "holdout5_ru": [
+    0,
+    284
+   ],
+   "holdout6_ru": [
+    2,
+    285
+   ]
+  },
+  "0.5.1": {
+   "holdout3_ru": [
+    0,
+    274
+   ],
+   "holdout4_ru": [
+    1,
+    274
+   ],
+   "holdout5_ru": [
+    0,
+    266
+   ],
+   "holdout6_ru": [
+    2,
+    267
+   ]
+  },
+  "_columns": [
+   "labels with two people (annotation)",
+   "people with two labels"
+  ]
+ },
+ "holdout7_rescored_0.5.1": {
+  "ru/qwen3.5:9b": {
+   "answers": 372,
+   "labels_in_answer": 12343,
+   "occurrences_failed": 33,
+   "restore_rate": 0.9973264198331038,
+   "restore_ci": [
+    0.9960787585516436,
+    0.9983883964544722
+   ],
+   "person_labels": 2578,
+   "restore_rate_person": 0.9871993793638479,
+   "restore_ci_person": [
+    0.9812573213588442,
+    0.9922869263401466
+   ],
+   "skipped_answers": 8
+  },
+  "ru/gemma4:12b": {
+   "answers": 372,
+   "labels_in_answer": 13709,
+   "occurrences_failed": 21,
+   "restore_rate": 0.9984681596031804,
+   "restore_ci": [
+    0.9976138828633405,
+    0.9992090882945067
+   ],
+   "person_labels": 2689,
+   "restore_rate_person": 0.9921904053551506,
+   "restore_ci_person": [
+    0.987892546348846,
+    0.9959633027522936
+   ],
+   "skipped_answers": 8
+  },
+  "uk/qwen3.5:9b": {
+   "answers": 380,
+   "labels_in_answer": 12232,
+   "occurrences_failed": 0,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "person_labels": 2543,
+   "restore_rate_person": 1.0,
+   "restore_ci_person": [
+    1.0,
+    1.0
+   ],
+   "skipped_answers": 0
+  },
+  "uk/gemma4:12b": {
+   "answers": 380,
+   "labels_in_answer": 13876,
+   "occurrences_failed": 1,
+   "restore_rate": 0.9999279331219372,
+   "restore_ci": [
+    0.999781532187591,
+    1.0
+   ],
+   "person_labels": 3165,
+   "restore_rate_person": 0.9996840442338073,
+   "restore_ci_person": [
+    0.9990381532542482,
+    1.0
+   ],
+   "skipped_answers": 0
+  }
+ },
+ "holdout7_rescored_0.5.1_failures": {
+  "ru/qwen3.5:9b": [
+   [
+    "ru-certificate-120",
+    "summary",
+    "[PERSON_2]",
+    "Жуков Милован Венедиктович"
+   ],
+   [
+    "ru-certificate-190",
+    "summary",
+    "[PERSON_3]",
+    "Русакова Вероника Максиомвна"
+   ],
+   [
+    "ru-certificate-190",
+    "summary",
+    "[PERSON_5]",
+    "Силина Г.Э."
+   ],
+   [
+    "ru-certificate-002",
+    "summary",
+    "[PERSON_1]",
+    "Дмитриева Выднаа Ефимовна"
+   ],
+   [
+    "ru-certificate-002",
+    "reply",
+    "[PERSON_1]",
+    "Дмитриева Выднаа Ефимовна"
+   ],
+   [
+    "ru-certificate-002",
+    "reply",
+    "[PERSON_1]",
+    "Дмитриева Выднаа Ефимовна"
+   ],
+   [
+    "ru-certificate-002",
+    "reply",
+    "[PERSON_1]",
+    "Дмитриева Выднаа Ефимовна"
+   ],
+   [
+    "ru-contract-074",
+    "summary",
+    "[PERSON_2]",
+    "Гуляева София Феликсовна"
+   ],
+   [
+    "ru-contract-074",
+    "reply",
+    "[PERSON_2]",
+    "Гуляева София Феликсовна"
+   ],
+   [
+    "ru-contract-074",
+    "reply",
+    "[PERSON_2]",
+    "Гуляева София Феликсовна"
+   ],
+   [
+    "ru-contract-074",
+    "reply",
+    "[PERSON_2]",
+    "Гуляева София Феликсовна"
+   ],
+   [
+    "ru-contract-161",
+    "summary",
+    "[PERSON_1]",
+    "Матвеев Милован Власович"
+   ],
+   [
+    "ru-contract-048",
+    "reply",
+    "[PERSON_8]",
+    "Сазонов Сидор Елисевеич"
+   ],
+   [
+    "ru-contract-008",
+    "summary",
+    "[PERSON_2]",
+    "Мишина Лдюмила Степановна"
+   ],
+   [
+    "ru-hr-179",
+    "summary",
+    "[PERSON_3]",
+    "Котов Валентин Валетнинович"
+   ],
+   [
+    "ru-hr-133",
+    "summary",
+    "[PERSON_5]",
+    "Ефимова О.Е."
+   ],
+   [
+    "ru-hr-133",
+    "reply",
+    "[PERSON_5]",
+    "Ефимова О.Е."
+   ],
+   [
+    "ru-hr-078",
+    "summary",
+    "[PERSON_3]",
+    "Евсеева София Тарасовна"
+   ],
+   [
+    "ru-hr-078",
+    "reply",
+    "[PERSON_3]",
+    "Евсеева София Тарасовна"
+   ],
+   [
+    "ru-hr-078",
+    "reply",
+    "[PERSON_3]",
+    "Евсеева София Тарасовна"
+   ],
+   [
+    "ru-hr-043",
+    "summary",
+    "[PERSON_5]",
+    "Афаансьева К.Т."
+   ],
+   [
+    "ru-letter-051",
+    "summary",
+    "[PERSON_6]",
+    "Беспалов Геогрий Витальевич"
+   ],
+   [
+    "ru-medical-063",
+    "summary",
+    "[PERSON_1]",
+    "Щербакова Луикя Болеславовна"
+   ],
+   [
+    "ru-medical-063",
+    "reply",
+    "[PERSON_1]",
+    "Щербакова Луикя Болеславовна"
+   ],
+   [
+    "ru-medical-028",
+    "reply",
+    "[PERSON_4]",
+    "Михеева Алевтина Амтвеевна"
+   ],
+   [
+    "ru-medical-028",
+    "reply",
+    "[PERSON_4]",
+    "Михеева Алевтина Амтвеевна"
+   ],
+   [
+    "ru-medical-047",
+    "summary",
+    "[PERSON_3]",
+    "Пономарев Нуам Абрамович"
+   ],
+   [
+    "ru-medical-047",
+    "reply",
+    "[PERSON_3]",
+    "Пономарев Нуам Абрамович"
+   ],
+   [
+    "ru-medical-069",
+    "summary",
+    "[PERSON_4]",
+    "Егорова София Натановна"
+   ],
+   [
+    "ru-medical-069",
+    "reply",
+    "[PERSON_4]",
+    "Егорова София Натановна"
+   ],
+   [
+    "ru-medical-082",
+    "reply",
+    "[PERSON_3]",
+    "Суворова София Викторовна"
+   ],
+   [
+    "ru-medical-082",
+    "reply",
+    "[PERSON_3]",
+    "Суворова София Викторовна"
+   ],
+   [
+    "ru-medical-082",
+    "reply",
+    "[PERSON_3]",
+    "Суворова София Викторовна"
+   ]
+  ],
+  "ru/gemma4:12b": [
+   [
+    "ru-certificate-190",
+    "summary",
+    "[PERSON_3]",
+    "Русакова Вероника Максиомвна"
+   ],
+   [
+    "ru-certificate-190",
+    "summary",
+    "[PERSON_5]",
+    "Силина Г.Э."
+   ],
+   [
+    "ru-certificate-190",
+    "reply",
+    "[PERSON_5]",
+    "Силина Г.Э."
+   ],
+   [
+    "ru-certificate-190",
+    "reply",
+    "[PERSON_5]",
+    "Силина Г.Э."
+   ],
+   [
+    "ru-certificate-002",
+    "summary",
+    "[PERSON_1]",
+    "Дмитриева Выднаа Ефимовна"
+   ],
+   [
+    "ru-certificate-002",
+    "summary",
+    "[PERSON_1]",
+    "Дмитриева Выднаа Ефимовна"
+   ],
+   [
+    "ru-certificate-002",
+    "reply",
+    "[PERSON_1]",
+    "Дмитриева Выднаа Ефимовна"
+   ],
+   [
+    "ru-certificate-002",
+    "reply",
+    "[PERSON_1]",
+    "Дмитриева Выднаа Ефимовна"
+   ],
+   [
+    "ru-hr-133",
+    "summary",
+    "[PERSON_5]",
+    "Ефимова О.Е."
+   ],
+   [
+    "ru-hr-133",
+    "reply",
+    "[PERSON_5]",
+    "Ефимова О.Е."
+   ],
+   [
+    "ru-hr-133",
+    "reply",
+    "[PERSON_5]",
+    "Ефимова О.Е."
+   ],
+   [
+    "ru-hr-078",
+    "reply",
+    "[PERSON_3]",
+    "Евсеева София Тарасовна"
+   ],
+   [
+    "ru-hr-043",
+    "summary",
+    "[PERSON_5]",
+    "Афаансьева К.Т."
+   ],
+   [
+    "ru-medical-008",
+    "summary",
+    "[PERSON_2]",
+    "Рюрик Новкиов Фёдорович"
+   ],
+   [
+    "ru-medical-021",
+    "summary",
+    "[PERSON_4]",
+    "Тихноова Т.С."
+   ],
+   [
+    "ru-medical-021",
+    "reply",
+    "[PERSON_4]",
+    "Тихноова Т.С."
+   ],
+   [
+    "ru-medical-021",
+    "reply",
+    "[PERSON_4]",
+    "Тихноова Т.С."
+   ],
+   [
+    "ru-medical-003",
+    "summary",
+    "[PERSON_3]",
+    "Фокин Никита Елзиарович"
+   ],
+   [
+    "ru-medical-063",
+    "summary",
+    "[PERSON_1]",
+    "Щербакова Луикя Болеславовна"
+   ],
+   [
+    "ru-medical-047",
+    "summary",
+    "[PERSON_3]",
+    "Пономарев Нуам Абрамович"
+   ],
+   [
+    "ru-medical-075",
+    "summary",
+    "[PERSON_2]",
+    "Гуляев Никон Власоивч"
+   ]
+  ],
+  "uk/qwen3.5:9b": [],
+  "uk/gemma4:12b": [
+   [
+    "uk-hr-058",
+    "reply",
+    "[PERSON_6]",
+    "Kate Matthews"
+   ]
+  ]
+ }
+}

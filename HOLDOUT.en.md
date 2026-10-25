@@ -175,3 +175,4 @@ Set 7 is the last held-out set for this paper. Its result is published whatever 
 
 > Added after the push, before the first run: the public pre-registration commit 13c42b8 was pushed to GitHub on 23 October 2026 at 12:01:01 UTC (16:01:01 +04). Its `pii_roundtrip` and `bench` trees are the ones given above.
 
+> Added on 25 October 2026, after the run: set 7 was analysed by hand and version 0.5.1 was written after it, so set 7 is now development data. The verdicts of version 0.5 on set 7 are unchanged.

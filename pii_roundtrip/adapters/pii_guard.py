@@ -165,6 +165,12 @@ class PiiGuardInflector:
     def restore(self, text: str, tagmap: dict[str, str]) -> str:
         from pii_guard import pseudonymize
 
+        from pii_roundtrip import names
+
+        # pii-guard decides the case from the syntax; the word forms come from the engine. pii-guard's
+        # own forms took the first dictionary parse of a word, which for "Харитонов" is the plural of
+        # the first name "Харитон" (held-out set 7).
+        pseudonymize._inflect_name = names.inflect_name_tokens
         try:
             return pseudonymize.deanonymize_batch([text], tagmap, self.spacy_model)[0]
         except Exception as e:

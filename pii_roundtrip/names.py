@@ -71,6 +71,8 @@ _PATR_END = re.compile(r"(вич|вн|ичн|ьич)(а|у|ем|ом|е|ы|ой|
 # short patronymics without "в": "Фомич", "Кузьмич", "Лукич"; also "Фокич", unknown to the dictionary,
 # when it follows a first name (see parse)
 _PATR_SHORT_END = re.compile(r"[мкл]ич(а|у|ем|е)?$")
+# a patronymic with a typo ("Елисевеич", "Власоивч"), read as an unknown surname after a first name
+_MISSPELT_PATR = re.compile(r"(?:[еиоа][вй]?[еиоа]?[ив]?ч|[вч]н[аыеу]|[вч]ной)$")
 
 
 def _ru_word_role(word: str) -> tuple[str, object | None]:
@@ -218,6 +220,68 @@ def _case_from_context(left: str) -> str:
     return ""
 
 
+def _patronymic_case(word: str) -> str:
+    low = norm(word)
+    for pattern, case in (
+        (r"(ич|на)$", "nomn"),
+        (r"(ича|ны)$", "gent"),
+        (r"(ичу|не)$", "datv"),
+        (r"ну$", "accs"),
+        (r"(ичем|ичом|ной)$", "ablt"),
+        (r"иче$", "loct"),
+    ):
+        if re.search(pattern, low):
+            return case
+    return ""
+
+
+def _is_nominative_name(word: str) -> bool:
+    low = norm(word)
+    return any(
+        "Name" in _tags(q)
+        and "Fixd" not in _tags(q)
+        and q.tag.case == "nomn"
+        and q.tag.number == "sing"
+        and q.word == low
+        for q in morph().parse(low)
+    )
+
+
+def first_name_from_case(word: str, case: str, gender: str) -> str | None:
+    """The nominative of a first name whose case and gender are known from the patronymic."""
+    low = norm(word)
+    if case == "nomn":
+        return _restore_yo(low, word)
+    g = {"male": "masc", "female": "femn"}[gender]
+    for q in morph().parse(low):
+        tags = _tags(q)
+        if (
+            "Name" in tags
+            and "Fixd" not in tags
+            and g in tags
+            and q.tag.number == "sing"
+            and q.tag.case == case
+            and norm(q.word) == low
+        ):
+            f = q.inflect({"nomn"})
+            if f:
+                return _restore_yo(f.word, word)
+    cands = []  # (length of the matched ending, nominative)
+    for (gd, end), table in _FIRST_ENDINGS.items():
+        if gd != gender:
+            continue
+        for form_end in {table[case], _spell("к" + table[case])[1:]}:
+            if form_end and low.endswith(form_end) and len(low) > len(form_end) + 1:
+                cands.append((len(form_end), low[: len(low) - len(form_end)] + end))
+    if not cands:
+        return None
+    # the candidate the dictionary knows as a first name ("Анне" -> "Анна", not "Анния"); otherwise
+    # the longest matched ending ("Софии" -> "София", not "Софиа")
+    known = [c for _, c in cands if _is_nominative_name(c)]
+    best = known[0] if known else max(cands, key=lambda c: c[0])[1]
+    return _restore_yo(best, word)
+
+
 def parse(value: str, lang: str, left: str = "") -> Name:
     """``left``: the text before the mention, used only when the form of a surname with initials
     does not decide its gender."""
@@ -238,14 +302,24 @@ def parse(value: str, lang: str, left: str = "") -> Name:
         # a word the dictionary knows only as a verb form, adverb or function word is not part of the
         # name, even if a detector included it ("Выдана Крюковой Марине Никифоровне": "Выдана" used
         # to be stored as the first name and the real first name was dropped)
-        words = [w for w in words if not _not_a_name_ru(w)] or words
+        # only at the edges: a rare first name inside a name may also be a verb form ("Милован")
+        kept = list(words)
+        while kept and _not_a_name_ru(kept[0]):
+            kept.pop(0)
+        while kept and _not_a_name_ru(kept[-1]):
+            kept.pop()
+        words = kept or words
         roles = [(w, *_ru_word_role(w)) for w in words]
         if initials and len(roles) == 1 and roles[0][1] != "Surn":
             roles = [(roles[0][0], "Surn", None)]  # one word with initials is a surname: "Горбачеав А.В."
         # an unknown word ending like a short patronymic right after a first name: "Нестор Фокич"
         roles = [
             (w, "Patr", None)
-            if kind == "Surn" and p is None and i > 0 and roles[i - 1][1] == "Name" and _PATR_SHORT_END.search(norm(w))
+            if kind == "Surn"
+            and p is None
+            and i > 0
+            and roles[i - 1][1] == "Name"
+            and (_PATR_SHORT_END.search(norm(w)) or _MISSPELT_PATR.search(norm(w)))
             else (w, kind, p)
             for i, (w, kind, p) in enumerate(roles)
         ]
@@ -289,12 +363,19 @@ def parse(value: str, lang: str, left: str = "") -> Name:
                         g = "female" if _ACCUSATIVE_BEFORE.search(left) else "male"
                     break
         n.gender = n.gender or g
+        # the case of the name, from the patronymic: a first name is put in the nominative from that
+        # case ("Тимофей" stays, "Фортунату" -> "Фортунат", "Силы" -> "Сила", "Данила" stays "Данила")
+        name_case = next((_patronymic_case(w) for w, kind, _ in roles if kind == "Patr"), "")
         shown: dict[str, str] = {}
         surname_oov = False
         for w, kind, p in roles:
             nom = _nominative(w, p, n.gender)
             if kind == "Surn" and _SURN_FAMILY.match(norm(w)):
                 nom = surname_nominative(w, n.gender) or w.lower()  # as written when undecided
+            elif kind == "Name" and name_case and n.gender:
+                nom = first_name_from_case(w, name_case, n.gender) or w.lower()  # no case ending: as written
+            elif kind == "Name" and _is_nominative_name(w):
+                nom = w.lower()
             elif kind == "Name" and norm(nom) == norm(w) and re.search(r"(е|и|у|ю|ой|ей)$", norm(w)):
                 nom = first_name_nominative(w) or nom
             if kind == "Patr" and not n.patronymic:
@@ -312,7 +393,9 @@ def parse(value: str, lang: str, left: str = "") -> Name:
                     n.first, shown["f"] = n.surname, shown["s"]
                     n.surname, shown["s"] = norm(nom), nom
                 else:
-                    if norm(nom) == norm(w) and re.search(r"(е|и|у|ю|ой|ей)$", norm(w)):
+                    if name_case and n.gender:
+                        nom = first_name_from_case(w, name_case, n.gender) or w.lower()  # "Милован"
+                    elif norm(nom) == norm(w) and re.search(r"(е|и|у|ю|ой|ей)$", norm(w)):
                         nom = first_name_nominative(w) or nom  # "Софии", read by the dictionary as a city
                     n.first, shown["f"] = norm(nom), nom
         parts = [cap(shown[k]) for k in ("s", "f", "p") if k in shown]
@@ -331,14 +414,28 @@ def parse(value: str, lang: str, left: str = "") -> Name:
     return n
 
 
+def _same_first_name(a: str, b: str) -> bool:
+    """One first name is a case form of the other ("данил" and "данила": the genitive of "Данил"
+    and the nominative of "Данила" are written alike, and a document may use both)."""
+
+    def forms(x: str) -> set[str]:
+        return {norm(f.word) for q in morph().parse(x) if "Name" in _tags(q) for f in q.lexeme}
+
+    return a in forms(b) or b in forms(a)
+
+
 def compatible(a: Name, b: Name) -> bool:
     """Whether two mentions can refer to the same person."""
     if a.gender and b.gender and a.gender != b.gender:
         return False
     if a.surname and b.surname and a.surname != b.surname:
         return False
-    if a.first and b.first and a.first != b.first:
-        return False
+    if a.first and b.first and a.first != b.first and not _same_first_name(a.first, b.first):
+        # the same surname and patronymic and the same beginning of the first name: one person
+        # whose first name the text misspelt or misdeclined ("Милованного", "Баженам")
+        same_rest = a.surname and a.surname == b.surname and a.patronymic and a.patronymic == b.patronymic
+        if not (same_rest and a.first[:4] == b.first[:4]):
+            return False
     if a.first_initial and b.first_initial and a.first_initial != b.first_initial:
         return False
     if a.patronymic_initial and b.patronymic_initial and a.patronymic_initial != b.patronymic_initial:
@@ -425,3 +522,164 @@ def carry_back(text: str, proxies: dict) -> str:
 
         text = re.sub(rf"(?<![\w-]){re.escape(stem_p)}(а|у|ом|е|ы|и|ой|ю|ей|ем|я|ий|)(?![\w-])", sub, text)
     return text
+
+
+# Inflection of a stored Russian name for restoration. pii-guard decides the case from the
+# syntax; the forms are built here. pii-guard took the first dictionary parse of each word, which
+# for "Харитонов" is the plural of the first name "Харитон" ("Харитоны Дмитрий Измаилович").
+_CASE = {"gen2": "gent", "acc2": "accs", "loc2": "loct", "voct": "nomn"}
+_SURN_ENDINGS = {
+    "male": {"nomn": "", "gent": "а", "datv": "у", "accs": "а", "ablt": "ым", "loct": "е"},
+    "female": {"nomn": "а", "gent": "ой", "datv": "ой", "accs": "у", "ablt": "ой", "loct": "ой"},
+}
+_PATR_ENDINGS = {
+    "male": {"nomn": "", "gent": "а", "datv": "у", "accs": "а", "ablt": "ем", "loct": "е"},
+    "female": {"nomn": "а", "gent": "ы", "datv": "е", "accs": "у", "ablt": "ой", "loct": "е"},
+}
+# first names the dictionary does not know, by the last letters of the nominative
+_FIRST_ENDINGS = {
+    ("male", "й"): {"nomn": "й", "gent": "я", "datv": "ю", "accs": "я", "ablt": "ем", "loct": "е"},
+    ("male", "а"): {"nomn": "а", "gent": "ы", "datv": "е", "accs": "у", "ablt": "ой", "loct": "е"},
+    ("male", "я"): {"nomn": "я", "gent": "и", "datv": "е", "accs": "ю", "ablt": "ей", "loct": "е"},
+    ("male", ""): {"nomn": "", "gent": "а", "datv": "у", "accs": "а", "ablt": "ом", "loct": "е"},
+    ("female", "ия"): {"nomn": "ия", "gent": "ии", "datv": "ии", "accs": "ию", "ablt": "ией", "loct": "ии"},
+    ("female", "я"): {"nomn": "я", "gent": "и", "datv": "е", "accs": "ю", "ablt": "ей", "loct": "е"},
+    ("female", "а"): {"nomn": "а", "gent": "ы", "datv": "е", "accs": "у", "ablt": "ой", "loct": "е"},
+}
+
+
+def _keep_case(form: str, original: str, yo: bool = True) -> str:
+    if yo:  # a dictionary form has its own ё ("Пётр" -> "Петра"); a form built by rule keeps it
+        form = _restore_yo(form, original)
+    if original.isupper() and len(original) > 1:
+        return form.upper()
+    return form[:1].upper() + form[1:] if original[:1].isupper() else form
+
+
+def _first_endings(low: str, gender: str) -> tuple[str, dict] | None:
+    if gender == "female":
+        for end in ("ия", "я", "а"):
+            if low.endswith(end):
+                return end, _FIRST_ENDINGS[("female", end)]
+        return None
+    if low.endswith("й"):
+        return "й", _FIRST_ENDINGS[("male", "й")]
+    if low.endswith("а"):
+        return "а", _FIRST_ENDINGS[("male", "а")]
+    if low.endswith("я"):
+        return "я", _FIRST_ENDINGS[("male", "я")]
+    if re.search(r"[бвгджзклмнпрстфхцчшщ]$", low):
+        return "", _FIRST_ENDINGS[("male", "")]
+    return None
+
+
+def _spell(word: str) -> str:
+    """ "ы" after г/к/х/ж/ш/ч/щ is written "и": "Ольги", "Луки"."""
+    return re.sub(r"(?<=[гкхжшчщ])ы$", "и", word)
+
+
+def _dictionary_form(low: str, kind: str, case: str, gender: str) -> str | None:
+    """The form from a singular nominative parse of this very word, of the right kind and gender."""
+    g = {"male": "masc", "female": "femn"}.get(gender)
+    for q in morph().parse(low):
+        tags = _tags(q)
+        if kind not in tags or "Fixd" in tags or q.tag.number != "sing" or q.tag.case != "nomn" or norm(q.word) != low:
+            continue
+        if g and g not in tags:
+            continue
+        f = q.inflect({case})
+        if f:
+            return f.word
+    return None
+
+
+def _name_gender(words: list[str]) -> str:
+    for w in words:
+        low = norm(w)
+        if _PATR_END.search(low) or _PATR_SHORT_END.search(low):
+            return "female" if re.search(r"(вна|чна)$", low) else "male"
+    for w in words:
+        m = _SURN_FAMILY.match(norm(w))
+        if m and m.group("end") in ("", "а"):  # the stored value is a nominative
+            return "male" if not m.group("end") else "female"
+        if re.search(r"(ская|цкая|ая)$", norm(w)):
+            return "female"
+        if re.search(r"(ский|цкий)$", norm(w)):
+            return "male"
+    for w in words:
+        low = norm(w)
+        for q in morph().parse(low):
+            tags = _tags(q)
+            if "Name" in tags and q.tag.case == "nomn" and q.tag.number == "sing" and q.word == low:
+                return "female" if "femn" in tags else "male"
+    return ""
+
+
+def inflect_word(word: str, case: str, gender: str, role: str) -> str:
+    """One word of a stored (nominative) name in the given case, singular."""
+    case = _CASE.get(case, case)
+    low = norm(word)
+    if case == "nomn" or not re.fullmatch(r"[а-яё-]+", low) or len(low) < 2:
+        return word
+    if "-" in low:  # a double-barrelled surname: each part on its own
+        return "-".join(inflect_word(p, case, gender, role) for p in word.split("-"))
+    # a dictionary form has its own ё ("Пётр" -> "Петра"); a form built by rule keeps the word's ё
+    form, by_rule = None, False
+    if role == "Surn":
+        m = _SURN_FAMILY.match(low)
+        if m and gender and (m.group("end") or "") == ("а" if gender == "female" else ""):
+            form, by_rule = m.group("base") + _SURN_ENDINGS[gender][case], True
+        else:
+            form = _dictionary_form(low, "Surn", case, gender)
+            if form is None and re.search(r"(ский|цкий|ская|цкая|ой|ый|ий|ая)$", low):
+                form = _dictionary_form(low, "ADJF", case, gender)
+            if form is None and gender == "male" and re.search(r"[бвгджзклмнпрстфхцчшщ]$", low):
+                form, by_rule = low + _FIRST_ENDINGS[("male", "")][case], True  # "Шевчук" -> "Шевчука"
+    elif role == "Patr":
+        if gender and re.search(r"(ич|на)$", low):
+            base = low[:-1] if gender == "female" else low
+            end = _PATR_ENDINGS[gender][case]
+            if gender == "male" and case == "ablt" and low.endswith("ьич"):
+                end = "ом"  # "Ильич" -> "Ильичом"
+            form, by_rule = base + end, True
+        else:
+            form = _dictionary_form(low, "Patr", case, gender)
+    else:
+        fe = _first_endings(low, gender)
+        # women's names in -а/-я decline regularly; the dictionary gives odd forms for some ("Наиной")
+        form = None if gender == "female" and fe else _dictionary_form(low, "Name", case, gender)
+        if form is None and fe:
+            end, table = fe
+            form, by_rule = _spell(low[: len(low) - len(end)] + table[case]), True
+    return _keep_case(form, word, yo=by_rule) if form else word
+
+
+def inflect_name_tokens(tokens: list[str], case: str) -> str:
+    """A stored nominative name in the given case: surname by rule, first name and patronymic by the
+    dictionary in the singular of the name's gender, by rule when the dictionary does not know them."""
+    words = [t for t in tokens if re.search(r"[А-Яа-яЁё]", t) and not _INITIALS.match(t)]
+    gender = _name_gender(words)
+    # the engine stores "Surname First Patronymic", "Surname I.O." or "First Patronymic"
+    roles: dict[int, str] = {}
+    patr = next((i for i, w in enumerate(words) if _PATR_END.search(norm(w)) or _PATR_SHORT_END.search(norm(w))), None)
+    if patr is not None:
+        roles[patr] = "Patr"
+        if patr >= 1:
+            roles[patr - 1] = "Name"
+        if patr >= 2:
+            roles[patr - 2] = "Surn"
+    elif len(words) >= 2:
+        roles[0], roles[1] = "Surn", "Name"
+    elif words:
+        low = norm(words[0])
+        known = any("Name" in _tags(q) and q.word == low and q.tag.case == "nomn" for q in morph().parse(low))
+        initials = len(words) < len([t for t in tokens if re.search(r"[А-Яа-яЁё]", t)])
+        roles[0] = "Name" if known and not initials else "Surn"  # "Ирина" alone is a first name
+    out, k = [], 0
+    for t in tokens:
+        if t not in words:
+            out.append(t)
+            continue
+        out.append(inflect_word(t, case, gender, roles.get(k, "Surn")))
+        k += 1
+    return " ".join(out)

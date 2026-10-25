@@ -4,6 +4,27 @@
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow [Semantic Versioning](https://semver.org/).
 
+## [0.5.1] - 2026-10-25
+
+Fixes the Russian name errors found on held-out set 7. The result of set 7 for version 0.5 is unchanged; by its stopping rule there is no new held-out set for the paper, and set 7 is now development data.
+
+### Fixed
+
+- Restoring Russian names: the engine builds the word forms itself and pii-guard decides only the case. pii-guard took the first dictionary parse of each word, so "Харитонов" came back as "Харитоны" ("1. Харитоны Дмитрий Измаилович"), "Коновалова Анжела Ждановна" as "Коноваловым Анжелом Ждановном".
+- Storing Russian names:
+  - a first name is put in the nominative from the case of its patronymic ("Тимофей", "Данила" and "Варлаам" are kept; "Фортунату" becomes "Фортунат", "Силы" becomes "Сила", "Милану" with a man's patronymic becomes "Милан");
+  - a rare first name inside a name is no longer dropped as a verb form ("Милован");
+  - a misspelt patronymic is kept ("Елисевеич");
+  - two forms of one first name in a document ("Данил" and "Данила") are one person.
+
+### Checked
+
+- Detection: identical on held-out sets 4 to 6.
+- Wrongly stored Russian names on the development data: 125 → 35 (set 5) and 138 → 41 (set 6).
+- No more labels shared by two people.
+- Saved answers of set 7 scored with 0.5.1, for reference only: Russian name placeholders 98.7% and 99.2% instead of 94.6% and 94.7%.
+- Details: `results/engine_0.5.1.json`. The macOS app 0.5.1 is rebuilt with this engine.
+
 ## [0.5.0] - 2026-10-24
 
 Version 0.5 is checked on held-out set 7, generated after its changes and published with its rules and run plan before any run (public commit 13c42b8, pushed at 12:01:01 UTC on 23 October 2026). By the stopping rule pre-registered with it, set 7 is the last held-out set for the paper and its result is published as it is. Detection by every tool and the engine's round trip ran once, from committed code; the round trip was interrupted once by a mains power cut and continued by the same command from the saved answers (`results/holdout7_cycle_journal.md`).

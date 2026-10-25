@@ -87,6 +87,27 @@ def score(ds: str, verbose: bool = False) -> dict:
     return out
 
 
+def _first_and_patronymic_kept(canonical: str, stored: str, mentions: list[str]) -> bool:
+    """The annotated first name and patronymic, when the text has them, are in the stored value in
+    the nominative, or as the text wrote them (a typo of the text)."""
+    import re
+
+    from bench.eval.stored_names import lev, norm, words
+
+    cw = [norm(w) for w in words(canonical)]
+    sw = {norm(w) for w in words(stored)}
+    written = {norm(w) for m in mentions for w in words(m)}
+    for want in cw[1:3]:
+        if not any(w[:3] == want[:3] for w in written) or want in sw:
+            continue
+        if any(x in written and lev(x, want) <= 2 for x in sw):  # kept as the text wrote it
+            continue
+        if not re.search(r"[а-яё]", want):
+            continue
+        return False
+    return True
+
+
 def stored_names(ds: str) -> dict:
     """Stored names against the annotation (bench/eval/stored_names.classify) on every document of a
     development set, with the cached detector spans."""
@@ -124,6 +145,12 @@ def stored_names(ds: str) -> dict:
                 continue
             canonical = max(set(gold[lab]), key=gold[lab].count)
             c = classify(lang, canonical, session.mapping[lab], mentions)
+            if (
+                c == "right"
+                and lang == "ru"
+                and not _first_and_patronymic_kept(canonical, session.mapping[lab], mentions)
+            ):
+                c = "first_or_patronymic"
             cats[c] += 1
             if c not in ("right", "no_surname_in_text", "typo_in_source_text") and len(examples) < 30:
                 examples.append(f"{d['id']}: {canonical} | {session.mapping[lab]} | {' / '.join(mentions)}")
