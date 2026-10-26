@@ -68,6 +68,9 @@ QPushButton[segment="true"] {{ min-height: 24px; padding: 0 14px; border: none; 
   color: {TEXT}; }}
 QPushButton[segment="true"]:checked {{ background: rgba(255, 255, 255, 0.10); color: #FFFFFF; }}
 
+QMenuBar {{ background: {GROUND}; color: {TEXT}; border-bottom: 1px solid {HAIR}; padding: 2px 8px; }}
+QMenuBar::item {{ background: transparent; color: {TEXT}; padding: 4px 10px; border-radius: 6px; }}
+QMenuBar::item:selected {{ background: rgba(255, 255, 255, 0.08); color: {PAPER}; }}
 QMenu {{ background: {CARD}; border: 1px solid {HAIR_2}; border-radius: 12px; padding: 4px; }}
 QMenu::item {{ padding: 8px 16px; border-radius: 8px; color: {PAPER}; }}
 QMenu::item:selected {{ background: rgba(255, 255, 255, 0.08); }}
