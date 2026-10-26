@@ -2,7 +2,7 @@
 
 [Русская версия](REPORT.md)
 
-Version 0.5.2, 26 October 2026. Changes by version are in section 8 and in [CHANGELOG.md](CHANGELOG.md). Corrections to earlier releases are listed in section 10.
+Version 0.5.3, 26 October 2026. Changes by version are in section 8 and in [CHANGELOG.md](CHANGELOG.md). Corrections to earlier releases are listed in section 10.
 
 ## 1. Summary
 
@@ -162,6 +162,8 @@ Why the existing tools leak:
 - **pii-roundtrip 0.5.** Verdicts on the independent held-out set 7: Russian: met: identifiers, names and addresses, leaks, strict leaks; undetermined: restoration; not met: restoration of name placeholders; UK English: met: identifiers, names and addresses, leaks, restoration, restoration of name placeholders, strict leaks. Leaks of 0.3% [0.1; 0.9] met (RU) and 0.2% [0.1; 0.7] met (UK) compare with 60.8% [57.7; 63.8] for pii-guard and 58.3% [55.2; 61.3] for GLiNER Guard Omni on the same documents. Restoration of Russian names remains below 99%: the error that 0.5 fixed in storage reappears in the restoration step (section 11).
 
 ## 8. Changes by version
+
+**Version 0.5.3** (26 October 2026): a surname the dictionary also knows as a first name ("Зимина") is no longer stored as the first name; in the desktop app a name alone on its line comes back in the nominative; the desktop app for Windows (beta), built and checked by a scripted run of the installed program on a Windows machine. Detection is unchanged; wrongly stored Russian names on the development data 33 (set 5) and 36 (set 6).
 
 **Version 0.5.2** (26 October 2026): in common places the words before a name decide its case on restoration (after "Уважаемый", "Кому:", "ФИО:", at the start of a list item or a line, in a signature); elsewhere pii-guard's parse of the sentence decides, as before. On the saved answers of set 7 (for reference) Russian name placeholders are restored in 99.3% (qwen3.5:9b) and 99.3% (gemma4:12b) of cases; the remaining failures are mostly correct names the evaluator does not recognise. Details: `results/engine_0.5.1.json`.
 
