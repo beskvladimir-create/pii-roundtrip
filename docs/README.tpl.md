@@ -1,5 +1,7 @@
 # pii-roundtrip
 
+## Description
+
 Local reversible anonymisation of Russian and UK English documents for use with external LLMs, and an open, reproducible benchmark of existing tools.
 
 pii-roundtrip replaces personal data in a document with consistent placeholders such as `[PERSON_1]` or `[NHS_1]`, keeps the mapping in an encrypted local vault, and restores the original values in the model's answer. The document can be sent to any external LLM, while the personal data stay on the machine. After the models are downloaded once, everything runs offline.
@@ -44,9 +46,15 @@ A threshold is met when the whole 95% confidence interval is on the right side o
 
 For people who do not use the command line: drop in a Word file, a PDF or text, send the cleaned version to any AI tool, drop or paste its answer back and get it with the real values. Formatting is kept where the file allows it, the models are inside the installer, and the app works offline. Download the installer from the [Releases page](https://github.com/beskvladimir-create/pii-roundtrip/releases); details in [desktop/README.md](desktop/README.md).
 
-## Quick start
+## Requirements
 
-Requirements: Python 3.12 or later and [uv](https://docs.astral.sh/uv/). pii-roundtrip is installed from source; it depends on pii-guard pinned to a GitHub commit and is not published on PyPI.
+- Python 3.12 or later and [uv](https://docs.astral.sh/uv/). pii-roundtrip is installed from source; it depends on pii-guard pinned to a GitHub commit and is not published on PyPI. Exact dependency versions are pinned in `pyproject.toml` and `uv.lock`.
+- Network access for installation and the one-time model download; after that the engine runs offline. The benchmark also downloads the external datasets and the Ollama models.
+- For the benchmark in addition: [Ollama](https://ollama.com) with `qwen3.5:9b` and `gemma4:12b`, and about 20 GB of free disk. The full run takes several hours on a laptop.
+
+## Usage
+
+### Install
 
 ```bash
 git clone https://github.com/beskvladimir-create/pii-roundtrip.git && cd pii-roundtrip
@@ -56,7 +64,7 @@ uv run pii-roundtrip download-models          # once, needs network
 
 The extras: `ru` adds pii-guard (Russian NER and name inflection), `gliner` adds GLiNER Guard Omni, `all` adds both, `bench` adds every compared tool. Without extras only the rules run: checksum-validated identifiers, numbers, titled names and the vault.
 
-Command line:
+### Command line
 
 ```bash
 uv run pii-roundtrip anonymize -l en-GB -i letter.txt -o letter.clean.txt --vault letter.vault
@@ -66,7 +74,7 @@ uv run pii-roundtrip restore -i answer.txt -o answer.restored.txt --vault letter
 
 The vault password is read from `--password-file`, from `PII_ROUNDTRIP_PASSWORD`, or asked interactively. Output files are written with mode 0600. Use `-l ru` for Russian, `--append` to continue the same conversation, `--force` to overwrite an existing vault, and `--encoding cp1251` for legacy files.
 
-Python:
+### Python
 
 ```python
 from pii_roundtrip import anonymize, deanonymize
@@ -78,6 +86,27 @@ print(deanonymize(answer, session))   # originals restored locally
 
 Pass the same `session` to `anonymize` for follow-up messages so that known people and numbers keep their placeholders.
 
+### Reproduce the benchmark
+
+```bash
+ollama pull qwen3.5:9b && ollama pull gemma4:12b
+scripts/reproduce.sh
+```
+
+## Code information
+
+```
+pii_roundtrip/        the engine: detection, whole-document consistency, placeholders, restoration, encrypted vault, command line
+bench/generator/      generator of the synthetic Russian and UK English documents
+bench/runners/        one runner per compared tool (pii-guard, GLiNER Guard, Presidio, OpenAI privacy-filter, Prompt Anonymizer, regular expressions) and for pii-roundtrip
+bench/eval/           metrics, external datasets, held-out evaluation, round trip with local LLMs, confidence intervals, report
+scripts/              reproduce.sh (full benchmark run), golden.py (output regression check)
+data/                 synthetic held-out sets 1 to 7
+results/              predictions, metrics, manual checks and run journals
+desktop/              desktop app for macOS
+tests/                unit tests
+```
+
 ## How it works
 
 - **Detection.** pii-guard (rules with checksums and ruBERT) for Russian, GLiNER Guard Omni for both languages, plus own rules: checksum-validated identifiers (SNILS, INN, passport, cards, NHS, NI, IBAN), long numbers with any separators, numbers written in words, organisations, sole proprietors, names with titles and initials, dates of birth by context.
@@ -87,16 +116,16 @@ Pass the same `session` to `anonymize` for follow-up messages so that known peop
 
 Placeholders show the type of each value, for example `[PASSPORT_RU_1]` or `[NHS_1]`, and their numbering shows how many values of each type a document contains.
 
-## Benchmark
+## Dataset information
 
-Requirements in addition to the above: [Ollama](https://ollama.com) with `qwen3.5:9b` and `gemma4:12b`, and about 20 GB of free disk. The full run takes several hours on a laptop.
+- **External datasets (third-party, not redistributed).** Russian: [hivetrace/pii-bench](https://huggingface.co/datasets/hivetrace/pii-bench) and [redmadrobot-rnd/pii_benchmark](https://huggingface.co/datasets/redmadrobot-rnd/pii_benchmark). UK English: [nvidia/Nemotron-PII](https://huggingface.co/datasets/nvidia/Nemotron-PII), UK texts and UK texts with injected UK identifiers. Licences: hivetrace/pii-bench Apache 2.0, redmadrobot-rnd/pii_benchmark MIT, Nemotron-PII CC BY 4.0. In a modified subset of Nemotron-PII (`nemotron_uk_ids`), national ID, health plan and account numbers were replaced with synthetic UK NI numbers, NHS numbers and IBANs. The datasets are downloaded from Hugging Face at pinned revisions by `bench/eval/external.py`; the released predictions on them contain only character offsets, and short excerpts appear only as error examples in `results/` and the report, under the datasets' licences ([NOTICE](NOTICE)).
+- **Synthetic held-out sets (released).** `data/holdout` to `data/holdout7`: synthetic documents in Russian and UK English (contracts, letters, HR files, discharge summaries and others) produced by this project's generator (`bench/generator/`), with the generator seed in a `SEED` file (all sets except set 3); the full generation command for each set is in [HOLDOUT.en.md](HOLDOUT.en.md). The SHA-256 of each set is recorded in HOLDOUT.en.md and, from set 3, checked before every run; sets 5 to 7 were published with their decision rules before the first run. All personal data in them are synthetic.
+- **Development set.** Not released; no reported number depends on it.
+- **Results.** Predictions, LLM answers, metrics, manual checks and run journals are in `results/`.
 
-```bash
-ollama pull qwen3.5:9b && ollama pull gemma4:12b
-scripts/reproduce.sh
-```
+## Methodology
 
-Method in brief:
+- **Thresholds and verdicts.** Fixed before the runs of the sets they apply to (the strict count was added for set 6 and the name-restoration threshold for set 7); defined, with the verdict rule, in [Results against the thresholds](#results-against-the-thresholds).
 - **No home datasets.** Each tool is evaluated for the verdict only on datasets its own authors did not build.
 - **Held-out sets.** Synthetic sets are generated before the engine changes they test and frozen by SHA-256 ([HOLDOUT.en.md](HOLDOUT.en.md)). Each tool runs on a set once, from committed code, and every run is logged. Sets 1 and 2 checked version 0.1. Set 3 checked a candidate of version 0.2; its errors were then analysed, so sets 1 to 3 are development data. Set 4, frozen before that analysis, checked version 0.2. Set 5 checked version 0.3. Set 6 checked version 0.4. Set 7 checks version 0.5; it was generated after the changes of 0.5, published with its rules and run plan before the first run, and is the last held-out set for the paper.
 - **Same data for every comparison.** pii-roundtrip is compared with each tool on exactly the datasets that tool is scored on.
@@ -113,8 +142,27 @@ Method in brief:
 - The round trip uses two local LLMs; larger hosted models may alter placeholders differently.
 - promptShield, a browser-only tool, was not measured.
 
-## Licence and attribution
+## Citations
+
+If you use pii-roundtrip or its benchmark, please cite the software (see also [CITATION.cff](CITATION.cff)):
+
+```bibtex
+@software{beskorovainyi2026piiroundtrip,
+  title   = {pii-roundtrip: reversible anonymisation of Russian and UK English documents for external LLMs, and an open benchmark of existing tools},
+  author  = {Beskorovainyi, Vladimir},
+  year    = {2026},
+  publisher = {Zenodo},
+  doi     = {10.5281/zenodo.23478192},
+  url     = {https://github.com/beskvladimir-create/pii-roundtrip}
+}
+```
+
+The accompanying paper, "Reversible pseudonymisation of documents sent to external LLMs: an open bilingual benchmark and an engine", is under review.
+
+## License and contribution
 
 Apache License 2.0, see [LICENSE](LICENSE). pii-roundtrip uses pii-guard, GLiNER2 with the model hivetrace/gliner-guard-omni, and pymorphy3; see [NOTICE](NOTICE).
+
+Contributions are welcome as GitHub issues or pull requests; see [CONTRIBUTING.md](CONTRIBUTING.md). Security issues: see [SECURITY.md](SECURITY.md).
 
 Author: Vladimir Beskorovainyi, Besk Tech ([besk.tech](https://besk.tech)).
