@@ -7,6 +7,8 @@
 #endif
 
 [Setup]
+; paths below are relative to desktop\, one level above this script
+SourceDir=..
 AppId={{6E8B2C5A-3F1D-4C8E-9A7B-0D5F2E4C1A93}
 AppName=pii-roundtrip
 AppVersion={#Version}
