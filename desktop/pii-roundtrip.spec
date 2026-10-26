@@ -1,12 +1,14 @@
-# PyInstaller build of the macOS app: one .app with the engine, the models and no Python needed.
+# PyInstaller build of the app: on macOS one .app, on Windows a folder with pii-roundtrip.exe; with the
+# engine, the models and no Python needed.
 # uv run pyinstaller pii-roundtrip.spec --noconfirm
 import runpy
+import sys
 
 from PyInstaller.utils.hooks import collect_all
 
 runpy.run_path("scripts/collect_licenses.py", run_name="__main__")  # build/licenses, shipped below
 
-datas, binaries, hiddenimports = [("build/models", "models"), ("pii_roundtrip_desktop/fonts", "pii_roundtrip_desktop/fonts"), ("pii_roundtrip_desktop/icon.svg", "pii_roundtrip_desktop"), ("build/licenses", "licenses")], [], []
+datas, binaries, hiddenimports = [("build/models", "models"), ("pii_roundtrip_desktop/fonts", "pii_roundtrip_desktop/fonts"), ("pii_roundtrip_desktop/icon.svg", "pii_roundtrip_desktop"), ("pii_roundtrip_desktop/icon.ico", "pii_roundtrip_desktop"), ("build/licenses", "licenses")], [], []
 for pkg in ("presidio_analyzer", "presidio_anonymizer", "pymorphy3", "pymorphy3_dicts_ru", "ru_core_news_sm", "spacy", "pii_guard", "gliner2", "transformers", "tokenizers", "huggingface_hub", "docx", "pypdf"):
     d, b, h = collect_all(pkg)
     datas += d
@@ -31,18 +33,28 @@ a.binaries = [b for b in a.binaries if not any(q in b[0] for q in QT_UNUSED)]
 a.datas = [d for d in a.datas if not any(q in d[0] for q in QT_UNUSED)]
 
 pyz = PYZ(a.pure)
-exe = EXE(pyz, a.scripts, [], exclude_binaries=True, name="pii-roundtrip", console=False, argv_emulation=False)
-coll = COLLECT(exe, a.binaries, a.datas, name="pii-roundtrip")
-app = BUNDLE(
-    coll,
-    name="pii-roundtrip.app",
-    icon="pii_roundtrip_desktop/icon.icns",
-    bundle_identifier="tech.besk.pii-roundtrip",
-    version="0.5.2",
-    info_plist={
-        "CFBundleDisplayName": "pii-roundtrip",
-        "NSHighResolutionCapable": True,
-        "LSMinimumSystemVersion": "14.0",
-        "NSHumanReadableCopyright": "Besk Tech. Apache License 2.0.",
-    },
+exe = EXE(
+    pyz,
+    a.scripts,
+    [],
+    exclude_binaries=True,
+    name="pii-roundtrip",
+    console=False,
+    argv_emulation=False,
+    icon="pii_roundtrip_desktop/icon.ico" if sys.platform == "win32" else None,
 )
+coll = COLLECT(exe, a.binaries, a.datas, name="pii-roundtrip")
+if sys.platform == "darwin":
+    app = BUNDLE(
+        coll,
+        name="pii-roundtrip.app",
+        icon="pii_roundtrip_desktop/icon.icns",
+        bundle_identifier="tech.besk.pii-roundtrip",
+        version="0.5.2",
+        info_plist={
+            "CFBundleDisplayName": "pii-roundtrip",
+            "NSHighResolutionCapable": True,
+            "LSMinimumSystemVersion": "14.0",
+            "NSHumanReadableCopyright": "Besk Tech. Apache License 2.0.",
+        },
+    )

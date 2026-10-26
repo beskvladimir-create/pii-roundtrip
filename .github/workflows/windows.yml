@@ -1,0 +1,55 @@
+name: Windows app
+
+# Builds the Windows installer of the desktop app on a Windows machine, checks that the built
+# program cleans and restores a document offline, and attaches the installer to a release.
+on:
+  workflow_dispatch:
+    inputs:
+      release:
+        description: "Release tag to attach the installer to (created as a pre-release if missing)"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 150
+    defaults:
+      run:
+        shell: bash
+        working-directory: desktop
+    env:
+      PYTHONPATH: ".."
+      PYTHONUTF8: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.10.9"
+      - run: uv sync --frozen --extra models --python 3.13
+      - run: uv run python scripts/collect_models.py --download
+      - run: uv run python scripts/collect_licenses.py
+      - run: uv run pyinstaller --noconfirm pii-roundtrip.spec
+      - name: Self-test of the built program (network forbidden, shipped models)
+        shell: pwsh
+        working-directory: desktop/dist/pii-roundtrip
+        run: |
+          $p = Start-Process -FilePath .\pii-roundtrip.exe -ArgumentList "--selftest" -Wait -PassThru
+          Get-Content -Encoding utf8 selftest.log
+          exit $p.ExitCode
+      - name: Installer
+        shell: pwsh
+        working-directory: desktop
+        run: |
+          $v = (Select-String -Path pyproject.toml -Pattern '^version = "(.+)"').Matches[0].Groups[1].Value
+          & "${env:ProgramFiles(x86)}\Inno Setup 6\iscc.exe" /DVersion=$v scripts\windows.iss
+          Get-Item dist\pii-roundtrip-windows-setup.exe | Select-Object Name, Length
+      - name: Attach to the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.release }}
+        run: |
+          gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --prerelease --title "pii-roundtrip $TAG" --notes "Windows build, not yet tested on a real Windows computer."
+          gh release upload "$TAG" dist/pii-roundtrip-windows-setup.exe --clobber

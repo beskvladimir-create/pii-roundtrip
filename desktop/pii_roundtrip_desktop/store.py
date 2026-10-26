@@ -22,7 +22,10 @@ from pii_roundtrip import vault
 from pii_roundtrip.core import Session
 
 # the standard place for app data on macOS, never inside a user folder such as ~/pii-roundtrip
-DEFAULT_DIR = Path.home() / "Library" / "Application Support" / "pii-roundtrip"
+if os.name == "nt":  # %APPDATA%\pii-roundtrip on Windows
+    DEFAULT_DIR = Path(os.environ.get("APPDATA") or Path.home() / "AppData" / "Roaming") / "pii-roundtrip"
+else:
+    DEFAULT_DIR = Path.home() / "Library" / "Application Support" / "pii-roundtrip"
 _INDEX = "index.json"
 
 

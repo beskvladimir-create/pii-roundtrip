@@ -1,12 +1,14 @@
 """Copy the pinned model revisions from the local Hugging Face cache into build/models/hub.
 
 The app ships this folder and points HF_HUB_CACHE at it, so it works offline from the
-first launch. Symbolic links of the cache are resolved into plain files.
+first launch. Symbolic links of the cache are resolved into plain files. With --download the
+pinned revisions are fetched first (a clean build machine has no cache).
 """
 
 from __future__ import annotations
 
 import shutil
+import sys
 from pathlib import Path
 
 from huggingface_hub import snapshot_download
@@ -19,7 +21,7 @@ PINNED = [(pii_guard.NER_MODEL, pii_guard.NER_REVISION), (gliner.MODEL, gliner.R
 
 def main() -> None:
     for repo, rev in PINNED:
-        src = Path(snapshot_download(repo, revision=rev, local_files_only=True))
+        src = Path(snapshot_download(repo, revision=rev, local_files_only="--download" not in sys.argv))
         dst = OUT / f"models--{repo.replace('/', '--')}" / "snapshots" / rev
         if dst.exists():
             shutil.rmtree(dst)

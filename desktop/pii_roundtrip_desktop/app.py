@@ -197,9 +197,9 @@ class MainWindow(QMainWindow):
         self.setWindowTitle(t["app"])
         self.resize(900, 640)
         self.setMinimumSize(760, 600)
-        # the navy ground runs under the native title bar
-        self.setWindowFlag(Qt.WindowType.ExpandedClientAreaHint, True)
-        self.setWindowFlag(Qt.WindowType.NoTitleBarBackgroundHint, True)
+        if sys.platform == "darwin":  # the navy ground runs under the native title bar
+            self.setWindowFlag(Qt.WindowType.ExpandedClientAreaHint, True)
+            self.setWindowFlag(Qt.WindowType.NoTitleBarBackgroundHint, True)
 
         root = Ground()
         root.names = t["constellations"]
@@ -212,9 +212,10 @@ class MainWindow(QMainWindow):
 
         bar = QWidget()
         # below the macOS window buttons, left edge in line with the content
-        bar.setFixedHeight(76)
+        mac = sys.platform == "darwin"
+        bar.setFixedHeight(76 if mac else 52)
         bh = QHBoxLayout(bar)
-        bh.setContentsMargins(24, 32, 24, 8)
+        bh.setContentsMargins(24, 32 if mac else 8, 24, 8)
         self.doctitle = QLabel("")
         self.doctitle.setObjectName("doctitle")
         self.doctitle.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -513,6 +514,8 @@ class MainWindow(QMainWindow):
             path = link[len("reveal:") :]
             if sys.platform == "darwin":
                 subprocess.run(["open", "-R", path], check=False)
+            elif sys.platform == "win32":
+                subprocess.run(["explorer", "/select,", str(Path(path))], check=False)
             else:
                 QDesktopServices.openUrl(QUrl.fromLocalFile(str(Path(path).parent)))
 
@@ -1285,12 +1288,15 @@ def selftest() -> int:
     text = "Договор между Ивановым Петром Сергеевичем, СНИЛС 112-233-445 95, и Сидоровой Анной."
     clean, session = eng.anonymize(text, "ru", None)
     restored = eng.deanonymize("Уважаемый [PERSON_1], договор с [PERSON_2] продлён. СНИЛС [SNILS_1].", session)
-    print("models:", os.environ.get("HF_HUB_CACHE", "system cache"))
-    print("rules only:", eng.rules_only)
-    print("clean:", clean)
-    print("restored:", restored)
     ok = not eng.rules_only and "Иванов" not in clean and "112-233" not in clean and "Сидоровой Анной" in restored
-    print("SELFTEST", "OK" if ok else "FAILED")
+    report = (
+        f"models: {os.environ.get('HF_HUB_CACHE', 'system cache')}\nrules only: {eng.rules_only}\n"
+        f"clean: {clean}\nrestored: {restored}\nSELFTEST {'OK' if ok else 'FAILED'}\n"
+    )
+    if sys.stdout is not None:
+        print(report, end="")
+    else:  # a windowed Windows build has no console: the report goes to a file in the current folder
+        Path("selftest.log").write_text(report, encoding="utf-8")
     return 0 if ok else 1
 
 
@@ -1303,7 +1309,7 @@ def main() -> None:
     app.setApplicationDisplayName("pii-roundtrip")
     app.setOrganizationName(MAKER)
     theme.apply(app)
-    app.setWindowIcon(QIcon(str(ICON.with_suffix(".icns"))))
+    app.setWindowIcon(QIcon(str(ICON.with_suffix(".icns" if sys.platform == "darwin" else ".svg"))))
     conf = settings()
     lang = str(conf.value("lang", "")) or i18n.ui_language()
     t = i18n.TEXTS[lang]

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import locale
+import sys
 
 TEXTS = {
     "ru": {
@@ -244,3 +245,43 @@ def summary(mapping: dict[str, str], t: dict) -> str:
         name = t["types"].get(kind, t["numbers"])
         counts[name] = counts.get(name, 0) + 1
     return " · ".join(f"{k} {v}" for k, v in counts.items())
+
+
+# On Windows the same texts, without the Mac words: the key is in Windows Credential Manager.
+if sys.platform == "win32":
+    _WINDOWS = {
+        "ru": [
+            ("⌘V", "Ctrl+V"),
+            ("на этом Mac", "на этом компьютере"),
+            ("в Связке ключей macOS", "в диспетчере учётных данных Windows"),
+            ("в память этого Mac", "в память этого компьютера"),
+            ("в Finder", "в Проводнике"),
+            ("в Связке ключей", "в диспетчере учётных данных"),
+        ],
+        "en": [
+            ("⌘V", "Ctrl+V"),
+            ("on this Mac", "on this computer"),
+            ("in the macOS Keychain", "in Windows Credential Manager"),
+            ("your Mac user account", "your Windows user account"),
+            ("this Mac\u2019s memory", "this computer\u2019s memory"),
+            ("in Finder", "in File Explorer"),
+            ("a Keychain key", "a Credential Manager key"),
+        ],
+    }
+
+    def _for_windows(value, pairs):
+        if isinstance(value, str):
+            for a, b in pairs:
+                value = value.replace(a, b)
+            return value
+        if isinstance(value, list):
+            return [_for_windows(v, pairs) for v in value]
+        if isinstance(value, tuple):
+            return tuple(_for_windows(v, pairs) for v in value)
+        if isinstance(value, dict):
+            return {k: _for_windows(v, pairs) for k, v in value.items()}
+        return value
+
+    for _lang, _pairs in _WINDOWS.items():
+        if _lang in TEXTS:
+            TEXTS[_lang] = _for_windows(TEXTS[_lang], _pairs)
