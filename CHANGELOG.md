@@ -4,6 +4,18 @@
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow [Semantic Versioning](https://semver.org/).
 
+## [0.5.3] - 2026-10-26
+
+### Added
+
+- The desktop app for Windows (beta): an installer for the current user, without administrator rights. It is built and checked on a Windows machine on GitHub. The check runs the built program without network access, installs it with the installer, and drives the installed program as a user would: it opens a Word file, cleans it, brings an AI answer back and saves it, with screenshots of each step (`.github/workflows/windows.yml`).
+- `--uitest` in the desktop app: the same scripted check, used for both macOS and Windows builds.
+
+### Fixed
+
+- A surname the dictionary also knows as a first name ("Зимина") was stored as the first name when the text had it in an oblique case ("Зиминой Ираидой Павловной" was stored as "Ираида Зимина Павловна").
+- Desktop app: a name alone on its line, as in a signature, came back in the form of its first mention in the source ("С уважением, Зиминой Ираидой Павловной"). That form is now kept only if it is the nominative.
+
 ## [0.5.2] - 2026-10-26
 
 ### Fixed

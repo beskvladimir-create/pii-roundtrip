@@ -46,6 +46,23 @@ jobs:
           $v = (Select-String -Path pyproject.toml -Pattern '^version = "(.+)"').Matches[0].Groups[1].Value
           & "${env:ProgramFiles(x86)}\Inno Setup 6\iscc.exe" /DVersion=$v scripts\windows.iss
           Get-Item dist\pii-roundtrip-windows-setup.exe | Select-Object Name, Length
+      - name: Install with the installer and drive the installed program (screenshots in the artifact)
+        shell: pwsh
+        working-directory: desktop
+        run: |
+          Start-Process -FilePath dist\pii-roundtrip-windows-setup.exe -ArgumentList "/VERYSILENT","/SUPPRESSMSGBOXES","/NORESTART","/CURRENTUSER" -Wait
+          $exe = "$env:LOCALAPPDATA\Programs\pii-roundtrip\pii-roundtrip.exe"
+          if (-not (Test-Path $exe)) { Write-Error "not installed: $exe"; exit 1 }
+          New-Item -ItemType Directory -Force -Path uitest | Out-Null
+          $p = Start-Process -FilePath $exe -ArgumentList "--uitest", "$PWD\uitest" -Wait -PassThru
+          Get-Content -Encoding utf8 uitest\uitest.log
+          exit $p.ExitCode
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: windows-uitest
+          path: desktop/uitest
+          if-no-files-found: ignore
       - name: Attach to the release
         env:
           GH_TOKEN: ${{ github.token }}

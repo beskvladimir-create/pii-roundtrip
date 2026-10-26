@@ -310,6 +310,14 @@ def parse(value: str, lang: str, left: str = "") -> Name:
             kept.pop()
         words = kept or words
         roles = [(w, *_ru_word_role(w)) for w in words]
+        if sum(kind == "Name" for _, kind, _ in roles) >= 2 and not any(kind == "Surn" for _, kind, _ in roles):
+            # no word was taken for the surname, but one has a surname's form: the dictionary also
+            # knows "Зимина" as a first name, so "Зиминой Ираидой Павловной" lost its surname
+            i = next(
+                (k for k, (w, kind, _) in enumerate(roles) if kind == "Name" and _SURN_FAMILY.match(norm(w))), None
+            )
+            if i is not None:
+                roles[i] = (roles[i][0], "Surn", None)
         if initials and len(roles) == 1 and roles[0][1] != "Surn":
             roles = [(roles[0][0], "Surn", None)]  # one word with initials is a surname: "Горбачеав А.В."
         # an unknown word ending like a short patronymic right after a first name: "Нестор Фокич"

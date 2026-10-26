@@ -77,9 +77,15 @@ class AppEngine:
                 if label != alone.group(2):
                     key = alone.group(2).strip("[]").upper()
                     canon = {k.strip("[]").upper(): v for k, v in (forms or {}).items()}
-                    value = canon.get(key) or next(
-                        (v for k, v in session.mapping.items() if k.strip("[]").upper() == key), label
-                    )
+                    stored = next((v for k, v in session.mapping.items() if k.strip("[]").upper() == key), label)
+                    value = canon.get(key) or stored
+                    if key.startswith("PERSON") and stored.split():
+                        # the form written in the source only if it is the nominative ("Д.И. Харитонов"),
+                        # not "Зиминой Ираидой Павловной" from "между ... и Зиминой Ираидой Павловной"
+                        surname = stored.split()[0].lower().replace("ё", "е")
+                        words = [w.lower().replace("ё", "е") for w in re.findall(r"[\w-]+", value)]
+                        if surname not in words:
+                            value = stored
                     return alone.group(1) + value + alone.group(3)
             return engine.deanonymize(BRACKETED.sub(as_written, line), session)
 

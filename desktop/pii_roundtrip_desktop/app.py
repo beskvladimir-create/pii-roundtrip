@@ -8,6 +8,7 @@ an encrypted vault whose key lives in the macOS Keychain.
 from __future__ import annotations
 
 import json
+import os
 import shutil
 import subprocess
 import sys
@@ -1300,10 +1301,113 @@ def selftest() -> int:
     return 0 if ok else 1
 
 
+def uitest(out: Path) -> int:
+    """Drive the window as a user would, with the shipped models and the real key store: open a Word
+    file, clean it, bring an AI answer back, save it. A screenshot of each step and a report go to
+    ``out``; used to check a build on a system the developer cannot use by hand."""
+    import time
+
+    import docx
+
+    out.mkdir(parents=True, exist_ok=True)
+    log: list[str] = []
+    app = QApplication(sys.argv)
+    theme.apply(app)
+    app.setWindowIcon(QIcon(str(ICON.with_suffix(".icns" if sys.platform == "darwin" else ".svg"))))
+    lang = os.environ.get("PII_UITEST_LANG", "ru")
+    t = i18n.TEXTS[lang]
+    store = open_store(t, out / "vault")
+    if store is None:
+        (out / "uitest.log").write_text("UITEST FAILED: no key store\n", encoding="utf-8")
+        return 1
+    log.append(f"key store: {keys_backend()}")
+    win = MainWindow(store, t, lang=lang)
+    win.resize(1000, 700)
+    win.show()
+
+    def wait(cond, seconds: float) -> bool:
+        end = time.time() + seconds
+        while time.time() < end:
+            app.processEvents()
+            if cond():
+                return True
+            time.sleep(0.05)
+        return cond()
+
+    def shot(name: str) -> None:
+        wait(lambda: False, 1.5)  # let animations settle
+        win.grab().save(str(out / f"{name}.png"))
+
+    ok = wait(lambda: win.engine.ready, 600)
+    log.append(f"models loaded: {ok}")
+    shot("1_home")
+    sample = out / "Договор аренды.docx"
+    d = docx.Document()
+    d.add_paragraph("Договор аренды № 418")
+    d.add_paragraph(
+        "Договор заключён между Харитоновым Дмитрием Измаиловичем, паспорт 45 10 123456, "
+        "и Зиминой Ираидой Павловной, СНИЛС 112-233-445 95."
+    )
+    d.add_paragraph("Подпись: Д.И. Харитонов")
+    d.save(str(sample))
+    win.open_file(str(sample))
+    cleaned = wait(lambda: not win.busy and bool(getattr(win, "request", "")), 300)
+    request = getattr(win, "request", "")
+    log.append(f"cleaned: {cleaned}: {request}")
+    leaks = [v for v in ("Харитонов", "Зимин", "123456", "112-233") if v in request]
+    log.append(f"values left in the cleaned text: {leaks}")
+    shot("2_cleaned")
+    labels = sorted(set(PLACEHOLDER.findall(request)))
+    person = [x for x in labels if x.startswith("[PERSON")]
+    answer = (
+        f"Уважаемый {person[0]}!\n\n1. {person[0]} (паспорт [PASSPORT_RU_1])\n"
+        f"Договор с {person[1]} продлевается.\n\nС уважением,\n{person[1]}"
+        if len(person) >= 2
+        else "no labels"
+    )
+    win._restore_text(answer)
+    restored_ok = wait(lambda: not win.busy and bool(getattr(win, "answer", "")), 300)
+    restored = getattr(win, "answer", "")
+    log.append(f"restored: {restored_ok}: {restored!r}")
+    expect = [
+        "Уважаемый Харитонов Дмитрий Измаилович",
+        "1. Харитонов Дмитрий Измаилович",
+        "Договор с Зиминой Ираидой Павловной",
+        "123456",
+    ]
+    missing = [e for e in expect if e not in restored]
+    log.append(f"expected forms missing: {missing}")
+    shot("3_restored")
+    saved = out / "answer.docx"
+    QFileDialog.getSaveFileName = staticmethod(lambda *a, **k: (str(saved), ""))  # type: ignore[method-assign]
+    win.save_docx()
+    wait(lambda: saved.exists(), 30)
+    text = "\n".join(p.text for p in docx.Document(str(saved)).paragraphs) if saved.exists() else ""
+    log.append(f"saved: {saved.exists()}, restored name in the file: {'Харитонов Дмитрий Измаилович' in text}")
+    shot("4_saved")
+    passed = ok and cleaned and not leaks and restored_ok and not missing and "Харитонов Дмитрий Измаилович" in text
+    log.append("UITEST OK" if passed else "UITEST FAILED")
+    (out / "uitest.log").write_text("\n".join(log) + "\n", encoding="utf-8")
+    win.close()
+    return 0 if passed else 1
+
+
+def keys_backend() -> str:
+    try:
+        import keyring
+
+        return type(keyring.get_keyring()).__name__
+    except Exception as e:  # noqa: BLE001
+        return f"unavailable: {e}"
+
+
 def main() -> None:
     forbid_network()
     if "--selftest" in sys.argv:
         sys.exit(selftest())
+    if "--uitest" in sys.argv:
+        i = sys.argv.index("--uitest")
+        sys.exit(uitest(Path(sys.argv[i + 1]) if i + 1 < len(sys.argv) else Path("uitest")))
     app = QApplication(sys.argv)
     app.setApplicationName("pii-roundtrip")
     app.setApplicationDisplayName("pii-roundtrip")
