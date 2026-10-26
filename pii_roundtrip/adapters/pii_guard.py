@@ -139,6 +139,23 @@ class PiiGuardDetector:
         return spans
 
 
+def _with_case_from_left(fix_name_case):
+    """In the places where the words before a name decide its case (after "Уважаемый", "Кому:",
+    "ФИО:", at the start of a list item or a line), the engine sets the case; elsewhere pii-guard's
+    parse of the sentence does."""
+    from pii_roundtrip import names
+
+    def fixed(text: str, name_span: tuple[int, int], model_name: str | None = None) -> str:
+        start, end = name_span
+        case = names.case_from_left(text[:start])
+        if not case:
+            return fix_name_case(text, name_span, model_name)
+        return text[:start] + names.inflect_name_tokens(text[start:end].split(), case) + text[end:]
+
+    fixed._engine = True  # type: ignore[attr-defined]
+    return fixed
+
+
 class PiiGuardInflector:
     """Restores Russian names in the grammatical case required by the context.
 
@@ -171,6 +188,8 @@ class PiiGuardInflector:
         # own forms took the first dictionary parse of a word, which for "Харитонов" is the plural of
         # the first name "Харитон" (held-out set 7).
         pseudonymize._inflect_name = names.inflect_name_tokens
+        if not getattr(pseudonymize._fix_name_case, "_engine", False):
+            pseudonymize._fix_name_case = _with_case_from_left(pseudonymize._fix_name_case)
         try:
             return pseudonymize.deanonymize_batch([text], tagmap, self.spacy_model)[0]
         except Exception as e:

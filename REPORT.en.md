@@ -2,7 +2,7 @@
 
 [Русская версия](REPORT.md)
 
-Version 0.5.1, 25 October 2026. Changes by version are in section 8 and in [CHANGELOG.md](CHANGELOG.md). Corrections to earlier releases are listed in section 10.
+Version 0.5.2, 26 October 2026. Changes by version are in section 8 and in [CHANGELOG.md](CHANGELOG.md). Corrections to earlier releases are listed in section 10.
 
 ## 1. Summary
 
@@ -162,6 +162,8 @@ Why the existing tools leak:
 - **pii-roundtrip 0.5.** Verdicts on the independent held-out set 7: Russian: met: identifiers, names and addresses, leaks, strict leaks; undetermined: restoration; not met: restoration of name placeholders; UK English: met: identifiers, names and addresses, leaks, restoration, restoration of name placeholders, strict leaks. Leaks of 0.3% [0.1; 0.9] met (RU) and 0.2% [0.1; 0.7] met (UK) compare with 60.8% [57.7; 63.8] for pii-guard and 58.3% [55.2; 61.3] for GLiNER Guard Omni on the same documents. Restoration of Russian names remains below 99%: the error that 0.5 fixed in storage reappears in the restoration step (section 11).
 
 ## 8. Changes by version
+
+**Version 0.5.2** (26 October 2026): in common places the words before a name decide its case on restoration (after "Уважаемый", "Кому:", "ФИО:", at the start of a list item or a line, in a signature); elsewhere pii-guard's parse of the sentence decides, as before. On the saved answers of set 7 (for reference) Russian name placeholders are restored in 99.3% (qwen3.5:9b) and 99.3% (gemma4:12b) of cases; the remaining failures are mostly correct names the evaluator does not recognise. Details: `results/engine_0.5.1.json`.
 
 **Version 0.5.1** (25 October 2026, after set 7): the engine builds the word forms of a Russian name itself when it restores the answer (pii-guard still decides the case from the syntax): surnames in -ов/-ев/-ин/-ын by rule, first names and patronymics in the singular of the name's gender, by rule when the dictionary does not know them. A first name is put in the nominative from the case of its patronymic ("Тимофей" stays, "Фортунату" becomes "Фортунат", "Силы" becomes "Сила"); a rare first name inside a name is no longer dropped as a verb form ("Милован"); a misspelt patronymic is kept. Detection is unchanged (identical scores on sets 4 to 6). Russian names stored wrongly on the development data (rule plus first names and patronymics): 125 → 35 of about 5,350 on set 5, 138 → 41 on set 6; no two people share a placeholder more often than before, and a person split into two placeholders became rarer (284 → 266 on set 5). The saved answers of set 7 scored with 0.5.1 (for reference only, set 7 was seen before 0.5.1 was written): Russian name placeholders 98.7% (qwen3.5:9b) and 99.2% (gemma4:12b) instead of 94.6% and 94.7%; most of the remaining failures are correct names the evaluator does not recognise ("Софии", "Милованом") and a case chosen wrongly by pii-guard's syntax ("Уважаемый Силиной Г.Э."). Details: `results/engine_0.5.1.json`.
 

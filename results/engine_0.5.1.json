@@ -555,5 +555,313 @@
     "Kate Matthews"
    ]
   ]
- }
+ },
+ "holdout7_rescored_0.5.2": {
+  "ru/qwen3.5:9b": {
+   "answers": 372,
+   "labels_in_answer": 12343,
+   "occurrences_failed": 19,
+   "restore_rate": 0.9984606659645143,
+   "restore_ci": [
+    0.9976028765481423,
+    0.9992258264302857
+   ],
+   "person_labels": 2578,
+   "restore_rate_person": 0.9926299456943367,
+   "restore_ci_person": [
+    0.9884600079586152,
+    0.9962321024868124
+   ],
+   "skipped_answers": 8
+  },
+  "ru/gemma4:12b": {
+   "answers": 372,
+   "labels_in_answer": 13709,
+   "occurrences_failed": 18,
+   "restore_rate": 0.9986869939455832,
+   "restore_ci": [
+    0.9978364344439636,
+    0.9994067922289782
+   ],
+   "person_labels": 2689,
+   "restore_rate_person": 0.9933060617329862,
+   "restore_ci_person": [
+    0.9889948642699926,
+    0.9969765684051398
+   ],
+   "skipped_answers": 8
+  },
+  "uk/qwen3.5:9b": {
+   "answers": 380,
+   "labels_in_answer": 12232,
+   "occurrences_failed": 0,
+   "restore_rate": 1.0,
+   "restore_ci": [
+    1.0,
+    1.0
+   ],
+   "person_labels": 2543,
+   "restore_rate_person": 1.0,
+   "restore_ci_person": [
+    1.0,
+    1.0
+   ],
+   "skipped_answers": 0
+  },
+  "uk/gemma4:12b": {
+   "answers": 380,
+   "labels_in_answer": 13876,
+   "occurrences_failed": 1,
+   "restore_rate": 0.9999279331219372,
+   "restore_ci": [
+    0.999781532187591,
+    1.0
+   ],
+   "person_labels": 3165,
+   "restore_rate_person": 0.9996840442338073,
+   "restore_ci_person": [
+    0.9990381532542482,
+    1.0
+   ],
+   "skipped_answers": 0
+  }
+ },
+ "holdout7_rescored_0.5.2_failures": {
+  "ru/qwen3.5:9b": [
+   [
+    "ru-certificate-120",
+    "summary",
+    "[PERSON_2]",
+    "Жуков Милован Венедиктович"
+   ],
+   [
+    "ru-certificate-190",
+    "summary",
+    "[PERSON_3]",
+    "Русакова Вероника Максиомвна"
+   ],
+   [
+    "ru-certificate-190",
+    "summary",
+    "[PERSON_5]",
+    "Силина Г.Э."
+   ],
+   [
+    "ru-certificate-002",
+    "summary",
+    "[PERSON_1]",
+    "Дмитриева Выднаа Ефимовна"
+   ],
+   [
+    "ru-certificate-002",
+    "reply",
+    "[PERSON_1]",
+    "Дмитриева Выднаа Ефимовна"
+   ],
+   [
+    "ru-certificate-002",
+    "reply",
+    "[PERSON_1]",
+    "Дмитриева Выднаа Ефимовна"
+   ],
+   [
+    "ru-certificate-002",
+    "reply",
+    "[PERSON_1]",
+    "Дмитриева Выднаа Ефимовна"
+   ],
+   [
+    "ru-contract-074",
+    "summary",
+    "[PERSON_2]",
+    "Гуляева София Феликсовна"
+   ],
+   [
+    "ru-contract-161",
+    "summary",
+    "[PERSON_1]",
+    "Матвеев Милован Власович"
+   ],
+   [
+    "ru-contract-048",
+    "reply",
+    "[PERSON_8]",
+    "Сазонов Сидор Елисевеич"
+   ],
+   [
+    "ru-contract-008",
+    "summary",
+    "[PERSON_2]",
+    "Мишина Лдюмила Степановна"
+   ],
+   [
+    "ru-hr-179",
+    "summary",
+    "[PERSON_3]",
+    "Котов Валентин Валетнинович"
+   ],
+   [
+    "ru-hr-133",
+    "summary",
+    "[PERSON_5]",
+    "Ефимова О.Е."
+   ],
+   [
+    "ru-hr-078",
+    "summary",
+    "[PERSON_3]",
+    "Евсеева София Тарасовна"
+   ],
+   [
+    "ru-hr-043",
+    "summary",
+    "[PERSON_5]",
+    "Афаансьева К.Т."
+   ],
+   [
+    "ru-letter-051",
+    "summary",
+    "[PERSON_6]",
+    "Беспалов Геогрий Витальевич"
+   ],
+   [
+    "ru-medical-063",
+    "summary",
+    "[PERSON_1]",
+    "Щербакова Луикя Болеславовна"
+   ],
+   [
+    "ru-medical-047",
+    "summary",
+    "[PERSON_3]",
+    "Пономарев Нуам Абрамович"
+   ],
+   [
+    "ru-medical-069",
+    "summary",
+    "[PERSON_4]",
+    "Егорова София Натановна"
+   ]
+  ],
+  "ru/gemma4:12b": [
+   [
+    "ru-certificate-190",
+    "summary",
+    "[PERSON_3]",
+    "Русакова Вероника Максиомвна"
+   ],
+   [
+    "ru-certificate-190",
+    "summary",
+    "[PERSON_5]",
+    "Силина Г.Э."
+   ],
+   [
+    "ru-certificate-002",
+    "summary",
+    "[PERSON_1]",
+    "Дмитриева Выднаа Ефимовна"
+   ],
+   [
+    "ru-certificate-002",
+    "summary",
+    "[PERSON_1]",
+    "Дмитриева Выднаа Ефимовна"
+   ],
+   [
+    "ru-certificate-002",
+    "reply",
+    "[PERSON_1]",
+    "Дмитриева Выднаа Ефимовна"
+   ],
+   [
+    "ru-certificate-002",
+    "reply",
+    "[PERSON_1]",
+    "Дмитриева Выднаа Ефимовна"
+   ],
+   [
+    "ru-hr-179",
+    "reply",
+    "[PERSON_3]",
+    "Котов Валентин Валетнинович"
+   ],
+   [
+    "ru-hr-179",
+    "reply",
+    "[PERSON_3]",
+    "Котов Валентин Валетнинович"
+   ],
+   [
+    "ru-hr-179",
+    "reply",
+    "[PERSON_3]",
+    "Котов Валентин Валетнинович"
+   ],
+   [
+    "ru-hr-133",
+    "summary",
+    "[PERSON_5]",
+    "Ефимова О.Е."
+   ],
+   [
+    "ru-hr-078",
+    "reply",
+    "[PERSON_3]",
+    "Евсеева София Тарасовна"
+   ],
+   [
+    "ru-hr-043",
+    "summary",
+    "[PERSON_5]",
+    "Афаансьева К.Т."
+   ],
+   [
+    "ru-medical-008",
+    "summary",
+    "[PERSON_2]",
+    "Рюрик Новкиов Фёдорович"
+   ],
+   [
+    "ru-medical-021",
+    "summary",
+    "[PERSON_4]",
+    "Тихноова Т.С."
+   ],
+   [
+    "ru-medical-003",
+    "summary",
+    "[PERSON_3]",
+    "Фокин Никита Елзиарович"
+   ],
+   [
+    "ru-medical-063",
+    "summary",
+    "[PERSON_1]",
+    "Щербакова Луикя Болеславовна"
+   ],
+   [
+    "ru-medical-047",
+    "summary",
+    "[PERSON_3]",
+    "Пономарев Нуам Абрамович"
+   ],
+   [
+    "ru-medical-075",
+    "summary",
+    "[PERSON_2]",
+    "Гуляев Никон Власоивч"
+   ]
+  ],
+  "uk/qwen3.5:9b": [],
+  "uk/gemma4:12b": [
+   [
+    "uk-hr-058",
+    "reply",
+    "[PERSON_6]",
+    "Kate Matthews"
+   ]
+  ]
+ },
+ "_note_0.5.2": "0.5.2 (26 October 2026): the case of a restored name is taken from the words before it in common places (after 'Уважаемый', 'Кому:', 'ФИО:', at the start of a list item or a line, in a signature); elsewhere pii-guard's parse decides. Set 7 answers scored again for reference: no correct occurrence became a failure except 3 occurrences of a misspelt patronymic ('Валетниновичу') now correctly inflected, which evaluator version 3 does not accept."
 }

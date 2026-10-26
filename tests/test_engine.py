@@ -632,3 +632,25 @@ def test_restore_ru_surname_not_in_the_plural(eng):
     s.genders = {"[PERSON_1]": "male", "[PERSON_2]": "male"}
     out = eng.deanonymize("Данные:\n1. [PERSON_1] (дата рождения 01.01.1990)\nПодписан директором [PERSON_2].", s)
     assert "1. Харитонов Дмитрий Измаилович" in out and "директором Федотовым Ф.Ю." in out, out
+
+
+@pytest.mark.parametrize(
+    "answer,expected",
+    [
+        # held-out set 7: pii-guard's parse put these names in the wrong case
+        ("Уважаемый [PERSON_1],", "Уважаемый Силина Г.Э.,"),
+        ("Кому: [PERSON_1]\nОт: ООО", "Кому: Силиной Г.Э.\nОт: ООО"),
+        ("*   **ФИО:** [PERSON_1]\n", "*   **ФИО:** Силина Г.Э.\n"),
+        ("2. [PERSON_1] (дата рождения", "2. Силина Г.Э. (дата рождения"),
+        ("С уважением,\n[PERSON_1]", "С уважением,\nСилина Г.Э."),
+        ("Приказ подписан директором [PERSON_1].", "Приказ подписан директором Силиной Г.Э."),  # the syntax decides
+    ],
+)
+def test_restore_ru_case_from_the_words_before_the_name(eng, answer, expected):
+    from pii_roundtrip.adapters.pii_guard import PiiGuardInflector
+
+    if not PiiGuardInflector.available():
+        pytest.skip("pii-guard is not installed")
+    s = Session("ru", {"[PERSON_1]": "Силина Г.Э."})
+    s.genders = {"[PERSON_1]": "female"}
+    assert eng.deanonymize(answer, s) == expected

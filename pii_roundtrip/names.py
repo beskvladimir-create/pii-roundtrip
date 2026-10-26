@@ -683,3 +683,31 @@ def inflect_name_tokens(tokens: list[str], case: str) -> str:
         out.append(inflect_word(t, case, gender, roles.get(k, "Surn")))
         k += 1
     return " ".join(out)
+
+
+# The case of a restored name from the words right before it, where pii-guard's parse of the
+# sentence often errs (held-out set 7: "Уважаемый Силиной Г.Э.", "1. Харитоны ...", "Кому: Ефимову").
+_LEFT_CASE = [
+    (re.compile(r"(?:уважаем(?:ый|ая|ые|ый\(ая\)|ый\(а\))|дорог(?:ой|ая|ие))[\s*]*$", re.I), "nomn"),
+    (re.compile(r"(?:^|\n|\*)[\s*]*(?:кому|адресат|получатель)[\s*]*:[\s*]*$", re.I), "datv"),
+    (
+        re.compile(
+            r"(?:^|\n|\*)[\s*]*(?:фио|ф\.\s?и\.\s?о\.|от|исполнитель|пациент(?:ка)?|работник|сотрудник|заявитель|"
+            r"контактное лицо|законный представитель|представитель|свидетель|подпись|подписант)[\s*]*:[\s*]*$",
+            re.I,
+        ),
+        "nomn",
+    ),
+    (re.compile(r"(?:^|\n)[\s*]*(?:\d{1,2}[.)]|[-•–])[\s*]*$"), "nomn"),  # a list item
+    (re.compile(r"с уважением,?[\s*]*$", re.I), "nomn"),  # a signature
+    (re.compile(r"(?:^|\n)[\s*]*$"), "nomn"),  # the start of a line
+]
+
+
+def case_from_left(left: str) -> str:
+    """The case a name takes after these words, or "" when the syntax has to decide."""
+    tail = left[-80:]
+    for pattern, case in _LEFT_CASE:
+        if pattern.search(tail):
+            return case
+    return ""

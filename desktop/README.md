@@ -8,7 +8,7 @@ A desktop app for people who do not use the command line. Drop in a document, se
 
 The installer is attached to the latest desktop release on the [Releases page](https://github.com/beskvladimir-create/pii-roundtrip/releases). It is about 2 GB because the recognition models are inside: after installation the app needs no internet.
 
-Requirements: macOS 12 or later, Apple silicon (M1 or newer).
+Requirements: macOS 14 (Sonoma) or later, Apple silicon (M1 or newer).
 
 The app is not yet signed with an Apple certificate, so macOS asks once before the first launch:
 

@@ -1,12 +1,12 @@
 [project]
 name = "pii-roundtrip-desktop"
-version = "0.5.1"
+version = "0.5.2"
 description = "Desktop app for pii-roundtrip: clean a document before sending it to an LLM, restore the answer locally"
 requires-python = ">=3.12"
 license = "Apache-2.0"
 authors = [{ name = "Vladimir Beskorovainyi" }]
 dependencies = [
-    "pyside6>=6.7",
+    "pyside6>=6.7,<6.10",  # 6.10+ needs macOS 13, 6.12 ships libraries built for macOS 26
     "python-docx>=1.1",
     "pypdf>=5",
     "reportlab>=4.2",

@@ -4,6 +4,22 @@
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow [Semantic Versioning](https://semver.org/).
 
+## [0.5.2] - 2026-10-26
+
+### Fixed
+
+- Restoring Russian names: in common places the words before a name decide its case. These places are after "Уважаемый", "Кому:" and "ФИО:", at the start of a list item or a line, and in a signature. pii-guard's parse of the sentence chose a wrong case there ("Уважаемый Силиной Г.Э.", "Кому: Ефимову О.Е."). Elsewhere the parse decides as before.
+
+- The macOS app requires macOS 14 (Sonoma) or later, not macOS 12 as stated before. It is built with PySide6 6.9.3 instead of 6.12.
+  - The installers of 0.3.0 to 0.5.1 contained PySide6 6.12, whose Qt libraries are built for macOS 26. They most likely did not start on earlier versions of macOS. This could not be checked on an older system here.
+  - PyTorch, which the models need, is built for macOS 14, so 14 is the lowest version the app can support. There are no current PyTorch builds for Intel Macs, so an Intel version is not possible without replacing it.
+
+### Checked
+
+- Saved answers of set 7, for reference: Russian name placeholders 99.3% for both models (0.5.1: 98.7% and 99.2%).
+- No correct occurrence became a failure.
+- The macOS app 0.5.2 is rebuilt with this engine.
+
 ## [0.5.1] - 2026-10-25
 
 Fixes the Russian name errors found on held-out set 7. The result of set 7 for version 0.5 is unchanged; by its stopping rule there is no new held-out set for the paper, and set 7 is now development data.
