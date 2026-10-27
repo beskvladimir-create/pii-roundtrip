@@ -42,9 +42,9 @@ UK English:
 
 A threshold is met when the whole 95% confidence interval is on the right side of it, not met when the whole interval is on the wrong side, and undetermined when the interval spans it. Restoration comes from a round trip with qwen3.5:9b and gemma4:12b at temperature 0: for pii-roundtrip 380 answers per model on documents of held-out set 7, for the other tools 40 answers per model on set 5. The last row has no threshold: it shows how much of the masked text is personal data, so that a tool cannot reach high recall by masking everything.
 
-## Desktop app for macOS
+## Desktop app for macOS and Windows
 
-For people who do not use the command line: drop in a Word file, a PDF or text, send the cleaned version to any AI tool, drop or paste its answer back and get it with the real values. Formatting is kept where the file allows it, the models are inside the installer, and the app works offline. Download the installer from the [Releases page](https://github.com/beskvladimir-create/pii-roundtrip/releases); details in [desktop/README.md](desktop/README.md).
+For people who do not use the command line: drop in a Word file, a PDF or text, send the cleaned version to any AI tool, drop or paste its answer back and get it with the real values. Formatting is kept where the file allows it, the models are inside the installer, and the app works offline. Download the installer for macOS (Apple silicon, macOS 14 or later) or Windows 10 or 11 (beta) from the [Releases page](https://github.com/beskvladimir-create/pii-roundtrip/releases); details in [desktop/README.md](desktop/README.md).
 
 ## Requirements
 

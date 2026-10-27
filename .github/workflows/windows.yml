@@ -70,3 +70,7 @@ jobs:
         run: |
           gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --prerelease --title "pii-roundtrip $TAG" --notes "Windows build, not yet tested on a real Windows computer."
           gh release upload "$TAG" dist/pii-roundtrip-windows-setup.exe --clobber
+          sum=$(sha256sum dist/pii-roundtrip-windows-setup.exe | cut -d' ' -f1)
+          gh release view "$TAG" --json body -q .body > notes.md
+          printf '\nSHA-256 of pii-roundtrip-windows-setup.exe: `%s` (check on Windows: `Get-FileHash .\\pii-roundtrip-windows-setup.exe -Algorithm SHA256`)\n' "$sum" >> notes.md
+          gh release edit "$TAG" --notes-file notes.md

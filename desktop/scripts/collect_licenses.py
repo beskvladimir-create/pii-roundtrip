@@ -3,7 +3,7 @@
 pii-roundtrip.spec runs it at the start of every build; it can also be run on its own:
     uv run python scripts/collect_licenses.py
 
-The result goes into the .app (Contents/Resources/licenses) and next to the app in the .dmg:
+The result is shipped with the app (inside the .app on macOS, in the program folder on Windows) and next to the app in the .dmg:
 THIRD_PARTY_NOTICES.txt lists every component with its licence and source, and
 licenses/ holds the full licence texts, copied from each installed package where it ships
 them and from desktop/licenses for the models, fonts, Qt and the Russian dictionary.
