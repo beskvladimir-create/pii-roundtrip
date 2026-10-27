@@ -4,6 +4,20 @@
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow [Semantic Versioning](https://semver.org/).
 
+## [0.5.4] - 2026-10-27
+
+The engine is unchanged (0.5.3). This release applies a design, QA and content review before the official release.
+
+### Changed
+
+- Desktop app on Windows:
+  - "About pii-roundtrip" is in a Help menu;
+  - the system title bar is dark, matching the window;
+  - the space below the menu bar is the same as on macOS.
+- Desktop app: the separators in the footer of the window are the same.
+- Documentation: the desktop app includes the models and works offline from the first launch; an installation from source downloads them once.
+- Release notes carry the SHA-256 of each installer; the Windows build adds it itself.
+
 ## [0.5.3] - 2026-10-26
 
 ### Added

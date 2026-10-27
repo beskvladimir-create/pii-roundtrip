@@ -214,9 +214,9 @@ class MainWindow(QMainWindow):
         bar = QWidget()
         # below the macOS window buttons, left edge in line with the content
         mac = sys.platform == "darwin"
-        bar.setFixedHeight(76 if mac else 52)
+        bar.setFixedHeight(76 if mac else 64)
         bh = QHBoxLayout(bar)
-        bh.setContentsMargins(24, 32 if mac else 8, 24, 8)
+        bh.setContentsMargins(24, 32 if mac else 20, 24, 8)
         self.doctitle = QLabel("")
         self.doctitle.setObjectName("doctitle")
         self.doctitle.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -275,7 +275,7 @@ class MainWindow(QMainWindow):
             f'<a href="terms" {link}>{t["terms_link"]}</a> &nbsp;·&nbsp; '
             f'<a href="{CONTACT}" {link}>{t["contact"]}</a> &nbsp;·&nbsp; '
             + t["maker_short"].format(year=YEAR, maker=MAKER)
-            + f' · <a href="{SITE}" {link}>besk.tech</a>'
+            + f' &nbsp;·&nbsp; <a href="{SITE}" {link}>besk.tech</a>'
         )
         maker.setObjectName("maker")
         maker.setToolTip(t["maker"].format(year=YEAR, maker=MAKER, version=VERSION))
@@ -439,7 +439,8 @@ class MainWindow(QMainWindow):
         about = QAction(t["about"], self)
         about.setMenuRole(QAction.MenuRole.AboutRole)  # goes to the app menu on macOS
         about.triggered.connect(self._about)
-        m.addAction(about)
+        if sys.platform == "darwin":
+            m.addAction(about)
         for label, seq, fn in (
             (t["menu_new"], QKeySequence(QKeySequence.StandardKey.New), self.go_empty),
             (t["menu_open"], QKeySequence(QKeySequence.StandardKey.Open), self.choose_file),
@@ -455,6 +456,8 @@ class MainWindow(QMainWindow):
         wipe = QAction(t["delete_all"] + "…", self)
         wipe.triggered.connect(self._delete_all)
         m.addAction(wipe)
+        if sys.platform != "darwin":  # elsewhere "About" lives in a Help menu, as users expect
+            self.menuBar().addMenu(t["menu_help"]).addAction(about)
 
     def _shortcuts(self) -> None:
         QShortcut(QKeySequence(QKeySequence.StandardKey.Paste), self, self.route_paste)
@@ -1312,6 +1315,7 @@ def uitest(out: Path) -> int:
     out.mkdir(parents=True, exist_ok=True)
     log: list[str] = []
     app = QApplication(sys.argv)
+    dark_title_bar(app)
     theme.apply(app)
     app.setWindowIcon(QIcon(str(ICON.with_suffix(".icns" if sys.platform == "darwin" else ".svg"))))
     lang = os.environ.get("PII_UITEST_LANG", "ru")
@@ -1392,6 +1396,12 @@ def uitest(out: Path) -> int:
     return 0 if passed else 1
 
 
+def dark_title_bar(app: QApplication) -> None:
+    """On Windows the system title bar follows the dark window instead of the light system theme."""
+    if sys.platform == "win32":
+        app.styleHints().setColorScheme(Qt.ColorScheme.Dark)
+
+
 def keys_backend() -> str:
     try:
         import keyring
@@ -1409,6 +1419,7 @@ def main() -> None:
         i = sys.argv.index("--uitest")
         sys.exit(uitest(Path(sys.argv[i + 1]) if i + 1 < len(sys.argv) else Path("uitest")))
     app = QApplication(sys.argv)
+    dark_title_bar(app)
     app.setApplicationName("pii-roundtrip")
     app.setApplicationDisplayName("pii-roundtrip")
     app.setOrganizationName(MAKER)

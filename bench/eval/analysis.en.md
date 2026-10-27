@@ -2,7 +2,7 @@
 
 [Русская версия](REPORT.md)
 
-Version 0.5.3, 26 October 2026. Changes by version are in section 8 and in [CHANGELOG.md](CHANGELOG.md). Corrections to earlier releases are listed in section 10.
+Version 0.5.4, 27 October 2026. Changes by version are in section 8 and in [CHANGELOG.md](CHANGELOG.md). Corrections to earlier releases are listed in section 10.
 
 ## 1. Summary
 
