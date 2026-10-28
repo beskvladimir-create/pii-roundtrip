@@ -1,7 +1,7 @@
-"""Prompt Anonymizer (akazah, Python 0.3.3): Presidio + spaCy, обратимые метки вида
-<Name_1>. Русского нет, только UK. Лучшая документированная конфигурация:
-model_size="lg", все типы по умолчанию плюс опциональный IBAN_CODE. Британских
-номеров (NHS, NI) и организаций в нём нет."""
+"""Prompt Anonymizer (akazah, Python 0.3.3): Presidio + spaCy, reversible placeholders of
+the form <Name_1>. No Russian, UK only. Best documented configuration:
+model_size="lg", all default types plus the optional IBAN_CODE. It has no British
+identifiers (NHS, NI) and no organisations."""
 
 from __future__ import annotations
 

@@ -1,7 +1,7 @@
-"""Запуск инструментов на наборах и подсчёт метрик распознавания и утечек.
+"""Running the tools on the datasets and computing detection and leak metrics.
 
 python -m bench.eval.run --tools regex_baseline,presidio --datasets all
-Предсказания кешируются в results/<tool>/<dataset>.jsonl.
+Predictions are cached in results/<tool>/<dataset>.jsonl.
 """
 
 from __future__ import annotations
@@ -46,7 +46,7 @@ def load_tool(name: str):
 
 
 class LazyTool:
-    """Загружает модель, только если предсказаний нет в кеше."""
+    """Loads the model only if the predictions are not in the cache."""
 
     def __init__(self, name: str):
         self.name, self._tool = name, None
@@ -71,7 +71,7 @@ def load_docs(path: str) -> list[dict]:
         return [json.loads(line) for line in f]
 
 
-# Код, от которого зависят предсказания каждого инструмента: при его изменении кеш сбрасывается.
+# Code that each tool's predictions depend on: when it changes, the cache is reset.
 CODE_DEPS = {
     "regex_baseline": ["bench/runners/regex_baseline.py", "pii_roundtrip/checksums.py"],
     "presidio": ["bench/runners/presidio_runner.py", "pii_roundtrip/checksums.py"],
@@ -98,7 +98,7 @@ def text_hash(text: str) -> str:
 
 
 def postprocess(spans: list, text: str) -> list[dict]:
-    """Одинаково для всех: объединение пересечений и расширение до границ слова."""
+    """The same for every tool: merging overlapping spans and extending them to word boundaries."""
     return [s.as_dict() for s in resolve_overlaps(list(spans), text)]
 
 
@@ -115,7 +115,7 @@ def predict(tool, name: str, ds: str, docs: list[dict], lang: str, force: bool) 
     out.parent.mkdir(parents=True, exist_ok=True)
     preds = []
     t0 = time.time()
-    with out.open("a" if done else "w", encoding="utf-8") as f:  # продолжение с места остановки
+    with out.open("a" if done else "w", encoding="utf-8") as f:  # resume from where it stopped
         for d in docs:
             key = (d["id"], text_hash(d["text"]))
             if key in done:
@@ -125,7 +125,7 @@ def predict(tool, name: str, ds: str, docs: list[dict], lang: str, force: bool) 
             preds.append(p)
             f.write(json.dumps({"id": d["id"], "h": key[1], "v": version, "pred": p}, ensure_ascii=False) + "\n")
             f.flush()
-    print(f"  {name} / {ds}: {len(docs)} текстов за {time.time() - t0:.0f} с")
+    print(f"  {name} / {ds}: {len(docs)} texts in {time.time() - t0:.0f} s")
     return preds
 
 
@@ -153,7 +153,9 @@ def main() -> None:
     ap.add_argument("--tools", default="regex_baseline")
     ap.add_argument("--datasets", default="all")
     ap.add_argument("--force", action="store_true")
-    ap.add_argument("--sample", type=int, default=0, help="случайная выборка N текстов из внешних наборов (seed 0)")
+    ap.add_argument(
+        "--sample", type=int, default=0, help="random sample of N texts from the external datasets (seed 0)"
+    )
     args = ap.parse_args()
     tools = list(TOOLS) if args.tools == "all" else args.tools.split(",")
     dsets = list(DATASETS) if args.datasets == "all" else args.datasets.split(",")
@@ -179,10 +181,10 @@ def main() -> None:
                 summary[name]["_config"] = tool.config()
             st, nm = res["structured"], res["names"]
             print(
-                f"{name:16s} {key:28s} номера {fmt(st):34s} имена/адреса/орг {fmt(nm):34s} утечки {res['leak_rate']:.3f}"
+                f"{name:16s} {key:28s} numbers {fmt(st):34s} names/addresses/orgs {fmt(nm):34s} leaks {res['leak_rate']:.3f}"
             )
     RESULTS.mkdir(exist_ok=True)
-    # слияние с тем, что успели записать параллельные запуски
+    # merge with what parallel runs have managed to write
     current = json.loads(summary_path.read_text()) if summary_path.exists() else {}
     for name in tools:
         current.setdefault(name, {}).update(summary.get(name, {}))

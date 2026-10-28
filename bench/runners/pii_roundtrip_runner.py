@@ -1,4 +1,4 @@
-"""Движок pii-roundtrip через тот же интерфейс, что и остальные инструменты."""
+"""The pii-roundtrip engine through the same interface as the other tools."""
 
 from __future__ import annotations
 
@@ -6,7 +6,7 @@ from bench.runners.base import Runner, Span
 
 
 def _lang(lang: str) -> str:
-    """В данных бенчмарка британский английский помечен как "uk"; библиотека ждёт "en-GB"."""
+    """In the benchmark data British English is tagged "uk"; the library expects "en-GB"."""
     return "en-GB" if lang == "uk" else lang
 
 

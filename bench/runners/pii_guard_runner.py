@@ -1,8 +1,8 @@
-"""redmadrobot pii-guard: правила с контрольными суммами + ruBERT, обратимый режим
-pseudonymize с восстановлением в нужном падеже. Только русский.
+"""redmadrobot pii-guard: checksum rules + ruBERT, reversible pseudonymize mode
+with restoration in the required grammatical case. Russian only.
 
-Спаны pii-guard указывают на нормализованный текст; они переносятся на исходный
-выравниванием строк (runners.base.map_spans).
+pii-guard spans point into the normalised text; they are carried over to the original
+by string alignment (runners.base.map_spans).
 """
 
 from __future__ import annotations
@@ -35,7 +35,7 @@ class PiiGuardRunner(Runner):
         from pii_guard import Anonymizer
         from pii_guard.config import Config
 
-        # настройки передаются явно, без переменных окружения; модель из локального кеша
+        # settings are passed explicitly, not via environment variables; model from local cache
         self.device = default_device()
         path = local_snapshot(NER_MODEL, NER_REVISION, offline=True)
         self.a = Anonymizer(Config.load(ner_model=path, ner_revision=None, device=self.device))

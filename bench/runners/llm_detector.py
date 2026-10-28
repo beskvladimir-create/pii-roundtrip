@@ -1,7 +1,7 @@
-"""Локальная нейросеть как детектор (Ollama, температура 0, без режима размышлений).
+"""A local neural model as a detector (Ollama, temperature 0, no thinking mode).
 
-Модель возвращает JSON со списком найденных значений и типов; значения ищутся
-в тексте (все вхождения). Длинные документы режутся на окна.
+The model returns JSON with a list of the values and types it found; the values are
+searched for in the text (all occurrences). Long documents are split into windows.
 """
 
 from __future__ import annotations

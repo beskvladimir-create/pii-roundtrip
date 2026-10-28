@@ -1,4 +1,4 @@
-"""Базовая линия: регулярные выражения с проверкой контрольных сумм, без моделей."""
+"""Baseline: regular expressions with checksum validation, no models."""
 
 from __future__ import annotations
 
@@ -7,8 +7,8 @@ import re
 from bench.runners.base import Runner, Span, resolve_overlaps
 from pii_roundtrip import checksums as ids
 
-D = r"(?<![\d])"  # слева не цифра
-E = r"(?![\d])"  # справа не цифра
+D = r"(?<![\d])"  # not a digit on the left
+E = r"(?![\d])"  # not a digit on the right
 
 PATTERNS = {
     "ru": [
@@ -60,7 +60,7 @@ class RegexBaseline(Runner):
                 if valid and not valid(v):
                     continue
                 if etype == "INN" and len(re.sub(r"\D", "", v)) == 10:
-                    # 10 цифр бывают и ИНН, и паспортом; решает контекст слева
+                    # 10 digits can be either an INN or a passport; the left context decides
                     left = text[max(0, s - 40) : s]
                     if _PASSPORT_CTX.search(left) and not _INN_CTX.search(left):
                         continue

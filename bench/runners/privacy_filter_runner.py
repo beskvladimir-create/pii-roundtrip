@@ -1,5 +1,5 @@
-"""openai/privacy-filter через официальный пакет opf: декодирование Витерби,
-контекст до 128 тыс. токенов (без нарезки). 8 категорий, типа «организация» нет."""
+"""openai/privacy-filter via the official opf package: Viterbi decoding,
+context up to 128k tokens (no chunking). 8 categories, no "organisation" type."""
 
 from __future__ import annotations
 

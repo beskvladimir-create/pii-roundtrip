@@ -1,6 +1,6 @@
-"""hivetrace/gliner-guard-omni (GLiNER2, multilingual deberta v3): полная PII таксономия
-из карточки модели (32 метки), порог 0.4 как в примере карточки. Длинные документы
-режутся на окна с перекрытием."""
+"""hivetrace/gliner-guard-omni (GLiNER2, multilingual deberta v3): the full PII taxonomy
+from the model card (32 labels), threshold 0.4 as in the model card example. Long documents
+are split into overlapping windows."""
 
 from __future__ import annotations
 

@@ -1,11 +1,11 @@
-"""Presidio (data-privacy-stack/presidio), лучшая конфигурация по документации.
+"""Presidio (data-privacy-stack/presidio), the best configuration per the documentation.
 
-RU: spaCy ru_core_news_lg + собственные распознаватели паспорта, СНИЛС, ИНН,
-расчётного счёта (Presidio не содержит русских распознавателей), встроенные
-email, карта, IBAN, телефон с языком ru.
-UK: spaCy en_core_web_lg + встроенные UK_NHS, UK_NINO, IBAN, карта, email,
-телефон с supported_regions=["GB"] (обход ошибки с регионом "UK").
-Порог уверенности низкий: полнота важнее точности.
+RU: spaCy ru_core_news_lg + custom recognizers for passport, SNILS, INN and
+settlement account (Presidio has no Russian recognizers), built-in
+email, card, IBAN, phone with language ru.
+UK: spaCy en_core_web_lg + built-in UK_NHS, UK_NINO, IBAN, card, email,
+phone with supported_regions=["GB"] (works around the bug with region "UK").
+The confidence threshold is low: recall matters more than precision.
 """
 
 from __future__ import annotations
@@ -125,10 +125,10 @@ class PresidioRunner(Runner):
         nlp = NlpEngineProvider(nlp_configuration=NLP_CONFIG).create_engine()
         registry = RecognizerRegistry(supported_languages=["en", "ru"])
         registry.load_predefined_recognizers(languages=["en"], nlp_engine=nlp)
-        # телефон: регион GB вместо ошибочного "UK"
+        # phone: region GB instead of the erroneous "UK"
         registry.remove_recognizer("PhoneRecognizer")
         registry.add_recognizer(PhoneRecognizer(supported_language="en", supported_regions=["GB"]))
-        # UK распознаватели, которые не входят в набор по умолчанию
+        # UK recognizers that are not in the default set
         for cls in (UkNinoRecognizer, UkPostcodeRecognizer, UkPassportRecognizer, UkDrivingLicenceRecognizer):
             loaded = {type(r) for r in registry.recognizers}
             if cls not in loaded:

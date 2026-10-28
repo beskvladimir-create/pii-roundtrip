@@ -1,16 +1,16 @@
-"""Единый интерфейс инструментов.
+"""Common interface for the tools.
 
-Каждый раннер умеет detect(); обратимые инструменты дополнительно реализуют
-anonymize() и deanonymize() своими средствами. Для инструментов, которые только
-распознают, полный цикл идёт через общую подстановку меток (bench/runners/placeholders.py),
-это фиксируется в отчёте.
+Every runner implements detect(); reversible tools additionally implement
+anonymize() and deanonymize() with their own means. For tools that only
+detect, the full cycle goes through the shared placeholder substitution
+(bench/runners/placeholders.py), and this is recorded in the report.
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass
 
-# Единая схема типов (совпадает с генератором и bench/eval/external.py).
+# Single type schema (matches the generator and bench/eval/external.py).
 TYPES = {
     "PERSON",
     "ADDRESS",
@@ -45,7 +45,7 @@ class Runner:
     reversible: bool = False
 
     def config(self) -> dict:
-        """Конфигурация запуска для отчёта."""
+        """Run configuration for the report."""
         return {}
 
     def detect(self, text: str, lang: str) -> list[Span]:
@@ -59,9 +59,9 @@ class Runner:
 
 
 def offset_map(src: str, dst: str) -> list[int]:
-    """Для каждой позиции src (включая len(src)) ближайшая позиция в dst.
+    """For each position in src (including len(src)), the nearest position in dst.
 
-    Нужна инструментам, которые возвращают спаны по нормализованному тексту.
+    Needed for tools that return spans over normalised text.
     """
     from difflib import SequenceMatcher
 
@@ -70,7 +70,7 @@ def offset_map(src: str, dst: str) -> list[int]:
         for k in range(i1, i2):
             if tag == "equal":
                 m[k] = j1 + (k - i1)
-            else:  # пропорционально внутри изменённого участка
+            else:  # proportionally within the changed segment
                 m[k] = j1 + ((k - i1) * (j2 - j1)) // max(1, i2 - i1)
     m[len(src)] = len(dst)
     return m
@@ -89,9 +89,9 @@ def map_spans(spans: list[Span], src: str, dst: str) -> list[Span]:
 
 
 def resolve_overlaps(spans: list[Span], text: str | None = None) -> list[Span]:
-    """Объединяет пересекающиеся спаны (тип берётся у более длинного), чтобы ничего
-    не потерять при маскировке. Если передан текст, спан, обрывающийся посреди
-    слова, расширяется до границ слова: одинаково для всех инструментов."""
+    """Merges overlapping spans (the type is taken from the longer one) so that nothing
+    is lost during masking. If text is given, a span that ends in the middle of a
+    word is extended to the word boundaries, identically for all tools."""
     if text is not None:
         snapped = []
         for s in spans:

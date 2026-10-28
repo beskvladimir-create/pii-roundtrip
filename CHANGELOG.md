@@ -4,6 +4,16 @@
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow [Semantic Versioning](https://semver.org/).
 
+## [0.5.5] - 2026-10-28
+
+The engine, the benchmark and the desktop app are unchanged (0.5.4). This release makes the code and the data understandable to English-speaking readers, as requested by the journal.
+
+### Changed
+
+- Code comments, docstrings, console messages and option help are in English. Russian remains in the code only where it is data (document templates, name forms and word lists, the instructions sent to the language models for Russian documents, the Russian report text and the Russian interface of the desktop app).
+- New DATA_CODEBOOK.md describes, in English, every data and result file, its fields and labels, and why the Russian documents and model answers are not translated. README links to it.
+- The desktop installers are those of 0.5.4.
+
 ## [0.5.4] - 2026-10-27
 
 The engine is unchanged (0.5.3). This release applies a design, QA and content review before the official release.
