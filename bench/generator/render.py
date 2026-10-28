@@ -1,4 +1,4 @@
-"""Сборка документа из фрагментов с точной разметкой позиций сущностей."""
+"""Assembles a document from fragments with exact annotation of entity positions."""
 
 from __future__ import annotations
 
@@ -25,13 +25,13 @@ _WORD = re.compile(r"[A-Za-zА-Яа-яЁё]{5,}")
 
 @dataclass
 class Noise:
-    """Параметры шума. Нулевой шум для чистых документов."""
+    """Noise parameters. Zero noise for clean documents."""
 
-    double_space: float = 0.0  # вероятность удвоить пробел в обычном тексте
-    typo: float = 0.0  # вероятность опечатки в слове обычного текста
-    name_typo: float = 0.0  # вероятность опечатки в имени
-    alt_format: float = 0.0  # вероятность нестандартной записи номера
-    hard_format: float = 0.0  # вероятность трудной записи: словами, через точки, с опечаткой в цифре
+    double_space: float = 0.0  # probability of doubling a space in ordinary text
+    typo: float = 0.0  # probability of a typo in a word of ordinary text
+    name_typo: float = 0.0  # probability of a typo in a name
+    alt_format: float = 0.0  # probability of a non-standard way of writing a number
+    hard_format: float = 0.0  # probability of a hard form: in words, with dots, with a digit typo
 
 
 DIGIT_WORDS = {
@@ -41,8 +41,8 @@ DIGIT_WORDS = {
 
 
 def hard_variant(rng: random.Random, surface: str, lang: str) -> str:
-    """Трудная запись номера: цифры словами, группы через точки, опечатка в одной цифре
-    (контрольная сумма перестаёт сходиться, но это по-прежнему персональные данные)."""
+    """Hard form of a number: digits in words, groups separated by dots, a typo in one digit
+    (the checksum no longer matches, but it is still personal data)."""
     kind = rng.choice(("words", "dots", "typo"))
     digits = [i for i, c in enumerate(surface) if c.isdigit()]
     if kind == "typo" and digits:
@@ -51,7 +51,7 @@ def hard_variant(rng: random.Random, surface: str, lang: str) -> str:
     if kind == "dots":
         return re.sub(r"[ -]", ".", surface)
     if not surface.replace(" ", "").replace("-", "").isdigit():
-        return re.sub(r"[ -]", ".", surface)  # буквенно-цифровые (NI, IBAN) словами не пишут
+        return re.sub(r"[ -]", ".", surface)  # alphanumeric ones (NI, IBAN) are not written in words
     words = DIGIT_WORDS[lang]
     groups = re.split(r"[ -]+", surface)
     return " - ".join(" ".join(words[int(c)] for c in g) for g in groups)
@@ -123,7 +123,7 @@ def ids_canonical(etype: str, value: str) -> str:
 
 
 def _typo(rng: random.Random, word: str) -> str:
-    """Перестановка двух соседних букв внутри слова (не первой)."""
+    """Swaps two adjacent letters inside a word (not the first letter)."""
     letters = [i for i in range(1, len(word) - 1) if word[i].isalpha() and word[i + 1].isalpha()]
     if not letters:
         return word

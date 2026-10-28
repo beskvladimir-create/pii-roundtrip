@@ -1,8 +1,8 @@
-"""Генераторы и валидаторы структурированных номеров с контрольными суммами.
+"""Generators and validators for structured identifiers with checksums.
 
-Все генераторы принимают random.Random, чтобы набор был детерминированным.
-Генераторы возвращают канонический вид без разделителей; варианты записи
-с разделителями даёт format_variants().
+All generators take a random.Random so that the set is deterministic.
+Generators return the canonical form without separators; format_variants()
+gives the written variants with separators.
 """
 
 from __future__ import annotations
@@ -22,7 +22,7 @@ from pii_roundtrip.checksums import (  # noqa: F401
     is_valid_snils,
 )
 
-# ---------- общие ----------
+# ---------- common ----------
 
 
 def _digits(rng: random.Random, n: int) -> str:
@@ -33,7 +33,7 @@ def _only_digits(s: str) -> str:
     return "".join(c for c in s if c.isdigit())
 
 
-# ---------- ИНН ----------
+# ---------- INN ----------
 
 _INN10_W = (2, 4, 10, 3, 5, 9, 4, 6, 8)
 _INN11_W = (7, 2, 4, 10, 3, 5, 9, 4, 6, 8)
@@ -45,21 +45,21 @@ def _inn_check(digits: str, weights: tuple[int, ...]) -> str:
 
 
 def gen_inn10(rng: random.Random) -> str:
-    """ИНН юридического лица (10 знаков)."""
+    """INN of a legal entity (10 digits)."""
     region = f"{rng.randint(1, 99):02d}"
     body = region + _digits(rng, 7)
     return body + _inn_check(body, _INN10_W)
 
 
 def gen_inn12(rng: random.Random) -> str:
-    """ИНН физического лица (12 знаков)."""
+    """INN of an individual (12 digits)."""
     region = f"{rng.randint(1, 99):02d}"
     body = region + _digits(rng, 8)
     body += _inn_check(body, _INN11_W)
     return body + _inn_check(body, _INN12_W)
 
 
-# ---------- СНИЛС ----------
+# ---------- SNILS ----------
 
 
 def _snils_check(body: str) -> str:
@@ -73,7 +73,7 @@ def _snils_check(body: str) -> str:
 
 
 def gen_snils(rng: random.Random) -> str:
-    """СНИЛС, 11 цифр. Контрольная сумма определена для номеров больше 001-001-998."""
+    """SNILS, 11 digits. The checksum is defined for numbers greater than 001-001-998."""
     while True:
         body = _digits(rng, 9)
         if int(body) > 1001998 and not _has_triple_repeat(body):
@@ -84,9 +84,9 @@ def _has_triple_repeat(body: str) -> bool:
     return any(body[i] == body[i + 1] == body[i + 2] for i in range(len(body) - 2))
 
 
-# ---------- паспорт РФ ----------
+# ---------- Russian passport ----------
 
-# Коды субъектов по ОКАТО, которые используются в серии паспорта (выборка).
+# OKATO codes of federal subjects that are used in the passport series (a sample).
 _OKATO = (
     "01",
     "03",
@@ -170,20 +170,20 @@ _OKATO = (
 
 
 def gen_passport_ru(rng: random.Random, issue_year: int | None = None) -> str:
-    """Паспорт РФ: серия (код региона + год изготовления бланка) и номер. Контрольной суммы нет."""
+    """Russian passport: series (region code + year the blank was made) and number. No checksum."""
     year = rng.randint(1997, 2025) if issue_year is None else issue_year - rng.randint(0, 2)
     series = rng.choice(_OKATO) + f"{max(year, 1997) % 100:02d}"
     number = f"{rng.randint(100001, 999999)}"
     return series + number
 
 
-# ---------- расчётный счёт и БИК ----------
+# ---------- settlement account and BIK ----------
 
 _RS_W = (7, 1, 3)
 
 
 def gen_bik(rng: random.Random) -> str:
-    """БИК банка: 04 + код региона + номер подразделения + условный номер >= 050."""
+    """Bank BIK: 04 + region code + branch number + conventional number >= 050."""
     return "04" + rng.choice(_OKATO) + f"{rng.randint(0, 99):02d}" + f"{rng.randint(50, 999):03d}"
 
 
@@ -193,7 +193,7 @@ def _rs_sum(bik: str, account: str) -> int:
 
 
 def gen_rs(rng: random.Random, bik: str) -> str:
-    """Расчётный счёт (20 цифр) с контрольным ключом в 9-й позиции."""
+    """Settlement account (20 digits) with the check key in the 9th position."""
     prefix = rng.choice(("40702", "40701", "40802", "40817"))
     account = prefix + "810" + "0" + _digits(rng, 11)
     key = (_rs_sum(bik, account) % 10) * 3 % 10
@@ -205,11 +205,11 @@ def gen_rs(rng: random.Random, bik: str) -> str:
 
 def _nhs_check(body: str) -> int:
     r = sum(int(d) * w for d, w in zip(body, range(10, 1, -1), strict=False)) % 11
-    return 11 - r  # 11 означает 0, 10 означает недопустимый номер
+    return 11 - r  # 11 means 0, 10 means an invalid number
 
 
 def gen_nhs(rng: random.Random) -> str:
-    """NHS number, 10 цифр, контрольная сумма по модулю 11."""
+    """NHS number, 10 digits, modulo-11 checksum."""
     while True:
         body = str(rng.randint(4, 9)) + _digits(rng, 8)
         c = _nhs_check(body)
@@ -228,14 +228,14 @@ _NINO_SECOND = [c for c in string.ascii_uppercase if c not in _NINO_BAD_SECOND]
 
 
 def gen_nino(rng: random.Random) -> str:
-    """NI number: две буквы с допустимым префиксом, 6 цифр, суффикс A-D."""
+    """NI number: two letters forming an allowed prefix, 6 digits, suffix A-D."""
     while True:
         prefix = rng.choice(_NINO_FIRST) + rng.choice(_NINO_SECOND)
         if prefix not in _NINO_BAD_PREFIX:
             return prefix + _digits(rng, 6) + rng.choice("ABCD")
 
 
-# ---------- банковская карта ----------
+# ---------- bank card ----------
 
 
 def _luhn_sum(digits: str) -> int:
@@ -251,7 +251,7 @@ def _luhn_sum(digits: str) -> int:
 
 
 def gen_card(rng: random.Random, scheme: str | None = None) -> str:
-    """Карта из 16 цифр с проверкой по Луну. Схемы: visa, mastercard, mir."""
+    """16-digit card with a Luhn check. Schemes: visa, mastercard, mir."""
     scheme = scheme or rng.choice(("visa", "mastercard", "mir"))
     if scheme == "visa":
         prefix = "4"
@@ -278,17 +278,17 @@ def _iban_check_digits(country: str, bban: str) -> str:
 
 
 def gen_iban_gb(rng: random.Random) -> str:
-    """Британский IBAN: GBkk + 4 буквы банка + sort code (6) + счёт (8)."""
+    """British IBAN: GBkk + 4 bank letters + sort code (6) + account (8)."""
     bank = "".join(rng.choice(string.ascii_uppercase) for _ in range(4))
     bban = bank + _digits(rng, 6) + _digits(rng, 8)
     return "GB" + _iban_check_digits("GB", bban) + bban
 
 
-# ---------- варианты записи (шум) ----------
+# ---------- written variants (noise) ----------
 
 
 def format_variants(kind: str, value: str) -> list[str]:
-    """Типичные варианты записи номера в документах. Первый вариант канонический."""
+    """Typical ways a number is written in documents. The first variant is canonical."""
     v = value
     if kind == "inn":
         return [v, " ".join([v[:4], v[4:]]) if len(v) == 10 else v]

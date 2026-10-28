@@ -1,29 +1,29 @@
-"""Сборка REPORT и README из results/.
+"""Building REPORT and README from results/.
 
 python -m bench.eval.report
 
-Все числа в документах берутся из results/metrics.json и results/cycle_metrics*.json;
-шаблоны (docs/*.tpl.md, bench/eval/analysis*.md) содержат только подстановки:
+All numbers in the documents are taken from results/metrics.json and results/cycle_metrics*.json;
+the templates (docs/*.tpl.md, bench/eval/analysis*.md) contain only substitutions:
 
-  {=tool|lang:sets|metric}  значение с 95% интервалом; metric: struct, names, leak, prec;
-                            «+» в конце добавляет итог по порогу: {=pii_guard|ru:h3|leak+}
-  {#tool|lang:sets|metric}  только значение, без интервала
-  {%tool|lang:sets|metric}  голое число для атрибутов HTML: 53.3
-  metric clean / docs       число документов без утечки и всего: {#pii_roundtrip|ru:h3|clean} из {#pii_roundtrip|ru:h3|docs}
-  {~tool|lang:data|restore} восстановление в полном цикле, худшая из двух моделей
-                            (data: synthetic или holdout5); «+» добавляет итог;
-                            data@model берёт одну модель: {~pii_guard|ru:holdout5@qwen3.5:9b|altered};
-                            вместо restore можно взять счётчик (altered, invented, labels_in_answer)
-  tool: имя инструмента или best (лучший существующий для языка ссылки)
-  sets: h3 (текущий отложенный набор, 5), ext (внешние наборы без домашнего набора инструмента),
-        ext-<tool> (внешние наборы без домашнего набора другого инструмента),
-        или имена наборов через запятую
-  {BEST_RU}, {BEST_UK}      лучший существующий инструмент на внешних наборах
+  {=tool|lang:sets|metric}  value with a 95% interval; metric: struct, names, leak, prec;
+                            a trailing "+" adds the threshold verdict: {=pii_guard|ru:h3|leak+}
+  {#tool|lang:sets|metric}  value only, without the interval
+  {%tool|lang:sets|metric}  bare number for HTML attributes: 53.3
+  metric clean / docs       number of documents without a leak and in total: {#pii_roundtrip|ru:h3|clean} of {#pii_roundtrip|ru:h3|docs}
+  {~tool|lang:data|restore} restoration in the full cycle, the worse of the two models
+                            (data: synthetic or holdout5); "+" adds the verdict;
+                            data@model takes a single model: {~pii_guard|ru:holdout5@qwen3.5:9b|altered};
+                            instead of restore a counter can be taken (altered, invented, labels_in_answer)
+  tool: a tool name or best (the best existing tool for the reference's language)
+  sets: h3 (the current held-out set, 5), ext (external sets without the tool's home set),
+        ext-<tool> (external sets without another tool's home set),
+        or set names separated by commas
+  {BEST_RU}, {BEST_UK}      the best existing tool on the external sets
   {TABLE_HEADLINE}, {TABLE_PRECISION}, {TABLE_THRESHOLDS_RU}, {TABLE_THRESHOLDS_UK}
-  {RU_STRUCT_CI} ... {UK_RESTORE_CI}, {ANON_PASS_SUMMARY}: итог движка на наборе 3
+  {RU_STRUCT_CI} ... {UK_RESTORE_CI}, {ANON_PASS_SUMMARY}: the engine's verdict on set 3
 
-Правило итога одно для всех: «не пройден», если весь 95% интервал по неверную сторону
-порога; «пройден», если весь по верную; иначе «не определено».
+The verdict rule is the same for everyone: "not met" if the whole 95% interval lies on the
+wrong side of the threshold; "met" if all of it lies on the right side; otherwise "undetermined".
 """
 
 from __future__ import annotations
@@ -80,7 +80,7 @@ TOOL_NAME = {
 }
 TOOL_NAME["tex"] = TOOL_NAME["en"]
 COMPETITORS = [t for t in TOOLS if t != ENGINE]
-# инструменты с собственным восстановлением; остальные только распознают
+# tools with their own restoration; the others only detect
 NATIVE_RESTORE = {"pii_guard", "prompt_anonymizer", "pii_roundtrip"}
 CYCLE_NAME = {
     "pii_guard": "pii-guard (свои теги)",
@@ -88,7 +88,8 @@ CYCLE_NAME = {
     "prompt_anonymizer": "Prompt Anonymizer (свои метки)",
     "gliner_guard+placeholders": "GLiNER Guard + метки [TYPE_n]",
     "pii_roundtrip": "pii-roundtrip",
-    # контроль формата и промпта: те же ответы с терпимым разбором и прогоны с общим промптом
+    # format and prompt controls: the same answers with tolerant parsing, and runs with the
+    # generic prompt
     "pii_guard~tolerant": "pii-guard (свои теги, терпимый разбор)",
     "pii_guard@generic": "pii-guard (свои теги, общий промпт)",
     "pii_guard@generic~tolerant": "pii-guard (свои теги, общий промпт, терпимый разбор)",
@@ -136,7 +137,7 @@ STATUS["tex"] = STATUS["en"]
 WORDS["tex"] = WORDS["en"]
 
 
-# ---------- числа ----------
+# ---------- numbers ----------
 
 
 def _digits(x: float) -> int:
@@ -211,7 +212,8 @@ def _cluster_key(sets: list[str]) -> str:
 
 
 def stats(m: dict, tool: str, sets: list[str]) -> dict | None:
-    """Сумма по наборам: полнота номеров и имён, доля документов с утечкой, точность маскирования."""
+    """Totals across sets: recall of numbers and of names, share of documents with a leak,
+    masking precision."""
     rows = [r for r in (_result(m, tool, ds) for ds in sets) if r]
     if not rows:
         return None
@@ -244,7 +246,7 @@ def stats(m: dict, tool: str, sets: list[str]) -> dict | None:
 
 
 def ext_sets(lang: str, tool: str) -> list[str]:
-    """Внешние наборы языка без домашнего набора инструмента."""
+    """External sets of the language, excluding the tool's home set."""
     return [ds for ds in EXTERNAL[lang] if HOME_TOOL.get(ds) != tool]
 
 
@@ -260,7 +262,8 @@ def resolve_sets(spec: str, tool: str) -> tuple[str, list[str]]:
 
 
 def best_tool(m: dict, lang: str) -> str:
-    """Лучший из существующих инструментов на внешних наборах без домашнего (движок не участвует)."""
+    """The best of the existing tools on the external sets excluding its home set (the engine
+    does not take part)."""
 
     def score(t: str) -> float:
         p = stats(m, t, ext_sets(lang, t))
@@ -286,8 +289,8 @@ def load_cycles() -> dict[str, dict]:
 
 
 def restore(cyc: dict, tool: str, lang: str, person: bool = False) -> tuple | None:
-    """Восстановление собственным механизмом инструмента, худшая из моделей: (доля вхождений,
-    интервал бутстрепом по ответам, вхождений, ответов без ошибок, ответов с метками).
+    """Restoration by the tool's own mechanism, the worse of the models: (share of occurrences,
+    bootstrap interval over answers, occurrences, answers without errors, answers with labels).
     person=True: only the name placeholders [PERSON_n] (the sixth threshold, from set 7)."""
     rate = "restore_rate_person" if person else "restore_rate"
     worst = None
@@ -358,7 +361,7 @@ def cell_of(s: dict, metric: str, lang: str, with_status: bool = True) -> str:
     return f"{pct(rate, lang)}{interval(c, lang)}" + (f" {STATUS[lang][st]}" if st else "")
 
 
-# ---------- подстановки в тексте ----------
+# ---------- substitutions in the text ----------
 
 _REF = re.compile(r"\{([=#~%])([a-z_+@~]+)\|([a-z]{2}:[\w,.:@\-]+)\|([a-z_]+)(\+?)\}")
 
@@ -374,7 +377,7 @@ def _ref(m: dict, cycles: dict, match: re.Match, lang: str) -> str:
         if model:
             a = by.get(f"{lang_d}/{model}")
             if not a:
-                raise KeyError(f"нет полного цикла для {match.group(0)}")
+                raise KeyError(f"no full-cycle results for {match.group(0)}")
             if metric == "restore":
                 n = a["answers_with_labels"]
                 r = (a["restore_rate"], tuple(a["restore_ci"]), a["labels_in_answer"], n - a["answers_with_failure"], n)
@@ -383,13 +386,13 @@ def _ref(m: dict, cycles: dict, match: re.Match, lang: str) -> str:
         if metric != "restore":  # a count summed over both models
             rows = [a for lm, a in by.items() if lm.startswith(lang_d)]
             if not rows:
-                raise KeyError(f"нет полного цикла для {match.group(0)}")
+                raise KeyError(f"no full-cycle results for {match.group(0)}")
             if isinstance(rows[0][metric], list):  # document ids: the number of distinct documents
                 return str(len({d for a in rows for d in a[metric]}))
             return str(sum(a[metric] for a in rows))
         r = restore(cycles.get(data, {}), tool, lang_d)
         if not r:
-            raise KeyError(f"нет полного цикла для {match.group(0)}")
+            raise KeyError(f"no full-cycle results for {match.group(0)}")
         return restore_cell(r, lang, bool(plus))
     _, sets = resolve_sets(spec, tool)
     s = stats(m, tool, sets)
@@ -398,7 +401,7 @@ def _ref(m: dict, cycles: dict, match: re.Match, lang: str) -> str:
         value = n - round(rate * n) if metric == "clean" else n
         return f"{value:,}".replace(",", "\u00a0" if lang == "ru" else ",")
     if not s or s[metric][0] is None:
-        raise KeyError(f"нет результатов для {match.group(0)}")
+        raise KeyError(f"no results for {match.group(0)}")
     rate, c, _ = s[metric]
     if kind == "#":
         return pct(rate, lang)
@@ -408,7 +411,7 @@ def _ref(m: dict, cycles: dict, match: re.Match, lang: str) -> str:
 
 
 def headline_table(m: dict, lang: str) -> str:
-    """Доля документов с утечкой на отложенном наборе 5 для всех инструментов."""
+    """Share of documents with a leak on held-out set 5 for all tools."""
     head = "| Tool | Russian | UK English |" if lang == "en" else "| Инструмент | Русский | Британский английский |"
     rows = [head, "|---|---|---|"]
     for t in TOOLS:
@@ -638,7 +641,7 @@ def engine_versions_table(lang: str) -> str:
 
 
 def precision_table(m: dict, lang: str) -> str:
-    """Доля скрытых фрагментов, задевающих персональные данные, на отложенном наборе 5."""
+    """Share of hidden fragments touching personal data, on held-out set 5."""
     head = "| Tool | Russian | UK English |" if lang == "en" else "| Инструмент | Русский | Британский английский |"
     rows = [head, "|---|---|---|"]
     for t in TOOLS:
@@ -651,8 +654,8 @@ def precision_table(m: dict, lang: str) -> str:
 
 
 def threshold_table(m: dict, cycles: dict, lang_data: str, lang: str) -> str:
-    """Лучший существующий инструмент и движок на одних и тех же данных: внешние наборы без
-    домашнего набора этого инструмента и отложенный набор (HOLDOUT)."""
+    """The best existing tool and the engine on the same data: the external sets without that
+    tool's home set, and the held-out set (HOLDOUT)."""
     x = best_tool(m, lang_data)
     ext = ext_sets(lang_data, x)
     h3 = [HOLDOUT[lang_data]]
@@ -745,7 +748,8 @@ def threshold_table(m: dict, cycles: dict, lang_data: str, lang: str) -> str:
 
 
 def engine_values(m: dict, cycles: dict) -> dict:
-    """Итог движка на отложенном наборе 5 (независимая проверка) для подстановок {RU_STRUCT_CI} и др."""
+    """The engine's verdict on held-out set 5 (independent check) for the {RU_STRUCT_CI}, etc.
+    substitutions."""
     vals: dict = {}
     for lg, key in (("ru", "RU"), ("uk", "UK")):
         s = stats(m, ENGINE, [HOLDOUT[lg]])
@@ -826,7 +830,7 @@ def fill(text: str, m: dict, cycles: dict, lang: str) -> str:
     return _REF.sub(lambda mt: _ref(m, cycles, mt, lang), text)
 
 
-# ---------- приложение с полными таблицами ----------
+# ---------- appendix with the full tables ----------
 
 
 def build(m: dict, cycles: dict) -> str:
@@ -921,7 +925,7 @@ def build(m: dict, cycles: dict) -> str:
                 r = _result(m, tool, ds)
                 if not r:
                     continue
-                for t, v in r["per_type"].items():  # по одному примеру на тип за набор
+                for t, v in r["per_type"].items():  # one example per type per set
                     for _, value in v["misses"]:
                         if (t, value) not in seen:
                             seen.add((t, value))
@@ -986,7 +990,7 @@ def main() -> None:
     for name, text in docs.items():
         (ROOT / name).write_text(text, encoding="utf-8")
     left = [name for name, text in docs.items() if re.search(r"\{[A-Z_]{4,}\}|\{[=#~%][a-z_]+\|", text)]
-    print(", ".join(docs) + (f"; не заполнено: {left}" if left else ""))
+    print(", ".join(docs) + (f"; not filled: {left}" if left else ""))
 
 
 if __name__ == "__main__":

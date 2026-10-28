@@ -1,4 +1,4 @@
-"""Синтетические лица и организации для RU и UK."""
+"""Synthetic persons and organisations for RU and UK."""
 
 from __future__ import annotations
 
@@ -76,7 +76,7 @@ RU_CITY = ("495", "499", "812", "343", "383", "843", "863", "846")
 
 
 def phone_ru(r: random.Random, mobile: bool = True) -> str:
-    """Телефон РФ из реально существующих кодов (Faker даёт несуществующие)."""
+    """Russian phone number from codes that really exist (Faker produces non-existent ones)."""
     code = r.choice(RU_MOBILE if mobile else RU_CITY)
     n = f"{r.randint(0, 9999999):07d}"
     a, b, c = n[:3], n[3:5], n[5:]
@@ -92,10 +92,10 @@ def phone_ru(r: random.Random, mobile: bool = True) -> str:
 
 
 def phone_uk(r: random.Random) -> str:
-    """Телефон UK из диапазонов Ofcom, зарезервированных для художественных произведений.
+    """UK phone number from the Ofcom ranges reserved for drama and fiction.
 
-    Мобильный 07700 900xxx и 01632 960xxx не используются: библиотека phonenumbers
-    считает их недействительными, и инструменты были бы наказаны за артефакт набора.
+    The mobile 07700 900xxx and 01632 960xxx are not used: the phonenumbers library
+    treats them as invalid, and the tools would be penalised for an artefact of the set.
     """
     x = f"{r.randint(0, 999):03d}"
     return r.choice(
@@ -111,7 +111,7 @@ def phone_uk(r: random.Random) -> str:
 def _add_years(d: dt.date, years: int) -> dt.date:
     try:
         return d.replace(year=d.year + years)
-    except ValueError:  # 29 февраля
+    except ValueError:  # 29 February
         return d.replace(year=d.year + years, day=28)
 
 
@@ -120,7 +120,7 @@ def _cap(word: str, like: str) -> str:
 
 
 def inflect_ru(word: str, case: str, gender: str, kind: str) -> str:
-    """Склоняет часть ФИО. kind: Surn, Name, Patr. При неудаче возвращает исходное."""
+    """Inflects a part of a full name. kind: Surn, Name, Patr. Returns the input on failure."""
     if case == "nomn":
         return word
     if "-" in word:
@@ -230,7 +230,7 @@ class OrgUK:
 
 @dataclass
 class World:
-    """Источник лиц и организаций с общим seed."""
+    """Source of persons and organisations with a shared seed."""
 
     seed: int
     now: dt.date = DEFAULT_NOW
@@ -258,7 +258,7 @@ class World:
         dob = self._dob()
         bik = ids.gen_bik(r)
         translit = f.user_name()
-        # паспорт РФ выдаётся с 01.10.1997; замена в 20 и 45 лет
+        # Russian passports are issued since 01.10.1997; replaced at ages 20 and 45
         due = [_add_years(dob, a) for a in (14, 20, 45)]
         due = [d for d in due if dt.date(1997, 10, 1) <= d <= dt.date(2025, 12, 31)]
         issued = (due[-1] if due else dt.date(1997, 10, 1)) + dt.timedelta(days=r.randint(5, 60))

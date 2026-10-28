@@ -1,8 +1,8 @@
-"""Общая подстановка меток для инструментов, которые только распознают.
+"""Shared placeholder substitution for tools that only detect.
 
-Согласованные метки по документу: одно значение (после нормализации) всегда
-получает одну метку [TYPE_n]. Восстановление терпимо к регистру и потере скобок.
-Это нейтральная обвязка бенчмарка, а не часть инструментов; в отчёте помечается.
+Placeholders are consistent within a document: one value (after normalisation) always
+gets one placeholder [TYPE_n]. Restoration tolerates case changes and lost brackets.
+This is neutral benchmark scaffolding, not part of the tools; it is flagged in the report.
 """
 
 from __future__ import annotations

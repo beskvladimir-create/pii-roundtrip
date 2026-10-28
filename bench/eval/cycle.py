@@ -1,13 +1,14 @@
-"""Полный цикл: очистка → ответ локальной нейросети → восстановление → проверка.
+"""Full cycle: sanitization → local LLM answer → restoration → check.
 
 python -m bench.eval.cycle --models qwen3.5:9b,gemma4:12b --per-type 4 [--data holdout3]
 
-Участники:
-- RU: pii_guard (собственная очистка и восстановление), лучший детектор + общие метки;
-- UK: prompt_anonymizer (собственные), лучший детектор + общие метки.
+Participants:
+- RU: pii_guard (its own sanitization and restoration), best detector + shared placeholders [TYPE_n];
+- UK: prompt_anonymizer (its own), best detector + shared placeholders [TYPE_n].
 
-Ответы нейросети кешируются в results/cycle/[<набор>/]<tool>/<model>.jsonl. Ключ кеша включает
-хеш запроса: после изменения очистки ответ запрашивается заново, а не берётся старый.
+LLM answers are cached in results/cycle/[<set>/]<tool>/<model>.jsonl. The cache key includes
+the request hash: after the sanitization changes, the answer is requested again rather than
+reusing the old one.
 """
 
 from __future__ import annotations
@@ -46,9 +47,10 @@ GENERIC_SYSTEM = (
     "exactly as written. Never replace placeholders with invented values."
 )
 
-# Шаблоны меток каждого инструмента: дословные и «похожие» (искажённые нейросетью).
+# Label patterns for each tool: verbatim and "look-alike" (altered by the LLM).
 LABEL_PATTERNS = {
-    # тег ищется по атрибутам: испорченное закрытие («»», «*/», «>») не склеивает соседние теги
+    # the tag is matched by its attributes: a broken closing ("»", "*/", ">") does not merge
+    # adjacent tags
     # also in square brackets: a model may rewrite <PII … /> as [PII …] or <Name_2> as [Name_2];
     # such occurrences are issued labels the model altered, not labels it invented
     "pii_guard": re.compile(
@@ -129,8 +131,8 @@ def _ru_forms(word: str, evaluator: int = 2) -> frozenset[str]:
 
 
 def _value_restored(value: str, restored: str, lang: str, is_person: bool = False) -> bool:
-    """Значение считается восстановленным, если оно есть в ответе. Для русского текста
-    слова могут стоять в другом падеже («Тула» -> «в Туле»), цифры совпадают точно."""
+    """A value counts as restored if it is present in the answer. For Russian text the words
+    may be in a different case («Тула» -> «в Туле»); digits must match exactly."""
     if value in restored:
         return True
 
@@ -153,8 +155,8 @@ def _value_restored(value: str, restored: str, lang: str, is_person: bool = Fals
 
 
 def _identity(family: str, label: str, known_types: set[str] | None = None) -> tuple[str, str] | None:
-    """Кому принадлежит метка: (тип, номер). Для тегов pii-guard по атрибутам type и id,
-    для меток вида [TYPE_n] по типу (с отбрасыванием приписок вроде ORG_NAME_ORG_1)."""
+    """Whom a label belongs to: (type, number). For pii-guard tags, by the type and id attributes;
+    for labels of the form [TYPE_n], by the type (dropping suffixes such as ORG_NAME_ORG_1)."""
     if family == "pii_guard":
         t = re.search(r'type\s*=\s*\\?"(\w+)', label)
         i = re.search(r'id\s*=\s*\\?"(\d+)', label)
@@ -275,8 +277,9 @@ def _name_matches_annotation(words: list[tuple[str, str]], restored: str, source
 
 
 def evaluate_answer(family: str, mapping: dict, answer: str, restored: str, lang: str, doc: dict | None = None) -> dict:
-    """Метки делятся на выданные инструментом (их тип и номер есть в таблице) и выдуманные
-    нейросетью. Доля восстановления считается по выданным: дословным и искажённым."""
+    """Labels are split into those issued by the tool (their type and number are in the table)
+    and those invented by the LLM. The restoration rate is computed over issued labels: verbatim
+    and altered."""
     pat = LABEL_PATTERNS[family]
     key_ids = {}
     for k in mapping:
@@ -369,10 +372,12 @@ def run(
     plan = {
         "ru": [
             ("pii_guard", "pii_guard"),
-            # те же XML-теги pii-guard, но с общим системным промптом: отделяет формат меток от промпта
+            # the same pii-guard XML tags, but with the generic system prompt: separates the label
+            # format from the prompt
             ("pii_guard@generic", "pii_guard"),
             ("pii_guard+placeholders", "placeholders"),
-            # простые метки с тем же общим промптом: вместе с pii_guard@generic даёт формат × промпт
+            # plain placeholders with the same generic prompt: together with pii_guard@generic
+            # gives format × prompt
             ("pii_guard+placeholders@generic", "placeholders"),
             ("pii_roundtrip", "placeholders"),
         ],
@@ -429,7 +434,7 @@ def run(
                                 )
                                 f.flush()
                             restored = tool.deanonymize(answer, mapping)
-                            plain = getattr(mapping, "mapping", mapping)  # движок отдаёт Session
+                            plain = getattr(mapping, "mapping", mapping)  # the engine returns a Session
                             ev = evaluate_answer(family, plain, answer, restored, lang, d)
                             ev["input_leaked_values"] = metrics.leaked_values(d, anon)
                             ev["input_leaks"] = len(ev["input_leaked_values"])
@@ -457,8 +462,8 @@ def run(
 
 
 def _answer_ok(r: dict) -> tuple[int, int]:
-    """Сколько выданных инструментом вхождений меток восстановлено верно и сколько их всего:
-    каждое вхождение оценивается один раз (см. evaluate_answer)."""
+    """How many occurrences of tool-issued labels were restored correctly, and how many there are
+    in total: each occurrence is scored once (see evaluate_answer)."""
     return r["occurrences_ok"], r["labels_in_answer"]
 
 
@@ -479,7 +484,7 @@ def tolerant_restore(family: str, mapping: dict, answer: str) -> str:
 
 
 def bootstrap_ci(rows: list[dict], n: int = 2000, seed: int = 0) -> tuple[float, float]:
-    """95% интервал бутстрепом по ответам: метки внутри одного ответа не независимы."""
+    """95% interval by bootstrap over answers: labels within one answer are not independent."""
     rng = random.Random(seed)
     pairs = [_answer_ok(r) for r in rows if r["labels_in_answer"]]
     if not pairs:
@@ -564,7 +569,7 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--models", default="qwen3.5:9b,gemma4:12b")
     ap.add_argument("--per-type", type=int, default=4)
-    ap.add_argument("--tools", default="", help="через запятую; по умолчанию все")
+    ap.add_argument("--tools", default="", help="comma-separated; all by default")
     ap.add_argument("--data", choices=sorted(DATA), default="synthetic")
     ap.add_argument("--rescore", action="store_true", help="score saved answers only, never ask a model")
     args = ap.parse_args()

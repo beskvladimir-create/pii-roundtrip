@@ -1,1 +1,1 @@
-"""Генератор синтетических документов и эталонной разметки."""
+"""Generator of synthetic documents and gold-standard annotations."""

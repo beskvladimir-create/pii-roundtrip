@@ -150,6 +150,7 @@ Placeholders show the type of each value, for example `[PASSPORT_RU_1]` or `[NHS
 - **Synthetic held-out sets (released).** `data/holdout` to `data/holdout7`: synthetic documents in Russian and UK English (contracts, letters, HR files, discharge summaries and others) produced by this project's generator (`bench/generator/`), with the generator seed in a `SEED` file (all sets except set 3); the full generation command for each set is in [HOLDOUT.en.md](HOLDOUT.en.md). The SHA-256 of each set is recorded in HOLDOUT.en.md and, from set 3, checked before every run; sets 5 to 7 were published with their decision rules before the first run. All personal data in them are synthetic.
 - **Development set.** Not released; no reported number depends on it.
 - **Results.** Predictions, LLM answers, metrics, manual checks and run journals are in `results/`.
+- **Codebook.** Every data and result file, its fields and labels, and why some content is in Russian are described in English in [DATA_CODEBOOK.md](DATA_CODEBOOK.md).
 
 ## Methodology
 

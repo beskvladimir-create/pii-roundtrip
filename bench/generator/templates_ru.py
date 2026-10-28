@@ -1,4 +1,4 @@
-"""Шаблоны русских документов: договор, справка, письмо, кадровый документ, выписка."""
+"""Russian document templates: contract, certificate, letter, HR document, discharge summary."""
 
 from __future__ import annotations
 
@@ -33,7 +33,7 @@ def _doc_date(w: World) -> dt.date:
     return dt.date(2025, 1, 1) + dt.timedelta(days=w.rng.randint(0, 600))
 
 
-# ---------- фрагменты ----------
+# ---------- fragments ----------
 
 
 def name(d: Doc, p: PersonRU, case: str = "nomn", form: str = "full") -> Doc:
@@ -46,7 +46,7 @@ def passport(d: Doc, p: PersonRU) -> Doc:
 
 
 def person_block(d: Doc, p: PersonRU, w: World, full: bool = True) -> Doc:
-    """Строка реквизитов физического лица в приложении или в разделе сторон."""
+    """Line with an individual's details in an appendix or in the parties section."""
     name(d, p).t(", дата рождения ").e("DATE_OF_BIRTH", date_ru(p.dob), pid=p.pid).t(", ")
     passport(d, p).t(", СНИЛС ").e("SNILS", p.snils, pid=p.pid).t(", ИНН ").e("INN", p.inn, pid=p.pid)
     d.t(", адрес регистрации: ").e("ADDRESS", p.address, pid=p.pid)
@@ -95,7 +95,7 @@ def quasi(d: Doc, w: World, p: PersonRU) -> None:
     d.e("QUASI", f"{role} {place}", quasi=True, pid=p.pid).t(".\n")
 
 
-# ---------- документы ----------
+# ---------- documents ----------
 
 
 def contract(w: World, d: Doc) -> None:

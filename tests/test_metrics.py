@@ -5,7 +5,7 @@ def test_wilson():
     lo, hi = metrics.wilson(100, 100)
     assert lo > 0.96 and hi > 0.9999
     lo, hi = metrics.wilson(98, 100)
-    assert lo < 0.99 < hi  # 98 из 100 не отличить от 99%
+    assert lo < 0.99 < hi  # 98 out of 100 cannot be distinguished from 99%
 
 
 def doc(text, ents, lang="ru"):
@@ -24,7 +24,7 @@ def test_masked_any_type_and_loose_edges():
     text = "СНИЛС 112-233-445 95 выдан"
     g = ent(text, "112-233-445 95", "SNILS")
     acc = metrics.new_acc()
-    # предсказан другим типом и разбит на две части: значение всё равно скрыто
+    # predicted as a different type and split into two parts: the value is still hidden
     preds = [
         {"type": "INN", "start": g["start"], "end": g["start"] + 11},
         {"type": "PHONE", "start": g["start"] + 12, "end": g["end"]},
@@ -46,7 +46,7 @@ def test_service_words_and_initials_not_required():
     acc = metrics.new_acc()
     metrics.score_doc(doc(text, [a, p]), preds, acc)
     assert acc["ADDRESS"]["masked"] == 1 and acc["PERSON"]["masked"] == 1
-    # а без номера дома адрес не скрыт
+    # but without the house number the address is not hidden
     acc = metrics.new_acc()
     metrics.score_doc(doc(text, [a]), preds[:2], acc)
     assert acc["ADDRESS"]["masked"] == 0
@@ -65,7 +65,7 @@ def test_leak_surname_in_other_case():
     g = ent(text, "Ивановым Петром Сергеевичем", "PERSON", canonical="Иванов Пётр Сергеевич")
     d = doc(text, [g])
     masked = metrics.mask_text(text, [{"type": "PERSON", "start": g["start"], "end": g["end"]}])
-    assert metrics.leaked_values(d, masked)  # «Иванова» осталась в подписи
+    assert metrics.leaked_values(d, masked)  # «Иванова» remained in the signature
 
 
 def test_no_leak_when_masked():

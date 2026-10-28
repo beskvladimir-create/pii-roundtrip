@@ -40,7 +40,7 @@ def test_spans_match_text(data):
             prev_end = 0
             for e in d["entities"]:
                 assert d["text"][e["start"] : e["end"]] == e["value"], (d["id"], e)
-                assert e["start"] >= prev_end, (d["id"], e)  # без перекрытий
+                assert e["start"] >= prev_end, (d["id"], e)  # no overlaps
                 prev_end = e["end"]
 
 
@@ -69,7 +69,7 @@ def test_russian_names_in_cases(data):
     persons = [e for d in data["ru"] for e in d["entities"] if e["type"] == "PERSON"]
     inflected = [e for e in persons if e["value"] != e["canonical"]]
     assert len(inflected) / len(persons) > 0.3
-    assert any("." in e["value"] for e in persons)  # формы вида «Иванов И.И.»
+    assert any("." in e["value"] for e in persons)  # forms such as «Иванов И.И.»
 
 
 def test_noise_present(data):
@@ -90,8 +90,8 @@ def test_hard_formats_in_holdout_generation():
 
     data = generate(seed=99, per_type=4, hard=1.0)
     vals = [e for docs in data.values() for d in docs for e in d["entities"] if e["type"] in STRUCTURED]
-    assert any(re.search(r"[а-я]{3}", e["value"]) for e in vals)  # словами
-    assert any("." in e["value"] for e in vals)  # через точки
+    assert any(re.search(r"[а-я]{3}", e["value"]) for e in vals)  # in words
+    assert any("." in e["value"] for e in vals)  # separated by dots
     for docs in data.values():
         for d in docs:
             for e in d["entities"]:

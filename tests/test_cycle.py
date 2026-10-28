@@ -30,7 +30,7 @@ def test_evaluate_answer_counts():
     answer = "Dear [PERSON_1], about NHS_1 and [PERSON_7]."
     restored = "Dear Smith, about 943 476 5919 and [PERSON_7]."
     ev = evaluate_answer("placeholders", mapping, answer, restored, "uk")
-    assert ev["labels_in_answer"] == 2 and ev["invented"] == 1  # [PERSON_7] выдумана нейросетью
+    assert ev["labels_in_answer"] == 2 and ev["invented"] == 1  # [PERSON_7] was invented by the model
     assert ev["exact"] == 1 and ev["altered"] == 1 and ev["altered_recoverable"] == 1
     assert ev["residual_after_restore"] == 0 and ev["values_lost"] == 0
 

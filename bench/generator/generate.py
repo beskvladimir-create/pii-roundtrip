@@ -1,4 +1,4 @@
-"""Генерация синтетического набора: python -m bench.generator.generate [--seed N] [--out DIR]."""
+"""Generates the synthetic set: python -m bench.generator.generate [--seed N] [--out DIR]."""
 
 from __future__ import annotations
 
@@ -60,13 +60,13 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--seed", type=int, default=DEFAULT_SEED)
     ap.add_argument("--out", type=Path, default=Path("data/synthetic"))
-    ap.add_argument("--hard", type=float, default=0.0, help="доля трудных записей номеров в зашумлённых документах")
-    ap.add_argument("--per-type", type=int, default=PER_TYPE, help="документов каждого типа на язык")
+    ap.add_argument("--hard", type=float, default=0.0, help="share of hard number formats in noisy documents")
+    ap.add_argument("--per-type", type=int, default=PER_TYPE, help="documents of each type per language")
     ap.add_argument(
         "--now",
         type=dt.date.fromisoformat,
         default=DEFAULT_NOW,
-        help="дата, которую Faker считает сегодняшней (YYYY-MM-DD)",
+        help="the date Faker treats as today (YYYY-MM-DD)",
     )
     args = ap.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
@@ -76,7 +76,7 @@ def main() -> None:
             for doc in docs:
                 f.write(json.dumps(doc, ensure_ascii=False) + "\n")
         c = stats(docs)
-        print(f"{path}: {len(docs)} документов")
+        print(f"{path}: {len(docs)} documents")
         for t, n in sorted(c.items()):
             mark = " *" if t in STRUCTURED else ""
             print(f"  {t:16s} {n:5d}{mark}")

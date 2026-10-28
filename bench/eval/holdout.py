@@ -1,15 +1,15 @@
-"""Однократный прогон на отложенном наборе (data/holdout*, хеши в HOLDOUT.md).
+"""One-time run on a held-out set (data/holdout*, hashes in HOLDOUT.md).
 
 python -m bench.eval.holdout --set 3 --tools pii_roundtrip,pii_guard,gliner_guard,presidio,privacy_filter,prompt_anonymizer,regex_baseline
 
-Перед запуском сверяет SHA-256 файлов с HOLDOUT.md. Каждый прогон записывается в
-results/holdout_runs.jsonl (инструмент, набор, коммит, время). Повторный прогон того же
-инструмента на том же наборе запрещён; если он нужен, причина указывается явно
-(--rerun-reason) и попадает в журнал, а отчёт обязан её упомянуть.
+Before running, checks the files' SHA-256 against HOLDOUT.md. Each run is recorded in
+results/holdout_runs.jsonl (tool, set, commit, time). Re-running the same tool on the same
+set is forbidden; if it is needed, the reason is stated explicitly (--rerun-reason) and goes
+into the log, and the report must mention it.
 
---rescore пересчитывает метрики по уже сохранённым предсказаниям (например, после
-исправления метрики) и не запускает инструменты: если хоть одного предсказания текущей
-версии кода нет, пересчёт не выполняется.
+--rescore recomputes the metrics from already stored predictions (for example, after a
+metric fix) and does not run the tools: if even one prediction for the current code version
+is missing, the recomputation is not performed.
 """
 
 from __future__ import annotations
@@ -43,11 +43,11 @@ def check_hashes(folder: str) -> None:
         re.findall(r"\| (" + folder + r"/\w+\.jsonl) \| `([0-9a-f]{64})` \|", (ROOT / "HOLDOUT.md").read_text())
     )
     if not expected:
-        sys.exit(f"В HOLDOUT.md нет хешей для {folder}")
+        sys.exit(f"HOLDOUT.md has no hashes for {folder}")
     for path, h in expected.items():
         if hashlib.sha256((ROOT / path).read_bytes()).hexdigest() != h:
-            sys.exit(f"{path}: хеш не совпадает с HOLDOUT.md")
-    print(f"Хеши {folder} совпадают с HOLDOUT.md")
+            sys.exit(f"{path}: hash does not match HOLDOUT.md")
+    print(f"Hashes of {folder} match HOLDOUT.md")
 
 
 def _git(*args: str) -> str:
@@ -74,7 +74,9 @@ def rescore(name: str, folder: str, tools: list[str]) -> None:
                 have = {(c["id"], c["h"]) for c in run.load_docs(str(cache)) if c.get("v") == version}
             missing = [d["id"] for d in docs if (d["id"], run.text_hash(d["text"])) not in have]
             if missing:
-                sys.exit(f"{t} / {name}_{lang}: нет {len(missing)} предсказаний текущей версии; пересчёт невозможен")
+                sys.exit(
+                    f"{t} / {name}_{lang}: {len(missing)} predictions of the current version are missing; rescoring is not possible"
+                )
     run.DATASETS.update({f"{name}_{lang}": (str(ROOT / folder / f"{lang}.jsonl"), lang) for lang in ("ru", "uk")})
     sys.argv = [sys.argv[0], "--tools", ",".join(tools), "--datasets", f"{name}_ru,{name}_uk"]
     run.main()
@@ -92,10 +94,10 @@ def rescore(name: str, folder: str, tools: list[str]) -> None:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--set", dest="set_", choices=sorted(SETS), default="1")
-    ap.add_argument("--set2", action="store_true", help="то же, что --set 2 (старый ключ)")
+    ap.add_argument("--set2", action="store_true", help="same as --set 2 (old option)")
     ap.add_argument("--tools", required=True)
-    ap.add_argument("--rerun-reason", default="", help="обязательно, если инструмент уже прогонялся на этом наборе")
-    ap.add_argument("--rescore", action="store_true", help="только пересчёт метрик по сохранённым предсказаниям")
+    ap.add_argument("--rerun-reason", default="", help="required if the tool has already been run on this set")
+    ap.add_argument("--rescore", action="store_true", help="only recompute the metrics from stored predictions")
     args, rest = ap.parse_known_args()
     name = SETS["2" if args.set2 else args.set_]
     folder = f"data/{name}"
@@ -107,10 +109,10 @@ def main() -> None:
     done = {r["tool"] for r in previous_runs() if r["set"] == name and not r.get("rescore")}
     again = sorted(done & set(tools))
     if again and not args.rerun_reason:
-        sys.exit(f"Уже прогонялись на {name}: {', '.join(again)}. Повтор только с --rerun-reason.")
+        sys.exit(f"Already run on {name}: {', '.join(again)}. A repeat run requires --rerun-reason.")
     commit, dirty = _git("rev-parse", "HEAD"), bool(_git("status", "--porcelain", "--untracked-files=no"))
     if dirty:
-        sys.exit("Рабочее дерево не закоммичено: прогон на отложенном наборе делается только с чистого коммита.")
+        sys.exit("The working tree is not committed: a run on a held-out set is made only from a clean commit.")
     run.DATASETS.update({f"{name}_{lang}": (str(ROOT / folder / f"{lang}.jsonl"), lang) for lang in ("ru", "uk")})
     sys.argv = [sys.argv[0], "--tools", args.tools, "--datasets", f"{name}_ru,{name}_uk", *rest]
     run.main()

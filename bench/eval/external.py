@@ -1,10 +1,10 @@
-"""Загрузка внешних наборов и приведение к схеме синтетического набора.
+"""Loading external datasets and converting them to the synthetic dataset's schema.
 
-Запуск: python -m bench.eval.external  (пишет data/external/*.jsonl)
+Run: python -m bench.eval.external  (writes data/external/*.jsonl)
 
-Схема типов совпадает с генератором: PERSON, ADDRESS, PHONE, EMAIL, PASSPORT_RU,
-SNILS, INN, CARD и т. д. Типы, которых нет в синтетике, сохраняются под своими
-именами и в пороги не входят.
+The type schema matches the generator: PERSON, ADDRESS, PHONE, EMAIL, PASSPORT_RU,
+SNILS, INN, CARD, etc. Types absent from the synthetic data are kept under their own
+names and are not counted towards the thresholds.
 """
 
 from __future__ import annotations
@@ -25,15 +25,15 @@ SOURCES = {
     "hivetrace/pii-bench": "pii-bench",
     "redmadrobot-rnd/pii_benchmark": "pii_benchmark",
 }
-# Ревизии, на которых получены опубликованные результаты.
+# Revisions on which the published results were obtained.
 REVISIONS = {
     "hivetrace/pii-bench": "cd6a18ace16daf23e79247ccf1e2b245d4054654",
     "redmadrobot-rnd/pii_benchmark": "f77ea831274daf980cc45c61a93c226be9d978d6",
     "nvidia/Nemotron-PII": "b70ffaf5ff39e079776134c5bf4381f00a9fd1ed",
 }
 
-# Авторы набора, чей инструмент участвует в бенчмарке: на «своём» наборе
-# инструмент не оценивается для вердикта (правило «без домашнего набора», см. REPORT.md).
+# Dataset authors whose tool takes part in the benchmark: on its "own" dataset the tool is
+# not scored for the verdict (the "no home dataset" rule, see REPORT.md).
 HOME_TOOL = {
     "hivetrace_pii_bench": "gliner_guard",
     "redmadrobot_pii_benchmark": "pii_guard",
@@ -108,9 +108,9 @@ def load_hivetrace() -> list[dict]:
 
 
 def _align(text: str, tokens: list[str]) -> list[tuple[int, int]] | None:
-    """Позиции токенов в исходном тексте; регистр в токенах может отличаться."""
+    """Token positions in the source text; the case in the tokens may differ."""
 
-    def low(s: str) -> str:  # lower() без изменения длины строки (İ → i̇ и т. п.)
+    def low(s: str) -> str:  # lower() without changing the string length (İ → i̇, etc.)
         return "".join(c.lower() if len(c.lower()) == 1 else c for c in s)
 
     text_low, pos, spans = low(text), 0, []
@@ -124,9 +124,9 @@ def _align(text: str, tokens: list[str]) -> list[tuple[int, int]] | None:
 
 
 def bio_to_spans(text: str, tokens: list[str], tags: list[str]) -> list[dict] | None:
-    """BIO разметка в символьные спаны. Соседние части одного имени
-    (фамилия, имя, отчество через пробел) объединяются в один PERSON,
-    как в синтетическом наборе. Адрес остаётся частями."""
+    """BIO tagging to character spans. Adjacent parts of one name
+    (surname, first name, patronymic separated by spaces) are merged into one PERSON,
+    as in the synthetic dataset. An address stays in parts."""
     pos = _align(text, tokens)
     if pos is None:
         return None
@@ -170,7 +170,7 @@ def load_redmadrobot() -> tuple[list[dict], int]:
     return docs, skipped
 
 
-# ---------- Nemotron-PII (английский, CC-BY-4.0) ----------
+# ---------- Nemotron-PII (English, CC-BY-4.0) ----------
 
 NEMOTRON_FILE = "data/test-00000-of-00001.parquet"
 
@@ -190,9 +190,9 @@ NEMOTRON_TYPES = {
     "credit_debit_card": "CARD",
 }
 
-# Метки Nemotron, на место которых подставляются британские номера.
+# Nemotron labels that are replaced with UK numbers.
 INJECT = {"national_id": "NINO", "health_plan_beneficiary_number": "NHS", "account_number": "IBAN"}
-INJECT_TARGET = 450  # вхождений каждого типа
+INJECT_TARGET = 450  # occurrences of each type
 
 _UK_HINT = re.compile(
     r"United Kingdom|\bUK\b|England|Scotland|Wales|London|NHS|National Insurance|£"
@@ -219,7 +219,7 @@ def _nemotron_rows() -> list[dict]:
 
 
 def _merge(text: str, spans: list[dict]) -> list[dict]:
-    """Склеивает соседние части имени и адреса, разделённые пробелами и запятыми."""
+    """Merges adjacent parts of a name and of an address separated by spaces and commas."""
     out: list[dict] = []
     for sp in spans:
         last = out[-1] if out else None
@@ -237,7 +237,7 @@ def _merge(text: str, spans: list[dict]) -> list[dict]:
             out.append(dict(sp))
     for sp in out:
         if sp["type"] == "ADDRESS_PART":
-            sp["type"] = "LOCATION"  # одиночный город или страна: в пороги не входит
+            sp["type"] = "LOCATION"  # a standalone city or country: not counted towards the thresholds
         sp["value"] = text[sp["start"] : sp["end"]]
     return out
 
@@ -257,7 +257,7 @@ def _raw_spans(row: dict) -> list[dict]:
     out: list[dict] = []
     for s in spans:
         if out and s["start"] < out[-1]["end"]:
-            continue  # вложенные и пересекающиеся метки: оставляем внешнюю
+            continue  # nested and overlapping labels: keep the outer one
         out.append(
             {
                 "type": NEMOTRON_TYPES.get(s["label"], s["label"].upper()),
@@ -270,8 +270,8 @@ def _raw_spans(row: dict) -> list[dict]:
 
 
 def load_nemotron_uk(seed: int = 20261012) -> tuple[list[dict], list[dict]]:
-    """Два поднабора: британские тексты как есть (имена, адреса, организации)
-    и тексты с подставленными NI, NHS и IBAN."""
+    """Two subsets: UK texts as they are (names, addresses, organisations)
+    and texts with injected NI, NHS and IBAN numbers."""
     from bench.generator import ids
     from bench.generator.render import ids_canonical
 
@@ -293,7 +293,7 @@ def load_nemotron_uk(seed: int = 20261012) -> tuple[list[dict], list[dict]]:
         originals = {text[s["start"] : s["end"]] for s in spans if s["label"] in INJECT}
         labelled = sum(1 for s in spans if text[s["start"] : s["end"]] in originals)
         if sum(text.count(o) for o in originals) != labelled:
-            continue  # исходный номер встречается вне разметки: подстановка оставила бы след
+            continue  # source number occurs outside the annotation: substituting would leave a trace
         new_text, new_spans, shift, mapping = [], [], 0, {}
         pos = 0
         for s in spans:
@@ -340,9 +340,9 @@ def main() -> None:
         from collections import Counter
 
         c = Counter(e["type"] for d in docs for e in d["entities"])
-        print(f"{name}: {len(docs)} текстов, {sum(c.values())} сущностей")
+        print(f"{name}: {len(docs)} texts, {sum(c.values())} entities")
         print("  " + ", ".join(f"{t} {n}" for t, n in c.most_common()))
-    print(f"redmadrobot: пропущено {skipped} предложений (не удалось сопоставить токены с текстом)")
+    print(f"redmadrobot: {skipped} sentences skipped (tokens could not be aligned with the text)")
 
 
 if __name__ == "__main__":

@@ -1,11 +1,11 @@
-"""Метрики распознавания и утечек.
+"""Detection and leak metrics.
 
-Три режима сопоставления эталонной сущности с предсказаниями:
-- exact: тот же тип и те же границы;
-- partial: тот же тип и пересечение;
-- masked: сущность целиком покрыта предсказанными спанами любого типа.
-  Это главный режим для порогов: для анонимизации важно, что значение скрыто,
-  а не то, каким типом его назвали.
+Three modes of matching a gold entity against predictions:
+- exact: the same type and the same boundaries;
+- partial: the same type and an overlap;
+- masked: the entity is fully covered by predicted spans of any type.
+  This is the main mode for the thresholds: for anonymization what matters is that the value
+  is hidden, not which type it was labelled with.
 """
 
 from __future__ import annotations
@@ -43,12 +43,12 @@ def _covered(start: int, end: int, preds: list[dict]) -> bool:
             pos = p["end"]
             if pos >= end:
                 return True
-    # пробелы и пунктуация на краях не считаются утечкой
+    # whitespace and punctuation at the edges do not count as a leak
     return False
 
 
-# Служебные слова внутри сущности, которые сами по себе никого не выдают:
-# типы улиц и населённых пунктов, «г.р.», инициалы (одна буква).
+# Service words inside an entity that by themselves identify no one:
+# street and settlement types, «г.р.», initials (a single letter).
 NON_IDENTIFYING = {
     "г",
     "гор",
@@ -148,7 +148,7 @@ def score_doc(doc: dict, preds: list[dict], acc: dict) -> None:
     for g in gold:
         t = g["type"]
         if not _essential_positions(text, g["start"], g["end"]):
-            continue  # сущность только из служебных слов и инициалов: не считается ни в плюс, ни в минус
+            continue  # entity of function words and initials only: counts neither for nor against
         same = [p for p in preds if p["type"] == t]
         acc[t]["n"] += 1
         acc[t]["exact"] += any(p["start"] == g["start"] and p["end"] == g["end"] for p in same)
@@ -162,10 +162,11 @@ def score_doc(doc: dict, preds: list[dict], acc: dict) -> None:
         t = p["type"]
         acc[t]["pred"] += 1
         acc[t]["pred_ok"] += any(g["type"] == t and p["start"] < g["end"] and g["start"] < p["end"] for g in gold)
-        # для точности маскировки ложной считается только метка поверх текста без ПДн
+        # for masking precision, only a label over text without personal data counts as false
         acc["_any"]["pred"] += 1
         acc["_any"]["pred_ok"] += any(p["start"] < g["end"] and g["start"] < p["end"] for g in all_gold)
-    # точность по символам: какая часть скрытого текста (без пробелов) лежит внутри размеченных данных
+    # character-level precision: what share of the hidden text (without whitespace) lies inside
+    # the annotated data
     gold_pos = {i for g in all_gold for i in range(g["start"], g["end"])}
     masked_pos = {
         i for p in preds for i in range(max(0, p["start"]), min(len(text), p["end"])) if not text[i].isspace()
@@ -178,11 +179,11 @@ def new_acc() -> dict:
     return defaultdict(lambda: {"n": 0, "exact": 0, "partial": 0, "masked": 0, "pred": 0, "pred_ok": 0, "misses": []})
 
 
-# ---------- утечки ----------
+# ---------- leaks ----------
 
 
 def mask_text(text: str, preds: list[dict]) -> str:
-    """Заменяет объединение всех предсказанных спанов на [PII] (пересечения не теряются)."""
+    """Replaces the union of all predicted spans with [PII] (overlaps are not lost)."""
     out, pos = [], 0
     for p in sorted(preds, key=lambda p: (p["start"], -p["end"])):
         if p["end"] <= pos:
@@ -217,8 +218,8 @@ def _count_word(haystack: str, needle: str, case_sensitive: bool = False) -> int
 
 
 def _outside_pii(doc: dict) -> str:
-    """Исходный текст без размеченных значений: слова, которые в нём остались, не являются
-    персональными данными, и инструмент не обязан их скрывать (месяц June при имени June)."""
+    """The source text without the annotated values: the words left in it are not personal
+    data, and the tool is not obliged to hide them (the month June next to the name June)."""
     text, out, pos = doc["text"], [], 0
     for g in sorted(doc["entities"], key=lambda g: g["start"]):
         if g["start"] >= pos:
@@ -232,22 +233,23 @@ def _outside_pii(doc: dict) -> str:
 
 
 def _word_leaked(masked: str, base: str, word: str, case_sensitive: bool = False) -> bool:
-    """Слово утекло, если в очищенном тексте его больше, чем в исходном вне персональных данных."""
+    """A word has leaked if it occurs more often in the sanitized text than in the source text
+    outside personal data."""
     return _count_word(masked, word, case_sensitive) > _count_word(base, word, case_sensitive)
 
 
 def _number_regex(canon: str) -> re.Pattern:
-    """Номер с пробелами и дефисами между символами (правило до 0.3.1), границы проверяются
-    по исходному очищенному тексту, без склейки с соседними словами."""
+    """A number with spaces and hyphens between characters (the rule before 0.3.1); boundaries are
+    checked against the original sanitized text, without merging with adjacent words."""
     chars = [re.escape(c) for c in re.sub(r"[\s\-]", "", canon)]
     return re.compile(r"(?<![\dA-Za-z])" + r"[ \-]?".join(chars) + r"(?![\dA-Za-z])", re.I)
 
 
 def _number_regex_sep(canon: str) -> re.Pattern:
-    """Тот же номер с другими разделителями: до трёх подряд пробелов, дефисов, точек или косых
-    черт («5223.2630.1023.1078», «45...12...123456», «123 - 456 - 789 01»), если номер не часть
-    более длинного числа (нет цифры рядом и через разделитель). Добавлено в 0.3.1: прежнее правило
-    не видело номер, оставленный открытым в записи с точками."""
+    """The same number with other separators: up to three consecutive spaces, hyphens, dots or
+    slashes («5223.2630.1023.1078», «45...12...123456», «123 - 456 - 789 01»), if the number is not
+    part of a longer number (no digit adjacent or across a separator). Added in 0.3.1: the previous
+    rule did not see a number left in the clear when written with dots."""
     chars = [re.escape(c) for c in re.sub(r"[\s\-./]", "", canon)]
     left = r"(?<![\dA-Za-z])(?<!\d[ \-./])(?<!\d[ \-./]{2})(?<!\d[ \-./]{3})"
     right = r"(?![\dA-Za-z])(?![ \-./]{1,3}\d)"
@@ -260,7 +262,7 @@ def _number_left(canon: str, masked: str) -> bool:
 
 
 def leaked_values(doc: dict, masked: str) -> list[str]:
-    """Исходные значения, которые остались в очищенном тексте."""
+    """Source values that remained in the sanitized text."""
     leaks = []
     base = _outside_pii(doc)
     for g in doc["entities"]:
@@ -275,13 +277,14 @@ def leaked_values(doc: dict, masked: str) -> list[str]:
                 re.search(r"[A-Za-zА-Яа-яЁё]{3}", g["value"])
                 and re.sub(r"[\s\-.]", "", g["value"]).lower() in re.sub(r"[\s\-.]", "", masked).lower()
             ):
-                leaks.append(g["value"])  # номер, записанный словами
+                leaks.append(g["value"])  # a number written out in words
         elif t == "PERSON":
             words = [w for w in re.findall(r"\w+", canon) if len(w) > 2]
             forms: set[str] = {w for w in re.findall(r"\w+", g["value"]) if w.lower() not in NON_IDENTIFYING}
-            # фамилия (RU: первое слово канонической формы, UK: последнее) проверяется строго, во всех
-            # падежах: её повтор часто не размечен; имя и отчество могут быть обычными словами текста
-            # (June в дате), поэтому для них утечка засчитывается сверх числа таких слов вне ПДн
+            # the surname (RU: the first word of the canonical form, UK: the last) is checked strictly,
+            # in all cases: its repetition is often not annotated; the first name and patronymic may be
+            # ordinary words of the text (June in a date), so for them a leak counts only beyond the
+            # number of such words outside personal data
             surname = (words[0] if doc["lang"] == "ru" else words[-1]) if words else ""
             strict = set(_surname_forms(surname)) if doc["lang"] == "ru" and surname else set()
             strict |= {f for f in forms if f.lower() == surname.lower()}
@@ -298,7 +301,7 @@ def leaked_values(doc: dict, masked: str) -> list[str]:
     return leaks
 
 
-# ---------- сводка ----------
+# ---------- summary ----------
 
 
 def summarize(acc: dict, leak_docs: int, n_docs: int, lang: str) -> dict:
@@ -328,7 +331,8 @@ def summarize(acc: dict, leak_docs: int, n_docs: int, lang: str) -> dict:
         "per_type": per_type,
         "structured": group(STRUCTURED[lang]),
         "names": group(NAMES),
-        # доля скрытых фрагментов, задевающих размеченные данные (с интервалом), и то же по символам
+        # share of hidden fragments touching annotated data (with an interval), and the same by
+        # characters
         "precision_any": anyp["pred_ok"] / anyp["pred"] if anyp["pred"] else None,
         "precision_any_ci": wilson(anyp["pred_ok"], anyp["pred"]) if anyp["pred"] else None,
         "masked_fragments": anyp["pred"],

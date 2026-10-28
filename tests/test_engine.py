@@ -1,4 +1,4 @@
-"""Тесты движка на правилах (без загрузки моделей)."""
+"""Tests of the rule-based engine (no models loaded)."""
 
 import pytest
 
@@ -32,7 +32,8 @@ def test_uk_titled_names_firm_dob_and_restore(eng):
 
 
 def test_russian_surname_forms_propagate(eng):
-    # имя найдено один раз правилом ИП, остальные упоминания и падежи скрываются распространением
+    # the name is found once by the sole proprietor (ИП) rule; the other mentions and case forms
+    # are hidden by propagation
     t = "ИП Кузнецов Андрей. Договор с Кузнецовым подписан. Подпись: Кузнецова нет."
     a, _ = eng.anonymize(t, "ru")
     assert "Кузнецов" not in a
@@ -54,7 +55,7 @@ def test_unknown_labels_left_untouched(eng):
     assert eng.deanonymize("[PERSON_1] met [PERSON_9].", s) == "John Smith met [PERSON_9]."
 
 
-# ---------- регрессии ----------
+# ---------- regressions ----------
 
 
 def test_two_parties_never_share_a_label(eng):
@@ -62,7 +63,7 @@ def test_two_parties_never_share_a_label(eng):
     assert "[PERSON_1]" in a and "[PERSON_2]" in a
     a, s = eng.anonymize("Mr John Smith is the claimant. Mrs Mary Smith is his ex-wife. Mr J. Smith signed.", "en-GB")
     assert s.mapping["[PERSON_1]"] == "John Smith" and s.mapping["[PERSON_2]"] == "Mary Smith"
-    assert a.count("[PERSON_1]") == 2  # «Mr J. Smith» совместим только с John
+    assert a.count("[PERSON_1]") == 2  # "Mr J. Smith" is compatible only with John
 
 
 def test_female_surname_and_gender():
@@ -142,9 +143,9 @@ def test_vault_safety(eng, tmp_path):
     vault.save(p, s, "pw")
     assert oct(p.stat().st_mode & 0o777) == "0o600"
     with pytest.raises(vault.VaultError):
-        vault.save(p, s, "pw")  # без явного разрешения не перезаписывает
+        vault.save(p, s, "pw")  # does not overwrite without explicit permission
     with pytest.raises(vault.VaultError):
-        vault.save(tmp_path / "x.vault", s, "")  # пустой пароль
+        vault.save(tmp_path / "x.vault", s, "")  # empty password
     link = tmp_path / "link.vault"
     victim = tmp_path / "victim.txt"
     victim.write_text("keep")

@@ -7,15 +7,15 @@ from bench.generator import ids
 N = 2000
 
 
-# Публично известные корректные номера: проверяют валидаторы независимо от генераторов.
+# Publicly known valid numbers: they test the validators independently of the generators.
 @pytest.mark.parametrize(
     "fn, value",
     [
-        (ids.is_valid_inn, "7707083893"),  # ИНН ПАО Сбербанк
-        (ids.is_valid_snils, "112-233-445 95"),  # пример из описания алгоритма
-        (ids.is_valid_nhs, "943 476 5919"),  # пример NHS Digital
-        (ids.is_valid_iban, "GB82 WEST 1234 5698 7654 32"),  # пример из ISO 13616
-        (ids.is_valid_card, "4111 1111 1111 1111"),  # тестовая карта Visa
+        (ids.is_valid_inn, "7707083893"),  # INN of PJSC Sberbank (ИНН ПАО Сбербанк)
+        (ids.is_valid_snils, "112-233-445 95"),  # example from the algorithm description
+        (ids.is_valid_nhs, "943 476 5919"),  # NHS Digital example
+        (ids.is_valid_iban, "GB82 WEST 1234 5698 7654 32"),  # example from ISO 13616
+        (ids.is_valid_card, "4111 1111 1111 1111"),  # Visa test card
         (ids.is_valid_nino, "AB 12 34 56 C"),
     ],
 )
@@ -31,9 +31,9 @@ def test_known_valid(fn, value):
         (ids.is_valid_nhs, "943 476 5918"),
         (ids.is_valid_iban, "GB83 WEST 1234 5698 7654 32"),
         (ids.is_valid_card, "4111 1111 1111 1112"),
-        (ids.is_valid_nino, "QQ 12 34 56 C"),  # Q недопустима первой
-        (ids.is_valid_nino, "GB 12 34 56 C"),  # запрещённый префикс
-        (ids.is_valid_nino, "AB 12 34 56 E"),  # суффикс только A-D
+        (ids.is_valid_nino, "QQ 12 34 56 C"),  # Q is not allowed as the first letter
+        (ids.is_valid_nino, "GB 12 34 56 C"),  # forbidden prefix
+        (ids.is_valid_nino, "AB 12 34 56 E"),  # suffix must be A-D
     ],
 )
 def test_known_invalid(fn, value):

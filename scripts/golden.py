@@ -1,10 +1,10 @@
-"""Эталон поведения движка: выходы на выборке документов до рефакторинга.
+"""Golden reference for the engine's behaviour: outputs on a sample of documents before a refactor.
 
-uv run python -m scripts.golden save  golden.json   # снять эталон
-uv run python -m scripts.golden check golden.json   # сравнить текущий код с эталоном
+uv run python -m scripts.golden save  golden.json   # record the reference
+uv run python -m scripts.golden check golden.json   # compare the current code with the reference
 
-Сравниваются очищенный текст, таблица меток и восстановленный ответ, в котором
-каждая метка стоит в разных падежных контекстах (проверка склонения русских имён).
+Compared are the cleaned text, the label table and the restored answer, in which
+each label appears in different case contexts (a check of Russian name declension).
 """
 
 from __future__ import annotations
@@ -53,15 +53,15 @@ def main() -> None:
     cur = run()
     if mode == "save":
         path.write_text(json.dumps(cur, ensure_ascii=False, indent=0), encoding="utf-8")
-        print(f"сохранено {len(cur)} документов")
+        print(f"saved {len(cur)} documents")
         return
     ref = json.loads(path.read_text(encoding="utf-8"))
     diff = [k for k in ref if ref[k] != cur.get(k)]
-    print(f"проверено {len(ref)}, расхождений {len(diff)}")
+    print(f"checked {len(ref)}, differences {len(diff)}")
     for k in diff[:5]:
         for f in ("text", "mapping", "restored"):
             if ref[k][f] != cur[k][f]:
-                print(" ", k, f, "\n    было:", str(ref[k][f])[:300], "\n    стало:", str(cur[k][f])[:300])
+                print(" ", k, f, "\n    before:", str(ref[k][f])[:300], "\n    after:", str(cur[k][f])[:300])
     sys.exit(1 if diff else 0)
 
 
