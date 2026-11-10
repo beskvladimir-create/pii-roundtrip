@@ -4,6 +4,15 @@
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow [Semantic Versioning](https://semver.org/).
 
+## [1.0.0] - 2026-11-10
+
+The first stable release. The engine and the benchmark are unchanged (0.5.3).
+
+### Changed
+
+- The Mac app is signed with a Developer ID certificate and notarised by Apple. It opens on first launch like any other app, without the Privacy & Security step.
+- The Windows version remains a beta, and its installer is not yet signed.
+
 ## [0.5.5] - 2026-10-28
 
 The engine, the benchmark and the desktop app are unchanged (0.5.4). This release makes the code and the data understandable to English-speaking readers, as requested by the journal.

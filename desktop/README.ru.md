@@ -12,15 +12,12 @@
 - macOS 14 (Sonoma) или новее на Mac с процессором Apple (M1 или новее). Mac на Intel не поддерживаются.
 - Windows 10 или 11, 64-бит. Версия для Windows пока бета: она собирается и проверяется сценарным прогоном установленной программы на машине Windows, людьми ею пока пользовались мало.
 
-Приложение пока не подписано, поэтому перед первым запуском система спросит разрешения один раз.
-
 На Mac:
-1. Перетащите pii-roundtrip в папку «Программы».
-2. Откройте его. macOS предупредит, что разработчика не удалось проверить.
-3. Откройте «Системные настройки», раздел «Конфиденциальность и безопасность», и нажмите «Всё равно открыть» рядом с сообщением о pii-roundtrip.
+1. Откройте `pii-roundtrip-mac.dmg` и перетащите pii-roundtrip в папку «Программы».
+2. Откройте его. Приложение подписано сертификатом разработчика и проверено Apple, поэтому macOS открывает его без предупреждений.
 
 На Windows:
-1. Запустите `pii-roundtrip-windows-setup.exe`. Если Windows покажет «Система Windows защитила ваш компьютер», нажмите «Подробнее», затем «Выполнить в любом случае».
+1. Запустите `pii-roundtrip-windows-setup.exe`. Установщик пока не подписан: если Windows покажет «Система Windows защитила ваш компьютер», нажмите «Подробнее», затем «Выполнить в любом случае».
 2. Установщик ставит программу для вашего пользователя, без прав администратора, и добавляет её в меню «Пуск».
 
 Приложение не проверяет обновления, потому что не выходит в сеть. О новых версиях сообщается на [pii-roundtrip.besk.tech](https://pii-roundtrip.besk.tech/ru/) и на странице выпусков.
@@ -64,7 +61,9 @@ PYTHONPATH=.. uv run python scripts/collect_models.py   # закреплённы
 PYTHONPATH=.. uv run pyinstaller -y pii-roundtrip.spec  # dist/pii-roundtrip.app
 ./dist/pii-roundtrip.app/Contents/MacOS/pii-roundtrip --selftest
 ./dist/pii-roundtrip.app/Contents/MacOS/pii-roundtrip --uitest uitest   # проходит окно, снимки в uitest/
-bash scripts/make_dmg.sh 0.5.3                          # dist/pii-roundtrip-0.5.3.dmg
+scripts/sign_mac.sh                                     # Developer ID signature, hardened runtime
+scripts/notarize.sh dist/pii-roundtrip.app              # Apple notarisation, ticket stapled
+bash scripts/make_dmg.sh 1.0.0                          # dist/pii-roundtrip-1.0.0.dmg, signed and notarised
 ```
 
 На Windows те же шаги собирают `dist\pii-roundtrip\pii-roundtrip.exe`, а `iscc /DVersion=0.5.3 scripts\windows.iss` делает установщик. Сценарий `.github/workflows/windows.yml` делает это на машине Windows у GitHub, запускает `--selftest` и `--uitest` у установленной программы и прикладывает установщик к выпуску.

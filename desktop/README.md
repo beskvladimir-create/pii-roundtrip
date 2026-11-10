@@ -12,15 +12,12 @@ Requirements:
 - macOS 14 (Sonoma) or later on a Mac with Apple silicon (M1 or newer). Intel Macs are not supported.
 - Windows 10 or 11, 64-bit. The Windows version is a beta: it is built and checked by a scripted run of the installed program on a Windows machine, and has been used by few people so far.
 
-The app is not yet signed, so the system asks once before the first launch.
-
 On a Mac:
-1. Drag pii-roundtrip into Applications.
-2. Open it. macOS warns that the developer cannot be verified.
-3. Open System Settings, Privacy & Security, and click Open Anyway next to the message about pii-roundtrip.
+1. Open `pii-roundtrip-mac.dmg` and drag pii-roundtrip into Applications.
+2. Open it. The app is signed with a Developer ID certificate and notarised by Apple, so macOS opens it without warnings.
 
 On Windows:
-1. Run `pii-roundtrip-windows-setup.exe`. If Windows shows "Windows protected your PC", click More info, then Run anyway.
+1. Run `pii-roundtrip-windows-setup.exe`. The installer is not yet signed: if Windows shows "Windows protected your PC", click More info, then Run anyway.
 2. The installer installs the app for your user, without administrator rights, and adds it to the Start menu.
 
 The app does not check for updates, because it makes no network connections. New versions are announced on [pii-roundtrip.besk.tech](https://pii-roundtrip.besk.tech) and on the Releases page.
@@ -64,7 +61,9 @@ PYTHONPATH=.. uv run python scripts/collect_models.py   # the pinned models into
 PYTHONPATH=.. uv run pyinstaller -y pii-roundtrip.spec  # dist/pii-roundtrip.app
 ./dist/pii-roundtrip.app/Contents/MacOS/pii-roundtrip --selftest
 ./dist/pii-roundtrip.app/Contents/MacOS/pii-roundtrip --uitest uitest   # drives the window, screenshots in uitest/
-bash scripts/make_dmg.sh 0.5.3                          # dist/pii-roundtrip-0.5.3.dmg
+scripts/sign_mac.sh                                     # Developer ID signature, hardened runtime
+scripts/notarize.sh dist/pii-roundtrip.app              # Apple notarisation, ticket stapled
+bash scripts/make_dmg.sh 1.0.0                          # dist/pii-roundtrip-1.0.0.dmg, signed and notarised
 ```
 
 On Windows the same steps build `dist\pii-roundtrip\pii-roundtrip.exe`, and `iscc /DVersion=0.5.3 scripts\windows.iss` makes the installer. The workflow `.github/workflows/windows.yml` does this on a Windows machine on GitHub, runs `--selftest` and `--uitest` on the installed program, and attaches the installer to a release.

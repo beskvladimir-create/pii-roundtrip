@@ -1,5 +1,5 @@
 """Desktop app for pii-roundtrip."""
 
-VERSION = "0.5.4"
+VERSION = "1.0.0"
 MAKER = "Besk Tech"
 YEAR = 2026

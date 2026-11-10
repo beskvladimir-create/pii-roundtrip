@@ -1380,7 +1380,7 @@ ner = [
 
 [[package]]
 name = "pii-roundtrip"
-version = "0.5.5"
+version = "1.0.0"
 source = { editable = "." }
 dependencies = [
     { name = "cryptography" },
