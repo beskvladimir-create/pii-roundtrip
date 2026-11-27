@@ -52,7 +52,12 @@ DOI 10.5281/zenodo.23478192 общий для всех версий и всег�
 
 ## Приложение для macOS и Windows
 
-Для тех, кто не работает с командной строкой: перетащите файл Word, PDF или текст, отправьте очищенную версию в любую нейросеть, верните её ответ и получите его с настоящими значениями. Оформление сохраняется там, где это позволяет файл, модели внутри установщика, приложение работает без интернета. Установщики для macOS (Apple Silicon, macOS 14 и новее) и Windows 10 или 11 (бета) на [странице выпусков](https://github.com/beskvladimir-create/pii-roundtrip/releases), подробности в [desktop/README.ru.md](desktop/README.ru.md).
+Для тех, кто не работает с командной строкой: перетащите файл Word, PDF или текст, отправьте очищенную версию в любую нейросеть, верните её ответ и получите его с настоящими значениями. Оформление сохраняется там, где это позволяет файл, модели внутри установщика, приложение работает без интернета. Установщики для macOS (Apple Silicon, macOS 14 и новее) и Windows 10 или 11 (бета) на [странице выпусков](https://github.com/beskvladimir-create/pii-roundtrip/releases), подробности в [desktop/README.ru.md](desktop/README.ru.md). На Mac приложение можно поставить и через Homebrew:
+
+```sh
+brew tap beskvladimir-create/tap && brew trust beskvladimir-create/tap
+brew install --cask pii-roundtrip
+```
 
 ## Быстрый старт
 
