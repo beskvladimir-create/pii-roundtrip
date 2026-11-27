@@ -44,7 +44,12 @@ A threshold is met when the whole 95% confidence interval is on the right side o
 
 ## Desktop app for macOS and Windows
 
-For people who do not use the command line: drop in a Word file, a PDF or text, send the cleaned version to any AI tool, drop or paste its answer back and get it with the real values. Formatting is kept where the file allows it, the models are inside the installer, and the app works offline. Download the installer for macOS (Apple silicon, macOS 14 or later) or Windows 10 or 11 (beta) from the [Releases page](https://github.com/beskvladimir-create/pii-roundtrip/releases); details in [desktop/README.md](desktop/README.md).
+For people who do not use the command line: drop in a Word file, a PDF or text, send the cleaned version to any AI tool, drop or paste its answer back and get it with the real values. Formatting is kept where the file allows it, the models are inside the installer, and the app works offline. Download the installer for macOS (Apple silicon, macOS 14 or later) or Windows 10 or 11 (beta) from the [Releases page](https://github.com/beskvladimir-create/pii-roundtrip/releases); details in [desktop/README.md](desktop/README.md). On a Mac it can also be installed with Homebrew:
+
+```sh
+brew tap beskvladimir-create/tap && brew trust beskvladimir-create/tap
+brew install --cask pii-roundtrip
+```
 
 ## Requirements
 
