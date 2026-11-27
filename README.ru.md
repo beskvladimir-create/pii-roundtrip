@@ -89,12 +89,21 @@ brew install --cask pii-roundtrip
 
 ## Быстрый старт
 
-Нужны Python 3.12 или новее и [uv](https://docs.astral.sh/uv/). pii-roundtrip устанавливается из исходников: он зависит от pii-guard, закреплённого на коммите в GitHub, и не опубликован в PyPI.
+Нужны Python 3.12 или новее и [uv](https://docs.astral.sh/uv/). Полная установка, с распознаванием русских имён, идёт из исходников, потому что pii-guard закреплён на коммите в GitHub. В пакете на PyPI русского модуля нет (см. ниже).
 
 ```bash
 git clone https://github.com/beskvladimir-create/pii-roundtrip.git && cd pii-roundtrip
 uv sync --extra all
 uv run pii-roundtrip download-models          # один раз, нужна сеть
+```
+
+Без русского модуля пакет можно поставить и из PyPI. В нём есть правила и GLiNER Guard Omni, этого достаточно для британского английского. Для русского в нём нет pii-guard, и такая сборка в бенчмарке не измерялась, поэтому для русских документов нужна полная установка.
+
+```bash
+pip install "pii-roundtrip[gliner]"
+pii-roundtrip download-models          # один раз, нужна сеть
+# полная установка через pip, без клонирования:
+pip install "pii-roundtrip[all] @ git+https://github.com/beskvladimir-create/pii-roundtrip"
 ```
 
 Части установки: `ru` добавляет pii-guard (распознавание и склонение русских имён), `gliner` добавляет GLiNER Guard Omni, `all` ставит обе, `bench` ставит все сравниваемые инструменты. Без них работают только правила: номера с контрольными суммами, длинные номера, имена с обращением и хранилище.

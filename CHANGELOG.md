@@ -4,6 +4,20 @@
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow [Semantic Versioning](https://semver.org/).
 
+## [1.0.1] - 2026-11-27
+
+The package is published on PyPI. The engine, the benchmark and the desktop app are unchanged.
+
+### Fixed
+
+- The `gliner` extra did not install torch and transformers with pip (gliner2 moved them to its `local` extra), so GLiNER Guard Omni failed to load. The extra now requires `gliner2[local]`. Installs with the `ru` or `all` extra were not affected, because pii-guard brings torch and transformers.
+- `download-models` stopped with an error when pii-guard was not installed. It now downloads the models of the installed packages and names the skipped ones; a download error is still an error.
+- The message for a missing pii-guard gives the install command from GitHub, because the PyPI package has no `ru` extra.
+
+### Added
+
+- The package on PyPI: `pip install "pii-roundtrip[gliner]"`. PyPI does not accept dependencies given by URL, so the `ru`, `all` and `bench` extras (pii-guard and the spaCy models from GitHub) are only in the install from GitHub.
+
 ## [1.0.0] - 2026-11-10
 
 The first stable release. The engine and the benchmark are unchanged (0.5.3).

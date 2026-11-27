@@ -44,11 +44,16 @@ A threshold is met when the whole 95% confidence interval is on the right side o
 
 ## Desktop app for macOS and Windows
 
-For people who do not use the command line: drop in a Word file, a PDF or text, send the cleaned version to any AI tool, drop or paste its answer back and get it with the real values. Formatting is kept where the file allows it, the models are inside the installer, and the app works offline. Download the installer for macOS (Apple silicon, macOS 14 or later) or Windows 10 or 11 (beta) from the [Releases page](https://github.com/beskvladimir-create/pii-roundtrip/releases); details in [desktop/README.md](desktop/README.md).
+For people who do not use the command line: drop in a Word file, a PDF or text, send the cleaned version to any AI tool, drop or paste its answer back and get it with the real values. Formatting is kept where the file allows it, the models are inside the installer, and the app works offline. Download the installer for macOS (Apple silicon, macOS 14 or later) or Windows 10 or 11 (beta) from the [Releases page](https://github.com/beskvladimir-create/pii-roundtrip/releases); details in [desktop/README.md](desktop/README.md). On a Mac it can also be installed with Homebrew:
+
+```sh
+brew tap beskvladimir-create/tap && brew trust beskvladimir-create/tap
+brew install --cask pii-roundtrip
+```
 
 ## Requirements
 
-- Python 3.12 or later and [uv](https://docs.astral.sh/uv/). pii-roundtrip is installed from source; it depends on pii-guard pinned to a GitHub commit and is not published on PyPI. Exact dependency versions are pinned in `pyproject.toml` and `uv.lock`.
+- Python 3.12 or later and [uv](https://docs.astral.sh/uv/). The full install, with Russian NER, is from source, because pii-guard is pinned to a GitHub commit. The package on PyPI has no Russian NER (see Install). Exact dependency versions are pinned in `pyproject.toml` and `uv.lock`.
 - Network access for installation and the one-time model download; after that the engine runs offline. The benchmark also downloads the external datasets and the Ollama models.
 - For the benchmark in addition: [Ollama](https://ollama.com) with `qwen3.5:9b` and `gemma4:12b`, and about 20 GB of free disk. The full run takes several hours on a laptop.
 
@@ -60,6 +65,15 @@ For people who do not use the command line: drop in a Word file, a PDF or text, 
 git clone https://github.com/beskvladimir-create/pii-roundtrip.git && cd pii-roundtrip
 uv sync --extra all
 uv run pii-roundtrip download-models          # once, needs network
+```
+
+Without Russian NER the package can also be installed from PyPI. It has the rules and GLiNER Guard Omni, which is enough for UK English. For Russian it lacks pii-guard, and that setup was not measured in the benchmark, so use the full install for Russian documents.
+
+```bash
+pip install "pii-roundtrip[gliner]"
+pii-roundtrip download-models          # once, needs network
+# the full install with pip, without cloning:
+pip install "pii-roundtrip[all] @ git+https://github.com/beskvladimir-create/pii-roundtrip"
 ```
 
 The extras: `ru` adds pii-guard (Russian NER and name inflection), `gliner` adds GLiNER Guard Omni, `all` adds both, `bench` adds every compared tool. Without extras only the rules run: checksum-validated identifiers, numbers, titled names and the vault.
@@ -119,7 +133,7 @@ Placeholders show the type of each value, for example `[PASSPORT_RU_1]` or `[NHS
 ## Dataset information
 
 - **External datasets (third-party, not redistributed).** Russian: [hivetrace/pii-bench](https://huggingface.co/datasets/hivetrace/pii-bench) and [redmadrobot-rnd/pii_benchmark](https://huggingface.co/datasets/redmadrobot-rnd/pii_benchmark). UK English: [nvidia/Nemotron-PII](https://huggingface.co/datasets/nvidia/Nemotron-PII), UK texts and UK texts with injected UK identifiers. Licences: hivetrace/pii-bench Apache 2.0, redmadrobot-rnd/pii_benchmark MIT, Nemotron-PII CC BY 4.0. In a modified subset of Nemotron-PII (`nemotron_uk_ids`), national ID, health plan and account numbers were replaced with synthetic UK NI numbers, NHS numbers and IBANs. The datasets are downloaded from Hugging Face at pinned revisions by `bench/eval/external.py`; the released predictions on them contain only character offsets, and short excerpts appear only as error examples in `results/` and the report, under the datasets' licences ([NOTICE](NOTICE)).
-- **Synthetic held-out sets (released).** `data/holdout` to `data/holdout7`: synthetic documents in Russian and UK English (contracts, letters, HR files, discharge summaries and others) produced by this project's generator (`bench/generator/`), with the generator seed in a `SEED` file (all sets except set 3); the full generation command for each set is in [HOLDOUT.en.md](HOLDOUT.en.md). The SHA-256 of each set is recorded in HOLDOUT.en.md and, from set 3, checked before every run; sets 5 to 7 were published with their decision rules before the first run. All personal data in them are synthetic.
+- **Synthetic held-out sets (released).** `data/holdout` to `data/holdout7`: synthetic documents in Russian and UK English (contracts, letters, HR files, discharge summaries and others) produced by this project's generator (`bench/generator/`), with the generator seed in a `SEED` file (all sets except set 3); the full generation command for each set is in [HOLDOUT.en.md](HOLDOUT.en.md). The SHA-256 of each set is recorded in HOLDOUT.en.md and, from set 3, checked before every run; sets 5 to 7 were published with their decision rules before the first run. All personal data in them are synthetic. Set 7 is also on Hugging Face: [besktech/pii-roundtrip-holdout7](https://huggingface.co/datasets/besktech/pii-roundtrip-holdout7).
 - **Development set.** Not released; no reported number depends on it.
 - **Results.** Predictions, LLM answers, metrics, manual checks and run journals are in `results/`.
 - **Codebook.** Every data and result file, its fields and labels, and why some content is in Russian are described in English in [DATA_CODEBOOK.md](DATA_CODEBOOK.md).

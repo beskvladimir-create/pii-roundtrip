@@ -98,11 +98,23 @@ def main(argv: list[str] | None = None) -> None:
     try:
         if args.cmd == "download-models":
             from pii_roundtrip.adapters import GlinerDetector, PiiGuardDetector
+            from pii_roundtrip.errors import ModelsNotAvailableError
 
+            done, missing = 0, []
             for d in (PiiGuardDetector(offline=False), GlinerDetector(offline=False)):
-                d.detect(
-                    "Иван Петров" if "ru" in d.languages else "John Smith", "ru" if "ru" in d.languages else "en-GB"
-                )
+                try:
+                    d.detect(
+                        "Иван Петров" if "ru" in d.languages else "John Smith", "ru" if "ru" in d.languages else "en-GB"
+                    )
+                    done += 1
+                except ModelsNotAvailableError as e:
+                    if not isinstance(e.__cause__, ImportError):
+                        raise  # a download error, not a missing package
+                    missing.append(str(e))
+            for m in missing:
+                print(f"Skipped: {m}", file=sys.stderr)
+            if not done:
+                sys.exit("No model package is installed, nothing to download.")
             print("Models downloaded; pii-roundtrip now works offline.", file=sys.stderr)
             return
         if args.cmd == "anonymize":

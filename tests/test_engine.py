@@ -655,3 +655,28 @@ def test_restore_ru_case_from_the_words_before_the_name(eng, answer, expected):
     s = Session("ru", {"[PERSON_1]": "Силина Г.Э."})
     s.genders = {"[PERSON_1]": "female"}
     assert eng.deanonymize(answer, s) == expected
+
+
+def test_download_models_skips_a_package_that_is_not_installed(monkeypatch, capsys):
+    """A pip install with only the gliner extra has no pii-guard: download-models fetches what is
+    installed and names what was skipped; a download error is still an error."""
+    import pytest
+
+    from pii_roundtrip import adapters, cli
+    from pii_roundtrip.errors import ModelsNotAvailableError
+
+    def not_installed(self, text, lang):
+        raise ModelsNotAvailableError("pii-guard is not installed") from ImportError("pii_guard")
+
+    monkeypatch.setattr(adapters.PiiGuardDetector, "detect", not_installed)
+    monkeypatch.setattr(adapters.GlinerDetector, "detect", lambda self, text, lang: [])
+    cli.main(["download-models"])
+    err = capsys.readouterr().err
+    assert "Skipped: pii-guard is not installed" in err and "Models downloaded" in err
+
+    def network_error(self, text, lang):
+        raise ModelsNotAvailableError("not available locally") from OSError("timeout")
+
+    monkeypatch.setattr(adapters.GlinerDetector, "detect", network_error)
+    with pytest.raises(SystemExit, match="not available locally"):
+        cli.main(["download-models"])

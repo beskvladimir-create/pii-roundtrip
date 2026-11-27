@@ -110,7 +110,10 @@ class PiiGuardDetector:
                     from pii_guard import Anonymizer
                     from pii_guard.config import Config
                 except ImportError as e:
-                    raise ModelsNotAvailableError("pii-guard is not installed: pip install 'pii-roundtrip[ru]'") from e
+                    raise ModelsNotAvailableError(
+                        "pii-guard is not installed: pip install "
+                        "'pii-roundtrip[ru] @ git+https://github.com/beskvladimir-create/pii-roundtrip'"
+                    ) from e
                 path = local_snapshot(NER_MODEL, self.revision, self.offline)
                 config = Config.load(ner_model=path, ner_revision=None, device=self.device)
                 self._anonymizer = Anonymizer(config)

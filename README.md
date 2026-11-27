@@ -81,7 +81,7 @@ brew install --cask pii-roundtrip
 
 ## Requirements
 
-- Python 3.12 or later and [uv](https://docs.astral.sh/uv/). pii-roundtrip is installed from source; it depends on pii-guard pinned to a GitHub commit and is not published on PyPI. Exact dependency versions are pinned in `pyproject.toml` and `uv.lock`.
+- Python 3.12 or later and [uv](https://docs.astral.sh/uv/). The full install, with Russian NER, is from source, because pii-guard is pinned to a GitHub commit. The package on PyPI has no Russian NER (see Install). Exact dependency versions are pinned in `pyproject.toml` and `uv.lock`.
 - Network access for installation and the one-time model download; after that the engine runs offline. The benchmark also downloads the external datasets and the Ollama models.
 - For the benchmark in addition: [Ollama](https://ollama.com) with `qwen3.5:9b` and `gemma4:12b`, and about 20 GB of free disk. The full run takes several hours on a laptop.
 
@@ -93,6 +93,15 @@ brew install --cask pii-roundtrip
 git clone https://github.com/beskvladimir-create/pii-roundtrip.git && cd pii-roundtrip
 uv sync --extra all
 uv run pii-roundtrip download-models          # once, needs network
+```
+
+Without Russian NER the package can also be installed from PyPI. It has the rules and GLiNER Guard Omni, which is enough for UK English. For Russian it lacks pii-guard, and that setup was not measured in the benchmark, so use the full install for Russian documents.
+
+```bash
+pip install "pii-roundtrip[gliner]"
+pii-roundtrip download-models          # once, needs network
+# the full install with pip, without cloning:
+pip install "pii-roundtrip[all] @ git+https://github.com/beskvladimir-create/pii-roundtrip"
 ```
 
 The extras: `ru` adds pii-guard (Russian NER and name inflection), `gliner` adds GLiNER Guard Omni, `all` adds both, `bench` adds every compared tool. Without extras only the rules run: checksum-validated identifiers, numbers, titled names and the vault.
